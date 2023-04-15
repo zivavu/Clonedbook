@@ -1,3 +1,18 @@
 {
-  "extends": "next/core-web-vitals"
+	"extends": ["next/core-web-vitals", "next", "prettier"],
+	"ignorePatterns": ["node_modules/", "blueprint-templates/**"],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"parser": "@typescript-eslint/parser",
+	"rules": {
+		"no-console": "error",
+		"quotes": ["error", "backtick"],
+		"semi": ["error", "always"],
+		"object-curly-spacing": ["error", "always"],
+		"no-duplicate-imports": "error",
+		"sort-imports": ["error", { "ignoreDeclarationSort": true }]
+	}
 }
+

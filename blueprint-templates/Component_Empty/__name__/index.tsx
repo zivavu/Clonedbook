@@ -1,5 +1,4 @@
 // Dependencies scoped imports
-import React from 'react';
 import { Typography } from '@mui/material';
 
 // Project scoped imports
@@ -8,7 +7,7 @@ import { Typography } from '@mui/material';
 import { StyledRoot } from './styles';
 import { {{name}}Props } from './types';
 
-function {{name}} ( }: {{name}}Props) {
+export default function {{name}}({}: {{name}}Props) {
   return (
     <StyledRoot>
       <Typography>{{name}}</Typography>
@@ -16,4 +15,3 @@ function {{name}} ( }: {{name}}Props) {
   );
 }
   
-export default {{name}};

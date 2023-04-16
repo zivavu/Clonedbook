@@ -1,1 +1,5 @@
 blueprint-templates
+.next
+public
+node_modules
+yarn.lock

@@ -1,6 +1,5 @@
 import { theme } from '@/design/theme';
 import { config, library } from '@fortawesome/fontawesome-svg-core';
-import {} from '@fortawesome/free-regular-svg-icons';
 import {
 	faBell,
 	faClapperboard,

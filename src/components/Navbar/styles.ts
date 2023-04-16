@@ -13,7 +13,7 @@ export const StyledContentContainer = styled(Stack)(({ theme }) => ({
 	justifyContent: 'space-between',
 }));
 
-export const StyledContentSection = styled(Box)(({ theme }) => ({
+export const StyledContentSection = styled(Box)(({}) => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',

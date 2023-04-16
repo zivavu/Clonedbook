@@ -1,20 +1,14 @@
-import { Avatar, Typography, useTheme } from '@mui/material';
+import { Avatar } from '@mui/material';
 
 import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/Icon/Icon';
 import { useState } from 'react';
-import { RightSectionProps } from './types';
+import { Portal, RightSectionProps } from './types';
 
 export default function RightSection({ sx, classes, ...rootProps }: RightSectionProps) {
-	const theme = useTheme();
-	const [currentPortal, setCurrentPortal] = useState<
-		'chats' | 'notifications' | 'account' | 'none'
-	>('none');
-	const handleSetPortal = (
-		event: React.MouseEvent<HTMLElement>,
-		portal: 'chats' | 'notifications' | 'account' | 'none',
-	) => {
+	const [currentPortal, setCurrentPortal] = useState<Portal>('none');
+	const handleSetPortal = (event: React.MouseEvent<HTMLElement>, portal: Portal) => {
 		const newPortal = portal === currentPortal ? 'none' : portal;
 		setCurrentPortal(newPortal);
 	};

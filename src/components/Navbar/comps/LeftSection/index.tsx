@@ -1,4 +1,4 @@
-import { InputAdornment, TextField, Typography, useTheme, useThemeProps } from '@mui/material';
+import { InputAdornment, TextField } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { LeftSectionProps } from './types';
 
 export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionProps) {
-	const theme = useTheme();
 	return (
 		<StyledRoot sx={sx} className={classes?.root} {...rootProps}>
 			<Image src='/facebook-logo.svg' width={50} height={50} alt='Site logo'></Image>

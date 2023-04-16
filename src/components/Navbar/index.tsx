@@ -1,6 +1,6 @@
 import { AppBar, useTheme } from '@mui/material';
 
-import { StyledContentContainer, StyledContentSection, StyledRoot } from './styles';
+import { StyledContentContainer, StyledRoot } from './styles';
 
 import LeftSection from './comps/LeftSection';
 import MiddleSection from './comps/MiddleSection';

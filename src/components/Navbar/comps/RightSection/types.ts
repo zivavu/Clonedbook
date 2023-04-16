@@ -7,3 +7,5 @@ export interface RightSectionProps extends BoxProps {
 export interface RightSectionClasses {
 	root: string;
 }
+
+export type Portal = 'chats' | 'notifications' | 'account' | 'none';

@@ -1,16 +1,37 @@
-import { createTheme } from '@mui/material/styles';
+import { PaletteOptions, createTheme } from '@mui/material/styles';
 import { componentOverrides } from './overrides';
 
-export const theme = createTheme({
-	palette: {
-		primary: {
-			main: `#4267B2`,
-		},
-		secondary: {
-			main: `#17A9FD`,
-		},
-		contrastThreshold: 3,
+export const palette = {
+	primary: {
+		main: '#1b74e4',
+		light: '#e4f0fc',
 	},
+	secondary: {
+		light: '#fff',
+		main: '#f0f2f5',
+		dark: '#e4e6eb',
+	},
+	background: {
+		default: '#f0f2f5',
+	},
+	text: {
+		primary: '#000',
+		secondary: '#65676B',
+	},
+	info: {
+		main: '#1b74e4',
+	},
+	contrastThreshold: 6,
+} as PaletteOptions;
 
-	components: componentOverrides,
+export const mode = 'light';
+export const theme = createTheme({
+	palette,
+	typography: {
+		allVariants: {
+			fontFamily: ['"Roboto"', 'Helvetica', 'sans-serif', 'Arial'].join(','),
+			fontWeight: 400,
+		},
+	},
+	components: componentOverrides({ ...palette, mode }),
 });

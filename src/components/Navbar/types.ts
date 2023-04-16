@@ -1,9 +1,9 @@
 import { BoxProps } from '@mui/material';
 
-export interface NavbarProps extends BoxProps {
-	classes?: Partial<NavbarPropsClasses>;
+export interface NavBarProps extends BoxProps {
+	classes?: Partial<NavBarClasses>;
 }
 
-export interface NavbarPropsClasses {
+export interface NavBarClasses {
 	root: string;
 }

@@ -1,16 +1,23 @@
-// Dependencies scoped imports
-import { Typography } from '@mui/material';
+import { AppBar, useTheme } from '@mui/material';
 
-// Project scoped imports
+import { StyledContentContainer, StyledContentSection, StyledRoot } from './styles';
 
-// Module scoped imports
-import { StyledRoot } from './styles';
-import { NavbarProps } from './types';
+import LeftSection from './comps/LeftSection';
+import MiddleSection from './comps/MiddleSection';
+import RightSection from './comps/RightSection';
+import { NavBarProps } from './types';
 
-export default function Navbar({ sx, classes, ...rootProps }: NavbarProps) {
+export default function NavBar({ sx, classes, ...rootProps }: NavBarProps) {
+	const theme = useTheme();
 	return (
 		<StyledRoot sx={sx} className={classes?.root} {...rootProps}>
-			<Typography>Navbar</Typography>
+			<AppBar sx={{ backgroundColor: theme.palette.secondary.light }}>
+				<StyledContentContainer>
+					<LeftSection />
+					<MiddleSection />
+					<RightSection />
+				</StyledContentContainer>
+			</AppBar>
 		</StyledRoot>
 	);
 }

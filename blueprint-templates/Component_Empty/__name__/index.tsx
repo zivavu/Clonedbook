@@ -1,15 +1,13 @@
-// Dependencies scoped imports
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 
-// Project scoped imports
-
-// Module scoped imports
 import { StyledRoot } from './styles';
+
 import { {{name}}Props } from './types';
 
-export default function {{name}}({}: {{name}}Props) {
+export default function {{name}}({ sx, classes, ...rootProps }: {{name}}Props) {
+	const theme = useTheme();
   return (
-    <StyledRoot>
+    <StyledRoot sx={sx} className={classes?.root} {...rootProps}>
       <Typography>{{name}}</Typography>
     </StyledRoot>
   );

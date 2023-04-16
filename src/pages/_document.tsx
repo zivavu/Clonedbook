@@ -1,11 +1,12 @@
 import { getInitColorSchemeScript } from '@mui/material';
-import { Html, Main, NextScript } from 'next/document';
+import { Head, Html, Main, NextScript } from 'next/document';
 
 export default function Document() {
 	return (
-		<Html lang="en">
+		<Html lang='en'>
+			<Head />
 			<body>
-				{getInitColorSchemeScript()}
+				{getInitColorSchemeScript({ defaultMode: 'light' })}
 				<Main />
 				<NextScript />
 			</body>

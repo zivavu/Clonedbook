@@ -1,31 +1,31 @@
 {
-	"env": {
-		"browser": true,
-		"es2021": true
-	},
-	"extends": [
-		"next/core-web-vitals",
-		"eslint-config-next",
-		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
-		"plugin:@next/next/recommended",
-		"prettier"
-	],
-	"parser": "@typescript-eslint/parser",
-	"parserOptions": {
-		"ecmaVersion": "latest",
-		"sourceType": "module"
-	},
-	"ignorePatterns": ["dist/", "temp.js", "**/vendor/*.js"],
-	"plugins": ["react", "@typescript-eslint"],
-	"rules": {
-		"react/react-in-jsx-scope": "off",
-		"no-console": "error",
-		"semi": ["error", "always"],
-		"object-curly-spacing": ["error", "always"],
-		"no-duplicate-imports": "error",
-		"no-unused-vars": "warn",
-		"prefer-const": "error",
-		"sort-imports": ["error", { "ignoreDeclarationSort": true }]
-	}
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "eslint-config-next",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@next/next/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "ignorePatterns": ["dist/", "temp.js", "**/vendor/*.js"],
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "no-console": "error",
+    "semi": ["error", "always"],
+    "object-curly-spacing": ["error", "always"],
+    "no-duplicate-imports": "error",
+    "no-unused-vars": "warn",
+    "prefer-const": "error",
+    "sort-imports": ["error", { "ignoreDeclarationSort": true }]
+  }
 }

@@ -1,5 +1,3 @@
 import { BoxProps } from '@mui/material';
 
-export interface HomeWallProps extends BoxProps {
-}
-
+export interface HomeWallProps extends BoxProps {}

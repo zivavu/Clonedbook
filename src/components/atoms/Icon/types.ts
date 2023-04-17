@@ -1,9 +1,9 @@
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 
 export interface IconProps extends FontAwesomeIconProps {
-	classes?: Partial<IconClasses>;
+  classes?: Partial<IconClasses>;
 }
 
 export interface IconClasses {
-	root: string;
+  root: string;
 }

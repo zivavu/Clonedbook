@@ -7,14 +7,14 @@ import MiddleSection from './comps/MiddleSection';
 import RightSection from './comps/RightSection';
 
 export default function NavBar() {
-	const theme = useTheme();
-	return (
-		<AppBar sx={{ backgroundColor: theme.palette.secondary.light, position: 'sticky' }}>
-			<StyledContentContainer>
-				<LeftSection />
-				<MiddleSection />
-				<RightSection />
-			</StyledContentContainer>
-		</AppBar>
-	);
+  const theme = useTheme();
+  return (
+    <AppBar sx={{ backgroundColor: theme.palette.secondary.light, position: 'sticky' }}>
+      <StyledContentContainer>
+        <LeftSection />
+        <MiddleSection />
+        <RightSection />
+      </StyledContentContainer>
+    </AppBar>
+  );
 }

@@ -5,9 +5,9 @@ import { StyledRoot } from './styles';
 import { PostsFeedProps } from './types';
 
 export default function PostsFeed({ ...rootProps }: PostsFeedProps) {
-	return (
-		<StyledRoot {...rootProps}>
-			<Typography>PostsFeed</Typography>
-		</StyledRoot>
-	);
+  return (
+    <StyledRoot {...rootProps}>
+      <Typography>PostsFeed</Typography>
+    </StyledRoot>
+  );
 }

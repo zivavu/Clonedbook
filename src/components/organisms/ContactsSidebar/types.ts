@@ -1,5 +1,3 @@
 import { BoxProps } from '@mui/material';
 
-export interface ContactsSidebarProps extends BoxProps {
-}
-
+export interface ContactsSidebarProps extends BoxProps {}

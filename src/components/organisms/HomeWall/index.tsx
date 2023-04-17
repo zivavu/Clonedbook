@@ -6,10 +6,10 @@ import PostsFeed from '../PostsFeed';
 import { HomeWallProps } from './types';
 
 export default function HomeWall({ ...rootProps }: HomeWallProps) {
-	return (
-		<StyledRoot {...rootProps}>
-			<PostsFeed />
-			<Typography>HomeWall</Typography>
-		</StyledRoot>
-	);
+  return (
+    <StyledRoot {...rootProps}>
+      <PostsFeed />
+      <Typography>HomeWall</Typography>
+    </StyledRoot>
+  );
 }

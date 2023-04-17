@@ -9,40 +9,40 @@ import { sidebarItems } from './data';
 import { ShortcutsSidebarProps } from './types';
 
 export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps) {
-	const router = useRouter();
-	const theme = useTheme();
+  const router = useRouter();
+  const theme = useTheme();
 
-	const handleRedirect = (href: string) => {
-		router.push(href);
-	};
-	return (
-		<StyledRoot {...rootProps}>
-			<List sx={{ width: '100%' }}>
-				<StyledListItem>
-					<UserAvatar size='36' sx={{ mr: theme.spacing(1.5) }} />
-					<Typography fontSize={'0.85rem'}>{'User name'}</Typography>
-				</StyledListItem>
+  const handleRedirect = (href: string) => {
+    router.push(href);
+  };
+  return (
+    <StyledRoot {...rootProps}>
+      <List sx={{ width: '100%' }}>
+        <StyledListItem>
+          <UserAvatar size='36' sx={{ mr: theme.spacing(1.5) }} />
+          <Typography fontSize={'0.85rem'}>{'User name'}</Typography>
+        </StyledListItem>
 
-				{sidebarItems.map((item) => {
-					const { key, icon, href, active } = item;
-					const isActive = active && href;
-					return (
-						<StyledListItem
-							key={key}
-							onClick={() => {
-								if (!isActive) return;
-								handleRedirect(href);
-							}}
-							disabled={!isActive}
-						>
-							<StyledListItemAvatar src={icon || PlaceholderIcon} alt={key}></StyledListItemAvatar>
-							<Typography textTransform={'capitalize'} fontSize={'0.85rem'}>
-								{key.split('-').join(' ')}
-							</Typography>
-						</StyledListItem>
-					);
-				})}
-			</List>
-		</StyledRoot>
-	);
+        {sidebarItems.map((item) => {
+          const { key, icon, href, active } = item;
+          const isActive = active && href;
+          return (
+            <StyledListItem
+              key={key}
+              onClick={() => {
+                if (!isActive) return;
+                handleRedirect(href);
+              }}
+              disabled={!isActive}
+            >
+              <StyledListItemAvatar src={icon || PlaceholderIcon} alt={key}></StyledListItemAvatar>
+              <Typography textTransform={'capitalize'} fontSize={'0.85rem'}>
+                {key.split('-').join(' ')}
+              </Typography>
+            </StyledListItem>
+          );
+        })}
+      </List>
+    </StyledRoot>
+  );
 }

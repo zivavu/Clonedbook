@@ -11,8 +11,6 @@ import {
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import type { AppProps } from 'next/app';
 
-import { Roboto } from 'next/font/google';
-
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -28,19 +26,12 @@ const icons = [
 ] as any;
 library.add(...icons);
 
-const roboto = Roboto({
-	weight: ['300', '400', '500', '700'],
-	subsets: ['latin'],
-});
-
 export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<div className={roboto.className}>
-					<Component {...pageProps} />
-				</div>
+				<Component {...pageProps} />
 			</ThemeProvider>
 		</>
 	);

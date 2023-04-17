@@ -2,6 +2,12 @@ import { PaletteOptions } from '@mui/material';
 
 export const componentOverrides = (palette: PaletteOptions) => {
 	return {
+		a: {
+			styleOverrides: {
+				color: palette.text?.primary,
+				textDecoration: 'none',
+			},
+		},
 		MuiCssBaseline: {
 			styleOverrides: {
 				body: {

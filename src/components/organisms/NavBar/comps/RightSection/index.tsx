@@ -39,7 +39,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
 					handleSetPortal(e, 'account');
 				}}
 			>
-				<Avatar src='https://i.pravatar.cc/300' alt='Avatar' />
+				<Avatar src='https://api.dicebear.com/6.x/lorelei/svg?flip=false' alt='Avatar' />
 			</StyledToggleButton>
 		</StyledRoot>
 	);

@@ -15,6 +15,6 @@ export const StyledListItem = styled(ListItemButton)(({ theme }) => ({
 
 export const StyledListItemAvatar = styled(Avatar)(({ theme }) => ({
 	marginRight: theme.spacing(1.5),
-	width: '35px',
-	height: '35px',
+	width: '36px',
+	height: '36px',
 }));

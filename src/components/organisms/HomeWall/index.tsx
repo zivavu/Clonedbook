@@ -6,7 +6,6 @@ import PostsFeed from '../PostsFeed';
 import { HomeWallProps } from './types';
 
 export default function HomeWall({ ...rootProps }: HomeWallProps) {
-	const theme = useTheme();
 	return (
 		<StyledRoot {...rootProps}>
 			<PostsFeed />

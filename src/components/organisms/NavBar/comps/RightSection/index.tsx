@@ -1,5 +1,3 @@
-import { Avatar } from '@mui/material';
-
 import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';

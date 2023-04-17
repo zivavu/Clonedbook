@@ -2,7 +2,6 @@ const { faker } = require('@faker-js/faker');
 import { db } from '@/config/firebase.config';
 import * as from from '@faker-js/faker';
 import { doc, setDoc } from 'firebase/firestore';
-import { useEffect } from 'react';
 const fakerTyped = faker as from.Faker;
 
 const randomPicutresSources = [

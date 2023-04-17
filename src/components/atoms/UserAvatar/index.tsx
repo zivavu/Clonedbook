@@ -1,4 +1,4 @@
-import { Avatar, Typography, useTheme } from '@mui/material';
+import { Avatar, useTheme } from '@mui/material';
 
 import { UserAvatarProps } from './types';
 

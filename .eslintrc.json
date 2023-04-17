@@ -22,7 +22,6 @@
 		"react/react-in-jsx-scope": "off",
 		"no-console": "error",
 		"semi": ["error", "always"],
-		"quotes": ["error", "single"],
 		"object-curly-spacing": ["error", "always"],
 		"no-duplicate-imports": "error",
 		"no-unused-vars": "warn",

@@ -2,7 +2,7 @@ import { Avatar, Box, ListItemButton, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
 	color: theme.palette.text.primary,
-	width: '20%',
+	width: '15%',
 	padding: theme.spacing(1, 0),
 	marginLeft: theme.spacing(1),
 }));

@@ -3,6 +3,7 @@ import { Avatar } from '@mui/material';
 import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
+import UserAvatar from '@/components/atoms/UserAvatar';
 import { useState } from 'react';
 import { Portal, RightSectionProps } from './types';
 
@@ -39,7 +40,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
 					handleSetPortal(e, 'account');
 				}}
 			>
-				<Avatar src='https://api.dicebear.com/6.x/lorelei/svg?flip=false' alt='Avatar' />
+				<UserAvatar size='45' />
 			</StyledToggleButton>
 		</StyledRoot>
 	);

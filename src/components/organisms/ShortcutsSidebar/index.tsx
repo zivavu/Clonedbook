@@ -3,8 +3,7 @@ import { List, Typography, useTheme } from '@mui/material';
 import { StyledListItem, StyledListItemAvatar, StyledRoot } from './styles';
 
 import { PlaceholderIcon } from '@/assets/icons';
-import UserAvatar from '@/components/atoms/Icon/UserAvatar';
-import Link from 'next/link';
+import UserAvatar from '@/components/atoms/UserAvatar';
 import { useRouter } from 'next/router';
 import { sidebarItems } from './data';
 import { ShortcutsSidebarProps } from './types';
@@ -21,7 +20,7 @@ export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps
 			<List sx={{ width: '100%' }}>
 				<StyledListItem>
 					<UserAvatar size='36' sx={{ mr: theme.spacing(1.5) }} />
-					<Typography fontSize={'0.85rem'}>User Name</Typography>
+					<Typography fontSize={'0.85rem'}>{'User name'}</Typography>
 				</StyledListItem>
 
 				{sidebarItems.map((item) => {

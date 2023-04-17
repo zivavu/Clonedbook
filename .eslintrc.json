@@ -20,7 +20,7 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "no-console": "error",
+    "no-console": "warn",
     "semi": ["error", "always"],
     "object-curly-spacing": ["error", "always"],
     "no-duplicate-imports": "error",

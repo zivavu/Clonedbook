@@ -1,8 +1,9 @@
 // ! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper script.
 
 const { faker } = require('@faker-js/faker');
-import { db } from '@/config/firebase.config';
+import { firestore } from '@/config/firebase.config';
 import { Comment } from '@/types/comment';
+import { Post } from '@/types/post';
 import { Reaction } from '@/types/reaction';
 import { User } from '@/types/user';
 import * as from from '@faker-js/faker';
@@ -22,20 +23,26 @@ const randomPicutresSources = [
 ];
 
 export const generateUsers = (usersCount: number) => {
+  if (usersCount > 100) {
+    usersCount = 100;
+  }
+  if (usersCount < 10) {
+    usersCount = 10;
+  }
   const usersUIDS = [] as string[];
   for (let i = 0; i < usersCount; i++) {
-    usersUIDS.push(faker.datatype.uuid());
+    usersUIDS.push(fakerTyped.datatype.uuid());
   }
 
-  function getRandomPicture() {
+  function getRandomPhotoUrl() {
     return randomPicutresSources[Math.floor(Math.random() * randomPicutresSources.length)]();
   }
 
-  async function getRandomComents(amount: number, reactionsCount: number) {
+  function getRandomComents(amount: number, reactionsCount: number) {
     const comments: Array<Comment> = [];
     const discutants = usersUIDS.slice(
       0,
-      Math.min(Math.floor((Math.random() * usersUIDS.length) / 8), 3),
+      Math.max(Math.floor((Math.random() * usersUIDS.length) / 8), 5),
     );
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
       comments.push({
@@ -71,7 +78,7 @@ export const generateUsers = (usersCount: number) => {
     const photos = [] as any;
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 4; i++) {
       const photo = {
-        url: getRandomPicture(),
+        url: getRandomPhotoUrl(),
         reactions: getRandomReactions(160),
         comments: getRandomComents(10, 7),
       };
@@ -79,16 +86,17 @@ export const generateUsers = (usersCount: number) => {
     }
     return photos;
   }
-  function getRandomPosts(amount: number, userID: number) {
-    const posts = [] as any;
+  function getRandomPosts(amount: number, userID: string) {
+    const posts: Array<Post> = [];
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 4; i++) {
       const postPictures = [] as any;
       const hasPictures = Math.random() > 0.4;
       for (let i = 0; i < Math.ceil(Math.random() * 5); i++) {
-        postPictures.push(getRandomPicture());
+        postPictures.push(getRandomPhotoUrl());
       }
       const post = {
-        ownerId: userID,
+        id: fakerTyped.datatype.uuid(),
+        ownerID: userID,
         postText: fakerTyped.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
         comments: getRandomComents(14, 8),
@@ -102,7 +110,7 @@ export const generateUsers = (usersCount: number) => {
   function getRandomUsers() {
     const users: Array<User> = [];
     for (let i = 0; i < usersCount; i++) {
-      const uuid = faker.datatype.uuid();
+      const uuid = fakerTyped.datatype.uuid();
       const user: User = {
         id: usersUIDS[i],
         firstName: fakerTyped.name.firstName(),
@@ -136,12 +144,14 @@ export const generateUsers = (usersCount: number) => {
     }
     return users;
   }
-  return getRandomUsers();
+  const users = getRandomUsers();
+  return users;
 };
 
-export async function addUsersToDB(amount: number) {
+export async function generateUsersAndPostToDb(amount: number) {
   const users = generateUsers(amount);
-  users.forEach((user: any) => {
-    setDoc(doc(db, 'users', user.id), user);
+  users.forEach((user) => {
+    console.log(user, 'user');
+    setDoc(doc(firestore, 'users', user.id), user);
   });
 }

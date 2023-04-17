@@ -11,6 +11,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_MESSENGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_APP_ID,
 };
+
 export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+export const firestore = getFirestore(app);
 export const storage = getStorage(app);

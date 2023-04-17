@@ -3,7 +3,8 @@ import { contactsApi } from './features/contacts/contactsSlice';
 
 export const store = configureStore({
   reducer: { [contactsApi.reducerPath]: contactsApi.reducer },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(contactsApi.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).concat(contactsApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

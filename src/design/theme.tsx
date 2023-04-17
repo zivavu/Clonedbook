@@ -30,7 +30,7 @@ export const theme = createTheme({
 	typography: {
 		allVariants: {
 			fontFamily: ['"Roboto"', 'Helvetica', 'sans-serif', 'Arial'].join(','),
-			fontWeight: 400,
+			fontWeight: 300,
 		},
 	},
 	components: componentOverrides({ ...palette, mode }),

@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material';
 
 import { StyledRoot, StyledToggleButton } from './styles';
 
-import Icon from '@/components/Icon/Icon';
+import Icon from '@/components/atoms/Icon/Icon';
 import { useState } from 'react';
 import { Portal, RightSectionProps } from './types';
 

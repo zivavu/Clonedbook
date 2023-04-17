@@ -31,5 +31,19 @@ export const componentOverrides = (palette: PaletteOptions) => {
 				},
 			},
 		},
+		MuiAppBar: {
+			styleOverrides: {
+				root: {
+					boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 5px',
+				},
+			},
+		},
+		MuiListItemButton: {
+			styleOverrides: {
+				root: {
+					borderRadius: '8px',
+				},
+			},
+		},
 	};
 };

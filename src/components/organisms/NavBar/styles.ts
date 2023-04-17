@@ -1,9 +1,5 @@
 import { Box, Stack, styled } from '@mui/material';
 
-export const StyledRoot = styled(Box)(({ theme }) => ({
-	color: theme.palette.text.primary,
-}));
-
 export const StyledContentContainer = styled(Stack)(({ theme }) => ({
 	color: theme.palette.background.default,
 	height: '56px',

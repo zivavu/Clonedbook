@@ -1,6 +1,6 @@
 import { SelectedButtonUnderline, StyledIconButton, StyledRoot } from './styles';
 
-import Icon from '@/components/Icon/Icon';
+import Icon from '@/components/atoms/Icon/Icon';
 import { useState } from 'react';
 import { MiddleSectionProps } from './types';
 

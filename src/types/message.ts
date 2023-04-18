@@ -1,4 +1,4 @@
-import { chatPicture } from './chatPicture';
+import { chatPicture } from './picture';
 
 export interface Message {
   id: string;

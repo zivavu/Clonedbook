@@ -1,10 +1,12 @@
-//! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper.
+//! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper. Also it's spaghetti code, don't try to understand it.
 
 import { firestore } from '@/config/firebase.config';
 import { Comment } from '@/types/comment';
+import { Friend } from '@/types/firend';
+import { ProfilePicture } from '@/types/picture';
 import { Post } from '@/types/post';
-import { Reaction } from '@/types/reaction';
-import { User } from '@/types/user';
+import { Reaction, UserReaction } from '@/types/reaction';
+import { BasicUserInfo, User } from '@/types/user';
 const { faker } = require('@faker-js/faker');
 
 import * as from from '@faker-js/faker';
@@ -31,7 +33,9 @@ export const generateUsers = (usersCount: number) => {
   if (usersCount < 10) {
     usersCount = 10;
   }
-  const usersUIDS = [] as string[];
+  const usersUIDS: string[] = [];
+  const usersReactions: UserReaction[][] = new Array(usersCount).fill([]);
+
   for (let i = 0; i < usersCount; i++) {
     usersUIDS.push(fakerTyped.datatype.uuid());
   }
@@ -40,6 +44,9 @@ export const generateUsers = (usersCount: number) => {
     return randomPicutresSources[Math.floor(Math.random() * randomPicutresSources.length)]();
   }
 
+  function getRandomUserUID() {
+    return usersUIDS[Math.floor(Math.random() * usersUIDS.length)];
+  }
   function getRandomComents(amount: number, reactionsCount: number) {
     const comments: Array<Comment> = [];
     const discutants = usersUIDS.slice(
@@ -47,17 +54,18 @@ export const generateUsers = (usersCount: number) => {
       Math.max(Math.floor((Math.random() * usersUIDS.length) / 8), 5),
     );
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
+      const ownerId = discutants[Math.floor(Math.random() * discutants.length) || 0];
       comments.push({
-        userId: discutants[Math.floor(Math.random() * discutants.length) || 0],
+        userId: ownerId,
         commentText: fakerTyped.lorem.sentences(Math.floor(Math.random() * 5) + 1, '\n'),
         commentResponses: [],
-        reactions: getRandomReactions(reactionsCount),
+        reactions: getRandomReactions(reactionsCount, ownerId),
       });
     }
     return comments;
   }
 
-  function getRandomReactions(amount: number) {
+  function getRandomReactions(amount: number, itemId: string) {
     const reactions: Array<Reaction> = [];
     const possibleReactions: Array<Reaction['reaction']> = [
       'angry',
@@ -68,27 +76,38 @@ export const generateUsers = (usersCount: number) => {
       'haha',
     ];
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
-      reactions.push({
+      const reactingUserUID = getRandomUserUID();
+      const reactingUserId = usersUIDS.indexOf(reactingUserUID);
+      if (reactions.some((reaction) => reaction.userId === reactingUserUID)) {
+        continue;
+      }
+      const reaction = {
         reaction: fakerTyped.helpers.arrayElement(possibleReactions),
-        userId: usersUIDS[Math.floor(Math.random() * usersUIDS.length)],
-      });
+        userId: reactingUserUID,
+      };
+      reactions.push(reaction);
+      usersReactions[reactingUserId].push({ ...reaction, itemId: itemId });
     }
+
     return reactions;
   }
 
-  function getRandomPhotos(amount: number) {
-    const photos = [] as any;
+  function getRandomProfilePhotos(amount: number, basicUserInfo: BasicUserInfo) {
+    const photos: ProfilePicture[] = [];
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 4; i++) {
-      const photo = {
-        url: getRandomPhotoUrl(),
-        reactions: getRandomReactions(160),
+      const photoId = fakerTyped.datatype.uuid();
+      const photo: ProfilePicture = {
+        ownerInfo: basicUserInfo,
+        id: photoId,
+        pictureURL: getRandomPhotoUrl(),
+        reactions: getRandomReactions(160, basicUserInfo.profileId),
         comments: getRandomComents(10, 7),
       };
       photos.push(photo);
     }
     return photos;
   }
-  function getRandomPosts(amount: number, userId: string) {
+  function getRandomPosts(amount: number, basicUserInfo: BasicUserInfo) {
     const posts: Array<Post> = [];
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 4; i++) {
       const postPictures = [] as any;
@@ -96,13 +115,14 @@ export const generateUsers = (usersCount: number) => {
       for (let i = 0; i < Math.ceil(Math.random() * 5); i++) {
         postPictures.push(getRandomPhotoUrl());
       }
-      const post = {
-        id: fakerTyped.datatype.uuid(),
-        ownerId: userId,
+      const postId = fakerTyped.datatype.uuid();
+      const post: Post = {
+        id: postId,
+        owner: basicUserInfo,
         postText: fakerTyped.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
         comments: getRandomComents(14, 8),
-        reactions: getRandomReactions(140),
+        reactions: getRandomReactions(140, postId),
       };
       posts.push(post);
     }
@@ -112,24 +132,27 @@ export const generateUsers = (usersCount: number) => {
   function getRandomUsers() {
     const users: Array<User> = [];
     for (let i = 0; i < usersCount; i++) {
-      const uuid = fakerTyped.datatype.uuid();
-      const user: User = {
-        id: usersUIDS[i],
+      const userUUID = usersUIDS[i];
+      const basicUserInfo = {
+        profileId: userUUID,
         firstName: fakerTyped.name.firstName(),
         middleName: Math.random() > 0.9 ? fakerTyped.name.middleName() : '',
         lastName: fakerTyped.name.lastName(),
         profilePicture: fakerTyped.image.avatar(),
+      };
+      const user: User = {
+        ...basicUserInfo,
         backgroundPicture: fakerTyped.image.nature(),
         email: fakerTyped.internet.email(),
         phoneNumber: fakerTyped.phone.number(),
         biography: fakerTyped.lorem.paragraph(),
-        pictures: getRandomPhotos(15),
-        posts: getRandomPosts(10, uuid),
+        pictures: getRandomProfilePhotos(15, basicUserInfo),
+        posts: getRandomPosts(10, basicUserInfo),
         chats: [],
         friends: [],
         groups: [],
         intrests: [],
-        liked: [],
+        reactedTo: [],
         about: {
           country: fakerTyped.address.country(),
           city: fakerTyped.address.city(),
@@ -150,10 +173,53 @@ export const generateUsers = (usersCount: number) => {
   return users;
 };
 
+function getRandomFriends(usersToAddFriends: User[], amount: number) {
+  usersToAddFriends.forEach((userToAddFriends) => {
+    const friends: Friend[] = [];
+    const friendsCount = Math.max(Math.floor(Math.random() * amount), 10);
+    for (let i = 0; i < friendsCount; i++) {
+      const userToBefriend =
+        usersToAddFriends[Math.floor(Math.random() * usersToAddFriends.length)];
+      if (userToBefriend.profileId === userToAddFriends.profileId) {
+        continue;
+      }
+      if (
+        userToAddFriends.friends.some(
+          (friend) => friend.friendInfo.profileId === friend.friendInfo.profileId,
+        )
+      ) {
+        continue;
+      }
+      const friend: Friend = {
+        connectionId: fakerTyped.datatype.uuid(),
+        status: Math.random() < 0.8 ? 'accepted' : Math.random() > 0.1 ? 'pending' : 'blocked',
+        createdAt: fakerTyped.date.past(),
+        currentUserId: userToAddFriends.profileId,
+        chat: {
+          id: fakerTyped.datatype.uuid(),
+          messages: [],
+          receiver: userToBefriend.profileId,
+          sender: userToAddFriends.profileId,
+        },
+        friendInfo: {
+          profileId: userToBefriend.profileId,
+          firstName: userToBefriend.firstName,
+          middleName: userToBefriend.middleName,
+          lastName: userToBefriend.lastName,
+          profilePicture: userToBefriend.profilePicture,
+        },
+      };
+      friends.push(friend);
+    }
+    userToAddFriends.friends = friends;
+  });
+  return usersToAddFriends;
+}
+
 export async function generateUsersAndPostToDb(amount: number) {
   const users = generateUsers(amount);
-  users.forEach((user) => {
-    console.log(user, 'user');
-    setDoc(doc(firestore, 'users', user.id), user);
+  const usersWithFriends = getRandomFriends(users, 40);
+  usersWithFriends.forEach((user) => {
+    setDoc(doc(firestore, 'users', user.profileId), user);
   });
 }

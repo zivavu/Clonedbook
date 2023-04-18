@@ -1,6 +1,6 @@
 import { Message } from './message';
 
-//This object is created both for sender and receiver user
+//This object is created both for sender and receiver users
 export interface Chat {
   id: string;
   sender: string;

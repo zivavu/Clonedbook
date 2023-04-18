@@ -1,21 +1,21 @@
 import { Chat } from './chat';
-import { PostedPicture } from './postedPicture';
+import { Friend } from './firend';
+import { ProfilePicture } from './picture';
 import { Post } from './post';
 
 export interface User extends BasicUserInfo {
-  id: string;
   email: string;
   phoneNumber?: string;
   backgroundPicture?: string;
   biography?: string;
   isDummy?: boolean;
-  friends: [];
+  friends: Friend[];
   groups: [];
   intrests: [];
-  liked: [];
+  reactedTo: [];
   chats: Chat[];
   posts: Array<Post>;
-  pictures: Array<PostedPicture>;
+  pictures: Array<ProfilePicture>;
   about: {
     address?: string;
     country?: string;
@@ -41,6 +41,7 @@ export interface User extends BasicUserInfo {
 }
 
 export interface BasicUserInfo {
+  profileId: string;
   firstName: string;
   middleName?: string;
   lastName: string;

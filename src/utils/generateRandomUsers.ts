@@ -5,12 +5,13 @@ import { Comment } from '@/types/comment';
 import { Friend } from '@/types/firend';
 import { ProfilePicture } from '@/types/picture';
 import { Post } from '@/types/post';
-import { Reaction, UserReaction } from '@/types/reaction';
+import { Reaction } from '@/types/reaction';
 import { BasicUserInfo, User } from '@/types/user';
+import { UserServerData } from '@/types/userServerData';
 const { faker } = require('@faker-js/faker');
 
 import * as from from '@faker-js/faker';
-import { doc, setDoc, writeBatch } from 'firebase/firestore';
+import { doc, writeBatch } from 'firebase/firestore';
 
 //Don't even ask why, just a hack to make faker work with typescript
 const fakerTyped = faker as from.Faker;
@@ -26,7 +27,11 @@ const randomPicutresSources = [
   fakerTyped.image.technics,
 ];
 
-export const generateUsers = (usersCount: number, friendsAmount: number) => {
+export function getPastDate() {
+  return fakerTyped.date.past(0.4, new Date());
+}
+
+export function generateUsers(usersCount: number, friendsAmount: number) {
   if (usersCount > 60) {
     usersCount = 60;
   }
@@ -120,6 +125,7 @@ export const generateUsers = (usersCount: number, friendsAmount: number) => {
         postPictures: hasPictures ? postPictures : [],
         comments: getRandomComents(14, 8),
         reactions: getRandomReactions(140),
+        createdAt: getPastDate(),
       };
       posts.push(post);
     }
@@ -148,7 +154,7 @@ export const generateUsers = (usersCount: number, friendsAmount: number) => {
         const friend: Friend = {
           connectionId: fakerTyped.datatype.uuid(),
           status: Math.random() < 0.8 ? 'accepted' : Math.random() > 0.1 ? 'pending' : 'blocked',
-          createdAt: fakerTyped.date.past(),
+          createdAt: getPastDate(),
           ownerId: userToAddFriends.profileId,
           chatReference: {
             id: fakerTyped.datatype.uuid(),
@@ -196,6 +202,7 @@ export const generateUsers = (usersCount: number, friendsAmount: number) => {
           return {
             id: picture.id,
             ownerId: basicUserInfo.profileId,
+            createdAt: getPastDate(),
           };
         }),
         chatReferences: [],
@@ -203,6 +210,7 @@ export const generateUsers = (usersCount: number, friendsAmount: number) => {
           return {
             id: post.id,
             owner: basicUserInfo,
+            createdAt: getPastDate(),
           };
         }),
         friends: [],
@@ -229,7 +237,7 @@ export const generateUsers = (usersCount: number, friendsAmount: number) => {
   const { users, postsOfUsers, picturesOfUsers } = getRandomUsers();
   const friendsOfUsers = getRandomFriends(friendsAmount);
   return { users, postsOfUsers, picturesOfUsers, friendsOfUsers };
-};
+}
 
 export async function generateUsersAndPostToDb(usersAmount: number, friendsAmount: number) {
   const { users, postsOfUsers, picturesOfUsers, friendsOfUsers } = generateUsers(
@@ -239,7 +247,7 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
   const batch = writeBatch(db);
   users.forEach((data) => {
     const docRef = doc(db, 'users', data.profileId);
-    const allUserData = {
+    const allUserData: UserServerData = {
       user: data,
       posts: postsOfUsers[users.indexOf(data)],
       pictures: picturesOfUsers[users.indexOf(data)],

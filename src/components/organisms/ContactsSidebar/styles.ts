@@ -8,8 +8,6 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
   width: '19%',
   overflowY: 'auto',
-  overscrollBehaviorY: 'contain',
-
   scrollbarWidth: 'thin',
   '&::-webkit-scrollbar': {
     width: `8px`,

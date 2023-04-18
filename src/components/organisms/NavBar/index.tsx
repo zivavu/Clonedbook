@@ -2,10 +2,9 @@ import { AppBar, useTheme } from '@mui/material';
 
 import { StyledContentContainer } from './styles';
 
-import LeftSection from './comps/LeftSection';
-import MiddleSection from './comps/MiddleSection';
-import RightSection from './comps/RightSection';
-
+import LeftSection from './LeftSection';
+import MiddleSection from './MiddleSection';
+import RightSection from './RightSection';
 export default function NavBar() {
   const theme = useTheme();
   return (

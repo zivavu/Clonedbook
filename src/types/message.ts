@@ -1,10 +1,10 @@
-import { PictureInChat } from './picture';
+import { InChatPicture } from './picture';
 
 export interface Message {
   id: string;
   senderId: string;
   chatId: string;
   text?: string;
-  pictures?: PictureInChat[];
-  createdAt: number;
+  pictures?: InChatPicture[];
+  createdAt: Date;
 }

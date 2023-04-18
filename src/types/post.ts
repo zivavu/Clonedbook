@@ -12,4 +12,5 @@ export interface Post extends PostReference {
 export interface PostReference {
   id: string;
   owner: BasicUserInfo;
+  createdAt: Date;
 }

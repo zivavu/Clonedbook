@@ -19,7 +19,6 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
   const theme = useTheme();
   return (
     <StyledRoot {...rootProps}>
-      <Button onClick={() => generateUsersAndPostToDb(70, 70)}>ADdEM </Button>
       <Box>
         <StyledHeadingContainer>
           <Typography variant='body1' fontWeight={400}>

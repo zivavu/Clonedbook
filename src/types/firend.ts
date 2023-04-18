@@ -7,5 +7,5 @@ export interface Friend {
   info: BasicUserInfo; // info of the friend
   chatReference: ChatReference;
   status: 'pending' | 'accepted' | 'rejected' | 'blocked';
-  createdAt: Date; // the timestamp (in milliseconds) when the friend connection was create
+  createdAt: Date;
 }

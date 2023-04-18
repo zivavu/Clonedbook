@@ -13,11 +13,12 @@ export interface ProfilePicture extends Picture {
   comments: Comment[];
 }
 
-export interface PictureInChat extends Picture {
+export interface InChatPicture extends Picture {
   reaction?: string;
 }
 
 export interface PicutreReference {
   id: string;
   ownerId: string;
+  createdAt: Date;
 }

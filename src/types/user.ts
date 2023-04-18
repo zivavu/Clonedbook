@@ -1,6 +1,6 @@
 import { ChatReference } from './chat';
 import { Friend } from './firend';
-import { PicutreReference, ProfilePicture } from './picture';
+import { PicutreReference } from './picture';
 import { PostReference } from './post';
 
 export interface User extends BasicUserInfo {

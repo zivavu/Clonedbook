@@ -1,7 +1,7 @@
 import { Reaction } from './reaction';
 
 export interface Comment {
-  userID: string;
+  userId: string;
   commentText: string;
   commentResponses?: Comment[];
   reactions?: Reaction[];

@@ -1,9 +1,9 @@
 import { Comment } from './comment';
 import { Reaction } from './reaction';
 
-export interface Picture {
+export interface PostedPicture {
   id: string;
-  ownerID: string;
+  ownerId: string;
   pictureURL: string;
   reactions?: Reaction[];
   comments?: Comment[];

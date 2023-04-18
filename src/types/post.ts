@@ -3,7 +3,7 @@ import { Reaction } from './reaction';
 
 export interface Post {
   id: string;
-  ownerID: string;
+  ownerId: string;
   postPictures?: string[];
   postText?: string;
   reactions?: Reaction[];

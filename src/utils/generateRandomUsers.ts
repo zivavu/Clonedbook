@@ -1,13 +1,15 @@
-// ! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper script.
+//! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper.
 
-const { faker } = require('@faker-js/faker');
 import { firestore } from '@/config/firebase.config';
 import { Comment } from '@/types/comment';
 import { Post } from '@/types/post';
 import { Reaction } from '@/types/reaction';
 import { User } from '@/types/user';
+const { faker } = require('@faker-js/faker');
+
 import * as from from '@faker-js/faker';
 import { doc, setDoc } from 'firebase/firestore';
+
 //Don't even ask why, just a hack to make faker work with typescript
 const fakerTyped = faker as from.Faker;
 
@@ -46,7 +48,7 @@ export const generateUsers = (usersCount: number) => {
     );
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
       comments.push({
-        userID: discutants[Math.floor(Math.random() * discutants.length) || 0],
+        userId: discutants[Math.floor(Math.random() * discutants.length) || 0],
         commentText: fakerTyped.lorem.sentences(Math.floor(Math.random() * 5) + 1, '\n'),
         commentResponses: [],
         reactions: getRandomReactions(reactionsCount),
@@ -68,7 +70,7 @@ export const generateUsers = (usersCount: number) => {
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
       reactions.push({
         reaction: fakerTyped.helpers.arrayElement(possibleReactions),
-        userID: usersUIDS[Math.floor(Math.random() * usersUIDS.length)],
+        userId: usersUIDS[Math.floor(Math.random() * usersUIDS.length)],
       });
     }
     return reactions;
@@ -86,7 +88,7 @@ export const generateUsers = (usersCount: number) => {
     }
     return photos;
   }
-  function getRandomPosts(amount: number, userID: string) {
+  function getRandomPosts(amount: number, userId: string) {
     const posts: Array<Post> = [];
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 4; i++) {
       const postPictures = [] as any;
@@ -96,7 +98,7 @@ export const generateUsers = (usersCount: number) => {
       }
       const post = {
         id: fakerTyped.datatype.uuid(),
-        ownerID: userID,
+        ownerId: userId,
         postText: fakerTyped.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
         comments: getRandomComents(14, 8),
@@ -123,7 +125,7 @@ export const generateUsers = (usersCount: number) => {
         biography: fakerTyped.lorem.paragraph(),
         pictures: getRandomPhotos(15),
         posts: getRandomPosts(10, uuid),
-        messages: [],
+        chats: [],
         friends: [],
         groups: [],
         intrests: [],
@@ -138,7 +140,7 @@ export const generateUsers = (usersCount: number) => {
           college: fakerTyped.lorem.sentence(),
           relationship: '',
         },
-        dummy: true,
+        isDummy: true,
       };
       users.push(user);
     }

@@ -1,6 +1,6 @@
 //! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper. Also it's spaghetti code, don't try to understand it.
-
-import { firestore } from '@/config/firebase.config';
+//! Don't exeed 60 users, firebase won't handle it
+import { db } from '@/config/firebase.config';
 import { Comment } from '@/types/comment';
 import { Friend } from '@/types/firend';
 import { ProfilePicture } from '@/types/picture';
@@ -10,7 +10,7 @@ import { BasicUserInfo, User } from '@/types/user';
 const { faker } = require('@faker-js/faker');
 
 import * as from from '@faker-js/faker';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, writeBatch } from 'firebase/firestore';
 
 //Don't even ask why, just a hack to make faker work with typescript
 const fakerTyped = faker as from.Faker;
@@ -27,8 +27,8 @@ const randomPicutresSources = [
 ];
 
 export const generateUsers = (usersCount: number) => {
-  if (usersCount > 100) {
-    usersCount = 100;
+  if (usersCount > 60) {
+    usersCount = 60;
   }
   if (usersCount < 10) {
     usersCount = 10;
@@ -173,10 +173,13 @@ export const generateUsers = (usersCount: number) => {
   return users;
 };
 
-function getRandomFriends(usersToAddFriends: User[], amount: number) {
+function getRandomFriends(usersToAddFriends: User[], friendsToAdd: number) {
+  if (friendsToAdd > 60) {
+    friendsToAdd = 60;
+  }
   usersToAddFriends.forEach((userToAddFriends) => {
     const friends: Friend[] = [];
-    const friendsCount = Math.max(Math.floor(Math.random() * amount), 10);
+    const friendsCount = Math.max(Math.floor(Math.random() * friendsToAdd), 10);
     for (let i = 0; i < friendsCount; i++) {
       const userToBefriend =
         usersToAddFriends[Math.floor(Math.random() * usersToAddFriends.length)];
@@ -216,10 +219,22 @@ function getRandomFriends(usersToAddFriends: User[], amount: number) {
   return usersToAddFriends;
 }
 
-export async function generateUsersAndPostToDb(amount: number) {
-  const users = generateUsers(amount);
-  const usersWithFriends = getRandomFriends(users, 40);
+export async function generateUsersAndPostToDb(usersAmount: number, friendsAmount: number) {
+  const users = generateUsers(usersAmount);
+  const usersWithFriends = getRandomFriends(users, friendsAmount);
+  const batch = writeBatch(db);
   usersWithFriends.forEach((user) => {
-    setDoc(doc(firestore, 'users', user.profileId), user);
+    const docRef = doc(db, 'users', user.profileId);
+    batch.set(docRef, user);
   });
+  //eslint-disable-next-line no-console
+  console.log('commiting batch');
+  try {
+    await batch.commit();
+  } catch (e) {
+    //eslint-disable-next-line no-console
+    console.log(e);
+  }
+  //eslint-disable-next-line no-console
+  console.log('commited batch');
 }

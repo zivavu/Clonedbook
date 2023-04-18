@@ -1,4 +1,4 @@
-import { firestore } from '@/config/firebase.config';
+import { db } from '@/config/firebase.config';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { collection, getDocs, limit, query } from 'firebase/firestore';
 
@@ -10,7 +10,7 @@ export const contactsApi = createApi({
     fetchContacts: builder.query({
       async queryFn() {
         try {
-          const ref = collection(firestore, 'users');
+          const ref = collection(db, 'users');
           const querySnapshot = query(ref, limit(30));
           const data = await getDocs(querySnapshot);
           const contacts = data.docs.map((doc) => doc.data());

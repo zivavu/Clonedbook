@@ -3,6 +3,7 @@ import { config, library } from '@fortawesome/fontawesome-svg-core';
 import {
   faBell,
   faClapperboard,
+  faEllipsis,
   faMagnifyingGlass,
   faPeopleGroup,
   faHouse as fasHouse,
@@ -25,6 +26,7 @@ const icons = [
   faPeopleGroup,
   faFacebookMessenger,
   faBell,
+  faEllipsis,
 ] as any;
 library.add(...icons);
 

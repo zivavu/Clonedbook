@@ -5,5 +5,4 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
-  overflowY: 'scroll',
 }));

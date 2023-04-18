@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { contactsApi } from './features/contacts/contactsSlice';
+import { user } from './features/userAPI';
 
 export const store = configureStore({
-  reducer: { [contactsApi.reducerPath]: contactsApi.reducer },
+  reducer: { [user.reducerPath]: user.reducer },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(contactsApi.middleware),
+    getDefaultMiddleware({ serializableCheck: false }).concat(user.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -16,10 +16,8 @@ export default function Page({ children, title, description }: PageProps) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <StyledRoot>
-        <main style={{ flex: 1 }}>
-          <NavBar />
-          <Box>{children}</Box>
-        </main>
+        <NavBar />
+        <main>{children}</main>
       </StyledRoot>
     </>
   );

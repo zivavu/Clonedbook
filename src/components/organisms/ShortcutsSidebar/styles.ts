@@ -1,6 +1,10 @@
 import { Avatar, Box, ListItemButton, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
+  position: 'sticky',
+  top: '56px',
+  height: `100vh`,
+
   color: theme.palette.text.primary,
   width: '15%',
   padding: theme.spacing(1, 0),

@@ -8,13 +8,6 @@ export const componentOverrides = (palette: PaletteOptions) => {
         textDecoration: 'none',
       },
     },
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          minHeight: '100vh',
-        },
-      },
-    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
@@ -40,6 +33,7 @@ export const componentOverrides = (palette: PaletteOptions) => {
     MuiAppBar: {
       styleOverrides: {
         root: {
+          height: '56px',
           boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 5px',
         },
       },

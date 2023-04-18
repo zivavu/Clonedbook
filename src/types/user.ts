@@ -1,7 +1,7 @@
-import { Chat } from './chat';
+import { ChatReference } from './chat';
 import { Friend } from './firend';
-import { ProfilePicture } from './picture';
-import { Post } from './post';
+import { PicutreReference, ProfilePicture } from './picture';
+import { PostReference } from './post';
 
 export interface User extends BasicUserInfo {
   email: string;
@@ -12,10 +12,9 @@ export interface User extends BasicUserInfo {
   friends: Friend[];
   groups: [];
   intrests: [];
-  reactedTo: [];
-  chats: Chat[];
-  posts: Array<Post>;
-  pictures: Array<ProfilePicture>;
+  chatReferences: ChatReference[];
+  postReferences: PostReference[];
+  picutresReferences: PicutreReference[];
   about: {
     address?: string;
     country?: string;

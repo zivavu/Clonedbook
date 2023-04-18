@@ -1,11 +1,11 @@
-import { Chat } from './chat';
+import { Chat, ChatReference } from './chat';
 import { BasicUserInfo } from './user';
 
 export interface Friend {
   connectionId: string; // unique identifier for the connection
-  currentUserId: string; // id of the current user
-  friendInfo: BasicUserInfo; // info of the friend
-  chat: Chat;
+  ownerId: string; // id of the current user
+  info: BasicUserInfo; // info of the friend
+  chatReference: ChatReference;
   status: 'pending' | 'accepted' | 'rejected' | 'blocked';
   createdAt: Date; // the timestamp (in milliseconds) when the friend connection was create
 }

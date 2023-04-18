@@ -11,6 +11,7 @@ export const user = createApi({
     fetchUser: builder.query({
       async queryFn() {
         try {
+          console.log(db);
           const ref = collection(db, 'users');
           const querySnapshot = query(ref, limit(10));
           const data = await getDocs(querySnapshot);
@@ -22,7 +23,7 @@ export const user = createApi({
           })[0];
           const uniqueFriends = maxFriendsAcc.friends.filter((friend) => {
             const index = maxFriendsAcc.friends.findIndex(
-              (f) => f.friendInfo.profileId === friend.friendInfo.profileId,
+              (f) => f.info.profileId === friend.info.profileId,
             );
             return index === maxFriendsAcc.friends.indexOf(friend);
           });

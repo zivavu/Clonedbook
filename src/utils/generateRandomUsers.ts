@@ -26,7 +26,7 @@ const randomPicutresSources = [
   fakerTyped.image.technics,
 ];
 
-export const generateUsers = (usersCount: number) => {
+export const generateUsers = (usersCount: number, friendsAmount: number) => {
   if (usersCount > 60) {
     usersCount = 60;
   }
@@ -34,7 +34,6 @@ export const generateUsers = (usersCount: number) => {
     usersCount = 10;
   }
   const usersUIDS: string[] = [];
-  const usersReactions: UserReaction[][] = new Array(usersCount).fill([]);
 
   for (let i = 0; i < usersCount; i++) {
     usersUIDS.push(fakerTyped.datatype.uuid());
@@ -59,13 +58,13 @@ export const generateUsers = (usersCount: number) => {
         userId: ownerId,
         commentText: fakerTyped.lorem.sentences(Math.floor(Math.random() * 5) + 1, '\n'),
         commentResponses: [],
-        reactions: getRandomReactions(reactionsCount, ownerId),
+        reactions: getRandomReactions(reactionsCount),
       });
     }
     return comments;
   }
 
-  function getRandomReactions(amount: number, itemId: string) {
+  function getRandomReactions(amount: number) {
     const reactions: Array<Reaction> = [];
     const possibleReactions: Array<Reaction['reaction']> = [
       'angry',
@@ -77,7 +76,6 @@ export const generateUsers = (usersCount: number) => {
     ];
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
       const reactingUserUID = getRandomUserUID();
-      const reactingUserId = usersUIDS.indexOf(reactingUserUID);
       if (reactions.some((reaction) => reaction.userId === reactingUserUID)) {
         continue;
       }
@@ -86,7 +84,6 @@ export const generateUsers = (usersCount: number) => {
         userId: reactingUserUID,
       };
       reactions.push(reaction);
-      usersReactions[reactingUserId].push({ ...reaction, itemId: itemId });
     }
 
     return reactions;
@@ -100,7 +97,7 @@ export const generateUsers = (usersCount: number) => {
         ownerInfo: basicUserInfo,
         id: photoId,
         pictureURL: getRandomPhotoUrl(),
-        reactions: getRandomReactions(160, basicUserInfo.profileId),
+        reactions: getRandomReactions(160),
         comments: getRandomComents(10, 7),
       };
       photos.push(photo);
@@ -122,15 +119,61 @@ export const generateUsers = (usersCount: number) => {
         postText: fakerTyped.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
         comments: getRandomComents(14, 8),
-        reactions: getRandomReactions(140, postId),
+        reactions: getRandomReactions(140),
       };
       posts.push(post);
     }
     return posts;
   }
 
+  function getRandomFriends(friendsAmount: number) {
+    if (friendsAmount > 60) {
+      friendsAmount = 60;
+    }
+    if (friendsAmount < 5) {
+      friendsAmount = 5;
+    }
+    const allUsersFreinds: Friend[][] = [];
+    users.forEach((userToAddFriends, i) => {
+      const usersFriends: Friend[] = [];
+      const friendsCount = Math.max(Math.floor(Math.random() * friendsAmount), 10);
+      for (let i = 0; i < friendsCount; i++) {
+        const userToBefriend = users[Math.floor(Math.random() * users.length)];
+        if (userToBefriend.profileId === userToAddFriends.profileId) {
+          continue;
+        }
+        if (usersFriends.some((friend) => friend.info.profileId === userToBefriend.profileId)) {
+          continue;
+        }
+        const friend: Friend = {
+          connectionId: fakerTyped.datatype.uuid(),
+          status: Math.random() < 0.8 ? 'accepted' : Math.random() > 0.1 ? 'pending' : 'blocked',
+          createdAt: fakerTyped.date.past(),
+          ownerId: userToAddFriends.profileId,
+          chatReference: {
+            id: fakerTyped.datatype.uuid(),
+            receiverID: userToBefriend.profileId,
+            senderID: userToAddFriends.profileId,
+          },
+          info: {
+            profileId: userToBefriend.profileId,
+            firstName: userToBefriend.firstName,
+            middleName: userToBefriend.middleName,
+            lastName: userToBefriend.lastName,
+            profilePicture: userToBefriend.profilePicture,
+          },
+        };
+        usersFriends.push(friend);
+      }
+      allUsersFreinds.push(usersFriends);
+    });
+    return allUsersFreinds;
+  }
+
   function getRandomUsers() {
-    const users: Array<User> = [];
+    const users: User[] = [];
+    const postsOfUsers: Post[][] = [];
+    const picturesOfUsers: ProfilePicture[][] = [];
     for (let i = 0; i < usersCount; i++) {
       const userUUID = usersUIDS[i];
       const basicUserInfo = {
@@ -140,19 +183,31 @@ export const generateUsers = (usersCount: number) => {
         lastName: fakerTyped.name.lastName(),
         profilePicture: fakerTyped.image.avatar(),
       };
+
+      const userPosts = getRandomPosts(10, basicUserInfo);
+      const userPictures = getRandomProfilePhotos(15, basicUserInfo);
       const user: User = {
         ...basicUserInfo,
         backgroundPicture: fakerTyped.image.nature(),
         email: fakerTyped.internet.email(),
         phoneNumber: fakerTyped.phone.number(),
         biography: fakerTyped.lorem.paragraph(),
-        pictures: getRandomProfilePhotos(15, basicUserInfo),
-        posts: getRandomPosts(10, basicUserInfo),
-        chats: [],
+        picutresReferences: userPictures.map((picture) => {
+          return {
+            id: picture.id,
+            ownerId: basicUserInfo.profileId,
+          };
+        }),
+        chatReferences: [],
+        postReferences: userPosts.map((post) => {
+          return {
+            id: post.id,
+            owner: basicUserInfo,
+          };
+        }),
         friends: [],
         groups: [],
         intrests: [],
-        reactedTo: [],
         about: {
           country: fakerTyped.address.country(),
           city: fakerTyped.address.city(),
@@ -166,66 +221,33 @@ export const generateUsers = (usersCount: number) => {
         isDummy: true,
       };
       users.push(user);
+      postsOfUsers.push(userPosts);
+      picturesOfUsers.push(userPictures);
     }
-    return users;
+    return { users, postsOfUsers, picturesOfUsers };
   }
-  const users = getRandomUsers();
-  return users;
+  const { users, postsOfUsers, picturesOfUsers } = getRandomUsers();
+  const friendsOfUsers = getRandomFriends(friendsAmount);
+  return { users, postsOfUsers, picturesOfUsers, friendsOfUsers };
 };
 
-function getRandomFriends(usersToAddFriends: User[], friendsToAdd: number) {
-  if (friendsToAdd > 60) {
-    friendsToAdd = 60;
-  }
-  usersToAddFriends.forEach((userToAddFriends) => {
-    const friends: Friend[] = [];
-    const friendsCount = Math.max(Math.floor(Math.random() * friendsToAdd), 10);
-    for (let i = 0; i < friendsCount; i++) {
-      const userToBefriend =
-        usersToAddFriends[Math.floor(Math.random() * usersToAddFriends.length)];
-      if (userToBefriend.profileId === userToAddFriends.profileId) {
-        continue;
-      }
-      if (
-        userToAddFriends.friends.some(
-          (friend) => friend.friendInfo.profileId === friend.friendInfo.profileId,
-        )
-      ) {
-        continue;
-      }
-      const friend: Friend = {
-        connectionId: fakerTyped.datatype.uuid(),
-        status: Math.random() < 0.8 ? 'accepted' : Math.random() > 0.1 ? 'pending' : 'blocked',
-        createdAt: fakerTyped.date.past(),
-        currentUserId: userToAddFriends.profileId,
-        chat: {
-          id: fakerTyped.datatype.uuid(),
-          messages: [],
-          receiver: userToBefriend.profileId,
-          sender: userToAddFriends.profileId,
-        },
-        friendInfo: {
-          profileId: userToBefriend.profileId,
-          firstName: userToBefriend.firstName,
-          middleName: userToBefriend.middleName,
-          lastName: userToBefriend.lastName,
-          profilePicture: userToBefriend.profilePicture,
-        },
-      };
-      friends.push(friend);
-    }
-    userToAddFriends.friends = friends;
-  });
-  return usersToAddFriends;
-}
-
 export async function generateUsersAndPostToDb(usersAmount: number, friendsAmount: number) {
-  const users = generateUsers(usersAmount);
-  const usersWithFriends = getRandomFriends(users, friendsAmount);
+  const { users, postsOfUsers, picturesOfUsers, friendsOfUsers } = generateUsers(
+    usersAmount,
+    friendsAmount,
+  );
   const batch = writeBatch(db);
-  usersWithFriends.forEach((user) => {
-    const docRef = doc(db, 'users', user.profileId);
-    batch.set(docRef, user);
+  users.forEach((data) => {
+    const docRef = doc(db, 'users', data.profileId);
+    const allUserData = {
+      user: data,
+      posts: postsOfUsers[users.indexOf(data)],
+      pictures: picturesOfUsers[users.indexOf(data)],
+      friends: friendsOfUsers[users.indexOf(data)],
+    };
+    batch.set(docRef, {
+      ...allUserData,
+    });
   });
   //eslint-disable-next-line no-console
   console.log('commiting batch');

@@ -2,6 +2,7 @@ import { Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import { useFetchUserQuery } from '@/features/userAPI';
 import { PostsFeedProps } from './types';
 
 export default function PostsFeed({ ...rootProps }: PostsFeedProps) {

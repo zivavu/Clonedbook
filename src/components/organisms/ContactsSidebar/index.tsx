@@ -1,6 +1,16 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { Avatar, Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
+import { generateUsersAndPostToDb } from '@/utils/generateRandomUsers';
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  List,
+  ListItemButton,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
 
@@ -9,6 +19,7 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
   const theme = useTheme();
   return (
     <StyledRoot {...rootProps}>
+      <Button onClick={() => generateUsersAndPostToDb(70, 70)}>ADdEM </Button>
       <Box>
         <StyledHeadingContainer>
           <Typography variant='body1' fontWeight={400}>
@@ -35,13 +46,13 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
             ? null
             : userData?.friends.slice(0, 30).map((friend) => {
                 return (
-                  <ListItemButton key={friend.friendInfo.profileId} sx={{ pl: theme.spacing(1) }}>
+                  <ListItemButton key={friend.info.profileId} sx={{ pl: theme.spacing(1) }}>
                     <Avatar
                       sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
-                      src={friend.friendInfo.profilePicture || ''}
+                      src={friend.info.profilePicture || ''}
                     ></Avatar>
                     <Typography variant='body2'>
-                      {friend.friendInfo.firstName} {friend.friendInfo.lastName}
+                      {friend.info.firstName} {friend.info.lastName}
                     </Typography>
                   </ListItemButton>
                 );

@@ -3,6 +3,7 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
+import Actions from './Actions';
 import ReactionsDisplay from './ReactionsDisplay';
 import { PostProps } from './types';
 
@@ -52,6 +53,7 @@ export default function Post({ post, ...rootProps }: PostProps) {
         exampleReactors={post.exampleReactors}
         sx={{ pr: theme.spacing(0.25) }}
       />
+      <Actions />
     </StyledRoot>
   );
 }

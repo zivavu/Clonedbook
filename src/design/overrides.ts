@@ -30,6 +30,20 @@ export const componentOverrides = (palette: PaletteOptions) => {
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          transition: 'background-color 50ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+          textTransform: 'none',
+
+          '&:hover': {
+            //@ts-ignore
+            backgroundColor: palette.secondary?.main,
+          },
+        },
+      },
+    },
     MuiAppBar: {
       styleOverrides: {
         root: {

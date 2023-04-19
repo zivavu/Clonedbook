@@ -16,12 +16,13 @@ export const palette = {
   },
   text: {
     primary: '#000',
-    secondary: '#65676B',
+    secondary: '#65676b',
     disabled: '#b7b9bd',
   },
   info: {
     main: '#1b74e4',
   },
+  divider: '#ced0d4',
   contrastThreshold: 6,
 } as PaletteOptions;
 

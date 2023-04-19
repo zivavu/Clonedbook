@@ -1,5 +1,7 @@
 import { theme } from '@/design/theme';
 import { config, library } from '@fortawesome/fontawesome-svg-core';
+
+import { faComment, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import {
   faBell,
   faClapperboard,
@@ -17,9 +19,10 @@ import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { store } from '@/store';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Provider } from 'react-redux';
-config.autoAddCss = false; /* eslint-disable import/first */
+config.autoAddCss = false;
 
 const icons = [
+  faShareSquare,
   fasHouse,
   faClapperboard,
   faMagnifyingGlass,
@@ -27,6 +30,8 @@ const icons = [
   faFacebookMessenger,
   faBell,
   faEllipsis,
+  faComment,
+  faThumbsUp,
 ] as any;
 library.add(...icons);
 

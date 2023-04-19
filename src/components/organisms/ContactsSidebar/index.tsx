@@ -1,16 +1,6 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { generateUsersAndPostToDb } from '@/utils/generateRandomUsers';
-import {
-  Avatar,
-  Box,
-  Button,
-  IconButton,
-  List,
-  ListItemButton,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Avatar, Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
 

@@ -1,4 +1,4 @@
-import { Chat, ChatReference } from './chat';
+import { ChatReference } from './chat';
 import { CreatedAt } from './createdAt';
 import { BasicUserInfo } from './user';
 

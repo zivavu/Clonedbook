@@ -1,5 +1,3 @@
-import { Box } from '@mui/material';
-
 import { StyledRoot } from './styles';
 
 import NavBar from '@/components/organisms/NavBar';

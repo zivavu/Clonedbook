@@ -1,5 +1,4 @@
 import { db } from '@/config/firebase.config';
-import { User } from '@/types/user';
 import { UserServerData } from '@/types/userServerData';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { collection, getDocs, limit, query } from 'firebase/firestore';

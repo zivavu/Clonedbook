@@ -1,5 +1,6 @@
 import { Comment } from './comment';
-import { Reaction } from './reaction';
+import { CreatedAt } from './createdAt';
+import { UserReaction } from './reaction';
 import { BasicUserInfo } from './user';
 
 export interface Picture {
@@ -9,7 +10,7 @@ export interface Picture {
 }
 
 export interface ProfilePicture extends Picture {
-  reactions: Reaction[];
+  reactions: UserReaction[];
   comments: Comment[];
 }
 
@@ -20,5 +21,5 @@ export interface InChatPicture extends Picture {
 export interface PicutreReference {
   id: string;
   ownerId: string;
-  createdAt: Date;
+  createdAt: CreatedAt;
 }

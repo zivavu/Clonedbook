@@ -1,3 +1,4 @@
+import { CreatedAt } from './createdAt';
 import { InChatPicture } from './picture';
 
 export interface Message {
@@ -6,5 +7,5 @@ export interface Message {
   chatId: string;
   text?: string;
   pictures?: InChatPicture[];
-  createdAt: Date;
+  createdAt: CreatedAt;
 }

@@ -1,4 +1,5 @@
 import { Chat, ChatReference } from './chat';
+import { CreatedAt } from './createdAt';
 import { BasicUserInfo } from './user';
 
 export interface Friend {
@@ -7,5 +8,10 @@ export interface Friend {
   info: BasicUserInfo; // info of the friend
   chatReference: ChatReference;
   status: 'pending' | 'accepted' | 'rejected' | 'blocked';
-  createdAt: Date;
+  createdAt: CreatedAt;
+}
+
+export interface PublicFriendship {
+  connectionId: string; // unique identifier for the connection
+  users: BasicUserInfo[];
 }

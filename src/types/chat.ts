@@ -7,6 +7,5 @@ export interface Chat extends ChatReference {
 
 export interface ChatReference {
   id: string;
-  senderID: string;
-  receiverID: string;
+  users: string[];
 }

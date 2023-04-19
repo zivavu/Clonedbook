@@ -1,8 +1,9 @@
-import { Reaction } from './reaction';
+import { UserReaction } from './reaction';
 
 export interface Comment {
-  userId: string;
+  id: string;
+  ownerId: string;
   commentText: string;
   commentResponses?: Comment[];
-  reactions?: Reaction[];
+  reactions?: UserReaction[];
 }

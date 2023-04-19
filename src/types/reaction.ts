@@ -1,8 +1,6 @@
-export interface Reaction {
-  reaction: 'angry' | 'like' | 'love' | 'sad' | 'wow' | 'haha';
+export interface UserReaction {
   userId: string;
+  type: PossibleReaction;
 }
 
-export interface UserReaction extends Reaction {
-  itemId: string; // id of the post/comment/picture
-}
+export type PossibleReaction = 'angry' | 'like' | 'love' | 'sad' | 'wow' | 'haha' | 'care';

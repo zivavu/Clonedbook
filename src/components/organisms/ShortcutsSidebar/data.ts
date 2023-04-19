@@ -1,65 +1,65 @@
-import * as icons from '@/assets/icons';
+import * as icons from '@/assets/pageIcons';
 import { Shortcut } from './types';
 
 export const sidebarItems: Shortcut[] = [
   {
     key: 'friends',
-    icon: icons.Friends,
+    icon: icons.FriendsIcon,
     href: '/friends',
     active: true,
   },
   {
     key: 'groups',
-    icon: icons.Groups,
+    icon: icons.GroupsIcon,
     href: '/groups',
     active: true,
   },
   {
     key: 'pages',
-    icon: icons.Pages,
+    icon: icons.PagesIcon,
     href: '/pages',
     active: true,
   },
   {
     key: 'events',
-    icon: icons.Events,
+    icon: icons.EventsIcon,
     href: '/events',
     active: true,
   },
   {
     key: 'most-recent',
     href: '/marketplace',
-    icon: icons.MostRecent,
+    icon: icons.MostRecentIcon,
     active: false,
   },
   {
     key: 'favourites',
     href: '/favourites',
-    icon: icons.Favourites,
+    icon: icons.FavouritesIcon,
     active: false,
   },
   {
     key: 'games',
     href: '/games',
-    icon: icons.Games,
+    icon: icons.GamesIcon,
     active: false,
   },
   {
     key: 'climate-and-science',
     href: '/climate-and-science',
-    icon: icons.ClimateAndScience,
+    icon: icons.ClimateAndScienceIcon,
     active: false,
   },
   {
     key: 'ad-center',
     href: '/ad-center',
-    icon: icons.AdCenter,
+    icon: icons.AdCenterIcon,
     active: false,
   },
   {
     key: 'ads-manager',
     href: '/ads-manager',
-    icon: icons.AdsManager,
+    icon: icons.AdsManagerIcon,
     active: false,
   },
 ];

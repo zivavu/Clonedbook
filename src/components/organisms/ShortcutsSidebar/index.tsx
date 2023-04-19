@@ -2,7 +2,7 @@ import { List, Typography, useTheme } from '@mui/material';
 
 import { StyledListItem, StyledListItemAvatar, StyledRoot } from './styles';
 
-import { PlaceholderIcon } from '@/assets/icons';
+import { PlaceholderIcon } from '@/assets/pageIcons';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useRouter } from 'next/router';
 import { sidebarItems } from './data';

@@ -9,7 +9,7 @@ export default function UserAvatar({ sx, size, alt, src }: UserAvatarProps) {
   const { data: userData } = useFetchUserQuery({});
   return (
     <Avatar
-      src={src || userData?.user?.profilePicture || ''}
+      src={src || userData?.data?.profilePicture || ''}
       alt={alt || 'user avatar'}
       sx={{ ...sx, width: px, height: px, bgcolor: theme.palette.primary.light }}
     />

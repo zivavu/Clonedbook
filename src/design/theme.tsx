@@ -34,5 +34,8 @@ export const theme = createTheme({
       fontWeight: 300,
     },
   },
+  shape: {
+    borderRadius: 8,
+  },
   components: componentOverrides({ ...palette, mode }),
 });

@@ -18,6 +18,7 @@ export default function ReactionIcon({ src, alt, size = 22, zIndex }: ReactionIc
         width={size}
         height={size}
         src={src}
+        priority
         alt={alt || 'reaction icon'}
         style={{
           border: `2px solid ${theme.palette.secondary.light}`,

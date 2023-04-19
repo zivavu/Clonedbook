@@ -14,9 +14,8 @@ export default function Picture({
   ...rootProps
 }: PictureProps) {
   const theme = useTheme();
-  let imageSizes;
-  const breakpoints = theme.breakpoints.values;
 
+  let imageSizes;
   const screens = {
     small: `(max-width: ${theme.breakpoints.values.sm}px)`,
     medium: `(max-width: ${theme.breakpoints.values.md}px)`,
@@ -33,22 +32,21 @@ export default function Picture({
       break;
     case 'medium':
       imageSizes = [
-        `${screens.small} 300px`,
-        `${screens.medium} 500px`,
-        `${screens.large} 600px`,
-        `800px`,
+        `${screens.small} 200px`,
+        `${screens.medium} 300px`,
+        `${screens.large} 400px`,
+        `500px`,
       ].join(', ');
       break;
     case 'large':
       imageSizes = [
         `${screens.small} 400px`,
-        `${screens.medium} 600px`,
-        `${screens.large} 800px`,
-        `1000px`,
+        `${screens.medium} 500px`,
+        `${screens.large} 600px`,
+        `800px`,
       ].join(', ');
       break;
   }
-  console.log(imageSizes);
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Image

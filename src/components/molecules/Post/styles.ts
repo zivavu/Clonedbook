@@ -1,7 +1,6 @@
 import { Box, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
-  position: 'relative',
   color: theme.palette.text.primary,
   backgroundColor: theme.palette.background.paper,
   margin: theme.spacing(2, 2),

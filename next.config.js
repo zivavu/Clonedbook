@@ -8,6 +8,10 @@ const nextConfig = {
         hostname: 'www.facebook.com',
         pathname: '/reaction/image/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'loremflickr.com',
+      },
     ],
   },
 };

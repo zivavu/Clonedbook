@@ -38,5 +38,7 @@ export const theme = createTheme({
   shape: {
     borderRadius: 8,
   },
+
+  //@ts-ignore
   components: componentOverrides({ ...palette, mode }),
 });

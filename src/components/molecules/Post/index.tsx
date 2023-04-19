@@ -1,9 +1,10 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledRoot } from './styles';
+import { StyledContentWrapper, StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
-import Actions from './Actions';
+import ActionButtons from './ActionButtons';
+import PicturesDisplay from './PicturesDisplay';
 import ReactionsDisplay from './ReactionsDisplay';
 import { PostProps } from './types';
 
@@ -12,9 +13,9 @@ export default function Post({ post, ...rootProps }: PostProps) {
 
   const theme = useTheme();
 
+  const hasPictures = !!postPictures && postPictures[0] ? true : false;
   const hasText = !!postText ? true : false;
-  const hasPictures = !!postPictures ? true : false;
-  const isBigText = postText && postText.length > 100 ? true : false;
+  const isTextLong = (postText && postText.length > 130) || hasPictures ? true : false;
 
   const postDate = new Date(createdAt.seconds * 1000);
   postDate.setMonth(postDate.getMonth() - 1);
@@ -26,34 +27,39 @@ export default function Post({ post, ...rootProps }: PostProps) {
 
   return (
     <StyledRoot {...rootProps}>
-      <Stack direction='row' spacing={1} sx={{}}>
-        <UserAvatar src={post.owner.profilePicture} />
-        <Stack justifyContent='center'>
-          <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
-            {post.owner.firstName} {post.owner.lastName}
-          </Typography>
-          <Typography variant='caption'>
-            {fullDate.month} {fullDate.day}, {fullDate.year}.
-          </Typography>
-        </Stack>
-      </Stack>
-      {hasText && (
-        <Box sx={{ p: theme.spacing(1, 0) }}>
-          {isBigText ? (
-            <Typography variant='body2'>{post.postText}</Typography>
-          ) : (
-            <Typography variant='h6' fontWeight='400' lineHeight='1.8rem'>
-              {post.postText}
+      <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
+        <Stack direction='row' spacing={1} sx={{}}>
+          <UserAvatar src={post.owner.profilePicture} />
+          <Stack justifyContent='center'>
+            <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
+              {post.owner.firstName} {post.owner.lastName}
             </Typography>
-          )}
-        </Box>
-      )}
-      <ReactionsDisplay
-        reactions={post.reactions}
-        exampleReactors={post.exampleReactors}
-        sx={{ pr: theme.spacing(0.25) }}
-      />
-      <Actions />
+            <Typography variant='caption'>
+              {fullDate.month} {fullDate.day}, {fullDate.year}.
+            </Typography>
+          </Stack>
+        </Stack>
+        {hasText && (
+          <Box sx={{ p: theme.spacing(1, 0) }}>
+            {isTextLong ? (
+              <Typography variant='body2'>{post.postText}</Typography>
+            ) : (
+              <Typography variant='h6' fontWeight='400' lineHeight='1.7rem'>
+                {post.postText}
+              </Typography>
+            )}
+          </Box>
+        )}
+      </StyledContentWrapper>
+      {hasPictures ? <PicturesDisplay pictures={post.postPictures as string[]} /> : null}
+      <StyledContentWrapper>
+        <ReactionsDisplay
+          reactions={post.reactions}
+          exampleReactors={post.exampleReactors}
+          sx={{ pr: theme.spacing(0.25) }}
+        />
+        <ActionButtons />
+      </StyledContentWrapper>
     </StyledRoot>
   );
 }

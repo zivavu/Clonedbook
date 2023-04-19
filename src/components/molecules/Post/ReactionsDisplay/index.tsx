@@ -60,22 +60,17 @@ export default function ReactionsDisplay({
           const isLast = reactorsToDisplay.length === i + 1;
           const userText = [reactor.firstName, reactor.lastName].join(' ');
           return (
-            <>
+            <Box key={reactor.profileId}>
               {!isLast ? (
-                <Typography key={reactor.profileId} variant='subtitle2'>
-                  {userText},&nbsp;
-                </Typography>
+                <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
               ) : (
                 <>
-                  <Typography key={reactor.profileId} variant='subtitle2'>
-                    {userText}
-                  </Typography>
                   <Typography variant='subtitle2'>
-                    &nbsp;and {reactionsCount - reactorsToDisplay.length} others
+                    {userText}&nbsp;and {reactionsCount - reactorsToDisplay.length} others
                   </Typography>
                 </>
               )}
-            </>
+            </Box>
           );
         })}
       </Box>

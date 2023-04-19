@@ -10,9 +10,6 @@ export default function HomeWall({ ...rootProps }: HomeWallProps) {
   const { data } = useFetchUserQuery({});
 
   return (
-    <StyledRoot {...rootProps}>
-      {data?.posts ? <PostsFeed posts={data.posts} /> : null}
-      <Typography>HomeWall</Typography>
-    </StyledRoot>
+    <StyledRoot {...rootProps}>{data?.posts ? <PostsFeed posts={data.posts} /> : null}</StyledRoot>
   );
 }

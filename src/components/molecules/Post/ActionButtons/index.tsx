@@ -2,10 +2,9 @@ import { Typography, useTheme } from '@mui/material';
 
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
-import Icon from '@/components/atoms/Icon/Icon';
-import { ActionsProps } from './types';
+import { ActionButtonsProps } from './types';
 
-export default function Actions({ ...rootProps }: ActionsProps) {
+export default function ActionButtons({ ...rootProps }: ActionButtonsProps) {
   const theme = useTheme();
   return (
     <StyledRoot {...rootProps}>
@@ -15,7 +14,7 @@ export default function Actions({ ...rootProps }: ActionsProps) {
           Like
         </Typography>
       </StyledActionButton>
-      <StyledActionButton value='comment' sx={{ mr: theme.spacing(0.4), ml: theme.spacing(0.4) }}>
+      <StyledActionButton value='comment' sx={{ mr: theme.spacing(0.3), ml: theme.spacing(0.3) }}>
         <StyledActionIcon icon={['far', 'comment']} />
         <Typography variant='subtitle2' fontWeight='500'>
           Comment

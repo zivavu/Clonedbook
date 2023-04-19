@@ -3,7 +3,7 @@ import Page from '@/templates/Page';
 
 export default function Index() {
   return (
-    <Page title='home'>
+    <Page>
       <Home />
     </Page>
   );

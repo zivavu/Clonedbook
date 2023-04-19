@@ -47,7 +47,11 @@ export default function Post({ post, ...rootProps }: PostProps) {
           )}
         </Box>
       )}
-      <ReactionsDisplay reactions={post.reactions} />
+      <ReactionsDisplay
+        reactions={post.reactions}
+        exampleReactors={post.exampleReactors}
+        sx={{ pr: theme.spacing(0.25) }}
+      />
     </StyledRoot>
   );
 }

@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -11,9 +11,14 @@ import {
   SadIcon,
   WowIcon,
 } from '@/assets/reactionIcons';
+import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { ReactionsByTypes, ReactionsDisplayProps } from './types';
 
-export default function ReactionsDisplay({ reactions, ...rootProps }: ReactionsDisplayProps) {
+export default function ReactionsDisplay({
+  reactions,
+  exampleReactors,
+  ...rootProps
+}: ReactionsDisplayProps) {
   const theme = useTheme();
   const reactionsCount = reactions?.length || 0;
   const reactionsByTypes: ReactionsByTypes = {
@@ -30,15 +35,50 @@ export default function ReactionsDisplay({ reactions, ...rootProps }: ReactionsD
     const { type } = reaction;
     if (type in reactionsByTypes) {
       reactionsByTypes[type].count += 1;
-      console.log(reaction);
     }
   });
-  const highestReactionCountByType = Object.entries(reactionsByTypes).sort(
-    (a, b) => b[1].count - a[1].count,
-  )[0];
+
+  const highestReactionCountsByType = Object.entries(reactionsByTypes)
+    .map(([type, { count, icon }]) => ({ type, count, icon }))
+    .sort((a, b) => b.count - a.count);
+
+  const reactorsToDisplay = exampleReactors.slice(0, -3);
   return (
     <StyledRoot {...rootProps}>
-      <Typography>ReactionsDisplay</Typography>
+      <Box display='flex' sx={{ pr: theme.spacing(0.25) }}>
+        {highestReactionCountsByType.slice(0, 3).map((reaction, i) => {
+          return <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={10 - i} />;
+        })}
+      </Box>
+      <Box
+        display='flex'
+        ml={theme.spacing(0.5)}
+        mt={theme.spacing(0.2)}
+        color={theme.palette.text.secondary}
+      >
+        {reactorsToDisplay.map((reactor, i) => {
+          const isLast = reactorsToDisplay.length === i + 1;
+          const userText = [reactor.firstName, reactor.lastName].join(' ');
+          return (
+            <>
+              {!isLast ? (
+                <Typography key={reactor.profileId} variant='subtitle2'>
+                  {userText},&nbsp;
+                </Typography>
+              ) : (
+                <>
+                  <Typography key={reactor.profileId} variant='subtitle2'>
+                    {userText}
+                  </Typography>
+                  <Typography variant='subtitle2'>
+                    &nbsp;and {reactionsCount - reactorsToDisplay.length} others
+                  </Typography>
+                </>
+              )}
+            </>
+          );
+        })}
+      </Box>
     </StyledRoot>
   );
 }

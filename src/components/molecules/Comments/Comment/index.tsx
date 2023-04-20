@@ -1,4 +1,4 @@
-import { Box, ButtonBase, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledInteractButton, StyledRoot, StyledTextContent } from './styles';
 

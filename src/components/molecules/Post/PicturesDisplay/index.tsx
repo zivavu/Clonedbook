@@ -1,10 +1,10 @@
-import { Box, Stack, useTheme } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 
 import { StyledDevider, StyledPicturesContainer, StyledRoot } from './styles';
 
 import ManyPicutresDisplay from './ManyPicutresDisplay';
 import Picture from './Picture';
-import { DisplayMode, PictureToDisplay, PicturesDisplayProps, pictureSize } from './types';
+import { DisplayMode, PictureToDisplay, PicturesDisplayProps } from './types';
 
 export default function PicturesDisplay({ pictures, ...rootProps }: PicturesDisplayProps) {
   const theme = useTheme();

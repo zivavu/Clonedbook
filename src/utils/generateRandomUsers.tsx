@@ -14,7 +14,7 @@ import { faker } from '@faker-js/faker';
 import { uuidv4 } from '@firebase/util';
 import { Button } from '@mui/material';
 
-import { Timestamp, WriteBatch, collection, doc, writeBatch } from 'firebase/firestore';
+import { Timestamp, WriteBatch, doc, writeBatch } from 'firebase/firestore';
 
 const randomPostPictures = [
   faker.image.people,

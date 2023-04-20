@@ -4,10 +4,10 @@ import { StyledContentWrapper, StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
 import ActionButtons from '../ActionButtons';
+import Comments from '../Comments';
 import ReactionsDisplay from '../ReactionsDisplay';
 import PicturesDisplay from './PicturesDisplay';
 import { PostProps } from './types';
-import Comments from '../Comments';
 
 export default function Post({ post, ...rootProps }: PostProps) {
   const { createdAt, id, owner, comments, postPictures, postText, reactions } = post;

@@ -1,4 +1,4 @@
-import { TextField, Typography, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 import { StyledCommentInput, StyledRoot } from './styles';
 

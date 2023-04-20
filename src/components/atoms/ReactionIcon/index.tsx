@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Icon, Typography, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 import Image from 'next/image';
 import { ReactionIconProps } from './types';

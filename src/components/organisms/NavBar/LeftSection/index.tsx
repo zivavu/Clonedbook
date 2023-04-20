@@ -1,4 +1,4 @@
-import { Button, InputAdornment, TextField } from '@mui/material';
+import { InputAdornment, TextField } from '@mui/material';
 
 import { StyledRoot } from './styles';
 

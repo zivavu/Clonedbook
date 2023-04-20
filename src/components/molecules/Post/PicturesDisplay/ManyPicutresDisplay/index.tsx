@@ -1,4 +1,4 @@
-import { Box, BoxProps, Stack, SxProps, Theme, Typography, useTheme } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 
 import { uuidv4 } from '@firebase/util';
 import Picture from '../Picture';
@@ -6,12 +6,7 @@ import { StyledPicturesContainer } from '../styles';
 import { pictureSize } from '../types';
 import { Layouts, ManyPicutresDisplayProps } from './types';
 
-export default function ManyPicutresDisplay({
-  pictures,
-  pictureBorder,
-  ...rootProps
-}: ManyPicutresDisplayProps) {
-  const theme = useTheme();
+export default function ManyPicutresDisplay({ pictures, pictureBorder }: ManyPicutresDisplayProps) {
   //Used in next/image component for image optimization
   function getPictureSizeAndQuality(i: number) {
     let size: pictureSize = 'medium';

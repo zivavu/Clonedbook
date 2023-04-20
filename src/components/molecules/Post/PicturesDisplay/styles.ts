@@ -5,7 +5,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'relative',
 }));
 
-export const StyledPicturesContainer = styled(Box)(({ theme }) => ({
+export const StyledPicturesContainer = styled(Box)(({}) => ({
   position: 'relative',
   height: '460px',
   width: '100%',

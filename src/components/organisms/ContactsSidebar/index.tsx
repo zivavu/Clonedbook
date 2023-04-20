@@ -1,7 +1,7 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { Avatar, Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
 
@@ -40,7 +40,7 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
                     <UserAvatar
                       sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
                       src={friend.info.profilePicture || ''}
-                    ></UserAvatar>
+                    />
                     <Typography variant='body2'>
                       {friend.info.firstName} {friend.info.lastName}
                     </Typography>

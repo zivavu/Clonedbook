@@ -1,4 +1,4 @@
-import { Stack, Typography, useTheme } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -8,7 +8,6 @@ import CommentInput from './CommentInput';
 import { CommentsProps } from './types';
 
 export default function Comments({ comments, user, ...rootProps }: CommentsProps) {
-  const theme = useTheme();
   const uniqueUsersComments: IComment[] = [];
   comments?.forEach((comment) => {
     if (!uniqueUsersComments.find((c) => c.owner.profileId === comment.owner.profileId)) {

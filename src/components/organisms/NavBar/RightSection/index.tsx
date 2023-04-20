@@ -38,7 +38,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
           handleSetPortal(e, 'account');
         }}
       >
-        <UserAvatar size='45' />
+        <UserAvatar size={45} />
       </StyledToggleButton>
     </StyledRoot>
   );

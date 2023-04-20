@@ -1,13 +1,13 @@
-import { Friend, PublicFriendship } from './firend';
-import { Picture } from './picture';
-import { Post } from './post';
-import { BasicUserInfo, User } from './user';
+import { IFriend, IPublicFriendship } from './firend';
+import { IPicture } from './picture';
+import { IPost } from './post';
+import { IBasicUserInfo, IUser } from './user';
 
-export interface UserServerData {
-  data: User;
-  public: BasicUserInfo;
-  friends: Friend[];
-  friendConnections: PublicFriendship[];
-  pictures: Picture[];
-  posts: Post[];
+export interface IUserServerData {
+  data: IUser;
+  public: IBasicUserInfo;
+  friends: IFriend[];
+  friendConnections: IPublicFriendship[];
+  pictures: IPicture[];
+  posts: IPost[];
 }

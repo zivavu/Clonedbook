@@ -1,11 +1,11 @@
-import { CreatedAt } from './createdAt';
-import { InChatPicture } from './picture';
+import { ICreatedAt } from './createdAt';
+import { IInChatPicture } from './picture';
 
-export interface Message {
+export interface IMessage {
   id: string;
   senderId: string;
   chatId: string;
   text?: string;
-  pictures?: InChatPicture[];
-  createdAt: CreatedAt;
+  pictures?: IInChatPicture[];
+  createdAt: ICreatedAt;
 }

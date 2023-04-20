@@ -17,10 +17,17 @@ import { ReactionsByTypes, ReactionsDisplayProps } from './types';
 export default function ReactionsDisplay({
   reactions,
   exampleReactors,
+  sx,
+  emotesCount = 3,
+  displayNames = true,
+  displayCount = false,
+  size = 22,
   ...rootProps
 }: ReactionsDisplayProps) {
   const theme = useTheme();
+
   const reactionsCount = reactions?.length || 0;
+
   const reactionsByTypes: ReactionsByTypes = {
     like: { count: 0, icon: LikeIcon },
     love: { count: 0, icon: HeartIcon },
@@ -42,12 +49,14 @@ export default function ReactionsDisplay({
     .map(([type, { count, icon }]) => ({ type, count, icon }))
     .sort((a, b) => b.count - a.count);
 
-  const reactorsToDisplay = exampleReactors?.slice(0, -3) || [];
+  const reactorsToDisplay = exampleReactors?.slice(0, emotesCount) || [];
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot {...rootProps} sx={sx}>
       <Box display='flex' sx={{ pr: theme.spacing(0.25) }}>
-        {highestReactionCountsByType.slice(0, 3).map((reaction, i) => {
-          return <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={10 - i} />;
+        {highestReactionCountsByType.slice(0, emotesCount).map((reaction, i) => {
+          return (
+            <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={10 - i} size={size} />
+          );
         })}
       </Box>
       <Box
@@ -56,23 +65,29 @@ export default function ReactionsDisplay({
         mt={theme.spacing(0.2)}
         color={theme.palette.text.secondary}
       >
-        {reactorsToDisplay.map((reactor, i) => {
-          const isLast = reactorsToDisplay.length === i + 1;
-          const userText = [reactor.firstName, reactor.lastName].join(' ');
-          return (
-            <Box key={reactor.profileId}>
-              {!isLast ? (
-                <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
-              ) : (
-                <>
-                  <Typography variant='subtitle2'>
-                    {userText}&nbsp;and {reactionsCount - reactorsToDisplay.length} others
-                  </Typography>
-                </>
-              )}
-            </Box>
-          );
-        })}
+        {displayNames &&
+          reactorsToDisplay.map((reactor, i) => {
+            const isLast = reactorsToDisplay.length === i + 1;
+            const userText = [reactor.firstName, reactor.lastName].join(' ');
+            return (
+              <Box key={reactor.profileId}>
+                {!isLast ? (
+                  <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
+                ) : (
+                  <>
+                    <Typography variant='subtitle2'>
+                      {userText}&nbsp;and {reactionsCount - reactorsToDisplay.length} others
+                    </Typography>
+                  </>
+                )}
+              </Box>
+            );
+          })}
+        {displayCount && (
+          <Typography pr={theme.spacing(0.5)} variant='caption'>
+            {reactionsCount}
+          </Typography>
+        )}
       </Box>
     </StyledRoot>
   );

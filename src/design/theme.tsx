@@ -11,6 +11,10 @@ export const palette = {
     main: '#f0f2f5',
     dark: '#e4e6eb',
   },
+  common: {
+    white: '#fff',
+    black: '#000',
+  },
   background: {
     default: '#f0f2f5',
   },

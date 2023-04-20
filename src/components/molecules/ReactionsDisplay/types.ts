@@ -1,13 +1,17 @@
-import { PossibleReaction, UserReaction } from '@/types/reaction';
-import { BasicUserInfo } from '@/types/user';
+import { IUserReaction, TPossibleReaction } from '@/types/reaction';
+import { IBasicUserInfo } from '@/types/user';
 import { BoxProps } from '@mui/material';
 
 export interface ReactionsDisplayProps extends BoxProps {
-  reactions: UserReaction[] | undefined;
-  exampleReactors: BasicUserInfo[] | undefined;
+  reactions: IUserReaction[] | undefined;
+  exampleReactors?: IBasicUserInfo[] | undefined;
+  displayNames?: boolean;
+  displayCount?: boolean;
+  emotesCount?: number;
+  size?: number;
 }
 
 export type ReactionsByTypes = {
   //eslint-disable-next-line no-unused-vars
-  [key in PossibleReaction]: { count: number; icon: string };
+  [key in TPossibleReaction]: { count: number; icon: string };
 };

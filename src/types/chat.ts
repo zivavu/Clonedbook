@@ -1,11 +1,11 @@
-import { Message } from './message';
+import { IMessage } from './message';
 
 //This object is created both for sender and receiver users
-export interface Chat extends ChatReference {
-  messages: Message[];
+export interface IChat extends IChatReference {
+  messages: IMessage[];
 }
 
-export interface ChatReference {
+export interface IChatReference {
   id: string;
   users: string[];
 }

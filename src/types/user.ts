@@ -1,20 +1,20 @@
-import { ChatReference } from './chat';
-import { Friend } from './firend';
-import { PicutreReference } from './picture';
-import { PostReference } from './post';
+import { IChatReference } from './chat';
+import { IFriend } from './firend';
+import { IPicutreReference } from './picture';
+import { IPostReference } from './post';
 
-export interface User extends BasicUserInfo {
+export interface IUser extends IBasicUserInfo {
   email: string;
   phoneNumber?: string;
   backgroundPicture?: string;
   biography?: string;
   isDummy?: boolean;
-  friends: Friend[];
+  friends: IFriend[];
   groups: [];
   intrests: [];
-  chatReferences: ChatReference[];
-  postReferences: PostReference[];
-  picutresReferences: PicutreReference[];
+  chatReferences: IChatReference[];
+  postReferences: IPostReference[];
+  picutresReferences: IPicutreReference[];
   about: {
     address?: string;
     country?: string;
@@ -39,7 +39,7 @@ export interface User extends BasicUserInfo {
   };
 }
 
-export interface BasicUserInfo {
+export interface IBasicUserInfo {
   profileId: string;
   firstName: string;
   middleName?: string;

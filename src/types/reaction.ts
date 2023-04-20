@@ -1,6 +1,6 @@
-export interface UserReaction {
+export interface IUserReaction {
   userId: string;
-  type: PossibleReaction;
+  type: TPossibleReaction;
 }
 
-export type PossibleReaction = 'angry' | 'like' | 'love' | 'sad' | 'wow' | 'haha' | 'care';
+export type TPossibleReaction = 'angry' | 'like' | 'love' | 'sad' | 'wow' | 'haha' | 'care';

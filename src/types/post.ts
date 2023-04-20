@@ -1,18 +1,18 @@
-import { Comment } from './comment';
-import { CreatedAt } from './createdAt';
-import { UserReaction } from './reaction';
-import { BasicUserInfo } from './user';
+import { IComment } from './comment';
+import { ICreatedAt } from './createdAt';
+import { IUserReaction } from './reaction';
+import { IBasicUserInfo } from './user';
 
-export interface Post extends PostReference {
+export interface IPost extends IPostReference {
   postPictures?: string[];
   postText?: string;
-  reactions?: UserReaction[];
-  exampleReactors?: BasicUserInfo[];
-  comments?: Comment[];
+  reactions?: IUserReaction[];
+  exampleReactors?: IBasicUserInfo[];
+  comments?: IComment[];
 }
 
-export interface PostReference {
+export interface IPostReference {
   id: string;
-  owner: BasicUserInfo;
-  createdAt: CreatedAt;
+  owner: IBasicUserInfo;
+  createdAt: ICreatedAt;
 }

@@ -1,25 +1,25 @@
-import { Comment } from './comment';
-import { CreatedAt } from './createdAt';
-import { UserReaction } from './reaction';
-import { BasicUserInfo } from './user';
+import { IComment } from './comment';
+import { ICreatedAt } from './createdAt';
+import { IUserReaction } from './reaction';
+import { IBasicUserInfo } from './user';
 
-export interface Picture {
+export interface IPicture {
   id: string;
-  ownerInfo: BasicUserInfo;
+  ownerInfo: IBasicUserInfo;
   pictureURL: string;
 }
 
-export interface InProfilePicture extends Picture {
-  reactions: UserReaction[];
-  comments: Comment[];
+export interface IInProfilePicture extends IPicture {
+  reactions: IUserReaction[];
+  comments: IComment[];
 }
 
-export interface InChatPicture extends Picture {
+export interface IInChatPicture extends IPicture {
   reaction?: string;
 }
 
-export interface PicutreReference {
+export interface IPicutreReference {
   id: string;
   ownerId: string;
-  createdAt: CreatedAt;
+  createdAt: ICreatedAt;
 }

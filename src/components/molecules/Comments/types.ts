@@ -1,8 +1,8 @@
-import { Comment } from '@/types/comment';
-import { BasicUserInfo } from '@/types/user';
+import { IComment } from '@/types/comment';
+import { IBasicUserInfo } from '@/types/user';
 import { BoxProps } from '@mui/material';
 
 export interface CommentsProps extends BoxProps {
-  comments: Comment[] | undefined;
-  user: BasicUserInfo;
+  comments: IComment[] | undefined;
+  user: IBasicUserInfo;
 }

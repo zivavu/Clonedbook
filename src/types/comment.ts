@@ -1,10 +1,10 @@
-import { UserReaction } from './reaction';
-import { BasicUserInfo } from './user';
+import { IUserReaction } from './reaction';
+import { IBasicUserInfo } from './user';
 
-export interface Comment {
+export interface IComment {
   id: string;
-  owner: BasicUserInfo;
+  owner: IBasicUserInfo;
   commentText: string;
-  commentResponses?: Comment[];
-  reactions?: UserReaction[];
+  commentResponses?: IComment[];
+  reactions?: IUserReaction[];
 }

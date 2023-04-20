@@ -3,13 +3,13 @@
 //! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper. Also it's far beyond the worst spaghetti code, don't try to understand it.
 //! It uploads a lot(dozens of MB) of data batch after batch so will take time to execute
 import { db } from '@/config/firebase.config';
-import { Comment } from '@/types/comment';
-import { Friend, PublicFriendship } from '@/types/firend';
-import { InProfilePicture } from '@/types/picture';
-import { Post } from '@/types/post';
-import { UserReaction } from '@/types/reaction';
-import { BasicUserInfo, User } from '@/types/user';
-import { UserServerData } from '@/types/userServerData';
+import { IComment } from '@/types/comment';
+import { IFriend, IPublicFriendship } from '@/types/firend';
+import { IInProfilePicture } from '@/types/picture';
+import { IPost } from '@/types/post';
+import { IUserReaction } from '@/types/reaction';
+import { IBasicUserInfo, IUser } from '@/types/user';
+import { IUserServerData } from '@/types/userServerData';
 import { faker } from '@faker-js/faker';
 import { uuidv4 } from '@firebase/util';
 import { Button } from '@mui/material';
@@ -51,7 +51,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   for (let i = 0; i < usersAmount; i++) {
     usersUIDS.push(getRandomUIDv4());
   }
-  const allPosts: Post[] = [];
+  const allPosts: IPost[] = [];
 
   function getRandomPhotoUrl() {
     const randomPicture = randomPostPictures[Math.floor(Math.random() * randomPostPictures.length)];
@@ -89,7 +89,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     return usersUIDS[Math.floor(Math.random() * usersUIDS.length)];
   }
   function getRandomComents(amount: number, reactionsCount: number) {
-    const comments: Array<Comment> = [];
+    const comments: Array<IComment> = [];
     const discutants = usersUIDS.slice(
       0,
       Math.max(Math.floor((Math.random() * usersUIDS.length) / 8), 5),
@@ -98,7 +98,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const ownerId = discutants[Math.floor(Math.random() * discutants.length) || 0];
       const ownerBasicUserInfo = usersBasicInfo.find(
         (user) => user.profileId === ownerId,
-      ) as BasicUserInfo;
+      ) as IBasicUserInfo;
       comments.push({
         id: getRandomUIDv4(),
         owner: ownerBasicUserInfo,
@@ -111,8 +111,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
 
   function getRandomReactions(amount: number) {
-    const reactions: Array<UserReaction> = [];
-    const possibleReactions: Array<UserReaction['type']> = [
+    const reactions: Array<IUserReaction> = [];
+    const possibleReactions: Array<IUserReaction['type']> = [
       'angry',
       'like',
       'love',
@@ -135,7 +135,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     return reactions;
   }
 
-  const usersBasicInfo: BasicUserInfo[] = [];
+  const usersBasicInfo: IBasicUserInfo[] = [];
   for (let i = 0; i < usersAmount; i++) {
     const userUUID = usersUIDS[i];
     const basicUserInfo = {
@@ -148,11 +148,11 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     usersBasicInfo.push(basicUserInfo);
   }
 
-  function getRandomProfilePhotos(amount: number, basicUserInfo: BasicUserInfo) {
-    const photos: InProfilePicture[] = [];
+  function getRandomProfilePhotos(amount: number, basicUserInfo: IBasicUserInfo) {
+    const photos: IInProfilePicture[] = [];
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 4; i++) {
       const photoId = getRandomUIDv4();
-      const photo: InProfilePicture = {
+      const photo: IInProfilePicture = {
         ownerInfo: basicUserInfo,
         id: photoId,
         pictureURL: getRandomPhotoUrl(),
@@ -163,8 +163,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     }
     return photos;
   }
-  function getRandomPosts(amount: number, basicUserInfo: BasicUserInfo) {
-    const posts: Array<Post> = [];
+  function getRandomPosts(amount: number, basicUserInfo: IBasicUserInfo) {
+    const posts: Array<IPost> = [];
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
       const postPictures: string[] = [];
       const hasPictures = Math.random() > 0.2;
@@ -177,10 +177,10 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const exampleReactions = postReactions.slice(0, 5);
       const exampleReactors = exampleReactions.map((reaction) => {
         const reactorsBasicInfo = usersBasicInfo.find((user) => user.profileId === reaction.userId);
-        return reactorsBasicInfo as BasicUserInfo;
+        return reactorsBasicInfo as IBasicUserInfo;
       });
 
-      const post: Post = {
+      const post: IPost = {
         id: postId,
         owner: basicUserInfo,
         postText: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
@@ -203,15 +203,15 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     if (friendsAmount < 5) {
       friendsAmount = 5;
     }
-    const allUsersFreinds: Friend[][] = new Array(usersAmount);
-    const allUsersPublicFriendships: PublicFriendship[][] = new Array(usersAmount);
+    const allUsersFreinds: IFriend[][] = new Array(usersAmount);
+    const allUsersPublicFriendships: IPublicFriendship[][] = new Array(usersAmount);
     for (let i = 0; i < usersAmount; i++) {
       allUsersFreinds[i] = [];
       allUsersPublicFriendships[i] = [];
     }
     users.forEach((userToAddFriends) => {
-      const usersFriends: Friend[] = [];
-      const usersPublicFriendships: PublicFriendship[] = [];
+      const usersFriends: IFriend[] = [];
+      const usersPublicFriendships: IPublicFriendship[] = [];
       const friendsCount = Math.max(Math.floor(Math.random() * friendsAmount), 10);
       for (let i = 0; i < friendsCount; i++) {
         const userToBefriendInfo = users[Math.floor(Math.random() * users.length)];
@@ -240,7 +240,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           id: getRandomUIDv4(),
           users: [userToBefriendInfo.profileId, userToAddFriends.profileId],
         };
-        const friend: Friend = {
+        const friend: IFriend = {
           connectionId: connectionUUID,
           status: Math.random() < 0.8 ? 'accepted' : Math.random() > 0.1 ? 'pending' : 'blocked',
           createdAt: getPastDate(),
@@ -248,7 +248,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           chatReference: chatReferenceInfo,
           info: friendsBasicInfo,
         };
-        const publicFriendship: PublicFriendship = {
+        const publicFriendship: IPublicFriendship = {
           connectionId: connectionUUID,
           users: [usersBasicInfo, userToBefriendInfo],
         };
@@ -260,7 +260,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
 
         allUsersPublicFriendships[befriendedUserIndex].push(publicFriendship);
 
-        const flippedFriend: Friend = {
+        const flippedFriend: IFriend = {
           connectionId: connectionUUID,
           status: friend.status,
           createdAt: friend.createdAt,
@@ -279,15 +279,15 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
 
   function getRandomUsers() {
-    const users: User[] = [];
-    const basicInfoOfUsers: BasicUserInfo[] = [];
-    const postsOfUsers: Post[][] = [];
-    const picturesOfUsers: InProfilePicture[][] = [];
+    const users: IUser[] = [];
+    const basicInfoOfUsers: IBasicUserInfo[] = [];
+    const postsOfUsers: IPost[][] = [];
+    const picturesOfUsers: IInProfilePicture[][] = [];
     for (let i = 0; i < usersAmount; i++) {
       const userBasicInfo = usersBasicInfo[i];
       const userPosts = getRandomPosts(7, userBasicInfo);
       const userPictures = getRandomProfilePhotos(10, userBasicInfo);
-      const user: User = {
+      const user: IUser = {
         ...userBasicInfo,
         backgroundPicture: getRandomBacgroundPicture(),
         email: faker.internet.email(),
@@ -356,12 +356,12 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
   } = generateUsers(usersAmount, friendsAmount);
   console.log('generating users and other data... done');
   const batches: WriteBatch[] = [writeBatch(db), writeBatch(db), writeBatch(db)];
-  const dataThatWillBeCommited: UserServerData[][] = [[], [], []];
-  const postsThatWillBeCommited: Post[] = [];
+  const dataThatWillBeCommited: IUserServerData[][] = [[], [], []];
+  const postsThatWillBeCommited: IPost[] = [];
   for (let i = 0; i < users.length; i++) {
     const data = users[i];
     const docRef = doc(db, 'users', data.profileId);
-    const allUserData: UserServerData = {
+    const allUserData: IUserServerData = {
       data,
       public: basicInfoOfUsers[i],
       posts: postsOfUsers[i],

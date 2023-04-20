@@ -2,10 +2,15 @@ import { Box, BoxProps, Stack, SxProps, Theme, Typography, useTheme } from '@mui
 
 import { uuidv4 } from '@firebase/util';
 import Picture from '../Picture';
+import { StyledPicturesContainer } from '../styles';
 import { pictureSize } from '../types';
 import { Layouts, ManyPicutresDisplayProps } from './types';
 
-export default function ManyPicutresDisplay({ pictures, ...rootProps }: ManyPicutresDisplayProps) {
+export default function ManyPicutresDisplay({
+  pictures,
+  pictureBorder,
+  ...rootProps
+}: ManyPicutresDisplayProps) {
   const theme = useTheme();
   //Used in next/image component for image optimization
   function getPictureSizeAndQuality(i: number) {
@@ -24,15 +29,43 @@ export default function ManyPicutresDisplay({ pictures, ...rootProps }: ManyPicu
       id: uuidv4(),
     };
   }
-  const layouts = {
-    triple: [{ width: '100%' }, { width: '50%' }, { width: '50%' }],
-    quadruple: [{ width: '50%' }, { width: '50%' }, { width: '50%' }, { width: '50%' }],
+
+  const layouts: Layouts = {
+    //single layout is an array of objects with sx of every picture used in layout
+    triple: [
+      { width: '100%', borderBottom: pictureBorder },
+      { width: '50%', borderTop: pictureBorder, borderRight: pictureBorder },
+      { width: '50%', borderTop: pictureBorder, borderLeft: pictureBorder },
+    ],
+    quadruple: [
+      { width: '50%', borderBottom: pictureBorder, borderRight: pictureBorder },
+      { width: '50%', borderBottom: pictureBorder, borderLeft: pictureBorder },
+      { width: '50%', borderTop: pictureBorder, borderRight: pictureBorder },
+      { width: '50%', borderTop: pictureBorder, borderLeft: pictureBorder },
+    ],
     fiveAndMore: [
-      { width: '50%' },
-      { width: '50%' },
-      { width: '33.3%' },
-      { width: '33.3%' },
-      { width: '33.3%' },
+      {
+        width: '50%',
+        borderBottom: pictureBorder,
+        borderRight: pictureBorder,
+      },
+      { width: '50%', borderBottom: pictureBorder, borderLeft: pictureBorder },
+      {
+        width: '33.33%',
+        borderTop: pictureBorder,
+        borderRight: pictureBorder,
+      },
+      {
+        width: '33.33%',
+        borderTop: pictureBorder,
+        borderLeft: pictureBorder,
+        borderRight: pictureBorder,
+      },
+      {
+        width: '33.33%',
+        borderTop: pictureBorder,
+        borderLeft: pictureBorder,
+      },
     ],
   };
 
@@ -42,44 +75,43 @@ export default function ManyPicutresDisplay({ pictures, ...rootProps }: ManyPicu
       : pictures.length === 4
       ? layouts.quadruple
       : layouts.fiveAndMore;
+
   const picturesToDisplay = pictures.slice(0, 5).map((picture, i) => {
     const { size, quality, id } = getPictureSizeAndQuality(i);
-    return (
-      <Picture key={id} src={picture.src} quality={quality} size={size} sx={{ ...usedLayout[i] }} />
-    );
+    return <Picture key={id} src={picture.src} quality={quality} size={size} sx={usedLayout[i]} />;
   });
+
   return (
     <>
       {picturesToDisplay.length >= 5 && (
-        <Stack width='100%' height='100%' position='relative'>
-          <Stack height='70%' direction='row' position='relative'>
+        <StyledPicturesContainer sx={{ height: '600px' }}>
+          <Stack height='55%' direction='row' position='relative'>
             {picturesToDisplay.slice(0, 2)}
           </Stack>
-          <Stack height='30%' direction='row' position='relative'>
-            {picturesToDisplay.slice(3)}
+          <Stack height='45%' direction='row' position='relative'>
+            {picturesToDisplay.slice(2, 5)}
           </Stack>
-        </Stack>
+        </StyledPicturesContainer>
       )}
       {picturesToDisplay.length === 4 && (
-        <Stack width='100%' height='100%' position='relative'>
+        <StyledPicturesContainer sx={{ height: '600px' }}>
           <Stack width='100%' height='50%' direction='row'>
             {picturesToDisplay.slice(0, 2)}
           </Stack>
           <Stack direction='row' width='100%' height='50%'>
             {picturesToDisplay.slice(2)}
           </Stack>
-        </Stack>
+        </StyledPicturesContainer>
       )}
-      {console.log(picturesToDisplay.length, picturesToDisplay?.slice(1, 2))}
       {picturesToDisplay.length === 3 && (
-        <Stack width='100%' height='100%' position='relative'>
+        <StyledPicturesContainer sx={{ height: '600px' }}>
           <Stack direction='row' position='relative' width='100%' height='60%'>
             {picturesToDisplay.slice(0, 1)}
           </Stack>
           <Stack direction='row' position='relative' width='100%' height='40%'>
             {picturesToDisplay.slice(1, 3)}
           </Stack>
-        </Stack>
+        </StyledPicturesContainer>
       )}
     </>
   );

@@ -23,6 +23,7 @@ const randomPicutresSources = [
   faker.image.people,
   faker.image.nature,
   faker.image.technics,
+  faker.image.transport,
 ];
 
 export function getPastDate() {

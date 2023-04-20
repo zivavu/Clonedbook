@@ -1,6 +1,6 @@
 import { Box, Stack, useTheme } from '@mui/material';
 
-import { StyledDevider, StyledRoot } from './styles';
+import { StyledDevider, StyledPicturesContainer, StyledRoot } from './styles';
 
 import ManyPicutresDisplay from './ManyPicutresDisplay';
 import Picture from './Picture';
@@ -16,17 +16,39 @@ export default function PicturesDisplay({ pictures, ...rootProps }: PicturesDisp
     src: picture,
   }));
 
+  const pictureBorder = `1px solid ${theme.palette.secondary.light}`;
+
   return (
     <StyledRoot {...rootProps}>
       <StyledDevider sx={{ top: '-1px' }} />
-      {mode === 'single' && <Picture src={picturesToDisplay[0].src} size='large' quality={80} />}
-      {mode === 'duo' && (
-        <Stack direction='row' width='100%' height='100%' position='relative'>
-          <Picture src={picturesToDisplay[0].src} size='medium' quality={70} />
-          <Picture src={picturesToDisplay[1].src} size='medium' quality={70} />
-        </Stack>
+
+      {mode === 'single' && (
+        <StyledPicturesContainer>
+          <Picture src={picturesToDisplay[0].src} size='large' quality={80} />
+        </StyledPicturesContainer>
       )}
-      {mode === 'many' && <ManyPicutresDisplay pictures={picturesToDisplay} />}
+
+      {mode === 'duo' && (
+        <StyledPicturesContainer>
+          <Stack direction='row' width='100%' height='100%' position='relative'>
+            <Picture
+              src={picturesToDisplay[0].src}
+              size='medium'
+              quality={70}
+              sx={{ borderRight: `1px solid ${theme.palette.secondary.light}` }}
+            />
+            <Picture
+              src={picturesToDisplay[1].src}
+              size='medium'
+              quality={70}
+              sx={{ borderLeft: `1px solid ${theme.palette.secondary.light}` }}
+            />
+          </Stack>
+        </StyledPicturesContainer>
+      )}
+      {mode === 'many' && (
+        <ManyPicutresDisplay pictures={picturesToDisplay} pictureBorder={pictureBorder} />
+      )}
       <StyledDevider sx={{ bottom: '0' }} />
     </StyledRoot>
   );

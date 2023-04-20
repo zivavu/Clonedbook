@@ -19,7 +19,7 @@ export const user = createApi({
             if (a.friends.length > b.friends.length) return -1;
             if (a.friends.length < b.friends.length) return 1;
             return 0;
-          })[0];
+          })[2];
 
           return maxFriendsAcc ? { data: { ...maxFriendsAcc } } : { error: 'No user' };
         } catch (error: any) {

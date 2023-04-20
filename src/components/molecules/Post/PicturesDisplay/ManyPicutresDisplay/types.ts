@@ -1,15 +1,14 @@
-import { BoxProps } from '@mui/material';
+import { Theme } from '@emotion/react';
+import { BoxProps, SxProps } from '@mui/material';
 import { PictureToDisplay } from '../types';
 
 export interface ManyPicutresDisplayProps extends BoxProps {
   pictures: PictureToDisplay[];
+  pictureBorder: string;
 }
 
 export interface Layouts {
   [key: string]: Layout;
 }
 
-export type Layout = {
-  width: string;
-  height: string;
-}[];
+export type Layout = SxProps<Theme>[];

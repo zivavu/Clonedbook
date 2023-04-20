@@ -1,4 +1,4 @@
-import { Stack, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { uuidv4 } from '@firebase/util';
 import Picture from '../Picture';
@@ -7,6 +7,7 @@ import { pictureSize } from '../types';
 import { Layouts, ManyPicutresDisplayProps } from './types';
 
 export default function ManyPicutresDisplay({ pictures, pictureBorder }: ManyPicutresDisplayProps) {
+  const theme = useTheme();
   //Used in next/image component for image optimization
   function getPictureSizeAndQuality(i: number) {
     let size: pictureSize = 'medium';
@@ -24,6 +25,7 @@ export default function ManyPicutresDisplay({ pictures, pictureBorder }: ManyPic
       id: uuidv4(),
     };
   }
+  console.log(pictures);
 
   const layouts: Layouts = {
     //single layout is an array of objects with sx of every picture used in layout
@@ -71,19 +73,50 @@ export default function ManyPicutresDisplay({ pictures, pictureBorder }: ManyPic
       ? layouts.quadruple
       : layouts.fiveAndMore;
 
-  const picturesToDisplay = pictures.slice(0, 5).map((picture, i) => {
+  const picturesToDisplay = pictures.map((picture, i) => {
     const { size, quality, id } = getPictureSizeAndQuality(i);
-    return <Picture key={id} src={picture.src} quality={quality} size={size} sx={usedLayout[i]} />;
-  });
+    //if there are more than 5 pictures and we are on the 5th picture we want to display a box with number of pictures left
+    const isShowMorePicture = pictures.length >= 5 && i === 4;
 
+    return !isShowMorePicture ? (
+      <Picture key={id} src={picture.src} quality={quality} size={size} sx={usedLayout[i]} />
+    ) : (
+      <Box sx={{ ...usedLayout[i], position: 'relative' }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            zIndex: '1',
+            bgcolor: 'rgba(0, 0, 0, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <Typography
+            variant='h4'
+            color={theme.palette.common.white}
+            sx={{
+              position: 'absolute',
+              fontWeight: '400',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            +{pictures.length - 4}
+          </Typography>
+        </Box>
+        <Picture key={id} src={picture.src} quality={quality} size={size}></Picture>
+      </Box>
+    );
+  });
   return (
     <>
       {picturesToDisplay.length >= 5 && (
         <StyledPicturesContainer sx={{ height: '600px' }}>
-          <Stack height='55%' direction='row' position='relative'>
+          <Stack height='60%' direction='row' position='relative'>
             {picturesToDisplay.slice(0, 2)}
           </Stack>
-          <Stack height='45%' direction='row' position='relative'>
+          <Stack height='40%' direction='row' position='relative'>
             {picturesToDisplay.slice(2, 5)}
           </Stack>
         </StyledPicturesContainer>

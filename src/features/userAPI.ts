@@ -15,13 +15,13 @@ export const user = createApi({
           const querySnapshot = query(ref, limit(10));
           const data = await getDocs(querySnapshot);
           const user = data.docs.map((doc) => doc.data()) as IUserServerData[];
-          const maxFriendsAcc = user.sort((a, b) => {
-            if (a.friends.length > b.friends.length) return -1;
-            if (a.friends.length < b.friends.length) return 1;
+          const maxPostsAcc = user.sort((a, b) => {
+            if (a.posts.length > b.posts.length) return -1;
+            if (a.posts.length < b.posts.length) return 1;
             return 0;
           })[2];
 
-          return maxFriendsAcc ? { data: { ...maxFriendsAcc } } : { error: 'No user' };
+          return maxPostsAcc ? { data: { ...maxPostsAcc } } : { error: 'No user' };
         } catch (error: any) {
           return { error: error.message };
         }

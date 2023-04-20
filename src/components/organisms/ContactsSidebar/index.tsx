@@ -1,7 +1,7 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
+import { Avatar, Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
 

@@ -3,6 +3,7 @@ import { useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import Image from 'next/image';
+import { useState } from 'react';
 import { PictureProps } from './types';
 
 export default function Picture({
@@ -11,9 +12,11 @@ export default function Picture({
   size: imageSize,
   quality,
   sx,
+  children,
   ...rootProps
 }: PictureProps) {
   const theme = useTheme();
+  const [isError, setIsError] = useState(false);
 
   let imageSizes;
   const screens = {
@@ -50,15 +53,19 @@ export default function Picture({
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Image
-        src={src}
+        src={!isError ? src : 'https://picsum.photos/800/800'}
         alt={alt || "Post's picture"}
         fill
         quality={quality}
         sizes={imageSizes}
+        onError={(e) => {
+          setIsError(true);
+        }}
         style={{
           objectFit: 'cover',
         }}
-      ></Image>
+      />
+      {children}
     </StyledRoot>
   );
 }

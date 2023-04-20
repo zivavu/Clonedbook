@@ -24,9 +24,9 @@ const randomPostPictures = [
   faker.image.abstract,
   faker.image.animals,
   faker.image.business,
-  `https://picsum.photos/${Math.floor(Math.random() * 1000)}/700/700`,
-  `https://picsum.photos/${Math.floor(Math.random() * 1000)}/1000/700`,
-  `https://picsum.photos/${Math.floor(Math.random() * 1000)}/1300/800`,
+  `https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/700/700`,
+  `https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/1000/700`,
+  `https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/1300/800`,
 ];
 const randomProfilePictures = [faker.image.people, faker.internet.avatar];
 const randomBackgroundPictures = [faker.image.nature, faker.image.animals];

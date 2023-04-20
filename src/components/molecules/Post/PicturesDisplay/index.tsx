@@ -11,7 +11,8 @@ export default function PicturesDisplay({ pictures, ...rootProps }: PicturesDisp
   const mode: DisplayMode =
     pictures.length === 1 ? 'single' : pictures.length === 2 ? 'duo' : 'many';
 
-  const cutIndex = mode === 'single' ? 1 : mode === 'duo' ? 2 : 5;
+  //undefined as a second slice parameter means that we display all pictures
+  const cutIndex = mode === 'single' ? 1 : mode === 'duo' ? 2 : undefined;
   const picturesToDisplay: PictureToDisplay[] = pictures.slice(0, cutIndex).map((picture) => ({
     src: picture,
   }));

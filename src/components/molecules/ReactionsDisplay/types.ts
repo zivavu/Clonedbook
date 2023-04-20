@@ -4,7 +4,7 @@ import { BoxProps } from '@mui/material';
 
 export interface ReactionsDisplayProps extends BoxProps {
   reactions: UserReaction[] | undefined;
-  exampleReactors: BasicUserInfo[];
+  exampleReactors: BasicUserInfo[] | undefined;
 }
 
 export type ReactionsByTypes = {

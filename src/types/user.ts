@@ -45,5 +45,4 @@ export interface BasicUserInfo {
   middleName?: string;
   lastName: string;
   profilePicture?: string;
-  nickname?: string;
 }

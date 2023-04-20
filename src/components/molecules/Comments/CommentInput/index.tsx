@@ -1,6 +1,6 @@
 import { TextField, Typography, useTheme } from '@mui/material';
 
-import { StyledRoot } from './styles';
+import { StyledCommentInput, StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useState } from 'react';
@@ -12,22 +12,15 @@ export default function CommentInput({ ...rootProps }: CommentInputProps) {
   return (
     <StyledRoot {...rootProps}>
       <UserAvatar size={30} sx={{ mr: theme.spacing(0.7) }} />
-      <TextField
+      <StyledCommentInput
         multiline
         fullWidth
-        sx={{
-          '& .MuiInputBase-root': {
-            padding: theme.spacing(1, 1.5),
-            fontSize: '0.9rem',
-            lineHeight: '1.2rem',
-          },
-        }}
         size='small'
         onChange={(e) => setCommentText(e.target.value)}
         placeholder='Write a comment...'
       >
         {commentText}
-      </TextField>
+      </StyledCommentInput>
     </StyledRoot>
   );
 }

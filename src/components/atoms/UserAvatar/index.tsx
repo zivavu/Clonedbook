@@ -9,7 +9,11 @@ export default function UserAvatar({ sx, size, alt, src }: UserAvatarProps) {
   const { data: userData } = useFetchUserQuery({});
   return (
     <Avatar
-      src={src || userData?.data?.profilePicture || ''}
+      src={
+        src ||
+        userData?.data?.profilePicture ||
+        'https://source.unsplash.com/collection/526820/480x480'
+      }
       alt={alt || 'user avatar'}
       sx={{ ...sx, width: px, height: px, bgcolor: theme.palette.primary.light }}
     />

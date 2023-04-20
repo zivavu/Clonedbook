@@ -6,8 +6,8 @@ import { BasicUserInfo } from './user';
 export interface Post extends PostReference {
   postPictures?: string[];
   postText?: string;
-  reactions: UserReaction[];
-  exampleReactors: BasicUserInfo[];
+  reactions?: UserReaction[];
+  exampleReactors?: BasicUserInfo[];
   comments?: Comment[];
 }
 

@@ -42,7 +42,7 @@ export default function ReactionsDisplay({
     .map(([type, { count, icon }]) => ({ type, count, icon }))
     .sort((a, b) => b.count - a.count);
 
-  const reactorsToDisplay = exampleReactors.slice(0, -3);
+  const reactorsToDisplay = exampleReactors?.slice(0, -3) || [];
   return (
     <StyledRoot {...rootProps}>
       <Box display='flex' sx={{ pr: theme.spacing(0.25) }}>

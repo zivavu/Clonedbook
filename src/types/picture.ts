@@ -9,7 +9,7 @@ export interface Picture {
   pictureURL: string;
 }
 
-export interface ProfilePicture extends Picture {
+export interface InProfilePicture extends Picture {
   reactions: UserReaction[];
   comments: Comment[];
 }

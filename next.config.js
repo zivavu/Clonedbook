@@ -12,6 +12,16 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'loremflickr.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'unsplash.com',
+        pathname: '/source.unsplash.com/collection/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        pathname: '/id/**',
+      },
     ],
   },
 };

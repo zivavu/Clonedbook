@@ -3,9 +3,10 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { StyledContentWrapper, StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
-import ActionButtons from './ActionButtons';
+import ActionButtons from '../ActionButtons';
+import CommentsDisplay from '../CommentsDisplay';
+import ReactionsDisplay from '../ReactionsDisplay';
 import PicturesDisplay from './PicturesDisplay';
-import ReactionsDisplay from './ReactionsDisplay';
 import { PostProps } from './types';
 
 export default function Post({ post, ...rootProps }: PostProps) {
@@ -59,6 +60,9 @@ export default function Post({ post, ...rootProps }: PostProps) {
           sx={{ pr: theme.spacing(0.25) }}
         />
         <ActionButtons />
+      </StyledContentWrapper>
+      <StyledContentWrapper>
+        <CommentsDisplay comments={post?.comments} user={post.owner} />
       </StyledContentWrapper>
     </StyledRoot>
   );

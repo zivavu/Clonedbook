@@ -14,10 +14,7 @@ export const componentOverrides = (palette: PaletteOptions) => {
           '& fieldset': {
             border: 'none',
           },
-          '& ::placeholder': {
-            color: palette.text?.secondary,
-          },
-          borderRadius: '50px',
+          borderRadius: '18px',
           //@ts-ignore
           backgroundColor: palette.secondary?.main,
         },
@@ -44,6 +41,7 @@ export const componentOverrides = (palette: PaletteOptions) => {
         },
       },
     },
+
     MuiAppBar: {
       styleOverrides: {
         root: {

@@ -18,6 +18,9 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
         placeholder='Search Facebook'
         size='small'
         InputProps={{
+          sx: {
+            borderRadius: '50px',
+          },
           startAdornment: (
             <InputAdornment position='start'>
               <Icon icon='search' />

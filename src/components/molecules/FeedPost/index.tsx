@@ -7,11 +7,10 @@ import ActionButtons from '../ActionButtons';
 import Comments from '../Comments';
 import ReactionsDisplay from '../ReactionsDisplay';
 import PicturesDisplay from './PicturesDisplay';
-import { PostProps } from './types';
+import { FeedPostProps } from './types';
 
-export default function Post({ post, ...rootProps }: PostProps) {
-  const { createdAt, id, owner, comments, postPictures, postText, reactions } = post;
-
+export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
+  const { createdAt, id: postId, owner, comments, postPictures, postText, reactions } = post;
   const theme = useTheme();
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
@@ -30,10 +29,10 @@ export default function Post({ post, ...rootProps }: PostProps) {
     <StyledRoot {...rootProps}>
       <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
         <Stack direction='row' spacing={1} sx={{}}>
-          <UserAvatar src={post.owner.profilePicture} />
+          <UserAvatar src={owner.profilePicture} />
           <Stack justifyContent='center'>
             <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
-              {post.owner.firstName} {post.owner.lastName}
+              {owner.firstName} {owner.lastName}
             </Typography>
             <Typography variant='caption'>
               {fullDate.month} {fullDate.day}, {fullDate.year}.
@@ -52,7 +51,9 @@ export default function Post({ post, ...rootProps }: PostProps) {
           </Box>
         )}
       </StyledContentWrapper>
-      {hasPictures ? <PicturesDisplay pictures={post.postPictures as string[]} /> : null}
+      {hasPictures ? (
+        <PicturesDisplay pictures={post.postPictures as string[]} postId={postId} />
+      ) : null}
       <StyledContentWrapper>
         <ReactionsDisplay
           reactions={post.reactions}

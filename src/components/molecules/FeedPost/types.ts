@@ -1,6 +1,6 @@
 import { IPost } from '@/types/post';
 import { BoxProps } from '@mui/material';
 
-export interface PostProps extends BoxProps {
+export interface FeedPostProps extends BoxProps {
   post: IPost;
 }

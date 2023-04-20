@@ -14,12 +14,16 @@ export default function Comments({ comments, user, ...rootProps }: CommentsProps
       uniqueUsersComments.push(comment);
     }
   });
+  const exampleCommentsLength =
+    uniqueUsersComments[0]?.commentText?.length +
+    (uniqueUsersComments[1]?.commentText?.length || 0);
+  const commentsCutIndex = exampleCommentsLength > 300 ? 1 : 2;
 
   return (
     <StyledRoot {...rootProps}>
       {!!comments && (
         <Stack>
-          {uniqueUsersComments.slice(0, 2).map((comment) => (
+          {uniqueUsersComments.slice(0, commentsCutIndex).map((comment) => (
             <Comment key={comment.id} comment={comment} />
           ))}
         </Stack>

@@ -1,13 +1,11 @@
 import { StyledRoot } from './styles';
 
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchPostsQuery } from '@/features/postsAPI';
 import PostsFeed from '../PostsFeed';
 import { HomeWallProps } from './types';
 
 export default function HomeWall({ ...rootProps }: HomeWallProps) {
-  const { data } = useFetchUserQuery({});
-
-  return (
-    <StyledRoot {...rootProps}>{data?.posts ? <PostsFeed posts={data.posts} /> : null}</StyledRoot>
-  );
+  const { data } = useFetchPostsQuery({});
+  console.log(data);
+  return <StyledRoot {...rootProps}>{data ? <PostsFeed posts={data} /> : null}</StyledRoot>;
 }

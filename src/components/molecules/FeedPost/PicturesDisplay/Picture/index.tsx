@@ -2,6 +2,7 @@ import { useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import { useFetchPostsQuery } from '@/features/postsAPI';
 import Image from 'next/image';
 import { useState } from 'react';
 import { PictureProps } from './types';
@@ -11,12 +12,14 @@ export default function Picture({
   alt,
   size: imageSize,
   quality,
+  postId,
   sx,
   children,
   ...rootProps
 }: PictureProps) {
   const theme = useTheme();
   const [isError, setIsError] = useState(false);
+  const { data } = useFetchPostsQuery({});
 
   let imageSizes;
   const screens = {
@@ -62,6 +65,7 @@ export default function Picture({
           setIsError(true);
         }}
         style={{
+          cursor: 'pointer',
           objectFit: 'cover',
         }}
       />

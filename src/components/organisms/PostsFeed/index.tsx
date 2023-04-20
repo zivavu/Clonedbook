@@ -1,13 +1,13 @@
 import { StyledRoot } from './styles';
 
-import Post from '@/components/molecules/Post';
+import FeedPost from '@/components/molecules/FeedPost';
 import { PostsFeedProps } from './types';
 
 export default function PostsFeed({ posts, ...rootProps }: PostsFeedProps) {
   return (
     <StyledRoot {...rootProps}>
       {posts.map((post) => (
-        <Post key={post.id} post={post}></Post>
+        <FeedPost key={post.id} post={post}></FeedPost>
       ))}
     </StyledRoot>
   );

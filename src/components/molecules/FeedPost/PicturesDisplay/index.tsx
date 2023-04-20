@@ -6,7 +6,7 @@ import ManyPicutresDisplay from './ManyPicutresDisplay';
 import Picture from './Picture';
 import { DisplayMode, PictureToDisplay, PicturesDisplayProps } from './types';
 
-export default function PicturesDisplay({ pictures, ...rootProps }: PicturesDisplayProps) {
+export default function PicturesDisplay({ pictures, postId, ...rootProps }: PicturesDisplayProps) {
   const theme = useTheme();
   const mode: DisplayMode =
     pictures.length === 1 ? 'single' : pictures.length === 2 ? 'duo' : 'many';
@@ -25,7 +25,7 @@ export default function PicturesDisplay({ pictures, ...rootProps }: PicturesDisp
 
       {mode === 'single' && (
         <StyledPicturesContainer>
-          <Picture src={picturesToDisplay[0].src} size='large' quality={80} />
+          <Picture src={picturesToDisplay[0].src} size='large' quality={80} postId={postId} />
         </StyledPicturesContainer>
       )}
 
@@ -36,19 +36,25 @@ export default function PicturesDisplay({ pictures, ...rootProps }: PicturesDisp
               src={picturesToDisplay[0].src}
               size='medium'
               quality={70}
+              postId={postId}
               sx={{ borderRight: `1px solid ${theme.palette.secondary.light}` }}
             />
             <Picture
               src={picturesToDisplay[1].src}
               size='medium'
               quality={70}
+              postId={postId}
               sx={{ borderLeft: `1px solid ${theme.palette.secondary.light}` }}
             />
           </Stack>
         </StyledPicturesContainer>
       )}
       {mode === 'many' && (
-        <ManyPicutresDisplay pictures={picturesToDisplay} pictureBorder={pictureBorder} />
+        <ManyPicutresDisplay
+          pictures={picturesToDisplay}
+          pictureBorder={pictureBorder}
+          postId={postId}
+        />
       )}
       <StyledDevider sx={{ bottom: '0' }} />
     </StyledRoot>

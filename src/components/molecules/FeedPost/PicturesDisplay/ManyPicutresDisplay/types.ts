@@ -5,6 +5,7 @@ import { PictureToDisplay } from '../types';
 export interface ManyPicutresDisplayProps extends BoxProps {
   pictures: PictureToDisplay[];
   pictureBorder: string;
+  postId: string;
 }
 
 export interface Layouts {

@@ -2,6 +2,7 @@ import { BoxProps } from '@mui/material';
 
 export interface PicturesDisplayProps extends BoxProps {
   pictures: string[];
+  postId: string;
 }
 
 export interface PictureToDisplay {

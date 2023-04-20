@@ -6,7 +6,11 @@ import { StyledPicturesContainer } from '../styles';
 import { pictureSize } from '../types';
 import { Layouts, ManyPicutresDisplayProps } from './types';
 
-export default function ManyPicutresDisplay({ pictures, pictureBorder }: ManyPicutresDisplayProps) {
+export default function ManyPicutresDisplay({
+  pictures,
+  pictureBorder,
+  postId,
+}: ManyPicutresDisplayProps) {
   const theme = useTheme();
   //Used in next/image component for image optimization
   function getPictureSizeAndQuality(i: number) {
@@ -25,7 +29,6 @@ export default function ManyPicutresDisplay({ pictures, pictureBorder }: ManyPic
       id: uuidv4(),
     };
   }
-  console.log(pictures);
 
   const layouts: Layouts = {
     //single layout is an array of objects with sx of every picture used in layout
@@ -75,13 +78,20 @@ export default function ManyPicutresDisplay({ pictures, pictureBorder }: ManyPic
 
   const picturesToDisplay = pictures.map((picture, i) => {
     const { size, quality, id } = getPictureSizeAndQuality(i);
-    //if there are more than 5 pictures and we are on the 5th picture we want to display a box with number of pictures left
     const isShowMorePicture = pictures.length >= 5 && i === 4;
 
+    //Returns a single picture, or a picture with an overlay if it is the 5th picture
     return !isShowMorePicture ? (
-      <Picture key={id} src={picture.src} quality={quality} size={size} sx={usedLayout[i]} />
+      <Picture
+        key={id}
+        src={picture.src}
+        quality={quality}
+        size={size}
+        sx={usedLayout[i]}
+        postId={postId}
+      />
     ) : (
-      <Box sx={{ ...usedLayout[i], position: 'relative' }}>
+      <Box key={id} sx={{ ...usedLayout[i], position: 'relative' }}>
         <Box
           sx={{
             position: 'absolute',
@@ -100,15 +110,17 @@ export default function ManyPicutresDisplay({ pictures, pictureBorder }: ManyPic
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
+              userSelect: 'none',
             }}
           >
             +{pictures.length - 4}
           </Typography>
         </Box>
-        <Picture key={id} src={picture.src} quality={quality} size={size}></Picture>
+        <Picture src={picture.src} quality={quality} size={size} postId={postId}></Picture>
       </Box>
     );
   });
+
   return (
     <>
       {picturesToDisplay.length >= 5 && (

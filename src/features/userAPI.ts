@@ -14,14 +14,8 @@ export const user = createApi({
           const ref = collection(db, 'users');
           const querySnapshot = query(ref, limit(10));
           const data = await getDocs(querySnapshot);
-          const user = data.docs.map((doc) => doc.data()) as IUserServerData[];
-          const maxPostsAcc = user.sort((a, b) => {
-            if (a.posts.length > b.posts.length) return -1;
-            if (a.posts.length < b.posts.length) return 1;
-            return 0;
-          })[2];
-
-          return maxPostsAcc ? { data: { ...maxPostsAcc } } : { error: 'No user' };
+          const users = data.docs.map((doc) => doc.data()) as IUserServerData[];
+          return { data: users[0] };
         } catch (error: any) {
           return { error: error.message };
         }

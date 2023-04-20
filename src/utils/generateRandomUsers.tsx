@@ -36,7 +36,7 @@ export function getPastDate() {
   return date;
 }
 
-const maxUsers = 40,
+const maxUsers = 80,
   maxFriends = 40;
 export function generateUsers(usersAmount: number = maxUsers, friendsAmount: number = maxFriends) {
   if (maxFriends > maxUsers) friendsAmount = maxUsers - 1;
@@ -112,6 +112,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
 
   function getRandomReactions(amount: number) {
     const reactions: Array<IUserReaction> = [];
+    const hasReactions = Math.random() > 0.3;
+    if (!hasReactions) return reactions;
     const possibleReactions: Array<IUserReaction['type']> = [
       'angry',
       'like',
@@ -120,7 +122,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       'wow',
       'haha',
     ];
-    for (let i = 0; i < Math.ceil(Math.random() * amount) + 5; i++) {
+    const isGreat = Math.random() > 0.9;
+    for (let i = 0; i < Math.floor(Math.random() * amount * (isGreat ? 40 : 3)); i++) {
       const reactingUserUID = getRandomUserUID();
       if (reactions.some((reaction) => reaction.userId === reactingUserUID)) {
         continue;
@@ -157,7 +160,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         id: photoId,
         pictureURL: getRandomPhotoUrl(),
         reactions: getRandomReactions(50),
-        comments: getRandomComents(8, 7),
+        comments: getRandomComents(8, 5),
       };
       photos.push(photo);
     }
@@ -168,24 +171,24 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
       const postPictures: string[] = [];
       const hasPictures = Math.random() > 0.2;
-      for (let i = 0; i < Math.ceil(Math.random() * 14); i++) {
+      for (let i = 0; i < Math.floor(Math.random() * 14); i++) {
         postPictures.push(getRandomPhotoUrl());
       }
       const postId = getRandomUIDv4();
 
       const postReactions = getRandomReactions(80);
-      const exampleReactions = postReactions.slice(0, 5);
+      const exampleReactions = postReactions.slice(0, 3);
       const exampleReactors = exampleReactions.map((reaction) => {
         const reactorsBasicInfo = usersBasicInfo.find((user) => user.profileId === reaction.userId);
         return reactorsBasicInfo as IBasicUserInfo;
       });
-
+      const hasComments = Math.random() > 0.3;
       const post: IPost = {
         id: postId,
         owner: basicUserInfo,
         postText: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
-        comments: getRandomComents(14, 8),
+        comments: hasComments ? getRandomComents(9, 4) : [],
         reactions: postReactions,
         exampleReactors: exampleReactors,
         createdAt: getPastDate(),
@@ -250,7 +253,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         };
         const publicFriendship: IPublicFriendship = {
           connectionId: connectionUUID,
-          users: [usersBasicInfo, userToBefriendInfo],
+          usersIds: [usersBasicInfo.profileId, userToBefriendInfo.profileId],
         };
         usersPublicFriendships.push(publicFriendship);
         usersFriends.push(friend);
@@ -285,7 +288,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     const picturesOfUsers: IInProfilePicture[][] = [];
     for (let i = 0; i < usersAmount; i++) {
       const userBasicInfo = usersBasicInfo[i];
-      const userPosts = getRandomPosts(7, userBasicInfo);
+      const userPosts = getRandomPosts(Math.random() > 0.7 ? 20 : 5, userBasicInfo);
       const userPictures = getRandomProfilePhotos(10, userBasicInfo);
       const user: IUser = {
         ...userBasicInfo,
@@ -434,5 +437,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(50, 50)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(100, 100)}>AddEm</Button>;
 }

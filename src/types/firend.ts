@@ -13,5 +13,5 @@ export interface IFriend {
 
 export interface IPublicFriendship {
   connectionId: string; // unique identifier for the connection
-  users: IBasicUserInfo[];
+  usersIds: string[];
 }

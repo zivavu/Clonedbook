@@ -3,6 +3,7 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { StyledContentWrapper, StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
+import { AddUsersButton } from '@/utils/generateRandomUsers';
 import ActionButtons from '../ActionButtons';
 import Comments from '../Comments';
 import ReactionsDisplay from '../ReactionsDisplay';

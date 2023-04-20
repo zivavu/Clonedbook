@@ -12,16 +12,21 @@ export default function ManyPicutresDisplay({
   postId,
 }: ManyPicutresDisplayProps) {
   const theme = useTheme();
+
   //Used in next/image component for image optimization
   function getPictureSizeAndQuality(i: number) {
     let size: pictureSize = 'medium';
     let quality: number = 60;
     if (i < 2) {
       size = 'medium';
-      quality = 60;
+      quality = 70;
+    }
+    if (i === 0) {
+      size = 'large';
+      quality = 80;
     } else {
       size = 'small';
-      quality = 20;
+      quality = 50;
     }
     return {
       size,

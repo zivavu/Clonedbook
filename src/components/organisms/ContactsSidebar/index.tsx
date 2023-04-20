@@ -1,4 +1,5 @@
 import Icon from '@/components/atoms/Icon/Icon';
+import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { Avatar, Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import { StyledHeadingContainer, StyledRoot } from './styles';
@@ -36,10 +37,10 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
             : userData?.friends.slice(0, 30).map((friend) => {
                 return (
                   <ListItemButton key={friend.info.profileId} sx={{ pl: theme.spacing(1) }}>
-                    <Avatar
+                    <UserAvatar
                       sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
                       src={friend.info.profilePicture || ''}
-                    ></Avatar>
+                    ></UserAvatar>
                     <Typography variant='body2'>
                       {friend.info.firstName} {friend.info.lastName}
                     </Typography>

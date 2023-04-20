@@ -14,13 +14,18 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'unsplash.com',
-        pathname: '/source.unsplash.com/collection/**',
+        hostname: 'source.unsplash.com',
+        pathname: '/collection/**',
       },
       {
         protocol: 'https',
         hostname: 'picsum.photos',
         pathname: '/id/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cloudflare-ipfs.com',
+        pathname: '/ipfs/**',
       },
     ],
   },

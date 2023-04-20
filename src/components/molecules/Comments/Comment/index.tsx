@@ -11,7 +11,7 @@ export default function Comment({ comment, ...rootProps }: CommentProps) {
   return (
     <StyledRoot {...rootProps}>
       <Box display='flex' alignItems='center'>
-        <UserAvatar src={comment.owner.profilePicture} sx={{ alignSelf: 'start' }} size='32' />
+        <UserAvatar src={comment.owner.profilePicture} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>
           <Typography variant='body2' fontWeight='400' lineHeight='1.2rem'>
             {comment.owner.firstName} {comment.owner.lastName}

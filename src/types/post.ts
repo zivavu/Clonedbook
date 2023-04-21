@@ -6,9 +6,10 @@ import { IBasicUserInfo } from './user';
 export interface IPost extends IPostReference {
   postPictures?: string[];
   postText?: string;
-  reactions?: IUserReaction[];
+  reactions: IUserReaction[];
   exampleReactors?: IBasicUserInfo[];
-  comments?: IComment[];
+  comments: IComment[];
+  shareCount: number;
 }
 
 export interface IPostReference {

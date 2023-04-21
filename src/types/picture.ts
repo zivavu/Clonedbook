@@ -12,6 +12,7 @@ export interface IPicture {
 export interface IInProfilePicture extends IPicture {
   reactions: IUserReaction[];
   comments: IComment[];
+  shareCount: number;
 }
 
 export interface IInChatPicture extends IPicture {

@@ -88,10 +88,17 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
   function getRandomComents(amount: number, reactionsCount: number) {
     const comments: Array<IComment> = [];
+    const discutantsRange = Math.ceil(Math.random() * 8);
+    let discutantsStartIndex = Math.floor(Math.random() * usersAmount);
+    if (discutantsStartIndex + discutantsRange > usersAmount) {
+      discutantsStartIndex = usersAmount - discutantsRange;
+    }
+
     const discutants = usersUIDS.slice(
-      0,
-      Math.max(Math.floor((Math.random() * usersUIDS.length) / 8), 5),
+      discutantsStartIndex,
+      discutantsStartIndex + Math.max(Math.floor(Math.random() * 6), 1),
     );
+
     for (let i = 0; i < Math.floor(Math.random() * amount); i++) {
       const ownerId = discutants[Math.floor(Math.random() * discutants.length) || 0];
       const ownerBasicUserInfo = usersBasicInfo.find(
@@ -159,6 +166,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         pictureURL: getRandomPhotoUrl(),
         reactions: getRandomReactions(50),
         comments: getRandomComents(8, 5),
+        shareCount: Math.floor(Math.random() * 50),
       };
       photos.push(photo);
     }
@@ -180,15 +188,16 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         const reactorsBasicInfo = usersBasicInfo.find((user) => user.profileId === reaction.userId);
         return reactorsBasicInfo as IBasicUserInfo;
       });
-      const hasComments = Math.random() > 0.3;
+      const hasComments = Math.random() > 0.2;
       const post: IPost = {
         id: postId,
         owner: basicUserInfo,
         postText: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
-        comments: hasComments ? getRandomComents(9, 4) : [],
+        comments: hasComments ? getRandomComents(20, 7) : [],
         reactions: postReactions,
         exampleReactors: exampleReactors,
+        shareCount: Math.floor(Math.random() * 30),
         createdAt: getPastDate(),
       };
       posts.push(post);
@@ -286,7 +295,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     const picturesOfUsers: IInProfilePicture[][] = [];
     for (let i = 0; i < usersAmount; i++) {
       const userBasicInfo = usersBasicInfo[i];
-      const userPosts = getRandomPosts(Math.random() > 0.7 ? 20 : 5, userBasicInfo);
+      const userPosts = getRandomPosts(Math.random() > 0.9 ? 20 : 4, userBasicInfo);
       const userPictures = getRandomProfilePhotos(10, userBasicInfo);
       const user: IUser = {
         ...userBasicInfo,
@@ -395,7 +404,12 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     postBatch.set(docRef, post);
     postsThatWillBeCommited.push(post);
   });
+  if (allPosts.length > 500) {
+    console.log(`You want to post ${allPosts.length} posts, that's too much, you can't do that}`);
+    return;
+  }
 
+  const baseSleepTime = 10000;
   //Don't care enought to make it good, that scripts drives me crazy, it just has to work
   console.log(`you going to commit batch1`, dataThatWillBeCommited[0]);
   console.log(`batch2`, dataThatWillBeCommited[1]);
@@ -408,17 +422,17 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     console.log(`commiting batch 1 done`);
     //sleep increses the max amount of users cause promise is resolved before the batch is written
     console.log(`sleeping `);
-    await sleep(15000);
+    await sleep(baseSleepTime);
     console.log(`commiting batch 2`);
     await batches[1].commit();
     console.log(`commiting batch 2 done`);
     console.log(`sleeping`);
-    await sleep(15000);
+    await sleep(baseSleepTime);
     console.log(`commiting batch 3`);
     await batches[2].commit();
     console.log(`commiting batch 3 done`);
     console.log(`sleeping`);
-    await sleep(15000);
+    await sleep(baseSleepTime * 1.5);
     console.log(`commiting posts`);
     await postBatch.commit();
     console.log(`commiting posts done`);

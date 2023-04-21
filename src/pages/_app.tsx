@@ -3,13 +3,15 @@ import { config, library } from '@fortawesome/fontawesome-svg-core';
 
 import { faComment, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import {
+  faAngleLeft,
+  faAngleRight,
   faBell,
   faClapperboard,
   faEllipsis,
+  faHouse,
   faMagnifyingGlass,
   faPeopleGroup,
   faXmark,
-  faHouse as fasHouse,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
@@ -24,7 +26,7 @@ config.autoAddCss = false;
 
 const icons = [
   faShareSquare,
-  fasHouse,
+  faHouse,
   faClapperboard,
   faMagnifyingGlass,
   faPeopleGroup,
@@ -34,6 +36,8 @@ const icons = [
   faComment,
   faThumbsUp,
   faXmark,
+  faAngleRight,
+  faAngleLeft,
 ] as any;
 library.add(...icons);
 

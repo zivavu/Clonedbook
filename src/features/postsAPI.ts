@@ -1,7 +1,7 @@
 import { db } from '@/config/firebase.config';
 import { IPost } from '@/types/post';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, limit, query } from 'firebase/firestore';
 
 export const posts = createApi({
   reducerPath: 'postsApi',
@@ -12,7 +12,7 @@ export const posts = createApi({
       async queryFn() {
         try {
           const ref = collection(db, 'posts');
-          const querySnapshot = query(ref, orderBy('createdAt', 'desc'), limit(15));
+          const querySnapshot = query(ref, limit(30));
           const docs = await getDocs(querySnapshot);
           const posts = docs.docs.map((doc) => doc.data()) as IPost[];
           return { data: posts };

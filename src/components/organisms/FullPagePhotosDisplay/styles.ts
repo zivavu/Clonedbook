@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, ButtonBase, IconButton, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -9,11 +9,4 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'fixed',
   display: 'flex',
   justifyContent: 'space-between',
-}));
-
-export const StyledCurrentImageContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  width: '100%',
-  height: '100%',
-  backgroundColor: theme.palette.common.black,
 }));

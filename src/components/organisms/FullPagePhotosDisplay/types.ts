@@ -4,6 +4,6 @@ import { Dispatch, SetStateAction } from 'react';
 
 export interface FullPagePhotosDisplayProps extends BoxProps {
   post: IPost;
-  photo: string;
+  initialPhoto: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }

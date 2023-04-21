@@ -46,14 +46,14 @@ export default function Picture({
         `${screens.medium} 200px`,
         `${screens.large} 200px`,
         `400px`,
-      ].join(',');
+      ].join(', ');
       break;
     case 'medium':
       imageSizes = [
         `${screens.small} 200px`,
         `${screens.medium} 300px`,
         `${screens.large} 400px`,
-        `500px`,
+        `600px`,
       ].join(', ');
       break;
     case 'large':
@@ -96,7 +96,11 @@ export default function Picture({
       </StyledRoot>
       {isFullViewOpen && postData && (
         <Portal>
-          <FullPagePhotosDisplay post={postData} photo={photoSrc} setOpen={setIsFullViewOpen} />
+          <FullPagePhotosDisplay
+            post={postData}
+            initialPhoto={photoSrc}
+            setOpen={setIsFullViewOpen}
+          />
         </Portal>
       )}
     </>

@@ -4,12 +4,13 @@ import { useFetchUserQuery } from '@/features/userAPI';
 import Image from 'next/image';
 import { UserAvatarProps } from './types';
 
-export default function UserAvatar({ sx, size = 40, alt, src }: UserAvatarProps) {
+export default function UserAvatar({ sx, size = 40, alt, src, ...rootProps }: UserAvatarProps) {
   const px = `${size}px`;
   const theme = useTheme();
   const { data: userData } = useFetchUserQuery({});
   return (
     <Box
+      {...rootProps}
       sx={{
         ...sx,
         width: px,

@@ -15,7 +15,7 @@ export const user = createApi({
           const querySnapshot = query(ref, limit(10));
           const data = await getDocs(querySnapshot);
           const users = data.docs.map((doc) => doc.data()) as IUserServerData[];
-          return { data: users[0] };
+          return { data: users[1] };
         } catch (error: any) {
           return { error: error.message };
         }

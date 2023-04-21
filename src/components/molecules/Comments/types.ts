@@ -4,5 +4,4 @@ import { BoxProps } from '@mui/material';
 
 export interface CommentsProps extends BoxProps {
   comments: IComment[] | undefined;
-  user: IBasicUserInfo;
 }

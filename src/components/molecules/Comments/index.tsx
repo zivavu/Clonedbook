@@ -2,12 +2,15 @@ import { Stack, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import { useFetchUserQuery } from '@/features/userAPI';
 import { IComment } from '@/types/comment';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
 import { CommentsProps } from './types';
 
-export default function Comments({ comments, user, ...rootProps }: CommentsProps) {
+export default function Comments({ comments, ...rootProps }: CommentsProps) {
+  const { data } = useFetchUserQuery({});
+  const user = data?.public;
   const uniqueUsersComments: IComment[] = [];
   comments?.forEach((comment) => {
     if (!uniqueUsersComments.find((c) => c.owner.profileId === comment.owner.profileId)) {
@@ -28,7 +31,7 @@ export default function Comments({ comments, user, ...rootProps }: CommentsProps
           ))}
         </Stack>
       )}
-      <CommentInput user={user} />
+      {user && <CommentInput user={user} />}
     </StyledRoot>
   );
 }

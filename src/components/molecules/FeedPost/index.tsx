@@ -66,7 +66,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
         <ActionButtons />
       </StyledContentWrapper>
       <StyledContentWrapper>
-        <Comments comments={post?.comments} user={post.owner} />
+        <Comments comments={post?.comments} />
       </StyledContentWrapper>
     </StyledRoot>
   );

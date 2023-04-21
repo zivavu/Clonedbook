@@ -29,7 +29,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
   return (
     <StyledRoot {...rootProps}>
       <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
-        <Stack direction='row' spacing={1} sx={{}}>
+        <Stack direction='row' spacing={1}>
           <UserAvatar src={owner.profilePicture} />
           <Stack justifyContent='center'>
             <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
@@ -41,7 +41,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           </Stack>
         </Stack>
         {hasText && (
-          <Box sx={{ p: theme.spacing(1, 0) }}>
+          <Box sx={{ pt: theme.spacing(1) }}>
             {isTextLong ? (
               <Typography variant='body2'>{post.postText}</Typography>
             ) : (
@@ -53,13 +53,15 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
         )}
       </StyledContentWrapper>
       {hasPictures ? (
-        <PicturesDisplay pictures={post.postPictures as string[]} postId={postId} />
+        <Box mt={theme.spacing(1)}>
+          <PicturesDisplay pictures={post.postPictures as string[]} postId={postId} />
+        </Box>
       ) : null}
       <StyledContentWrapper>
         <ReactionsDisplay
           reactions={post.reactions}
           exampleReactors={post.exampleReactors}
-          sx={{ pr: theme.spacing(0.25) }}
+          sx={{ pr: theme.spacing(0.25), mb: theme.spacing(1) }}
         />
         <ActionButtons />
       </StyledContentWrapper>

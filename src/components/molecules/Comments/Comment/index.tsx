@@ -19,7 +19,7 @@ export default function Comment({ comment, ...rootProps }: CommentProps) {
           <Typography variant='body2' lineHeight='1.2rem'>
             {comment.commentText}
           </Typography>
-          {!!comment.reactions && (
+          {!!comment?.reactions?.length && (
             <ReactionsDisplay
               reactions={comment.reactions}
               emotesCount={2}

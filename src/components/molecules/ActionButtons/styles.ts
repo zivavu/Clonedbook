@@ -7,7 +7,6 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   height: '44px',
   display: 'flex',
   justifyContent: 'space-evenly',
-  marginTop: theme.spacing(1),
   borderTop: `1px solid ${theme.palette.divider}`,
   borderBottom: `1px solid ${theme.palette.divider}`,
 }));

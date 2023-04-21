@@ -27,6 +27,7 @@ export default function ReactionsDisplay({
   const theme = useTheme();
 
   const reactionsCount = reactions?.length || 0;
+  if (!reactionsCount) return null;
 
   const reactionsByTypes: ReactionsByTypes = {
     like: { count: 0, icon: LikeIcon },

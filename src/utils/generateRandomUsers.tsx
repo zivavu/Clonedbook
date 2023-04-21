@@ -24,10 +24,8 @@ const randomPostPictures = [
   faker.image.abstract,
   faker.image.animals,
   faker.image.business,
-  `https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/700/700`,
-  `https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/1000/700`,
-  `https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/1300/800`,
 ];
+
 const randomProfilePictures = [faker.image.people, faker.internet.avatar];
 const randomBackgroundPictures = [faker.image.nature, faker.image.animals];
 
@@ -37,7 +35,7 @@ export function getPastDate() {
 }
 
 const maxUsers = 80,
-  maxFriends = 40;
+  maxFriends = 60;
 export function generateUsers(usersAmount: number = maxUsers, friendsAmount: number = maxFriends) {
   if (maxFriends > maxUsers) friendsAmount = maxUsers - 1;
   if (usersAmount > maxUsers) {

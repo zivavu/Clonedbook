@@ -4,6 +4,7 @@ import { uuidv4 } from '@firebase/util';
 import Picture from '../Picture';
 import { StyledPicturesContainer } from '../styles';
 import { pictureSize } from '../types';
+import LastPicture from './LastPicture';
 import { Layouts, ManyPicutresDisplayProps } from './types';
 
 export default function ManyPicutresDisplay({
@@ -83,10 +84,10 @@ export default function ManyPicutresDisplay({
 
   const picturesToDisplay = pictures.map((picture, i) => {
     const { size, quality, id } = getPictureSizeAndQuality(i);
-    const isShowMorePicture = pictures.length >= 5 && i === 4;
+    const isLastPicture = pictures.length >= 5 && i === 4;
 
     //Returns a single picture, or a picture with an overlay if it is the 5th picture
-    return !isShowMorePicture ? (
+    return !isLastPicture ? (
       <Picture
         key={id}
         src={picture.src}
@@ -96,33 +97,15 @@ export default function ManyPicutresDisplay({
         postId={postId}
       />
     ) : (
-      <Box key={id} sx={{ ...usedLayout[i], position: 'relative' }}>
-        <Box
-          sx={{
-            position: 'absolute',
-            zIndex: '1',
-            bgcolor: 'rgba(0, 0, 0, 0.5)',
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          <Typography
-            variant='h4'
-            color={theme.palette.common.white}
-            sx={{
-              position: 'absolute',
-              fontWeight: '400',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              userSelect: 'none',
-            }}
-          >
-            +{pictures.length - 4}
-          </Typography>
-        </Box>
-        <Picture src={picture.src} quality={quality} size={size} postId={postId}></Picture>
-      </Box>
+      <LastPicture
+        key={id}
+        picturesLength={pictures.length}
+        postId={postId}
+        src={picture.src}
+        quality={quality}
+        size={size}
+        sx={{ ...usedLayout[i] }}
+      />
     );
   });
 
@@ -138,6 +121,7 @@ export default function ManyPicutresDisplay({
           </Stack>
         </StyledPicturesContainer>
       )}
+
       {picturesToDisplay.length === 4 && (
         <StyledPicturesContainer sx={{ height: '600px' }}>
           <Stack width='100%' height='50%' direction='row'>
@@ -148,6 +132,7 @@ export default function ManyPicutresDisplay({
           </Stack>
         </StyledPicturesContainer>
       )}
+
       {picturesToDisplay.length === 3 && (
         <StyledPicturesContainer sx={{ height: '600px' }}>
           <Stack direction='row' position='relative' width='100%' height='60%'>

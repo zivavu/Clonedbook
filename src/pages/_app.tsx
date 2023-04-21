@@ -8,6 +8,7 @@ import {
   faEllipsis,
   faMagnifyingGlass,
   faPeopleGroup,
+  faXmark,
   faHouse as fasHouse,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -32,6 +33,7 @@ const icons = [
   faEllipsis,
   faComment,
   faThumbsUp,
+  faXmark,
 ] as any;
 library.add(...icons);
 

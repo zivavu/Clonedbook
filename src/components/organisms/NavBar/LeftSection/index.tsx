@@ -1,4 +1,4 @@
-import { InputAdornment, TextField } from '@mui/material';
+import { InputAdornment, TextField, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -8,10 +8,11 @@ import Link from 'next/link';
 import { LeftSectionProps } from './types';
 
 export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionProps) {
+  const theme = useTheme();
   return (
     <StyledRoot sx={sx} className={classes?.root} {...rootProps}>
-      <Link href='/'>
-        <Image src='/facebook-logo.svg' width={50} height={50} alt='Site logo'></Image>
+      <Link href='/' style={{ height: '40px', paddingRight: theme.spacing(1) }}>
+        <Image src='/facebook-logo.svg' width={40} height={40} alt='Site logo'></Image>
       </Link>
       <TextField
         variant='outlined'
@@ -20,6 +21,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
         InputProps={{
           sx: {
             borderRadius: '50px',
+            width: '280px',
           },
           startAdornment: (
             <InputAdornment position='start'>

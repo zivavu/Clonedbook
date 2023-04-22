@@ -42,7 +42,11 @@ export default function PostInfo({ post, ...rootProps }: PostInfoProps) {
         <ReactionsDisplay reactions={post.reactions} displayCount />
         <Box display='flex'>
           <Typography pr={theme.spacing(1)} variant='caption' sx={{ color: 'text.secondary' }}>
-            {post.comments?.length} comments
+            {post.comments.length === 0
+              ? ''
+              : post.comments.length > 1
+              ? `${post.comments.length} comments`
+              : `${post.comments.length} comment`}
           </Typography>
           <Typography variant='caption' sx={{ color: 'text.secondary' }}>
             {post.shareCount} shares

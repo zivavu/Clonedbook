@@ -107,7 +107,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       comments.push({
         id: getRandomUIDv4(),
         owner: ownerBasicUserInfo,
-        commentText: faker.lorem.sentences(Math.floor(Math.random() * 5) + 1, '\n'),
+        commentText: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         commentResponses: [],
         reactions: getRandomReactions(reactionsCount),
       });

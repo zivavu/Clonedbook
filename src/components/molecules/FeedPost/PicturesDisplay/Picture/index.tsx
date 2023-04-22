@@ -95,13 +95,11 @@ export default function Picture({
         </ButtonBase>
       </StyledRoot>
       {isFullViewOpen && postData && (
-        <Portal>
-          <FullPagePhotosDisplay
-            post={postData}
-            initialPhoto={photoSrc}
-            setOpen={setIsFullViewOpen}
-          />
-        </Portal>
+        <FullPagePhotosDisplay
+          post={postData}
+          initialPhoto={photoSrc}
+          setOpen={setIsFullViewOpen}
+        />
       )}
     </>
   );

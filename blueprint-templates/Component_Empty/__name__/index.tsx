@@ -4,10 +4,10 @@ import { StyledRoot } from './styles';
 
 import { {{name}}Props } from './types';
 
-export default function {{name}}({ ...rootProps }: {{name}}Props) {
+export default function {{name}}({ sx, ...rootProps }: {{name}}Props) {
 	const theme = useTheme();
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps}>
       <Typography>{{name}}</Typography>
     </StyledRoot>
   );

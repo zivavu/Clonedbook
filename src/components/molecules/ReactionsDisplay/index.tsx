@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -12,6 +12,8 @@ import {
   WowIcon,
 } from '@/assets/reactionIcons';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
+import { useState } from 'react';
+import ReactionsPortal from './ReactionsPortal';
 import { ReactionsByTypes, ReactionsDisplayProps } from './types';
 
 export default function ReactionsDisplay({
@@ -26,8 +28,10 @@ export default function ReactionsDisplay({
 }: ReactionsDisplayProps) {
   const theme = useTheme();
 
+  const [showPortal, setShowPortal] = useState(false);
+
   const reactionsCount = reactions?.length || 0;
-  if (!reactionsCount) return null;
+  if (!reactions || !reactionsCount) return null;
 
   const reactionsByTypes: ReactionsByTypes = {
     like: { count: 0, icon: LikeIcon },
@@ -52,44 +56,62 @@ export default function ReactionsDisplay({
 
   const reactorsToDisplay = exampleReactors?.slice(0, emotesCount) || [];
   return (
-    <StyledRoot {...rootProps} sx={sx}>
-      <Box display='flex' sx={{ pr: theme.spacing(0.25) }}>
-        {highestReactionCountsByType.slice(0, emotesCount).map((reaction, i) => {
-          return (
-            <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={10 - i} size={size} />
-          );
-        })}
-      </Box>
-      <Box
-        display='flex'
-        ml={theme.spacing(0.5)}
-        mt={theme.spacing(0.2)}
-        color={theme.palette.text.secondary}
-      >
-        {displayNames &&
-          reactorsToDisplay.map((reactor, i) => {
-            const isLast = reactorsToDisplay.length === i + 1;
-            const userText = [reactor.firstName, reactor.lastName].join(' ');
+    <>
+      {showPortal && <ReactionsPortal setShowPortal={setShowPortal} reactions={reactions} />}
+      <StyledRoot {...rootProps} sx={sx}>
+        <ButtonBase
+          onClick={() => setShowPortal(true)}
+          TouchRippleProps={{
+            style: { color: theme.palette.primary.main },
+          }}
+          sx={{
+            borderRadius: theme.spacing(2),
+            padding: displayNames ? theme.spacing(2) : 0,
+            position: 'absolute',
+            left: '-2%',
+            width: '104%',
+            height: '100%',
+            zIndex: 3,
+          }}
+        />
+        <Box display='flex' sx={{ pr: theme.spacing(0.25), pointerEvents: 'none' }}>
+          {highestReactionCountsByType.slice(0, emotesCount).map((reaction, i) => {
             return (
-              <Box key={reactor.profileId}>
-                {!isLast ? (
-                  <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
-                ) : (
-                  <>
-                    <Typography variant='subtitle2'>
-                      {userText}&nbsp;and {reactionsCount - reactorsToDisplay.length} others
-                    </Typography>
-                  </>
-                )}
-              </Box>
+              <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={10 - i} size={size} />
             );
           })}
-        {displayCount && (
-          <Typography pr={theme.spacing(0.5)} variant='caption'>
-            {reactionsCount}
-          </Typography>
-        )}
-      </Box>
-    </StyledRoot>
+        </Box>
+        <Box
+          display='flex'
+          ml={theme.spacing(0.5)}
+          mt={theme.spacing(0.2)}
+          color={theme.palette.text.secondary}
+        >
+          {displayNames &&
+            reactorsToDisplay.map((reactor, i) => {
+              const isLast = reactorsToDisplay.length === i + 1;
+              const userText = [reactor.firstName, reactor.lastName].join(' ');
+              return (
+                <Box key={reactor.profileId}>
+                  {!isLast ? (
+                    <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
+                  ) : (
+                    <>
+                      <Typography variant='subtitle2'>
+                        {userText}&nbsp;and {reactionsCount - reactorsToDisplay.length} others
+                      </Typography>
+                    </>
+                  )}
+                </Box>
+              );
+            })}
+          {displayCount && (
+            <Typography pr={theme.spacing(0.5)} variant='caption'>
+              {reactionsCount}
+            </Typography>
+          )}
+        </Box>
+      </StyledRoot>
+    </>
   );
 }

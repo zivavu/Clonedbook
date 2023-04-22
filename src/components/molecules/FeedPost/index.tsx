@@ -11,7 +11,16 @@ import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
-  const { createdAt, id: postId, owner, comments, postPictures, postText, reactions } = post;
+  const {
+    createdAt,
+    id: postId,
+    owner,
+    comments,
+    postPictures,
+    postText,
+    reactions,
+    shareCount,
+  } = post;
   const theme = useTheme();
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
@@ -58,15 +67,29 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
         </Box>
       ) : null}
       <StyledContentWrapper>
-        <ReactionsDisplay
-          reactions={post.reactions}
-          exampleReactors={post.exampleReactors}
-          sx={{ pr: theme.spacing(0.25), mb: theme.spacing(1) }}
-        />
+        <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
+          <ReactionsDisplay
+            reactions={post.reactions}
+            exampleReactors={post.exampleReactors}
+            sx={{ pr: theme.spacing(0.25) }}
+          />
+          <Typography
+            ml='auto'
+            variant='caption'
+            height='100%'
+            color={theme.palette.text.secondary}
+          >
+            {comments.length === 0
+              ? ''
+              : comments.length > 1
+              ? `${comments.length} comments`
+              : `${comments.length} comment`}
+          </Typography>
+        </Stack>
         <ActionButtons />
       </StyledContentWrapper>
       <StyledContentWrapper>
-        <Comments comments={post?.comments} />
+        <Comments comments={post?.comments} onlyUniqueUsers/>
       </StyledContentWrapper>
     </StyledRoot>
   );

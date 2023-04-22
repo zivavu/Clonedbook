@@ -19,7 +19,6 @@ import { Timestamp, WriteBatch, doc, writeBatch } from 'firebase/firestore';
 const randomPostPictures = [
   faker.image.people,
   faker.image.nature,
-  faker.image.technics,
   faker.image.transport,
   faker.image.abstract,
   faker.image.animals,
@@ -88,7 +87,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
   function getRandomComents(amount: number, reactionsCount: number) {
     const comments: Array<IComment> = [];
-    const discutantsRange = Math.ceil(Math.random() * 8);
+    const discutantsRange = Math.ceil(Math.random() * amount) + 5;
     let discutantsStartIndex = Math.floor(Math.random() * usersAmount);
     if (discutantsStartIndex + discutantsRange > usersAmount) {
       discutantsStartIndex = usersAmount - discutantsRange;
@@ -99,7 +98,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       discutantsStartIndex + Math.max(Math.floor(Math.random() * 6), 1),
     );
 
-    for (let i = 0; i < Math.floor(Math.random() * amount); i++) {
+    const commentsAmount = Math.floor(Math.random() * amount);
+    for (let i = 0; i < commentsAmount; i++) {
       const ownerId = discutants[Math.floor(Math.random() * discutants.length) || 0];
       const ownerBasicUserInfo = usersBasicInfo.find(
         (user) => user.profileId === ownerId,
@@ -127,8 +127,9 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       'wow',
       'haha',
     ];
-    const isGreat = Math.random() > 0.9;
-    for (let i = 0; i < Math.floor(Math.random() * amount * (isGreat ? 40 : 3)); i++) {
+    const isViral = Math.random() > 0.9;
+    const reactionsAmount = Math.floor(Math.random() * amount * (isViral ? 40 : 3));
+    for (let i = 0; i < reactionsAmount; i++) {
       const reactingUserUID = getRandomUserUID();
       if (reactions.some((reaction) => reaction.userId === reactingUserUID)) {
         continue;
@@ -158,7 +159,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
 
   function getRandomProfilePhotos(amount: number, basicUserInfo: IBasicUserInfo) {
     const photos: IInProfilePicture[] = [];
-    for (let i = 0; i < Math.ceil(Math.random() * amount) + 4; i++) {
+    const photosAmount = Math.ceil(Math.random() * amount) + 4;
+    for (let i = 0; i < photosAmount; i++) {
       const photoId = getRandomUIDv4();
       const photo: IInProfilePicture = {
         ownerInfo: basicUserInfo,
@@ -174,10 +176,12 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
   function getRandomPosts(amount: number, basicUserInfo: IBasicUserInfo) {
     const posts: Array<IPost> = [];
-    for (let i = 0; i < Math.ceil(Math.random() * amount) + 2; i++) {
+    const postAmount = Math.ceil(Math.random() * amount) + 2;
+    for (let i = 0; i < postAmount; i++) {
       const postPictures: string[] = [];
       const hasPictures = Math.random() > 0.2;
-      for (let i = 0; i < Math.floor(Math.random() * 14); i++) {
+      const picturesAmount = Math.floor(Math.random() * 14);
+      for (let i = 0; i < picturesAmount; i++) {
         postPictures.push(getRandomPhotoUrl());
       }
       const postId = getRandomUIDv4();

@@ -8,25 +8,42 @@ import Comment from './Comment';
 import CommentInput from './CommentInput';
 import { CommentsProps } from './types';
 
-export default function Comments({ comments, ...rootProps }: CommentsProps) {
+export default function Comments({
+  comments,
+  maxComments,
+  onlyUniqueUsers = false,
+  ...rootProps
+}: CommentsProps) {
   const { data } = useFetchUserQuery({});
   const user = data?.public;
-  const uniqueUsersComments: IComment[] = [];
-  comments?.forEach((comment) => {
-    if (!uniqueUsersComments.find((c) => c.owner.profileId === comment.owner.profileId)) {
-      uniqueUsersComments.push(comment);
-    }
-  });
+  const commentsToRender: IComment[] = [];
+
+  if (!comments) return null;
+
+  onlyUniqueUsers
+    ? comments?.forEach((comment) => {
+        if (!commentsToRender.find((c) => c.owner.profileId === comment.owner.profileId)) {
+          commentsToRender.push(comment);
+        }
+      })
+    : commentsToRender.push(...comments);
+
   const exampleCommentsLength =
-    uniqueUsersComments[0]?.commentText?.length +
-    (uniqueUsersComments[1]?.commentText?.length || 0);
-  const commentsCutIndex = exampleCommentsLength > 300 ? 1 : 2;
+    commentsToRender[0]?.commentText?.length + (commentsToRender[1]?.commentText?.length || 0);
+  let commentsCutIndex: number | undefined = undefined;
+  if (maxComments) {
+    commentsCutIndex = maxComments === 'all' ? undefined : maxComments;
+  } else if (exampleCommentsLength > 300) {
+    commentsCutIndex = 1;
+  } else {
+    commentsCutIndex = 2;
+  }
 
   return (
     <StyledRoot {...rootProps}>
       {!!comments && (
         <Stack>
-          {uniqueUsersComments.slice(0, commentsCutIndex).map((comment) => (
+          {commentsToRender.slice(0, commentsCutIndex).map((comment) => (
             <Comment key={comment.id} comment={comment} />
           ))}
         </Stack>

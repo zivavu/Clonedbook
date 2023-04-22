@@ -7,7 +7,27 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   maxWidth: '360px',
   padding: theme.spacing(2),
   paddingTop: 0,
+
+  overflowY: 'scroll',
+  scrollbarWidth: 'thin',
+  '&::-webkit-scrollbar': {
+    width: `8px`,
+  },
+
+  scrollbarColor: `transparent transparent`,
+  '&::-webkit-scrollbar-thumb': {
+    background: theme.palette.secondary.main,
+    borderRadius: '8px',
+  },
+
+  '&:hover::-webkit-scrollbar-thumb': {
+    background: theme.palette.text.disabled,
+  },
+  '&:hover': {
+    scrollbarColor: `${theme.palette.text.disabled}${theme.palette.secondary.main}`,
+  },
 }));
+
 
 export const StyledDevider = styled(Box)(({ theme }) => ({
   position: 'absolute',

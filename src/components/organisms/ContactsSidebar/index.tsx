@@ -2,6 +2,7 @@ import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { AddUsersButton } from '@/utils/generateRandomUsers';
+import { faker } from '@faker-js/faker';
 import { Avatar, Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';

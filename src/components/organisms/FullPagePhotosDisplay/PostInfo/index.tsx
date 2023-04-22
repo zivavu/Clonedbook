@@ -45,12 +45,12 @@ export default function PostInfo({ post, ...rootProps }: PostInfoProps) {
             {post.comments?.length} comments
           </Typography>
           <Typography variant='caption' sx={{ color: 'text.secondary' }}>
-            {Math.floor(Math.random() * 10)} shares
+            {post.shareCount} shares
           </Typography>
         </Box>
       </Stack>
       <ActionButtons mt={theme.spacing(1)} mb={theme.spacing(4)} />
-      <Comments comments={post.comments} />
+      <Comments comments={post.comments} maxComments='all' />
     </StyledRoot>
   );
 }

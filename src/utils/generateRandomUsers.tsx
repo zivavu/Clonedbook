@@ -1,7 +1,7 @@
 /* eslint-disable no-console*/
 
 //! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper. Also it's far beyond the worst spaghetti code, don't try to understand it.
-//! It uploads a lot(dozens of MB) of data batch after batch so will take time to execute
+//! It uploads a lots~(dozens of MB) of data batch after batch so will take time to execute
 import { db } from '@/config/firebase.config';
 import { IComment } from '@/types/comment';
 import { IFriend, IFriendConnection } from '@/types/firend';
@@ -14,7 +14,7 @@ import { faker } from '@faker-js/faker';
 import { uuidv4 } from '@firebase/util';
 import { Button } from '@mui/material';
 
-import { Timestamp, WriteBatch, doc, writeBatch } from 'firebase/firestore';
+import { Timestamp, WriteBatch, collection, doc, writeBatch } from 'firebase/firestore';
 
 const randomPostPictures = [
   faker.image.people,
@@ -165,8 +165,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         ownerInfo: basicUserInfo,
         id: photoId,
         pictureURL: getRandomPhotoUrl(),
-        reactions: getRandomReactions(50),
-        comments: getRandomComents(8, 5),
+        reactions: getRandomReactions(70),
+        comments: getRandomComents(8, 7),
         shareCount: Math.floor(Math.random() * 50),
       };
       photos.push(photo);
@@ -196,7 +196,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         owner: basicUserInfo,
         postText: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
-        comments: getRandomComents(10, 6),
+        comments: getRandomComents(10, 8),
         reactions: postReactions,
         exampleReactors: exampleReactors,
         shareCount: Math.floor(Math.random() * 30),
@@ -355,55 +355,52 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     basicInfoOfUsers,
     allPosts,
   } = generateUsers(usersAmount, friendsAmount);
-  console.log('generating users and other data... done');
-  const batches: WriteBatch[] = [writeBatch(db), writeBatch(db), writeBatch(db)];
+  const userDataBatches: WriteBatch[] = [];
 
   const usersDataToCommit: IUserServerData[][] = [[], [], []];
-  const postsToCommit: IPost[] = [];
   const friendsConnectionsToCommit: IFriendConnection[] = [];
   const usersPublicDataToCommit: IBasicUserInfo[] = [];
+  const postsToCommit: IPost[] = [];
 
   for (let i = 0; i < users.length; i++) {
     const data = users[i];
     friendsConnectionsToCommit.push(...allUsersFriendsConnections[i]);
     usersPublicDataToCommit.push(basicInfoOfUsers[i]);
     const userDocRef = doc(db, 'users', data.profileId);
+    const userPostsCollectionRef = doc(collection(db, 'users', data.profileId, 'posts'));
+    const userPicturesCollectionRef = doc(collection(db, 'users', data.profileId, 'pictures'));
+    const userFriendsCollectionRef = doc(collection(db, 'users', data.profileId, 'friends'));
+
     const allUserData: IUserServerData = {
       data,
       posts: postsOfUsers[i],
       pictures: picturesOfUsers[i],
       friends: allUsersFreinds[i],
     };
-    if (i % 3 === 0) {
-      batches[0].set(userDocRef, {
-        ...allUserData,
-      });
-      usersDataToCommit[0].push(allUserData);
+
+    const batchIndex = i % Math.ceil(users.length / 7);
+    if (!userDataBatches[batchIndex]) {
+      userDataBatches[batchIndex] = writeBatch(db);
+      usersDataToCommit[batchIndex] = [];
     }
-    if (i % 3 === 1) {
-      batches[1].set(userDocRef, {
-        ...allUserData,
-      });
-      usersDataToCommit[1].push(allUserData);
-    }
-    if (i % 3 === 2) {
-      batches[2].set(userDocRef, {
-        ...allUserData,
-      });
-      usersDataToCommit[2].push(allUserData);
-    }
+    usersDataToCommit[batchIndex].push(allUserData);
+
+    userDataBatches[batchIndex].set(userDocRef, { ...allUserData.data });
+    userDataBatches[batchIndex].set(userPostsCollectionRef, { ...postsOfUsers[i] });
+    userDataBatches[batchIndex].set(userPicturesCollectionRef, { ...picturesOfUsers[i] });
+    userDataBatches[batchIndex].set(userFriendsCollectionRef, { ...allUsersFreinds[i] });
   }
 
-  const postBatch = writeBatch(db);
-  allPosts.forEach((post) => {
+  const postBatches: WriteBatch[] = [];
+  allPosts.forEach((post, i) => {
+    const batchIndex = i % Math.ceil(friendsConnectionsToCommit.length / 150);
     const docRef = doc(db, 'posts', post.id);
-    postBatch.set(docRef, post);
+    if (!postBatches[batchIndex]) {
+      postBatches[batchIndex] = writeBatch(db);
+    }
+    postBatches[batchIndex].set(docRef, post);
     postsToCommit.push(post);
   });
-  if (allPosts.length > 500) {
-    console.log(`You want to post ${allPosts.length} posts, that's too much, you can't do that}`);
-    return;
-  }
 
   const friendsConnectionsBatches: WriteBatch[] = [];
   friendsConnectionsToCommit.forEach((friendConnection, i) => {
@@ -420,59 +417,56 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     const docRef = doc(db, 'usersPublicData', userPublicData.profileId);
     usersPublicDataBatch.set(docRef, userPublicData);
   });
-  if (usersPublicDataToCommit.length > 500) {
-    console.log(
-      `You want to post ${usersPublicDataToCommit.length} usersPublicData, that's too much, you can't do that}`,
-    );
-    return;
-  }
 
   const baseSleepTime = 10000;
   //Don't care enought to make it good, that scripts drives me crazy, it just has to work
-  console.log(`you going to commit batch1`, usersDataToCommit[0]);
-  console.log(`batch2`, usersDataToCommit[1]);
-  console.log(`batch3`, usersDataToCommit[2]);
+  console.log(`you going to commit:\n`);
+  userDataBatches.forEach((batch, i) => {
+    console.log(`batch ${i + 1}`, usersDataToCommit[i]);
+  });
   console.log(`posts`, postsToCommit);
   console.log(`friendsConnections`, friendsConnectionsToCommit);
   console.log(`usersPublicData`, usersPublicDataToCommit);
   console.log('commiting batches, hold tight');
   try {
-    console.log(`commiting friendsConnections`);
-    friendsConnectionsBatches.forEach(async (batch, i) => {
-      console.log(`commiting ${i} friendsConnections batch`);
-      await sleep((baseSleepTime / 2) * i);
+    // sleep increses the max amount of users cause promise is resolved before the batch is written
+    console.log(`\nCOMMITTING USERS DATA`);
+    for (let i = 0; i < userDataBatches.length; i++) {
+      const batch = userDataBatches[i];
+      console.log(`commiting ${i + 1} users batch`);
       await batch.commit();
-      console.log(`commiting ${i} friendsConnections batch done`);
-      console.log(`sleeping for ${baseSleepTime / 2}ms`);
-    });
-    console.log(`commiting friendsConnections done`);
-
-    await sleep(baseSleepTime);
-    console.log(`commiting batch 1`);
-    await batches[0].commit();
-    console.log(`commiting batch 1 done`);
-    //sleep increses the max amount of users cause promise is resolved before the batch is written
-    console.log(`sleeping `);
-    await sleep(baseSleepTime);
-    console.log(`commiting batch 2`);
-    await batches[1].commit();
-    console.log(`commiting batch 2 done`);
-    console.log(`sleeping`);
-    await sleep(baseSleepTime);
-    console.log(`commiting batch 3`);
-    await batches[2].commit();
-    console.log(`commiting batch 3 done`);
-    console.log(`sleeping`);
+      console.log(`commiting ${i + 1} users batch done`);
+      await sleep(baseSleepTime);
+    }
+    console.log(`COMMITTING USERS DATA DONE`);
     await sleep(baseSleepTime * 1.5);
-    console.log(`commiting posts`);
-    await postBatch.commit();
-    console.log(`commiting posts done`);
-    console.log(`sleeping`);
-    await sleep(baseSleepTime);
-    console.log(`commiting usersPublicData`);
+
+    console.log(`\nCOMMITING USERS PUBLIC DATA`);
     await usersPublicDataBatch.commit();
-    console.log(`commiting usersPublicData done`);
-    console.log('we are done');
+    console.log(`COMMITING USERS PUBLIC DATA DONE`);
+
+    console.log(`\nCOMMITING FRIENDS CONNECTIONS`);
+    for (let i = 0; i < friendsConnectionsBatches.length; i++) {
+      const batch = friendsConnectionsBatches[i];
+      console.log(`commiting ${i + 1} friendsConnections batch`);
+      await batch.commit();
+      console.log(`commiting ${i + 1} friendsConnections batch done`);
+      await sleep(baseSleepTime / 2);
+    }
+    console.log(`COMMITING FRIENDS CONNECTIONS DONE`);
+    await sleep(baseSleepTime);
+
+    console.log(`\nCOMMITING POSTS`);
+    for (let i = 0; i < postBatches.length; i++) {
+      const batch = postBatches[i];
+      console.log(`commiting ${i + 1} posts batch`);
+      await batch.commit();
+      console.log(`commiting ${i + 1} posts batch done`);
+      if (i !== postBatches.length) {
+        await sleep(baseSleepTime);
+      }
+    }
+    console.log(`\nCOMMITING POSTS DONE`);
   } catch (e) {
     console.log(e);
   } finally {

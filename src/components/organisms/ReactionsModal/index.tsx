@@ -60,7 +60,7 @@ export default function ReactionsPortal({
                 return (
                   <StyledToggleButton key={reaction.type} value={reaction.type}>
                     <Stack direction='row' alignItems='center'>
-                      <ReactionIcon src={reaction.icon} size={20} showBorder={false} />
+                      <ReactionIcon src={reaction.icon} size={18} showBorder={false} />
                       <Typography variant='body2' fontWeight='400' ml={theme.spacing(1.3)}>
                         {reaction.count}
                       </Typography>

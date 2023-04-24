@@ -5,7 +5,4 @@ import { IUser } from './user';
 
 export interface IUserServerData {
   data: IUser;
-  friends: IFriend[];
-  pictures: IPicture[];
-  posts: IPost[];
 }

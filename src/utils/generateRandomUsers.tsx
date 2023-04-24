@@ -309,7 +309,6 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         phoneNumber: faker.phone.number(),
         biography: faker.lorem.paragraph(),
         chatReferences: [],
-        friends: [],
         groups: [],
         intrests: [],
         about: {
@@ -371,14 +370,14 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     const userPicturesCollectionRef = doc(collection(db, 'users', data.profileId, 'pictures'));
     const userFriendsCollectionRef = doc(collection(db, 'users', data.profileId, 'friends'));
 
-    const allUserData: IUserServerData = {
+    const allUserData = {
       data,
       posts: postsOfUsers[i],
       pictures: picturesOfUsers[i],
       friends: allUsersFreinds[i],
     };
 
-    const batchIndex = i % Math.ceil(users.length / 7);
+    const batchIndex = i % Math.ceil(users.length / 10);
     if (!userDataBatches[batchIndex]) {
       userDataBatches[batchIndex] = writeBatch(db);
       usersDataToCommit[batchIndex] = [];
@@ -393,7 +392,7 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
 
   const postBatches: WriteBatch[] = [];
   allPosts.forEach((post, i) => {
-    const batchIndex = i % Math.ceil(friendsConnectionsToCommit.length / 150);
+    const batchIndex = i % Math.ceil(friendsConnectionsToCommit.length / 110);
     const docRef = doc(db, 'posts', post.id);
     if (!postBatches[batchIndex]) {
       postBatches[batchIndex] = writeBatch(db);
@@ -462,9 +461,7 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
       console.log(`commiting ${i + 1} posts batch`);
       await batch.commit();
       console.log(`commiting ${i + 1} posts batch done`);
-      if (i !== postBatches.length) {
-        await sleep(baseSleepTime);
-      }
+      await sleep(baseSleepTime);
     }
     console.log(`\nCOMMITING POSTS DONE`);
   } catch (e) {
@@ -479,5 +476,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(30, 30)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(70, 50)}>AddEm</Button>;
 }

@@ -11,7 +11,7 @@ export interface IFriend {
   createdAt: ICreatedAt;
 }
 
-export interface IPublicFriendship {
-  connectionId: string; // unique identifier for the connection
+export interface IFriendConnection {
+  id: string; // unique identifier for the connection
   usersIds: string[];
 }

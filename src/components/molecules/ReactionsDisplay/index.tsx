@@ -12,7 +12,11 @@ import {
   WowIcon,
 } from '@/assets/reactionIcons';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useState } from 'react';
+import { db } from '@/config/firebase.config';
+import { IUserReaction } from '@/types/reaction';
+import { IBasicUserInfo } from '@/types/user';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import ReactionsPortal from './ReactionsPortal';
 import { ReactionsByTypes, ReactionsDisplayProps } from './types';
 
@@ -27,6 +31,24 @@ export default function ReactionsDisplay({
   ...rootProps
 }: ReactionsDisplayProps) {
   const theme = useTheme();
+
+  const [reactingUsers, setReactingUsers] = useState<IBasicUserInfo[] | undefined>(undefined);
+  const [shouldLoadReactions, setShouldLoadReactions] = useState(false);
+
+  useEffect(() => {
+    const loadReactions = async () => {
+      if (!shouldLoadReactions || reactingUsers) return;
+
+      const usersIds = reactions?.map((reaction) => reaction.userId) || [];
+      const usersDataRef = collection(db, 'usersPublicData');
+
+      const reads = usersIds.map((userId) => getDoc(doc(usersDataRef, userId)));
+      const result = await Promise.all(reads);
+      const usersData = result.map((doc) => doc.data());
+      setReactingUsers(usersData as IBasicUserInfo[]);
+    };
+    loadReactions();
+  }, [shouldLoadReactions, reactingUsers, reactions]);
 
   const [showPortal, setShowPortal] = useState(false);
 
@@ -55,12 +77,18 @@ export default function ReactionsDisplay({
     .sort((a, b) => b.count - a.count);
 
   const reactorsToDisplay = exampleReactors?.slice(0, emotesCount) || [];
+
+  const handleShowPortal = () => {
+    setShouldLoadReactions(true);
+    setShowPortal(true);
+  };
+
   return (
     <>
-      {showPortal && <ReactionsPortal setShowPortal={setShowPortal} reactions={reactions} />}
+      {showPortal && <ReactionsPortal setShowPortal={setShowPortal} reactionsArr={reactions} />}
       <StyledRoot {...rootProps} sx={sx}>
         <ButtonBase
-          onClick={() => setShowPortal(true)}
+          onClick={() => handleShowPortal()}
           TouchRippleProps={{
             style: { color: theme.palette.primary.main },
           }}

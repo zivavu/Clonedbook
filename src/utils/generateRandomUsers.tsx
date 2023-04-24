@@ -4,10 +4,10 @@
 //! It uploads a lot(dozens of MB) of data batch after batch so will take time to execute
 import { db } from '@/config/firebase.config';
 import { IComment } from '@/types/comment';
-import { IFriend, IPublicFriendship } from '@/types/firend';
+import { IFriend, IFriendConnection } from '@/types/firend';
 import { IInProfilePicture } from '@/types/picture';
 import { IPost } from '@/types/post';
-import { IUserReaction } from '@/types/reaction';
+import { IReactionReference } from '@/types/reaction';
 import { IBasicUserInfo, IUser } from '@/types/user';
 import { IUserServerData } from '@/types/userServerData';
 import { faker } from '@faker-js/faker';
@@ -116,10 +116,10 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
 
   function getRandomReactions(amount: number) {
-    const reactions: Array<IUserReaction> = [];
+    const reactions: Array<IReactionReference> = [];
     const hasReactions = Math.random() > 0.3;
     if (!hasReactions) return reactions;
-    const possibleReactions: Array<IUserReaction['type']> = [
+    const possibleReactions: Array<IReactionReference['type']> = [
       'angry',
       'like',
       'love',
@@ -218,14 +218,14 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       friendsAmount = 5;
     }
     const allUsersFreinds: IFriend[][] = new Array(usersAmount);
-    const allUsersPublicFriendships: IPublicFriendship[][] = new Array(usersAmount);
+    const allUsersFriendsConnections: IFriendConnection[][] = new Array(usersAmount);
     for (let i = 0; i < usersAmount; i++) {
       allUsersFreinds[i] = [];
-      allUsersPublicFriendships[i] = [];
+      allUsersFriendsConnections[i] = [];
     }
     users.forEach((userToAddFriends) => {
       const usersFriends: IFriend[] = [];
-      const usersPublicFriendships: IPublicFriendship[] = [];
+      const usersPublicFriendships: IFriendConnection[] = [];
       const friendsCount = Math.max(Math.floor(Math.random() * friendsAmount), 10);
       for (let i = 0; i < friendsCount; i++) {
         const userToBefriendInfo = users[Math.floor(Math.random() * users.length)];
@@ -262,8 +262,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           chatReference: chatReferenceInfo,
           info: friendsBasicInfo,
         };
-        const publicFriendship: IPublicFriendship = {
-          connectionId: connectionUUID,
+        const publicFriendship: IFriendConnection = {
+          id: connectionUUID,
           usersIds: [usersBasicInfo.profileId, userToBefriendInfo.profileId],
         };
         usersPublicFriendships.push(publicFriendship);
@@ -272,7 +272,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           (user) => user.profileId === userToBefriendInfo.profileId,
         );
 
-        allUsersPublicFriendships[befriendedUserIndex].push(publicFriendship);
+        allUsersFriendsConnections[befriendedUserIndex].push(publicFriendship);
 
         const flippedFriend: IFriend = {
           connectionId: connectionUUID,
@@ -285,11 +285,11 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
 
         allUsersFreinds[befriendedUserIndex].push(flippedFriend);
       }
-      allUsersPublicFriendships.push(usersPublicFriendships);
+      allUsersFriendsConnections.push(usersPublicFriendships);
       allUsersFreinds.push(usersFriends);
     });
 
-    return { allUsersFreinds, allUsersPublicFriendships };
+    return { allUsersFreinds, allUsersFriendsConnections };
   }
 
   function getRandomUsers() {
@@ -345,14 +345,14 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     return { users, postsOfUsers, picturesOfUsers, basicInfoOfUsers };
   }
   const { users, postsOfUsers, picturesOfUsers, basicInfoOfUsers } = getRandomUsers();
-  const { allUsersFreinds, allUsersPublicFriendships } = getRandomFriends(friendsAmount);
+  const { allUsersFreinds, allUsersFriendsConnections } = getRandomFriends(friendsAmount);
   return {
     users,
     postsOfUsers,
     picturesOfUsers,
     basicInfoOfUsers,
     allUsersFreinds,
-    allUsersPublicFriendships,
+    allUsersFriendsConnections,
     allPosts,
   };
 }
@@ -364,88 +364,133 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     postsOfUsers,
     picturesOfUsers,
     allUsersFreinds,
-    allUsersPublicFriendships,
+    allUsersFriendsConnections,
     basicInfoOfUsers,
     allPosts,
   } = generateUsers(usersAmount, friendsAmount);
   console.log('generating users and other data... done');
   const batches: WriteBatch[] = [writeBatch(db), writeBatch(db), writeBatch(db)];
-  const dataThatWillBeCommited: IUserServerData[][] = [[], [], []];
-  const postsThatWillBeCommited: IPost[] = [];
+
+  const usersToCommit: IUserServerData[][] = [[], [], []];
+  const postsToCommit: IPost[] = [];
+  const friendsConnectionsToCommit: IFriendConnection[] = [];
+  const usersPublicDataToCommit: IBasicUserInfo[] = [];
+
   for (let i = 0; i < users.length; i++) {
     const data = users[i];
-    const docRef = doc(db, 'users', data.profileId);
+    friendsConnectionsToCommit.push(...allUsersFriendsConnections[i]);
+    usersPublicDataToCommit.push(basicInfoOfUsers[i]);
+    const userDocRef = doc(db, 'users', data.profileId);
     const allUserData: IUserServerData = {
       data,
-      public: basicInfoOfUsers[i],
       posts: postsOfUsers[i],
       pictures: picturesOfUsers[i],
       friends: allUsersFreinds[i],
-      friendConnections: allUsersPublicFriendships[i],
     };
     if (i % 3 === 0) {
-      batches[0].set(docRef, {
+      batches[0].set(userDocRef, {
         ...allUserData,
       });
-      dataThatWillBeCommited[0].push(allUserData);
+      usersToCommit[0].push(allUserData);
     }
     if (i % 3 === 1) {
-      batches[1].set(docRef, {
+      batches[1].set(userDocRef, {
         ...allUserData,
       });
-      dataThatWillBeCommited[1].push(allUserData);
+      usersToCommit[1].push(allUserData);
     }
     if (i % 3 === 2) {
-      batches[2].set(docRef, {
+      batches[2].set(userDocRef, {
         ...allUserData,
       });
-      dataThatWillBeCommited[2].push(allUserData);
+      usersToCommit[2].push(allUserData);
     }
   }
+
   const postBatch = writeBatch(db);
   allPosts.forEach((post) => {
     const docRef = doc(db, 'posts', post.id);
     postBatch.set(docRef, post);
-    postsThatWillBeCommited.push(post);
+    postsToCommit.push(post);
   });
   if (allPosts.length > 500) {
     console.log(`You want to post ${allPosts.length} posts, that's too much, you can't do that}`);
     return;
   }
 
+  const friendsConnectionsBatches: WriteBatch[] = [];
+  friendsConnectionsToCommit.forEach((friendConnection, i) => {
+    const batchIndex = i % Math.ceil(friendsConnectionsToCommit.length / 500);
+    const docRef = doc(db, 'friendsConnections', friendConnection.id);
+    if (!friendsConnectionsBatches[batchIndex]) {
+      friendsConnectionsBatches[batchIndex] = writeBatch(db);
+    }
+    friendsConnectionsBatches[batchIndex].set(docRef, friendConnection);
+  });
+
+  const usersPublicDataBatch = writeBatch(db);
+  usersPublicDataToCommit.forEach((userPublicData) => {
+    const docRef = doc(db, 'usersPublicData', userPublicData.profileId);
+    usersPublicDataBatch.set(docRef, userPublicData);
+  });
+  if (usersPublicDataToCommit.length > 500) {
+    console.log(
+      `You want to post ${usersPublicDataToCommit.length} usersPublicData, that's too much, you can't do that}`,
+    );
+    return;
+  }
+
   const baseSleepTime = 10000;
   //Don't care enought to make it good, that scripts drives me crazy, it just has to work
-  console.log(`you going to commit batch1`, dataThatWillBeCommited[0]);
-  console.log(`batch2`, dataThatWillBeCommited[1]);
-  console.log(`batch3`, dataThatWillBeCommited[2]);
-  console.log(`posts`, postsThatWillBeCommited);
+  console.log(`you going to commit batch1`, usersToCommit[0]);
+  console.log(`batch2`, usersToCommit[1]);
+  console.log(`batch3`, usersToCommit[2]);
+  console.log(`posts`, postsToCommit);
+  console.log(`friendsConnections`, friendsConnectionsToCommit);
+  console.log(`usersPublicData`, usersPublicDataToCommit);
   console.log('commiting batches, hold tight');
-  try {
-    console.log(`commiting batch 1`);
-    await batches[0].commit();
-    console.log(`commiting batch 1 done`);
-    //sleep increses the max amount of users cause promise is resolved before the batch is written
-    console.log(`sleeping `);
-    await sleep(baseSleepTime);
-    console.log(`commiting batch 2`);
-    await batches[1].commit();
-    console.log(`commiting batch 2 done`);
-    console.log(`sleeping`);
-    await sleep(baseSleepTime);
-    console.log(`commiting batch 3`);
-    await batches[2].commit();
-    console.log(`commiting batch 3 done`);
-    console.log(`sleeping`);
-    await sleep(baseSleepTime * 1.5);
-    console.log(`commiting posts`);
-    await postBatch.commit();
-    console.log(`commiting posts done`);
-    console.log('we are done');
-  } catch (e) {
-    console.log(e);
-  } finally {
-    console.log('process ended');
-  }
+  // try {
+  //   console.log(`commiting friendsConnections`);
+  //   friendsConnectionsBatches.forEach(async (batch, i) => {
+  //     console.log(`commiting ${i} friendsConnections batch`);
+  //     await batch.commit();
+  //     console.log(`commiting ${i} friendsConnections batch done`);
+  //     console.log(`sleeping for ${baseSleepTime / 2}ms`);
+  //     await sleep(baseSleepTime / 2);
+  //   });
+  //   console.log(`commiting friendsConnections done`);
+
+  //   await sleep(baseSleepTime);
+  //   console.log(`commiting batch 1`);
+  //   await batches[0].commit();
+  //   console.log(`commiting batch 1 done`);
+  //   //sleep increses the max amount of users cause promise is resolved before the batch is written
+  //   console.log(`sleeping `);
+  //   await sleep(baseSleepTime);
+  //   console.log(`commiting batch 2`);
+  //   await batches[1].commit();
+  //   console.log(`commiting batch 2 done`);
+  //   console.log(`sleeping`);
+  //   await sleep(baseSleepTime);
+  //   console.log(`commiting batch 3`);
+  //   await batches[2].commit();
+  //   console.log(`commiting batch 3 done`);
+  //   console.log(`sleeping`);
+  //   await sleep(baseSleepTime * 1.5);
+  //   console.log(`commiting posts`);
+  //   await postBatch.commit();
+  //   console.log(`commiting posts done`);
+  //   console.log(`sleeping`);
+  //   await sleep(baseSleepTime);
+  //   console.log(`commiting usersPublicData`);
+  //   await usersPublicDataBatch.commit();
+  //   console.log(`commiting usersPublicData done`);
+  //   console.log('we are done');
+  // } catch (e) {
+  //   console.log(e);
+  // } finally {
+  //   console.log('process ended');
+  // }
 }
 
 async function sleep(ms: number) {
@@ -453,5 +498,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(100, 100)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(50, 30)}>AddEm</Button>;
 }

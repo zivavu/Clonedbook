@@ -1,6 +1,6 @@
 import { IComment } from './comment';
 import { ICreatedAt } from './createdAt';
-import { IUserReaction } from './reaction';
+import { IReactionReference } from './reaction';
 import { IBasicUserInfo } from './user';
 
 export interface IPicture {
@@ -10,7 +10,7 @@ export interface IPicture {
 }
 
 export interface IInProfilePicture extends IPicture {
-  reactions: IUserReaction[];
+  reactions: IReactionReference[];
   comments: IComment[];
   shareCount: number;
 }

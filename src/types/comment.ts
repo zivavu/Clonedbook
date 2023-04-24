@@ -1,4 +1,4 @@
-import { IUserReaction } from './reaction';
+import { IReactionReference } from './reaction';
 import { IBasicUserInfo } from './user';
 
 export interface IComment {
@@ -6,5 +6,5 @@ export interface IComment {
   owner: IBasicUserInfo;
   commentText: string;
   commentResponses?: IComment[];
-  reactions?: IUserReaction[];
+  reactions?: IReactionReference[];
 }

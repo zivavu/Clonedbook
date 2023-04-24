@@ -1,10 +1,19 @@
-import { Backdrop, Dialog, GlobalStyles, Portal, Typography, alpha, useTheme } from '@mui/material';
+import {
+  Backdrop,
+  Box,
+  Dialog,
+  GlobalStyles,
+  Portal,
+  Typography,
+  alpha,
+  useTheme,
+} from '@mui/material';
 import { StyledRoot } from './styles';
 
 import { ReactionsPortalProps } from './types';
 
 export default function ReactionsPortal({
-  reactions,
+  reactionsArr,
   setShowPortal,
   sx,
   ...rootProps
@@ -21,9 +30,7 @@ export default function ReactionsPortal({
         open
         onClick={() => setShowPortal(false)}
       >
-        <StyledRoot sx={sx} {...rootProps}>
-          <Typography>ReactionsPortal</Typography>
-        </StyledRoot>
+        <StyledRoot sx={sx} {...rootProps}></StyledRoot>
       </Backdrop>
     </Portal>
   );

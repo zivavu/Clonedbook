@@ -1,9 +1,9 @@
-import { IUserReaction, TPossibleReaction } from '@/types/reaction';
+import { IReactionReference, TPossibleReaction } from '@/types/reaction';
 import { IBasicUserInfo } from '@/types/user';
 import { BoxProps } from '@mui/material';
 
 export interface ReactionsDisplayProps extends BoxProps {
-  reactions: IUserReaction[] | undefined;
+  reactions: IReactionReference[] | undefined;
   exampleReactors?: IBasicUserInfo[] | undefined;
   displayNames?: boolean;
   displayCount?: boolean;

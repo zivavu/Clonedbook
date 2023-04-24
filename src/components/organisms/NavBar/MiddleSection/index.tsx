@@ -1,6 +1,7 @@
-import { SelectedButtonUnderline, StyledIconButton, StyledRoot } from './styles';
+import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
+import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline';
 import { useState } from 'react';
 import { MiddleSectionProps } from './types';
 
@@ -31,7 +32,7 @@ export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSecti
       {mainNavElements.map((element) => {
         const selected = currentPage === element.name;
         return (
-          <StyledIconButton
+          <StyledToggleButton
             key={element.name}
             value={element.name}
             selected={selected}
@@ -39,7 +40,7 @@ export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSecti
           >
             <Icon icon={['fas', element.icon] as never} fontSize='1.3rem'></Icon>
             {selected ? <SelectedButtonUnderline /> : null}
-          </StyledIconButton>
+          </StyledToggleButton>
         );
       })}
     </StyledRoot>

@@ -2,23 +2,11 @@ import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import {
-  AngryIcon,
-  CareIcon,
-  HeartIcon,
-  LaughIcon,
-  LikeIcon,
-  SadIcon,
-  WowIcon,
-} from '@/assets/reactionIcons';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { db } from '@/config/firebase.config';
-import { IUserReaction } from '@/types/reaction';
-import { IBasicUserInfo } from '@/types/user';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import ReactionsPortal from './ReactionsPortal';
-import { ReactionsByTypes, ReactionsDisplayProps } from './types';
+import deserializeReactions from '@/utils/deserializeReactions';
+import { useState } from 'react';
+import ReactionsPortal from '../../organisms/ReactionsModal';
+import { ReactionsDisplayProps } from './types';
 
 export default function ReactionsDisplay({
   reactions,
@@ -31,61 +19,19 @@ export default function ReactionsDisplay({
   ...rootProps
 }: ReactionsDisplayProps) {
   const theme = useTheme();
+  const [showModal, setShowModal] = useState(false);
 
-  const [reactingUsers, setReactingUsers] = useState<IBasicUserInfo[] | undefined>(undefined);
-  const [shouldLoadReactions, setShouldLoadReactions] = useState(false);
-
-  useEffect(() => {
-    const loadReactions = async () => {
-      if (!shouldLoadReactions || reactingUsers) return;
-
-      const usersIds = reactions?.map((reaction) => reaction.userId) || [];
-      const usersDataRef = collection(db, 'usersPublicData');
-
-      const reads = usersIds.map((userId) => getDoc(doc(usersDataRef, userId)));
-      const result = await Promise.all(reads);
-      const usersData = result.map((doc) => doc.data());
-      setReactingUsers(usersData as IBasicUserInfo[]);
-    };
-    loadReactions();
-  }, [shouldLoadReactions, reactingUsers, reactions]);
-
-  const [showPortal, setShowPortal] = useState(false);
-
-  const reactionsCount = reactions?.length || 0;
-  if (!reactions || !reactionsCount) return null;
-
-  const reactionsByTypes: ReactionsByTypes = {
-    like: { count: 0, icon: LikeIcon },
-    love: { count: 0, icon: HeartIcon },
-    haha: { count: 0, icon: LaughIcon },
-    wow: { count: 0, icon: WowIcon },
-    sad: { count: 0, icon: SadIcon },
-    angry: { count: 0, icon: AngryIcon },
-    care: { count: 0, icon: CareIcon },
-  };
-
-  reactions?.forEach((reaction) => {
-    const { type } = reaction;
-    if (type in reactionsByTypes) {
-      reactionsByTypes[type].count += 1;
-    }
-  });
-
-  const highestReactionCountsByType = Object.entries(reactionsByTypes)
-    .map(([type, { count, icon }]) => ({ type, count, icon }))
-    .sort((a, b) => b.count - a.count);
+  const { reactionsByTypes, largestByType, reactionsCount } = deserializeReactions(reactions);
 
   const reactorsToDisplay = exampleReactors?.slice(0, emotesCount) || [];
 
   const handleShowPortal = () => {
-    setShouldLoadReactions(true);
-    setShowPortal(true);
+    setShowModal(true);
   };
 
   return (
     <>
-      {showPortal && <ReactionsPortal setShowPortal={setShowPortal} reactionsArr={reactions} />}
+      {showModal && <ReactionsPortal setShowModal={setShowModal} reactionsArr={reactions} />}
       <StyledRoot {...rootProps} sx={sx}>
         <ButtonBase
           onClick={() => handleShowPortal()}
@@ -103,7 +49,7 @@ export default function ReactionsDisplay({
           }}
         />
         <Box display='flex' sx={{ pr: theme.spacing(0.25), pointerEvents: 'none' }}>
-          {highestReactionCountsByType.slice(0, emotesCount).map((reaction, i) => {
+          {largestByType.slice(0, emotesCount).map((reaction, i) => {
             return (
               <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={10 - i} size={size} />
             );

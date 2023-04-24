@@ -57,5 +57,14 @@ export const componentOverrides = (palette: PaletteOptions) => {
         },
       },
     },
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          '& .MuiBackdrop-root': {
+            backgroundColor: 'rgba(255, 255, 255, 0.55)',
+          },
+        },
+      },
+    },
   };
 };

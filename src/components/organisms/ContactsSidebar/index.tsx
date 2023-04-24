@@ -12,6 +12,7 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
   const theme = useTheme();
   return (
     <StyledRoot {...rootProps}>
+      <AddUsersButton/>
       <Box>
         <StyledHeadingContainer>
           <Typography variant='body1' fontWeight={400}>
@@ -38,13 +39,13 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
             ? null
             : userData?.friends.slice(0, 30).map((friend) => {
                 return (
-                  <ListItemButton key={friend.info.profileId} sx={{ pl: theme.spacing(1) }}>
+                  <ListItemButton key={friend.basicInfo.profileId} sx={{ pl: theme.spacing(1) }}>
                     <UserAvatar
                       sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
-                      src={friend.info.profilePicture || ''}
+                      src={friend.basicInfo.profilePicture || ''}
                     />
                     <Typography variant='body2'>
-                      {friend.info.firstName} {friend.info.lastName}
+                      {friend.basicInfo.firstName} {friend.basicInfo.lastName}
                     </Typography>
                   </ListItemButton>
                 );

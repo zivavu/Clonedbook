@@ -1,7 +1,5 @@
 import { IChatReference } from './chat';
 import { IFriend } from './firend';
-import { IPicutreReference } from './picture';
-import { IPostReference } from './post';
 
 export interface IUser extends IBasicUserInfo {
   email: string;
@@ -13,8 +11,6 @@ export interface IUser extends IBasicUserInfo {
   groups: [];
   intrests: [];
   chatReferences: IChatReference[];
-  postReferences: IPostReference[];
-  picutresReferences: IPicutreReference[];
   about: {
     address?: string;
     country?: string;

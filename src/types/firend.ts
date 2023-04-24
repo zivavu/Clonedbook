@@ -4,8 +4,7 @@ import { IBasicUserInfo } from './user';
 
 export interface IFriend {
   connectionId: string; // unique identifier for the connection
-  ownerId: string; // id of the current user
-  info: IBasicUserInfo; // info of the friend
+  basicInfo: IBasicUserInfo; // info of the friend
   chatReference: IChatReference;
   status: 'pending' | 'accepted' | 'rejected' | 'blocked';
   createdAt: ICreatedAt;
@@ -14,4 +13,5 @@ export interface IFriend {
 export interface IFriendConnection {
   id: string; // unique identifier for the connection
   usersIds: string[];
+  status: 'pending' | 'accepted' | 'rejected' | 'blocked';
 }

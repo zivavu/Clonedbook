@@ -2,11 +2,11 @@ import { IBasicUserInfo } from './user';
 
 export interface IReactionReference {
   userId: string;
-  type: TPossibleReaction;
+  type: TReactionType;
 }
 
 export interface IUserReaction extends IReactionReference {
   userInfo: IBasicUserInfo;
 }
 
-export type TPossibleReaction = 'angry' | 'like' | 'love' | 'sad' | 'wow' | 'haha' | 'care';
+export type TReactionType = 'angry' | 'like' | 'love' | 'sad' | 'wow' | 'haha' | 'care';

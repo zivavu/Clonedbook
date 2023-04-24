@@ -39,7 +39,7 @@ export default function PostInfo({ post, ...rootProps }: PostInfoProps) {
         <Typography variant='body2'>{post.postText}</Typography>
       </Box>
       <Stack width='100%' direction='row' justifyContent='space-between'>
-        <ReactionsDisplay reactions={post.reactions} displayCount />
+        {post.reactions.length > 0 && <ReactionsDisplay reactions={post.reactions} displayCount />}
         <Box display='flex'>
           <Typography pr={theme.spacing(1)} variant='caption' sx={{ color: 'text.secondary' }}>
             {post.comments.length === 0

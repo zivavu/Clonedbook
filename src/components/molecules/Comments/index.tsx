@@ -15,7 +15,7 @@ export default function Comments({
   ...rootProps
 }: CommentsProps) {
   const { data } = useFetchUserQuery({});
-  const user = data?.public;
+  const user = data?.data;
   const commentsToRender: IComment[] = [];
 
   if (!comments) return null;

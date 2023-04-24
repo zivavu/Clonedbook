@@ -1,7 +1,7 @@
-import { IFriend, IFriendConnection } from './firend';
+import { IFriend } from './firend';
 import { IPicture } from './picture';
 import { IPost } from './post';
-import { IBasicUserInfo, IUser } from './user';
+import { IUser } from './user';
 
 export interface IUserServerData {
   data: IUser;

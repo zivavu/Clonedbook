@@ -14,8 +14,7 @@ export default function Comments({
   onlyUniqueUsers = false,
   ...rootProps
 }: CommentsProps) {
-  const { data } = useFetchUserQuery({});
-  const user = data?.data;
+  const { data: user } = useFetchUserQuery({});
   const commentsToRender: IComment[] = [];
 
   if (!comments) return null;

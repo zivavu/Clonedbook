@@ -23,7 +23,7 @@ export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps
         <StyledListItem>
           <UserAvatar size={36} sx={{ mr: theme.spacing(1.5) }} />
           <Typography fontSize={'0.85rem'}>
-            {user?.data.firstName} {user?.data.lastName}
+            {user?.firstName} {user?.lastName}
           </Typography>
         </StyledListItem>
 

@@ -1,7 +1,6 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { AddUsersButton } from '@/utils/generateRandomUsers';
 import { Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
@@ -11,7 +10,6 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
   const theme = useTheme();
   return (
     <StyledRoot {...rootProps}>
-      <AddUsersButton />
       <Box>
         <StyledHeadingContainer>
           <Typography variant='body1' fontWeight={400}>

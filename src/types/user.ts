@@ -10,6 +10,7 @@ export interface IUser extends IBasicUserInfo {
   groups: [];
   intrests: [];
   chatReferences: IChatReference[];
+  friends: IFriend[];
   about: {
     address?: string;
     country?: string;

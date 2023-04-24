@@ -1,6 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
 
-import { AddUsersButton } from '@/utils/generateRandomUsers';
 import Picture from '../../Picture';
 import { LastPictureProps } from './types';
 

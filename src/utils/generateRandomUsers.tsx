@@ -158,15 +158,15 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
 
   function getRandomProfilePhotos(amount: number, basicUserInfo: IBasicUserInfo) {
     const photos: IInProfilePicture[] = [];
-    const photosAmount = Math.ceil(Math.random() * amount) + 4;
+    const photosAmount = Math.ceil(Math.random() * amount) + 2;
     for (let i = 0; i < photosAmount; i++) {
       const photoId = getRandomUIDv4();
       const photo: IInProfilePicture = {
         ownerInfo: basicUserInfo,
         id: photoId,
         pictureURL: getRandomPhotoUrl(),
-        reactions: getRandomReactions(70),
-        comments: getRandomComents(8, 7),
+        reactions: getRandomReactions(60),
+        comments: getRandomComents(5, 7),
         shareCount: Math.floor(Math.random() * 50),
       };
       photos.push(photo);
@@ -175,7 +175,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
   function getRandomPosts(amount: number, basicUserInfo: IBasicUserInfo) {
     const posts: Array<IPost> = [];
-    const postAmount = Math.ceil(Math.random() * amount) + 2;
+    const postAmount = Math.ceil(Math.random() * amount);
     for (let i = 0; i < postAmount; i++) {
       const postPictures: string[] = [];
       const hasPictures = Math.random() > 0.3;
@@ -300,8 +300,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     const picturesOfUsers: IInProfilePicture[][] = [];
     for (let i = 0; i < usersAmount; i++) {
       const userBasicInfo = usersBasicInfo[i];
-      const userPosts = getRandomPosts(Math.random() > 0.9 ? 20 : 4, userBasicInfo);
-      const userPictures = getRandomProfilePhotos(6, userBasicInfo);
+      const userPosts = getRandomPosts(2, userBasicInfo);
+      const userPictures = getRandomProfilePhotos(1, userBasicInfo);
       const user: IUser = {
         ...userBasicInfo,
         backgroundPicture: getRandomBacgroundPicture(),
@@ -311,6 +311,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         chatReferences: [],
         groups: [],
         intrests: [],
+        friends: [],
         about: {
           country: faker.address.country(),
           city: faker.address.city(),
@@ -368,7 +369,6 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     const userDocRef = doc(db, 'users', data.profileId);
     const userPostsCollectionRef = doc(collection(db, 'users', data.profileId, 'posts'));
     const userPicturesCollectionRef = doc(collection(db, 'users', data.profileId, 'pictures'));
-    const userFriendsCollectionRef = doc(collection(db, 'users', data.profileId, 'friends'));
 
     const allUserData = {
       data,
@@ -384,10 +384,13 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     }
     usersDataToCommit[batchIndex].push(allUserData);
 
-    userDataBatches[batchIndex].set(userDocRef, { ...allUserData.data });
+    userDataBatches[batchIndex].set(userDocRef, {
+      ...allUserData.data,
+      friends: allUserData.friends,
+    });
+
     userDataBatches[batchIndex].set(userPostsCollectionRef, { ...postsOfUsers[i] });
     userDataBatches[batchIndex].set(userPicturesCollectionRef, { ...picturesOfUsers[i] });
-    userDataBatches[batchIndex].set(userFriendsCollectionRef, { ...allUsersFreinds[i] });
   }
 
   const postBatches: WriteBatch[] = [];

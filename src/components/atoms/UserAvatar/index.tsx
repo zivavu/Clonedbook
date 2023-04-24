@@ -24,9 +24,7 @@ export default function UserAvatar({ sx, size = 40, alt, src, ...rootProps }: Us
         height={size}
         width={size}
         src={
-          src ||
-          userData?.data?.profilePicture ||
-          'https://source.unsplash.com/collection/526820/480x480'
+          src || userData?.profilePicture || 'https://source.unsplash.com/collection/526820/480x480'
         }
         alt={alt || 'user avatar'}
         style={{

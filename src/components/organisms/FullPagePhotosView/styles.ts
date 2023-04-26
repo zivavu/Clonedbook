@@ -1,4 +1,4 @@
-import { Box, ButtonBase, IconButton, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,

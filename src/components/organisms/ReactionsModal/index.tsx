@@ -38,7 +38,7 @@ export default function ReactionsPortal({
   return (
     <>
       <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
-      <Modal open keepMounted onClose={() => setShowModal(false)}>
+      <Modal open onClose={() => setShowModal(false)}>
         <StyledRoot sx={sx} {...rootProps}>
           <Box>
             <ToggleButtonGroup

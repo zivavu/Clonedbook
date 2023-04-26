@@ -1,7 +1,8 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledInteractButton, StyledRoot, StyledTextContent } from './styles';
+import { StyledRoot, StyledTextContent } from './styles';
 
+import StyledInteractButton from '@/components/atoms/StyledInteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import ReactionsDisplay from '../../ReactionsDisplay';
 import { CommentProps } from './types';
@@ -40,10 +41,8 @@ export default function Comment({ comment, ...rootProps }: CommentProps) {
         </StyledTextContent>
       </Box>
       <Stack ml={theme.spacing(6)} direction='row' alignItems='center'>
-        <StyledInteractButton disableRipple sx={{ mr: theme.spacing(1) }}>
-          Like
-        </StyledInteractButton>
-        <StyledInteractButton disableRipple>Reply</StyledInteractButton>
+        <StyledInteractButton sx={{ mr: theme.spacing(1) }}>Like</StyledInteractButton>
+        <StyledInteractButton>Reply</StyledInteractButton>
       </Stack>
     </StyledRoot>
   );

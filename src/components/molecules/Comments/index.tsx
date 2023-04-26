@@ -27,16 +27,7 @@ export default function Comments({
       })
     : commentsToRender.push(...comments);
 
-  const exampleCommentsLength =
-    commentsToRender[0]?.commentText?.length + (commentsToRender[1]?.commentText?.length || 0);
-  let commentsCutIndex: number | undefined = undefined;
-  if (maxComments) {
-    commentsCutIndex = maxComments === 'all' ? undefined : maxComments;
-  } else if (exampleCommentsLength > 300) {
-    commentsCutIndex = 1;
-  } else {
-    commentsCutIndex = 2;
-  }
+  const commentsCutIndex = maxComments === 'all' ? undefined : maxComments;
 
   return (
     <StyledRoot {...rootProps}>

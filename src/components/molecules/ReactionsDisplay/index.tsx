@@ -39,8 +39,9 @@ export default function ReactionsDisplay({
           TouchRippleProps={{
             style: { color: theme.palette.primary.main },
           }}
+          focusRipple
           sx={{
-            borderRadius: '50%',
+            borderRadius: theme.spacing(3),
             padding: displayNames ? theme.spacing(2) : 0,
             position: 'absolute',
             left: '-2%',

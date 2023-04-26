@@ -5,4 +5,8 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
+
+  '&:hover': {
+    textDecoration: 'underline',
+  },
 }));

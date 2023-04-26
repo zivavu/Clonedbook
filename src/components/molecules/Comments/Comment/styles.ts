@@ -13,11 +13,3 @@ export const StyledTextContent = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(1, 1.5),
   borderRadius: '18px',
 }));
-
-export const StyledInteractButton = styled(ButtonBase)(({ theme }) => ({
-  padding: theme.spacing(0.2, 0.5),
-  borderRadius: '6px',
-  '&:hover': {
-    textDecoration: 'underline',
-  },
-}));

@@ -7,15 +7,15 @@ import { useState } from 'react';
 import PhotosCarousel from './PhotosCarousel';
 import PostInfo from './PostInfo';
 import { StyledRoot } from './styles';
-import { FullPagePhotosDisplayProps } from './types';
+import { FullPagePhotosViewProps } from './types';
 
-export default function FullPagePhotosDisplay({
+export default function FullPagePhotosView({
   sx,
   initialPhoto,
   post,
   setOpen,
   ...rootProps
-}: FullPagePhotosDisplayProps) {
+}: FullPagePhotosViewProps) {
   const theme = useTheme();
 
   if (!post.postPictures) return null;

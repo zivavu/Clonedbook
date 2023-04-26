@@ -4,10 +4,10 @@ import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import { ActionButtonsProps } from './types';
 
-export default function ActionButtons({ ...rootProps }: ActionButtonsProps) {
+export default function ActionButtons({ sx, ...rootProps }: ActionButtonsProps) {
   const theme = useTheme();
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot {...rootProps} sx={sx}>
       <StyledActionButton value='like'>
         <StyledActionIcon icon={['far', 'thumbs-up']} />
         <Typography variant='subtitle2' fontWeight='500'>

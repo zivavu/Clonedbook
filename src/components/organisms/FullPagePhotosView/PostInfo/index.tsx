@@ -2,12 +2,10 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledDevider, StyledRoot } from './styles';
 
-import UserAvatar from '@/components/atoms/UserAvatar';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
-import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 import RightSection from '../../NavBar/RightSection';
 import { PostInfoProps } from './types';
 

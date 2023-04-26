@@ -23,7 +23,8 @@ export default function ReactionsDisplay({
 
   const { reactionsByTypes, largestByType, reactionsCount } = deserializeReactions(reactions);
 
-  const reactorsToDisplay = exampleReactors?.slice(0, emotesCount) || [];
+  const reactorsToDisplay = exampleReactors?.slice(0, 2) || [];
+  const othersCount = reactionsCount - reactorsToDisplay.length;
 
   const handleShowPortal = () => {
     setShowModal(true);
@@ -39,7 +40,7 @@ export default function ReactionsDisplay({
             style: { color: theme.palette.primary.main },
           }}
           sx={{
-            borderRadius: theme.spacing(2),
+            borderRadius: '50%',
             padding: displayNames ? theme.spacing(2) : 0,
             position: 'absolute',
             left: '-2%',
@@ -72,7 +73,9 @@ export default function ReactionsDisplay({
                   ) : (
                     <>
                       <Typography variant='subtitle2'>
-                        {userText}&nbsp;and {reactionsCount - reactorsToDisplay.length} others
+                        {userText}&nbsp;
+                        {othersCount === 1 ? `and 1 other` : ''}
+                        {othersCount > 1 ? `and ${othersCount} others` : ''}
                       </Typography>
                     </>
                   )}
@@ -80,7 +83,7 @@ export default function ReactionsDisplay({
               );
             })}
           {displayCount && (
-            <Typography pr={theme.spacing(0.5)} variant='caption'>
+            <Typography pr={theme.spacing(0.7)} variant='caption'>
               {reactionsCount}
             </Typography>
           )}

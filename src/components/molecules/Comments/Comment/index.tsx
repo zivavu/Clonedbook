@@ -8,6 +8,7 @@ import { CommentProps } from './types';
 
 export default function Comment({ comment, ...rootProps }: CommentProps) {
   const theme = useTheme();
+  const shouldDisplayOnRightSite = comment.commentText.length < 25;
   return (
     <StyledRoot {...rootProps}>
       <Box display='flex' alignItems='center'>
@@ -31,8 +32,8 @@ export default function Comment({ comment, ...rootProps }: CommentProps) {
                 borderRadius: '10px',
                 zIndex: 1,
                 position: 'absolute',
-                bottom: '-15px',
-                right: theme.spacing(1),
+                bottom: shouldDisplayOnRightSite ? theme.spacing(1) : theme.spacing(-2),
+                right: shouldDisplayOnRightSite ? theme.spacing(-5.5) : theme.spacing(-1),
               }}
             />
           )}

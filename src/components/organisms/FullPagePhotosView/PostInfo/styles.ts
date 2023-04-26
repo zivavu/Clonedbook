@@ -3,8 +3,8 @@ import { Box, styled } from '@mui/material';
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'relative',
   color: theme.palette.text.primary,
-  minWidwth: '360px',
-  maxWidth: '360px',
+  minWidwth: '376px',
+  maxWidth: '376px',
   padding: theme.spacing(2),
   paddingTop: 0,
 
@@ -27,7 +27,6 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
     scrollbarColor: `${theme.palette.text.disabled}${theme.palette.secondary.main}`,
   },
 }));
-
 
 export const StyledDevider = styled(Box)(({ theme }) => ({
   position: 'absolute',

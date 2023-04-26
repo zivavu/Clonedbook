@@ -23,7 +23,6 @@ export default function FullPagePhotosView({
     <Portal>
       <StyledRoot {...rootProps} sx={sx}>
         <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
-
         <Box position='relative'>
           <Stack direction='row' sx={{ position: 'fixed', left: '18px', top: '8px', zIndex: 2 }}>
             <IconButton

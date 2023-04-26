@@ -7,7 +7,8 @@ import { UserAvatarProps } from './types';
 export default function UserAvatar({ sx, size = 40, alt, src, ...rootProps }: UserAvatarProps) {
   const px = `${size}px`;
   const theme = useTheme();
-  const { data: userData } = useFetchUserQuery({});
+  const { data: userData, isLoading, isFetching } = useFetchUserQuery({});
+  const isUserLoading = isLoading || isFetching;
   return (
     <Box
       {...rootProps}
@@ -23,9 +24,8 @@ export default function UserAvatar({ sx, size = 40, alt, src, ...rootProps }: Us
       <Image
         height={size}
         width={size}
-        src={
-          src || userData?.profilePicture || 'https://source.unsplash.com/collection/526820/480x480'
-        }
+        loading='eager'
+        src={src || userData?.profilePicture || '/no-profile-picture-icon.svg'}
         alt={alt || 'user avatar'}
         style={{
           borderRadius: '50%',

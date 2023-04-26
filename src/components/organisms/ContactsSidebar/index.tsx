@@ -30,23 +30,20 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
             </IconButton>
           </Box>
         </StyledHeadingContainer>
-
         <List sx={{ pt: theme.spacing(0) }}>
-          {isLoading || isFetching
-            ? null
-            : userData?.friends.slice(0, 30).map((friend) => {
-                return (
-                  <ListItemButton key={friend.basicInfo.profileId} sx={{ pl: theme.spacing(1) }}>
-                    <UserAvatar
-                      sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
-                      src={friend.basicInfo.profilePicture || ''}
-                    />
-                    <Typography variant='body2'>
-                      {friend.basicInfo.firstName} {friend.basicInfo.lastName}
-                    </Typography>
-                  </ListItemButton>
-                );
-              })}
+          {userData?.friends?.slice(0, 30).map((friend) => {
+            return (
+              <ListItemButton key={friend.basicInfo.profileId} sx={{ pl: theme.spacing(1) }}>
+                <UserAvatar
+                  sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
+                  src={friend.basicInfo.profilePicture || ''}
+                />
+                <Typography variant='body2'>
+                  {friend.basicInfo.firstName} {friend.basicInfo.lastName}
+                </Typography>
+              </ListItemButton>
+            );
+          })}
         </List>
       </Box>
     </StyledRoot>

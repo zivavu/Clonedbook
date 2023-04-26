@@ -40,8 +40,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   if (usersAmount > maxUsers) {
     usersAmount = maxUsers;
   }
-  if (usersAmount < 10) {
-    usersAmount = 10;
+  if (usersAmount < 13) {
+    usersAmount = 13;
   }
   const usersUIDS: string[] = [];
 
@@ -128,7 +128,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       'wow',
       'haha',
     ];
-    for (let i = 0; i < amount; i++) {
+    const reactionsAmount = Math.floor(Math.random() * amount);
+    for (let i = 0; i < reactionsAmount; i++) {
       const reactingUserUID = getRandomUserUID();
       if (reactions.some((reaction) => reaction.userId === reactingUserUID)) {
         continue;
@@ -149,7 +150,6 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     const basicUserInfo = {
       profileId: userUUID,
       firstName: faker.name.firstName(),
-      middleName: Math.random() > 0.9 ? faker.name.middleName() : '',
       lastName: faker.name.lastName(),
       profilePicture: getRandomProfilePicture(),
     };
@@ -239,14 +239,12 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         const usersBasicInfo = {
           profileId: userToAddFriends.profileId,
           firstName: userToAddFriends.firstName,
-          middleName: userToAddFriends.middleName,
           lastName: userToAddFriends.lastName,
           profilePicture: userToAddFriends.profilePicture,
         };
         const friendsBasicInfo = {
           profileId: userToBefriendInfo.profileId,
           firstName: userToBefriendInfo.firstName,
-          middleName: userToBefriendInfo.middleName,
           lastName: userToBefriendInfo.lastName,
           profilePicture: userToBefriendInfo.profilePicture,
         };
@@ -377,7 +375,7 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
       friends: allUsersFreinds[i],
     };
 
-    const batchIndex = i % Math.ceil(users.length / 10);
+    const batchIndex = i % Math.ceil(users.length / 15);
     if (!userDataBatches[batchIndex]) {
       userDataBatches[batchIndex] = writeBatch(db);
       usersDataToCommit[batchIndex] = [];
@@ -395,7 +393,7 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
 
   const postBatches: WriteBatch[] = [];
   allPosts.forEach((post, i) => {
-    const batchIndex = i % Math.ceil(friendsConnectionsToCommit.length / 110);
+    const batchIndex = i % Math.ceil(postsToCommit.length / 40);
     const docRef = doc(db, 'posts', post.id);
     if (!postBatches[batchIndex]) {
       postBatches[batchIndex] = writeBatch(db);
@@ -415,12 +413,20 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
   });
 
   const usersPublicDataBatch = writeBatch(db);
-  usersPublicDataToCommit.forEach((userPublicData) => {
-    const docRef = doc(db, 'usersPublicData', userPublicData.profileId);
-    usersPublicDataBatch.set(docRef, userPublicData);
+  const usersPublicDataDocId = uuidv4();
+  const usersPublicDataAsObjects = usersPublicDataToCommit.map((publicData) => {
+    const key = publicData.profileId;
+    const { firstName, lastName, profilePicture } = publicData;
+    const publicDataWithoutProfileId = { firstName, lastName, profilePicture };
+    return { [key]: publicDataWithoutProfileId };
+  });
+  const docRef = doc(db, 'usersPublicData', usersPublicDataDocId);
+  usersPublicDataBatch.set(docRef, {});
+  usersPublicDataAsObjects.forEach((userPublicData) => {
+    usersPublicDataBatch.update(docRef, userPublicData);
   });
 
-  const baseSleepTime = 10000;
+  const baseSleepTime = 7000;
   //Don't care enought to make it good, that scripts drives me crazy, it just has to work
   console.log(`you going to commit:\n`);
   userDataBatches.forEach((batch, i) => {
@@ -446,6 +452,7 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     console.log(`\nCOMMITING USERS PUBLIC DATA`);
     await usersPublicDataBatch.commit();
     console.log(`COMMITING USERS PUBLIC DATA DONE`);
+    await sleep(baseSleepTime * 1.5);
 
     console.log(`\nCOMMITING FRIENDS CONNECTIONS`);
     for (let i = 0; i < friendsConnectionsBatches.length; i++) {
@@ -479,5 +486,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(70, 50)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(60, 40)}>AddEm</Button>;
 }

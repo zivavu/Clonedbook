@@ -8,6 +8,7 @@ import {
   WowIcon,
 } from '@/assets/reactionIcons';
 import { IReactionReference, TReactionType } from '@/types/reaction';
+
 type ReactionsByTypes = {
   //eslint-disable-next-line no-unused-vars
   [key in TReactionType]: { count: number; icon: string };

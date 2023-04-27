@@ -23,9 +23,3 @@ export const StyledActionIcon = styled(Icon)(({ theme }) => ({
   fontSize: '1.15rem',
   margin: theme.spacing(0, 1),
 }));
-
-export const StyledReactionsMenu = styled(Menu)(({ theme }) => ({
-  '& .MuiBackdrop-root': {
-    backgroundColor: 'transparent',
-  },
-}));

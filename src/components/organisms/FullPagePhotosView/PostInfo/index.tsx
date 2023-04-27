@@ -42,7 +42,7 @@ export default function PostInfo({ post, ...rootProps }: PostInfoProps) {
           </Typography>
         </Box>
       </Stack>
-      <ActionButtons mt={theme.spacing(1)} mb={theme.spacing(4)} />
+      <ActionButtons post={post} mt={theme.spacing(1)} mb={theme.spacing(4)} />
       <Comments comments={post.comments} maxComments='all' />
     </StyledRoot>
   );

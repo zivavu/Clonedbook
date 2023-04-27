@@ -36,7 +36,7 @@ export default function FullPagePostView({
                 {post.comments.length > 1 ? `${post.comments.length} comments` : `1comment`}
               </Typography>
             </Stack>
-            <ActionButtons sx={{ borderBottom: 'none' }} />
+            <ActionButtons post={post} sx={{ borderBottom: 'none' }} />
             <Comments comments={post.comments} maxComments='all' />
           </StyledPostContentWrapper>
         </StyledRoot>

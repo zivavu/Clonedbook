@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   ButtonBase,
   Dialog,
   IconButton,
@@ -33,6 +34,19 @@ export default function CreatePostDialog({
           </Typography>
           <StyledDevider bottom='0' />
         </Box>
+        <IconButton
+          onClick={() => setIsOpen(false)}
+          sx={{
+            position: 'absolute',
+            top: theme.spacing(1.5),
+            right: theme.spacing(2),
+            backgroundColor: theme.palette.secondary.main,
+            width: '36px',
+            height: '36px',
+          }}
+        >
+          <Icon icon='xmark' />
+        </IconButton>
         <Stack padding={theme.spacing(2)}>
           <Stack direction='row' spacing={1}>
             <UserAvatar src={user.profilePicture} />
@@ -62,6 +76,9 @@ export default function CreatePostDialog({
             sx={{
               color: theme.palette.text.primary,
               mb: theme.spacing(3),
+              '& .MuiOutlinedInput-root': {
+                pl: theme.spacing(0),
+              },
             }}
           />
           <Box
@@ -97,19 +114,24 @@ export default function CreatePostDialog({
                 </Stack>
               </StyledPhotoDropArea>
             </StyledPhotoAddButton>
-            <IconButton
-              onClick={() => setIsOpen(false)}
-              sx={{
-                position: 'absolute',
-                top: theme.spacing(1),
-                right: theme.spacing(1),
-                width: '36px',
-                height: '36px',
-              }}
-            >
-              <Icon icon='xmark' />
-            </IconButton>
           </Box>
+          <Button
+            fullWidth
+            variant='contained'
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.common.white,
+              '&:hover': {
+                // @ts-ignore
+                backgroundColor: theme.palette.primary[400],
+              },
+              mt: theme.spacing(2),
+            }}
+          >
+            <Typography fontWeight='400' variant='subtitle1' lineHeight='1.5rem'>
+              Post
+            </Typography>
+          </Button>
         </Stack>
       </StyledRoot>
     </Dialog>

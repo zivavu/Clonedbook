@@ -88,7 +88,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
               </Typography>
             </StyledInteractButton>
           </Stack>
-          <ActionButtons />
+          <ActionButtons post={post} />
         </StyledContentWrapper>
         <StyledContentWrapper>
           {isMoreComments && (

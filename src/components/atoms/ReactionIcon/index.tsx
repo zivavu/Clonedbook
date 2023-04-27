@@ -1,12 +1,24 @@
 import { Box, useTheme } from '@mui/material';
 
+import {
+  AngryIcon,
+  CareIcon,
+  HeartIcon,
+  LaughIcon,
+  LikeIcon,
+  SadIcon,
+  WowIcon,
+} from '@/assets/reactionIcons';
+
 import Image from 'next/image';
 import { ReactionIconProps } from './types';
 
 export default function ReactionIcon({
   src,
+  type,
   alt,
   size = 22,
+  overlap = true,
   showBorder = true,
   zIndex,
   sx,
@@ -14,13 +26,39 @@ export default function ReactionIcon({
 }: ReactionIconProps) {
   const theme = useTheme();
   const imageBorder = showBorder ? `2px solid ${theme.palette.secondary.light}` : 'none';
+
+  switch (type) {
+    case 'like':
+      src = LikeIcon;
+      break;
+    case 'love':
+      src = HeartIcon;
+      break;
+    case 'care':
+      src = CareIcon;
+      break;
+    case 'haha':
+      src = LaughIcon;
+      break;
+    case 'wow':
+      src = WowIcon;
+      break;
+    case 'sad':
+      src = SadIcon;
+      break;
+    case 'angry':
+      src = AngryIcon;
+      break;
+  }
+
+  src = size > 30 ? src?.slice(0, -1) + '2' : src;
   return (
     <Box
       {...rootProps}
       sx={{
         ...sx,
         zIndex: zIndex || 0,
-        marginRight: `-4px`,
+        marginRight: overlap ? `-4px` : '',
         width: `${size}px`,
         height: `${size}px`,
       }}
@@ -28,7 +66,7 @@ export default function ReactionIcon({
       <Image
         width={size}
         height={size}
-        src={src}
+        src={src || LikeIcon}
         priority
         alt={alt || 'reaction icon'}
         style={{

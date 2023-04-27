@@ -8,7 +8,6 @@ export default function UserAvatar({ sx, size = 40, alt, src, ...rootProps }: Us
   const px = `${size}px`;
   const theme = useTheme();
   const { data: userData, isLoading, isFetching } = useFetchUserQuery({});
-  const isUserLoading = isLoading || isFetching;
   return (
     <Box
       {...rootProps}

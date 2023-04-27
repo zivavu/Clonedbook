@@ -1,5 +1,5 @@
 import Icon from '@/components/atoms/Icon/Icon';
-import { Box, Button, styled } from '@mui/material';
+import { Box, Button, Menu, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -22,4 +22,10 @@ export const StyledActionButton = styled(Button)(({ theme }) => ({
 export const StyledActionIcon = styled(Icon)(({ theme }) => ({
   fontSize: '1.15rem',
   margin: theme.spacing(0, 1),
+}));
+
+export const StyledReactionsMenu = styled(Menu)(({ theme }) => ({
+  '& .MuiBackdrop-root': {
+    backgroundColor: 'transparent',
+  },
 }));

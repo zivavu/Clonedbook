@@ -15,8 +15,6 @@ export const componentOverrides = (palette: PaletteOptions) => {
             border: 'none',
           },
           borderRadius: '18px',
-          //@ts-ignore
-          backgroundColor: palette.secondary?.main,
         },
       },
     },

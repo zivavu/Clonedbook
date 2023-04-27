@@ -22,6 +22,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
           sx: {
             borderRadius: '50px',
             width: '280px',
+            backgroundColor: theme.palette.secondary.main,
           },
           startAdornment: (
             <InputAdornment position='start'>

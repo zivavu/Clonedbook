@@ -9,6 +9,7 @@ import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 import { useState } from 'react';
 import ActionButtons from '../ActionButtons';
 import Comments from '../Comments';
+import CreatePostTile from '../CreatePostTile';
 import PostOwnerInfoDisplay from '../PostOwnerInfoDisplay';
 import ReactionsDisplay from '../ReactionsDisplay';
 import PicturesDisplay from './PicturesDisplay';

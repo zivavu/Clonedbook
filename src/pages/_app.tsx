@@ -8,6 +8,8 @@ import {
   faBell,
   faClapperboard,
   faEllipsis,
+  faFileCirclePlus,
+  faGlobeAfrica,
   faHouse,
   faMagnifyingGlass,
   faPeopleGroup,
@@ -38,6 +40,8 @@ const icons = [
   faXmark,
   faAngleRight,
   faAngleLeft,
+  faGlobeAfrica,
+  faFileCirclePlus,
 ] as any;
 library.add(...icons);
 

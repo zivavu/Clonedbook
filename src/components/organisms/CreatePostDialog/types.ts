@@ -11,3 +11,8 @@ export interface CreatePostError {
   content: string;
   sevariety: 'error' | 'warning' | 'info' | 'success';
 }
+
+export type FormInputs = {
+  postText: string;
+  photos: File[];
+};

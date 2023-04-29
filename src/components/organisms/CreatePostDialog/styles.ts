@@ -8,6 +8,7 @@ import {
   Stack,
   TextField,
   darken,
+  keyframes,
   lighten,
   styled,
 } from '@mui/material';
@@ -46,7 +47,7 @@ export const DialogCloseIconButton = styled(IconButton)(({ theme }) => ({
 export const StyledPostTextField = styled(TextField)(({ theme }) => ({
   color: theme.palette.text.primary,
   margin: theme.spacing(2, 0),
-  minHeight: '110px',
+  minHeight: '140px',
 
   '& .MuiOutlinedInput-root': {
     padding: '0',
@@ -68,14 +69,3 @@ export const PostSubmitButton = styled(Button)(({ theme }) => ({
         : lighten(theme.palette.primary.main, 0.1),
   },
 }));
-
-export const StyledErrorsStack = styled(Stack)(({ theme }) => ({
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  width: '100%',
-  padding: theme.spacing(2),
-  zIndex: 5,
-}));
-
-export const StyledErrorAlert = styled(Alert)(({ theme }) => ({}));

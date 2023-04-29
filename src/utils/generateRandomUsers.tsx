@@ -1,7 +1,8 @@
 /* eslint-disable no-console*/
 
 //! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper. Also it's far beyond the worst spaghetti code, don't try to understand it.
-//! It uploads a lots~(dozens of MB) of data batch after batch so will take time to execute
+//! It uploads a lots of data batch after batch so will take time to execute
+
 import { db } from '@/config/firebase.config';
 import { IComment } from '@/types/comment';
 import { IFriend, IFriendConnection } from '@/types/firend';

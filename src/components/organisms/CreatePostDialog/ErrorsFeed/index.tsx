@@ -1,15 +1,33 @@
 import { Typography, useTheme } from '@mui/material';
 
-import { StyledRoot } from './styles';
+import { StyledErrorAlert, StyledErrorsStack, StyledRoot } from './styles';
 
+import { useEffect } from 'react';
 import { ErrorsFeedProps } from './types';
 
-export default function ErrorsFeed({ sx, ...rootProps }: ErrorsFeedProps) {
-	const theme = useTheme();
+export default function ErrorsFeed({ errors, setErrors, sx, ...rootProps }: ErrorsFeedProps) {
+  useEffect(() => {
+    let errorTimeout: ReturnType<typeof setTimeout>;
+    if (errors.length > 0) {
+      errorTimeout = setTimeout(() => {
+        setErrors([]);
+      }, 3000);
+    }
+    return () => {
+      clearTimeout(errorTimeout);
+    };
+  }, [errors]);
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <Typography>ErrorsFeed</Typography>
+      {errors.length > 0 && (
+        <>
+          {errors.map((error, i) => (
+            <StyledErrorAlert key={error.content + i} severity={error.sevariety} variant='filled'>
+              <Typography>{error.content}</Typography>
+            </StyledErrorAlert>
+          ))}
+        </>
+      )}
     </StyledRoot>
   );
 }
-  

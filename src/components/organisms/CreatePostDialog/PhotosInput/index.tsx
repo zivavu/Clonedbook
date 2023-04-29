@@ -18,7 +18,6 @@ export default function PhotosInput({
 
   function handleFileUpload(e: DragEvent<HTMLLabelElement> | ChangeEvent<HTMLInputElement>) {
     let files: FileList | undefined;
-
     if (e.type === 'drop') {
       e = e as DragEvent<HTMLLabelElement>;
       files = e.dataTransfer.files;
@@ -50,6 +49,7 @@ export default function PhotosInput({
       }
     }
   }
+
   return (
     <StyledRoot
       sx={{

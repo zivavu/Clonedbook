@@ -7,16 +7,29 @@ import {
   Stack,
   TextField,
   Typography,
+  darken,
+  lighten,
   useTheme,
 } from '@mui/material';
 
-import { StyledPhotoAddButton, StyledPhotoDropArea, StyledRoot } from './styles';
+import {
+  DialogCloseIconButton,
+  PostSubmitButton,
+  StyledErrorAlert,
+  StyledErrorsStack,
+  StyledPostTextField,
+  StyledRoot,
+} from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import { StyledTextContent } from '@/components/molecules/Comments/Comment/styles';
+import { useFetchUserQuery } from '@/features/userAPI';
+import { useEffect, useState } from 'react';
 import { StyledDevider } from '../FullPagePhotosView/PostInfo/styles';
-import { CreatePostDialogProps } from './types';
-
+import PhotosInput from './PhotosInput';
+import UserInfo from './UserInfo';
+import { CreatePostDialogProps, CreatePostError } from './types';
 export default function CreatePostDialog({
   user,
   setIsOpen,
@@ -24,114 +37,69 @@ export default function CreatePostDialog({
   ...rootProps
 }: CreatePostDialogProps) {
   const theme = useTheme();
+
+  const [errors, setErrors] = useState<CreatePostError[]>([]);
+
+  const [postText, setPostText] = useState('');
+  const [postPhotos, setPostPhotos] = useState<File[]>([]);
+
+  useEffect(() => {
+    let errorTimeout: ReturnType<typeof setTimeout>;
+    if (errors.length > 0) {
+      errorTimeout = setTimeout(() => {
+        setErrors([]);
+      }, 2500);
+    }
+    return () => {
+      clearTimeout(errorTimeout);
+    };
+  }, [errors]);
+
   const placeholder = `What's on your mind, ${user.firstName}?`;
+  const isTextLong = postText.length > 85;
+
   return (
     <Dialog open onClose={() => setIsOpen(false)}>
       <StyledRoot sx={sx} {...rootProps}>
-        <Box p={theme.spacing(2)} position='relative'>
+        {errors.length > 0 && (
+          <StyledErrorsStack spacing={1}>
+            {errors.map((error, i) => (
+              <StyledErrorAlert key={error.content + i} severity={error.sevariety} variant='filled'>
+                <Typography>{error.content}</Typography>
+              </StyledErrorAlert>
+            ))}
+          </StyledErrorsStack>
+        )}
+
+        <Stack p={theme.spacing(2)} position='relative'>
           <Typography textAlign='center' variant='h6' fontWeight='500'>
             Create Post
           </Typography>
           <StyledDevider bottom='0' />
-        </Box>
-        <IconButton
-          onClick={() => setIsOpen(false)}
-          sx={{
-            position: 'absolute',
-            top: theme.spacing(1.5),
-            right: theme.spacing(2),
-            backgroundColor: theme.palette.secondary.main,
-            width: '36px',
-            height: '36px',
-          }}
-        >
+        </Stack>
+        <DialogCloseIconButton onClick={() => setIsOpen(false)}>
           <Icon icon='xmark' />
-        </IconButton>
-        <Stack padding={theme.spacing(2)}>
-          <Stack direction='row' spacing={1}>
-            <UserAvatar src={user.profilePicture} />
-            <Box>
-              <Typography fontWeight='400' variant='body1'>
-                {user.firstName} {user.lastName}
-              </Typography>
-              <ButtonBase
-                sx={{
-                  backgroundColor: theme.palette.secondary.main,
-                  padding: theme.spacing(0.2, 1),
-                  borderRadius: '6px',
-                  height: '24px',
-                }}
-              >
-                <Icon icon='globe-africa' fontSize='12px' />
-                <Typography ml={theme.spacing(0.5)} variant='body2' lineHeight='1rem'>
-                  Public
-                </Typography>
-              </ButtonBase>
-            </Box>
-          </Stack>
-          <TextField
+        </DialogCloseIconButton>
+
+        <Stack p={theme.spacing(2)}>
+          <UserInfo user={user} />
+          <StyledPostTextField
             variant='outlined'
             multiline
             placeholder={placeholder}
+            onChange={(e) => setPostText(e.target.value)}
             sx={{
-              color: theme.palette.text.primary,
-              mb: theme.spacing(3),
               '& .MuiOutlinedInput-root': {
-                pl: theme.spacing(0),
+                fontSize: isTextLong ? '0.95rem' : '1.5rem',
               },
             }}
           />
-          <Box
-            sx={{
-              width: '100%',
-              height: '240px',
-              p: theme.spacing(1),
-              m: 'auto',
-              border: `1px solid ${theme.palette.divider}`,
-              borderRadius: '6px',
-            }}
-          >
-            <StyledPhotoAddButton>
-              <StyledPhotoDropArea htmlFor='file-upload'>
-                <input
-                  type='file'
-                  id='file-upload'
-                  style={{ display: 'none' }}
-                  accept='image/png, image/jpeg'
-                />
-                <Stack>
-                  <Icon icon='file-circle-plus' fontSize='24' />
-                  <Typography lineHeight='1.2rem' variant='subtitle1' mt={theme.spacing(1)}>
-                    Add Photos
-                  </Typography>
-                  <Typography
-                    lineHeight='0.8rem'
-                    color={theme.palette.text.secondary}
-                    variant='caption'
-                  >
-                    or drag and drop
-                  </Typography>
-                </Stack>
-              </StyledPhotoDropArea>
-            </StyledPhotoAddButton>
-          </Box>
-          <Button
-            fullWidth
-            variant='contained'
-            sx={{
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.common.white,
-              '&:hover': {
-                // @ts-ignore
-                backgroundColor: theme.palette.primary[400],
-              },
-              mt: theme.spacing(2),
-            }}
-          >
+          <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setErrors} />
+          <PostSubmitButton fullWidth variant='contained'>
             <Typography fontWeight='400' variant='subtitle1' lineHeight='1.5rem'>
               Post
             </Typography>
-          </Button>
+          </PostSubmitButton>
         </Stack>
       </StyledRoot>
     </Dialog>

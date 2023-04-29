@@ -10,3 +10,7 @@ export const ClimateAndScienceIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/y3
 export const AdCenterIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/yl/r/_JPdPzLmp9j.png';
 export const AdsManagerIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/qR88GIDM38e.png';
 export const PlaceholderIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/yc/r/y7p-dcTnGV_.png';
+
+export const LiveVideoIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/yr/r/c0dWho49-X3.png';
+export const PhotoVideoIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/Ivw7nhRtXyo.png';
+export const LiveEventIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/pkbalDbTOVI.png';

@@ -1,30 +1,81 @@
 import { theme } from '@/design/theme';
-import { Box, ButtonBase, styled } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  ButtonBase,
+  IconButton,
+  Stack,
+  TextField,
+  darken,
+  lighten,
+  styled,
+} from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
-  width: 'min(90vw, 500px)',
-}));
+  width: 'min(96vw, 500px)',
+  overflowX: 'hidden',
 
-export const StyledPhotoAddButton = styled(ButtonBase)(({ theme }) => ({
-  position: 'relative',
-  width: '100%',
-  height: '100%',
-  backgroundColor: theme.palette.grey[100],
-  borderRadius: '6px',
-
-  '&:hover': {
-    backgroundColor: theme.palette.secondary.main,
+  scrollbarWidth: 'thin',
+  '&::-webkit-scrollbar': {
+    width: `8px`,
   },
-  cursor: 'pointer',
+  scrollbarColor: `transparent transparent`,
+  '&::-webkit-scrollbar-thumb': {
+    background: theme.palette.secondary.main,
+    borderRadius: '8px',
+  },
+  '&:hover::-webkit-scrollbar-thumb': {
+    background: theme.palette.text.disabled,
+  },
+  '&:hover': {
+    scrollbarColor: `${theme.palette.text.disabled}${theme.palette.secondary.main}`,
+  },
 }));
 
-export const StyledPhotoDropArea = styled('label')(({ theme }) => ({
+export const DialogCloseIconButton = styled(IconButton)(({ theme }) => ({
   position: 'absolute',
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
+  top: theme.spacing(1.5),
+  right: theme.spacing(2),
+  backgroundColor: theme.palette.secondary.main,
+  width: '36px',
+  height: '36px',
 }));
+
+export const StyledPostTextField = styled(TextField)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  margin: theme.spacing(2, 0),
+  minHeight: '110px',
+
+  '& .MuiOutlinedInput-root': {
+    padding: '0',
+  },
+  '& .MuiInputBase-inputMultiline::placeholder': {
+    fontWeight: 400,
+  },
+}));
+
+export const PostSubmitButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.common.white,
+  marginTop: theme.spacing(2),
+  transition: 'all 0.1s ease-out',
+  '&:hover': {
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.primary.main, 0.1)
+        : lighten(theme.palette.primary.main, 0.1),
+  },
+}));
+
+export const StyledErrorsStack = styled(Stack)(({ theme }) => ({
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  width: '100%',
+  padding: theme.spacing(2),
+  zIndex: 5,
+}));
+
+export const StyledErrorAlert = styled(Alert)(({ theme }) => ({}));

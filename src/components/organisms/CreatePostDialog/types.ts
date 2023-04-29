@@ -6,3 +6,8 @@ export interface CreatePostDialogProps extends BoxProps {
   user: IUser;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
+
+export interface CreatePostError {
+  content: string;
+  sevariety: 'error' | 'warning' | 'info' | 'success';
+}

@@ -26,6 +26,11 @@ const nextConfig = {
         hostname: 'cloudflare-ipfs.com',
         pathname: '/ipfs/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'static.xx.fbcdn.net',
+        pathname: '/rsrc.php/**',
+      },
     ],
   },
 };

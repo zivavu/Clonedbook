@@ -1,6 +1,6 @@
 import { IBasicUserInfo, IUser } from '@/types/user';
 import { BoxProps } from '@mui/material';
 
-export interface CreatePostProps extends BoxProps {
+export interface WhatsOnYourMindBoxProps extends BoxProps {
   user: IUser;
 }

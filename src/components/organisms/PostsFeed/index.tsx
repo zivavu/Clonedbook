@@ -1,7 +1,7 @@
 import { StyledRoot } from './styles';
 
-import CreatePostTile from '@/components/molecules/CreatePostTile';
 import FeedPost from '@/components/molecules/FeedPost';
+import CreatePostTile from '@/components/molecules/WhatsOnYourMindBox';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { IBasicUserInfo, IUser } from '@/types/user';
 import { PostsFeedProps } from './types';

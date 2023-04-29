@@ -6,6 +6,7 @@ import Icon from '@/components/atoms/Icon/Icon';
 import { db, storage } from '@/config/firebase.config';
 import { IPost } from '@/types/post';
 import { IBasicUserInfo } from '@/types/user';
+import { optimizePhotos } from '@/utils/optimizePhotos';
 import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { uuidv4 } from '@firebase/util';
 import { Timestamp, addDoc, doc, setDoc } from 'firebase/firestore';
@@ -36,6 +37,7 @@ export default function CreatePostDialog({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setIsLoading(true);
     if (postText.length === 0 && postPhotos.length === 0) {
       setErrors((prev) => [
         ...prev,
@@ -44,42 +46,46 @@ export default function CreatePostDialog({
       return;
     }
 
+    optimizePhotos(postPhotos);
     const userBasicInfo: IBasicUserInfo = separateUserBasicInfo(user);
     const postId = uuidv4();
     const downloadUrls: string[] = [];
-    const uploadPhotosPromises = postPhotos.map((photo) => {
-      const photoRef = ref(storage, `posts/${postId}/${uuidv4()}`);
-      return uploadBytes(photoRef, photo);
-    });
+    // const uploadPhotosPromises = optimizedPhotosURIs.map((photo) => {
+    //   const photoRef = ref(storage, `posts/${postId}/${uuidv4()}`);
+    //   return uploadBytes(photoRef, photo, { contentType: 'image/webp' });
+    // });
 
-    try {
-      await Promise.allSettled(uploadPhotosPromises).then((results) => {
-        results.forEach(async (result) => {
-          if (result.status === 'fulfilled') {
-            const downloadUrl = await getDownloadURL(result.value.ref);
-            downloadUrls.push(downloadUrl);
-          }
-        });
-      });
-      const post: IPost = {
-        postText: postText,
-        createdAt: Timestamp.now(),
-        exampleReactors: [],
-        postPictures: downloadUrls,
-        comments: [],
-        id: postId,
-        owner: userBasicInfo,
-        reactions: [],
-        shareCount: 0,
-      };
-      const userDocRef = doc(db, 'users', `${user.profileId}/posts/${postId}`);
-      const postDocRef = doc(db, 'posts', postId);
-      await setDoc(userDocRef, post);
-      await setDoc(postDocRef, post);
-    } catch (err) {
-      const deleteRef = ref(storage, `posts/${postId}`);
-      await deleteObject(deleteRef);
-    }
+    //   try {
+    //     await Promise.allSettled(uploadPhotosPromises).then((results) => {
+    //       results.forEach(async (result) => {
+    //         if (result.status === 'fulfilled') {
+    //           const downloadUrl = await getDownloadURL(result.value.ref);
+    //           downloadUrls.push(downloadUrl);
+    //         }
+    //       });
+    //     });
+    //     const post: IPost = {
+    //       postText: postText,
+    //       createdAt: Timestamp.now(),
+    //       exampleReactors: [],
+    //       postPictures: downloadUrls,
+    //       comments: [],
+    //       id: postId,
+    //       owner: userBasicInfo,
+    //       reactions: [],
+    //       shareCount: 0,
+    //     };
+    //     const userDocRef = doc(db, 'users', `${user.profileId}/posts/${postId}`);
+    //     const postDocRef = doc(db, 'posts', postId);
+    //     await setDoc(userDocRef, post);
+    //     await setDoc(postDocRef, post);
+    //   } catch (err) {
+    //     const deleteRef = ref(storage, `posts/${postId}`);
+    //     await deleteObject(deleteRef);
+    //   } finally {
+    //     setIsLoading(false);
+    //     setIsOpen(false);
+    //   }
   }
   return (
     <Dialog open onClose={() => setIsOpen(false)}>

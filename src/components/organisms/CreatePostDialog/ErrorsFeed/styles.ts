@@ -1,4 +1,4 @@
-import { Alert, Box, Stack, keyframes, styled } from '@mui/material';
+import { Alert, Box, keyframes, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,

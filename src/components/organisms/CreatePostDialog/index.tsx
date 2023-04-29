@@ -3,12 +3,20 @@ import { Dialog, Stack, Typography, useTheme } from '@mui/material';
 import { DialogCloseIconButton, PostSubmitButton, StyledPostTextField, StyledRoot } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
-import { useEffect, useState } from 'react';
+import { db, storage } from '@/config/firebase.config';
+import { IPost } from '@/types/post';
+import { IBasicUserInfo } from '@/types/user';
+import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
+import { uuidv4 } from '@firebase/util';
+import { Timestamp, addDoc, doc, setDoc } from 'firebase/firestore';
+import { UploadResult, deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { useState } from 'react';
 import { StyledDevider } from '../FullPagePhotosView/PostInfo/styles';
 import ErrorsFeed from './ErrorsFeed';
 import PhotosInput from './PhotosInput';
 import UserInfo from './UserInfo';
 import { CreatePostDialogProps, CreatePostError } from './types';
+
 export default function CreatePostDialog({
   user,
   setIsOpen,
@@ -16,8 +24,8 @@ export default function CreatePostDialog({
   ...rootProps
 }: CreatePostDialogProps) {
   const theme = useTheme();
-
-  const [mainErrors, setMainErrors] = useState<CreatePostError[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<CreatePostError[]>([]);
 
   const [postText, setPostText] = useState('');
   const [postPhotos, setPostPhotos] = useState<File[]>([]);
@@ -26,21 +34,58 @@ export default function CreatePostDialog({
   const textLines = postText.match(/\n/g)?.length || 0 + 1;
   const isTextLong = postText.length > 85 || textLines > 3;
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (postText.length === 0 || postPhotos.length === 0) {
-      setMainErrors((prev) => [
+    if (postText.length === 0 && postPhotos.length === 0) {
+      setErrors((prev) => [
         ...prev,
         { content: 'Post must contain text or photo', sevariety: 'error' },
       ]);
       return;
+    }
+
+    const userBasicInfo: IBasicUserInfo = separateUserBasicInfo(user);
+    const postId = uuidv4();
+    const downloadUrls: string[] = [];
+    const uploadPhotosPromises = postPhotos.map((photo) => {
+      const photoRef = ref(storage, `posts/${postId}/${uuidv4()}`);
+      return uploadBytes(photoRef, photo);
+    });
+
+    try {
+      await Promise.allSettled(uploadPhotosPromises).then((results) => {
+        results.forEach(async (result) => {
+          if (result.status === 'fulfilled') {
+            const downloadUrl = await getDownloadURL(result.value.ref);
+            downloadUrls.push(downloadUrl);
+          }
+        });
+      });
+      const post: IPost = {
+        postText: postText,
+        createdAt: Timestamp.now(),
+        exampleReactors: [],
+        postPictures: downloadUrls,
+        comments: [],
+        id: postId,
+        owner: userBasicInfo,
+        reactions: [],
+        shareCount: 0,
+      };
+      const userDocRef = doc(db, 'users', `${user.profileId}/posts/${postId}`);
+      const postDocRef = doc(db, 'posts', postId);
+      await setDoc(userDocRef, post);
+      await setDoc(postDocRef, post);
+    } catch (err) {
+      const deleteRef = ref(storage, `posts/${postId}`);
+      await deleteObject(deleteRef);
     }
   }
   return (
     <Dialog open onClose={() => setIsOpen(false)}>
       <form onSubmit={handleSubmit} style={{ overflow: 'hidden' }}>
         <StyledRoot sx={sx} {...rootProps}>
-          <ErrorsFeed errors={mainErrors} setErrors={setMainErrors} />
+          <ErrorsFeed errors={errors} setErrors={setErrors} />
 
           <Stack p={theme.spacing(2)} position='relative'>
             <Typography textAlign='center' variant='h6' fontWeight='500'>
@@ -66,7 +111,7 @@ export default function CreatePostDialog({
                 },
               }}
             />
-            <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setMainErrors} />
+            <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setErrors} />
             <PostSubmitButton fullWidth variant='contained' type='submit'>
               <Typography fontWeight='400' variant='subtitle1' lineHeight='1.5rem'>
                 Post

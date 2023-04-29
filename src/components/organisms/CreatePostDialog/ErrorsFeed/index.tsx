@@ -1,6 +1,6 @@
-import { Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 
-import { StyledErrorAlert, StyledErrorsStack, StyledRoot } from './styles';
+import { StyledErrorAlert, StyledRoot } from './styles';
 
 import { useEffect } from 'react';
 import { ErrorsFeedProps } from './types';
@@ -16,7 +16,8 @@ export default function ErrorsFeed({ errors, setErrors, sx, ...rootProps }: Erro
     return () => {
       clearTimeout(errorTimeout);
     };
-  }, [errors]);
+  }, [errors, setErrors]);
+
   return (
     <StyledRoot sx={sx} {...rootProps}>
       {errors.length > 0 && (

@@ -1,17 +1,13 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  TextField,
-  darken,
-  lighten,
-  styled
-} from '@mui/material';
+import { Box, Button, IconButton, Stack, TextField, darken, lighten, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  position: 'relative',
   width: 'min(96vw, 500px)',
+  maxHeight: 'min(96vh, 760px)',
+  color: theme.palette.text.primary,
+
   overflowX: 'hidden',
+  overflowY: 'scroll',
 
   scrollbarWidth: 'thin',
   '&::-webkit-scrollbar': {
@@ -39,23 +35,13 @@ export const DialogCloseIconButton = styled(IconButton)(({ theme }) => ({
   height: '36px',
 }));
 
-export const StyledPostTextField = styled(TextField)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  margin: theme.spacing(2, 0),
-  minHeight: '140px',
-
-  '& .MuiOutlinedInput-root': {
-    padding: '0',
-  },
-  '& .MuiInputBase-inputMultiline::placeholder': {
-    fontWeight: 400,
-  },
+export const StyledMainContentStack = styled(Stack)(({ theme }) => ({
+  maxHeight: '100%',
 }));
 
 export const PostSubmitButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
-  marginTop: theme.spacing(2),
   transition: 'all 0.1s ease-out',
   '&:hover': {
     backgroundColor:

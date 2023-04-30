@@ -9,7 +9,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   left: '0',
   width: '100%',
   padding: theme.spacing(2),
-  zIndex: 5,
+  zIndex: theme.zIndex.modal - 1,
 }));
 
 export const StyledErrorAlert = styled(Alert)(({ theme }) => ({

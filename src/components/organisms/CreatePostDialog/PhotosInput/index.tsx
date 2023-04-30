@@ -1,9 +1,16 @@
-import { Stack, Typography, useTheme } from '@mui/material';
+import { Box, CardMedia, Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledPhotoAddButton, StyledPhotoDropArea, StyledRoot } from './styles';
+import {
+  StyledBorderBox,
+  StyledPhotoAddButton,
+  StyledPhotoDropArea,
+  StyledPhotosResetIcon,
+  StyledRoot,
+} from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
-import { ChangeEvent, DragEvent, useState } from 'react';
+import { ChangeEvent, DragEvent, useEffect, useState } from 'react';
+import UserPhotosDisplay from './UserPhotosDisplay';
 import { PhotosInputProps } from './types';
 
 export default function PhotosInput({
@@ -15,6 +22,7 @@ export default function PhotosInput({
 }: PhotosInputProps) {
   const theme = useTheme();
   const [isDraggedOver, setIsDraggedOver] = useState(false);
+  const showPhotos = photos.length > 0 && !isDraggedOver;
 
   function handleFileUpload(e: DragEvent<HTMLLabelElement> | ChangeEvent<HTMLInputElement>) {
     let files: FileList | undefined;
@@ -51,60 +59,67 @@ export default function PhotosInput({
   }
 
   return (
-    <StyledRoot
-      sx={{
-        ...sx,
-        borderColor: isDraggedOver ? theme.palette.primary.main : theme.palette.divider,
-      }}
-      {...rootProps}
-    >
-      <StyledPhotoAddButton>
-        <StyledPhotoDropArea
-          htmlFor='file-upload'
-          onDragOver={(e) => {
-            e.preventDefault();
-            setIsDraggedOver(true);
-          }}
-          onDragLeave={() => setIsDraggedOver(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setIsDraggedOver(false);
-            handleFileUpload(e);
-          }}
-        >
-          <input
-            type='file'
-            id='file-upload'
-            multiple
-            style={{ display: 'none' }}
-            onChange={(e) => {
+    <StyledRoot sx={{ ...sx }} {...rootProps}>
+      <StyledBorderBox
+        sx={{ borderColor: isDraggedOver ? theme.palette.primary.main : theme.palette.divider }}
+      >
+        {showPhotos && (
+          <StyledPhotosResetIcon onClick={() => setPhotos([])}>
+            <Icon icon='xmark' fontSize='24' />
+          </StyledPhotosResetIcon>
+        )}
+        <StyledPhotoAddButton>
+          {showPhotos && <UserPhotosDisplay photos={photos} />}
+
+          <StyledPhotoDropArea
+            htmlFor='file-upload'
+            onDragOver={(e) => {
+              e.preventDefault();
+              setIsDraggedOver(true);
+            }}
+            onDragLeave={() => setIsDraggedOver(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setIsDraggedOver(false);
               handleFileUpload(e);
             }}
-            accept='image/png, image/jpeg'
-          />
-          <Stack>
-            {isDraggedOver ? (
-              <Typography fontWeight={400} variant='h6' color={theme.palette.primary.dark}>
-                Drop Your photo here
-              </Typography>
-            ) : (
-              <>
-                <Icon icon='file-circle-plus' fontSize='24' />
-                <Typography lineHeight='1.2rem' variant='subtitle1' mt={theme.spacing(1)}>
-                  Add Photos
-                </Typography>
-                <Typography
-                  lineHeight='0.8rem'
-                  color={theme.palette.text.secondary}
-                  variant='caption'
-                >
-                  or drag and drop
-                </Typography>
-              </>
+          >
+            <input
+              type='file'
+              id='file-upload'
+              multiple
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                handleFileUpload(e);
+              }}
+              accept='image/png, image/jpeg'
+            />
+            {!photos[0] && (
+              <Stack>
+                {isDraggedOver ? (
+                  <Typography fontWeight={400} variant='h6' color={theme.palette.primary.dark}>
+                    Drop Your photo here
+                  </Typography>
+                ) : (
+                  <>
+                    <Icon icon='file-circle-plus' fontSize='24' />
+                    <Typography lineHeight='1.2rem' variant='subtitle1' mt={theme.spacing(1)}>
+                      Add Photos
+                    </Typography>
+                    <Typography
+                      lineHeight='0.8rem'
+                      color={theme.palette.text.secondary}
+                      variant='caption'
+                    >
+                      or drag and drop
+                    </Typography>
+                  </>
+                )}
+              </Stack>
             )}
-          </Stack>
-        </StyledPhotoDropArea>
-      </StyledPhotoAddButton>
+          </StyledPhotoDropArea>
+        </StyledPhotoAddButton>
+      </StyledBorderBox>
     </StyledRoot>
   );
 }

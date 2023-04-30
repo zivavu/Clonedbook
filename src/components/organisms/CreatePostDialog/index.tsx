@@ -1,6 +1,11 @@
-import { Dialog, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Dialog, Stack, Typography, useTheme } from '@mui/material';
 
-import { DialogCloseIconButton, PostSubmitButton, StyledPostTextField, StyledRoot } from './styles';
+import {
+  DialogCloseIconButton,
+  PostSubmitButton,
+  StyledMainContentStack,
+  StyledRoot,
+} from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import { db, storage } from '@/config/firebase.config';
@@ -11,10 +16,11 @@ import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { StyledDevider } from '../FullPagePhotosView/PostInfo/styles';
 import ErrorsFeed from './ErrorsFeed';
 import PhotosInput from './PhotosInput';
+import PostTextInput from './PostTextInput';
 import UserInfo from './UserInfo';
 import { CreatePostDialogProps, CreatePostError } from './types';
 
@@ -28,17 +34,13 @@ export default function CreatePostDialog({
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<CreatePostError[]>([]);
 
-  const [postText, setPostText] = useState('');
   const [postPhotos, setPostPhotos] = useState<File[]>([]);
-
-  const placeholder = `What's on your mind, ${user.firstName}?`;
-  const textLines = postText.match(/\n/g)?.length || 0 + 1;
-  const isTextLong = postText.length > 85 || textLines > 3;
+  const postTextRef = useRef('');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
-    if (postText.length === 0 && postPhotos.length === 0) {
+    if (postTextRef.current.length === 0 && postPhotos.length === 0) {
       setErrors((prev) => [
         ...prev,
         { content: 'Post must contain text or photo', sevariety: 'error' },
@@ -64,7 +66,7 @@ export default function CreatePostDialog({
         });
       });
       const post: IPost = {
-        postText: postText,
+        postText: postTextRef.current,
         createdAt: Timestamp.now(),
         exampleReactors: [],
         postPictures: downloadUrls,
@@ -74,6 +76,7 @@ export default function CreatePostDialog({
         reactions: [],
         shareCount: 0,
       };
+
       const userDocRef = doc(db, 'users', `${user.profileId}/posts/${postId}`);
       const postDocRef = doc(db, 'posts', postId);
       await setDoc(userDocRef, post);
@@ -87,8 +90,8 @@ export default function CreatePostDialog({
     }
   }
   return (
-    <Dialog open onClose={() => setIsOpen(false)}>
-      <form onSubmit={handleSubmit} style={{ overflow: 'hidden' }}>
+    <form onSubmit={handleSubmit}>
+      <Dialog open onClose={() => setIsOpen(false)}>
         <StyledRoot sx={sx} {...rootProps}>
           <ErrorsFeed errors={errors} setErrors={setErrors} />
 
@@ -102,29 +105,20 @@ export default function CreatePostDialog({
             <Icon icon='xmark' />
           </DialogCloseIconButton>
 
-          <Stack p={theme.spacing(2)}>
-            <UserInfo user={user} />
-            <StyledPostTextField
-              variant='outlined'
-              multiline
-              placeholder={placeholder}
-              onChange={(e) => setPostText(e.target.value)}
-              value={postText}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  fontSize: isTextLong ? '0.95rem' : '1.5rem',
-                },
-              }}
-            />
+          <UserInfo user={user} />
+          <StyledMainContentStack>
+            <PostTextInput user={user} postPhotos={postPhotos} postTextRef={postTextRef} />
             <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setErrors} />
+          </StyledMainContentStack>
+          <Box p={2}>
             <PostSubmitButton fullWidth variant='contained' type='submit'>
               <Typography fontWeight='400' variant='subtitle1' lineHeight='1.5rem'>
                 Post
               </Typography>
             </PostSubmitButton>
-          </Stack>
+          </Box>
         </StyledRoot>
-      </form>
-    </Dialog>
+      </Dialog>
+    </form>
   );
 }

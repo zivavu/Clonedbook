@@ -1,6 +1,6 @@
-import { IUser } from '@/types/user';
+import { IBasicUserInfo, IUser } from '@/types/user';
 
-export function separateUserBasicInfo(user: IUser) {
+export function separateUserBasicInfo(user: IUser | IBasicUserInfo) {
   return {
     profileId: user.profileId,
     firstName: user.firstName,

@@ -7,7 +7,7 @@ export interface IPost extends IPostReference {
   postPictures?: string[];
   postText?: string;
   reactions: IReactionReference[];
-  exampleReactors?: IBasicUserInfo[];
+  exampleReactors: IBasicUserInfo[];
   comments: IComment[];
   shareCount: number;
 }

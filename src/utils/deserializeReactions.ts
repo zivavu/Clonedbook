@@ -38,7 +38,11 @@ const deserializeReactions = (reactions: IReactionReference[]) => {
     .map(([type, { count, icon }]) => ({ type, count, icon }))
     .sort((a, b) => b.count - a.count);
 
-  return { reactionsCount, largestByType, reactionsByTypes };
+  const usedReactions = Object.entries(reactionsByTypes).filter(
+    (reaction) => reaction[1].count > 0,
+  );
+
+  return { reactionsCount, largestByType, reactionsByTypes, usedReactions };
 };
 
 export default deserializeReactions;

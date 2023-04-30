@@ -3,7 +3,7 @@ import { Box, styled } from '@mui/material';
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'relative',
   color: theme.palette.text.primary,
-  minWidwth: '376px',
+  minWidth: '376px',
   maxWidth: '376px',
   padding: theme.spacing(2),
   paddingTop: 0,

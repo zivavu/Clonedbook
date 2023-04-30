@@ -45,47 +45,46 @@ export default function CreatePostDialog({
       ]);
       return;
     }
-
-    optimizePhotos(postPhotos);
     const userBasicInfo: IBasicUserInfo = separateUserBasicInfo(user);
     const postId = uuidv4();
     const downloadUrls: string[] = [];
-    // const uploadPhotosPromises = optimizedPhotosURIs.map((photo) => {
-    //   const photoRef = ref(storage, `posts/${postId}/${uuidv4()}`);
-    //   return uploadBytes(photoRef, photo, { contentType: 'image/webp' });
-    // });
 
-    //   try {
-    //     await Promise.allSettled(uploadPhotosPromises).then((results) => {
-    //       results.forEach(async (result) => {
-    //         if (result.status === 'fulfilled') {
-    //           const downloadUrl = await getDownloadURL(result.value.ref);
-    //           downloadUrls.push(downloadUrl);
-    //         }
-    //       });
-    //     });
-    //     const post: IPost = {
-    //       postText: postText,
-    //       createdAt: Timestamp.now(),
-    //       exampleReactors: [],
-    //       postPictures: downloadUrls,
-    //       comments: [],
-    //       id: postId,
-    //       owner: userBasicInfo,
-    //       reactions: [],
-    //       shareCount: 0,
-    //     };
-    //     const userDocRef = doc(db, 'users', `${user.profileId}/posts/${postId}`);
-    //     const postDocRef = doc(db, 'posts', postId);
-    //     await setDoc(userDocRef, post);
-    //     await setDoc(postDocRef, post);
-    //   } catch (err) {
-    //     const deleteRef = ref(storage, `posts/${postId}`);
-    //     await deleteObject(deleteRef);
-    //   } finally {
-    //     setIsLoading(false);
-    //     setIsOpen(false);
-    //   }
+    const optimizedPhotosBlobs = await optimizePhotos(postPhotos);
+    const uploadPhotosPromises = optimizedPhotosBlobs.map((photo) => {
+      const photoRef = ref(storage, `posts/${postId}/${uuidv4()}`);
+      return uploadBytes(photoRef, photo, { contentType: 'image/webp' });
+    });
+    try {
+      await Promise.allSettled(uploadPhotosPromises).then((results) => {
+        results.forEach(async (result) => {
+          if (result.status === 'fulfilled') {
+            const downloadUrl = await getDownloadURL(result.value.ref);
+            downloadUrls.push(downloadUrl);
+          }
+        });
+      });
+      const post: IPost = {
+        postText: postText,
+        createdAt: Timestamp.now(),
+        exampleReactors: [],
+        postPictures: downloadUrls,
+        comments: [],
+        id: postId,
+        owner: userBasicInfo,
+        reactions: [],
+        shareCount: 0,
+      };
+      const userDocRef = doc(db, 'users', `${user.profileId}/posts/${postId}`);
+      const postDocRef = doc(db, 'posts', postId);
+      await setDoc(userDocRef, post);
+      await setDoc(postDocRef, post);
+    } catch (err) {
+      const deleteRef = ref(storage, `posts/${postId}`);
+      await deleteObject(deleteRef);
+    } finally {
+      setIsLoading(false);
+      setIsOpen(false);
+    }
   }
   return (
     <Dialog open onClose={() => setIsOpen(false)}>

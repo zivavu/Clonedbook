@@ -21,8 +21,10 @@ export default function ReactionsDisplay({
   const theme = useTheme();
   const [showModal, setShowModal] = useState(false);
 
-  const { reactionsByTypes, largestByType, reactionsCount } = deserializeReactions(reactions);
+  const { reactionsByTypes, largestByType, reactionsCount, usedReactions } =
+    deserializeReactions(reactions);
 
+  emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
   const reactorsToDisplay = exampleReactors?.slice(0, 2) || [];
   const othersCount = reactionsCount - reactorsToDisplay.length;
 

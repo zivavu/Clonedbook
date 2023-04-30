@@ -3,29 +3,17 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { StyledContentWrapper, StyledRoot } from './styles';
 
 import StyledInteractButton from '@/components/atoms/StyledInteractButton';
-import UserAvatar from '@/components/atoms/UserAvatar';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
-import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 import { useState } from 'react';
 import ActionButtons from '../ActionButtons';
 import Comments from '../Comments';
 import PostOwnerInfoDisplay from '../PostOwnerInfoDisplay';
 import ReactionsDisplay from '../ReactionsDisplay';
-import CreatePostTile from '../WhatsOnYourMindBox';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
-  const {
-    createdAt,
-    id: postId,
-    owner,
-    comments,
-    postPictures,
-    postText,
-    reactions,
-    shareCount,
-  } = post;
+  const { id: postId, comments, postPictures, postText, reactions } = post;
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 

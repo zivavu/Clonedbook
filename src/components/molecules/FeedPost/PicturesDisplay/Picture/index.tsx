@@ -1,4 +1,4 @@
-import { ButtonBase, Portal, useTheme } from '@mui/material';
+import { ButtonBase, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -69,7 +69,7 @@ export default function Picture({
     <>
       <StyledRoot sx={sx} {...rootProps}>
         <ButtonBase
-          onClick={(e) => handleClick()}
+          onClick={() => handleClick()}
           focusRipple
           sx={{
             backgroundColor: 'transparent',

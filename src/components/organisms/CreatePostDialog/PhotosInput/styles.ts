@@ -1,4 +1,4 @@
-import { Box, ButtonBase, Stack, styled } from '@mui/material';
+import { Box, ButtonBase, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -26,7 +26,7 @@ export const StyledPhotoAddButton = styled(ButtonBase)(({ theme }) => ({
   cursor: 'pointer',
 }));
 
-export const StyledPhotoDropArea = styled('label')(({ theme }) => ({
+export const StyledPhotoDropArea = styled('label')(({}) => ({
   position: 'absolute',
   width: '100%',
   height: '100%',

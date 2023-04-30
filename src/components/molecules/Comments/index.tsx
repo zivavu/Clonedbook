@@ -1,4 +1,4 @@
-import { Stack, useTheme } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -16,7 +16,6 @@ export default function Comments({
 }: CommentsProps) {
   const { data: user } = useFetchUserQuery({});
   const commentsToRender: IComment[] = [];
-
   if (!comments) return null;
 
   onlyUniqueUsers

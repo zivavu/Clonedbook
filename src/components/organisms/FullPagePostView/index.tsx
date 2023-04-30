@@ -1,4 +1,4 @@
-import { Box, GlobalStyles, Modal, Stack, Typography, useTheme } from '@mui/material';
+import { GlobalStyles, Modal, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledPostContentWrapper, StyledRoot } from './styles';
 

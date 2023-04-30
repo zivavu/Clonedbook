@@ -3,7 +3,6 @@ import { Box, GlobalStyles, IconButton, Portal, Stack, useTheme } from '@mui/mat
 import Icon from '@/components/atoms/Icon/Icon';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
 import PhotosCarousel from './PhotosCarousel';
 import PostInfo from './PostInfo';
 import { StyledRoot } from './styles';

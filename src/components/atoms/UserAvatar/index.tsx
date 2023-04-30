@@ -7,7 +7,7 @@ import { UserAvatarProps } from './types';
 export default function UserAvatar({ sx, size = 40, alt, src, ...rootProps }: UserAvatarProps) {
   const px = `${size}px`;
   const theme = useTheme();
-  const { data: userData, isLoading, isFetching } = useFetchUserQuery({});
+  const { data: userData } = useFetchUserQuery({});
   return (
     <Box
       {...rootProps}

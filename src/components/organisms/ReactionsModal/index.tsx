@@ -3,7 +3,6 @@ import {
   GlobalStyles,
   Modal,
   Stack,
-  ToggleButton,
   ToggleButtonGroup,
   Typography,
   useTheme,
@@ -16,7 +15,6 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import { TReactionType } from '@/types/reaction';
 import deserializeReactions from '@/utils/deserializeReactions';
 import useGetReactorsData from '@/utils/useGetReactorsData';
-import { userInfo } from 'os';
 import { useState } from 'react';
 import { ReactionsModalProps } from './types';
 
@@ -28,7 +26,7 @@ export default function ReactionsPortal({
 }: ReactionsModalProps) {
   const theme = useTheme();
   const { usersReactions, isLoading, error } = useGetReactorsData(reactionsArr);
-  const { reactionsByTypes, reactionsCount, largestByType } = deserializeReactions(reactionsArr);
+  const { reactionsByTypes, largestByType } = deserializeReactions(reactionsArr);
 
   const [showedType, setShowedType] = useState<TReactionType | 'all'>('all');
   const reactionsToShow =

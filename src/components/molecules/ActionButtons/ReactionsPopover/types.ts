@@ -1,5 +1,5 @@
 import { IPost } from '@/types/post';
-import { BoxProps, SxProps, Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface ReactionsPopoverProps {

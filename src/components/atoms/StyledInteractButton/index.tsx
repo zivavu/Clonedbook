@@ -1,4 +1,4 @@
-import { BoxProps, ButtonBase, ButtonBaseProps, useTheme } from '@mui/material';
+import { ButtonBase, ButtonBaseProps, useTheme } from '@mui/material';
 
 export default function StyledInteractButton({ children, sx, onClick }: ButtonBaseProps) {
   const theme = useTheme();

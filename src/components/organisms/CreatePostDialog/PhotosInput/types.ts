@@ -1,4 +1,3 @@
-import { IUser } from '@/types/user';
 import { BoxProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import { CreatePostError } from '../types';

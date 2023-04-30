@@ -1,16 +1,11 @@
-import { theme } from '@/design/theme';
 import {
-  Alert,
   Box,
   Button,
-  ButtonBase,
   IconButton,
-  Stack,
   TextField,
   darken,
-  keyframes,
   lighten,
-  styled,
+  styled
 } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({

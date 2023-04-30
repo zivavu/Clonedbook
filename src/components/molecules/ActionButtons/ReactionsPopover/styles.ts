@@ -1,4 +1,4 @@
-import { Box, Menu, Popover, styled } from '@mui/material';
+import { Popover, styled } from '@mui/material';
 
 export const StyledReactionsPopover = styled(Popover)(({ theme }) => ({
   '& .MuiBackdrop-root': {

@@ -5,7 +5,6 @@ import { StyledRoot } from './styles';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchUserQuery } from '@/features/userAPI';
 import deserializeReactions from '@/utils/deserializeReactions';
-import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { useState } from 'react';
 import ReactionsPortal from '../../organisms/ReactionsModal';
 import { ReactionsDisplayProps } from './types';
@@ -24,8 +23,7 @@ export default function ReactionsDisplay({
   const { data: user } = useFetchUserQuery({});
   const [showModal, setShowModal] = useState(false);
 
-  const { reactionsByTypes, largestByType, reactionsCount, usedReactions } =
-    deserializeReactions(reactions);
+  const { largestByType, reactionsCount, usedReactions } = deserializeReactions(reactions);
 
   emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
 

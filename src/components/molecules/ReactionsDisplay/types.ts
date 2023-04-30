@@ -1,4 +1,4 @@
-import { IReactionReference, TReactionType } from '@/types/reaction';
+import { IReactionReference } from '@/types/reaction';
 import { IBasicUserInfo } from '@/types/user';
 import { BoxProps } from '@mui/material';
 

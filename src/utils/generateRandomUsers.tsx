@@ -487,5 +487,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(60, 40)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(60, 50)}>AddEm</Button>;
 }

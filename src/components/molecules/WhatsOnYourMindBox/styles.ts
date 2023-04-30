@@ -1,4 +1,4 @@
-import { Avatar, Box, ButtonBase, Typography, styled } from '@mui/material';
+import { Box, ButtonBase, Typography, styled } from '@mui/material';
 import Image from 'next/image';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({

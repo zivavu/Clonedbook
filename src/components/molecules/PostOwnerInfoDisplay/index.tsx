@@ -1,4 +1,4 @@
-import { Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -12,8 +12,6 @@ export default function PostOwnerInfoDisplay({
   sx,
   ...rootProps
 }: PostOwnerInfoDisplayProps) {
-  const theme = useTheme();
-
   const date = getDateFromTimestamp(createdAt.seconds);
   return (
     <StyledRoot sx={sx} {...rootProps}>

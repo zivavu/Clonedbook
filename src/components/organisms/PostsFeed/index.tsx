@@ -1,9 +1,8 @@
 import { StyledRoot } from './styles';
 
 import FeedPost from '@/components/molecules/FeedPost';
-import CreatePostTile from '@/components/molecules/WhatsOnYourMindBox';
+import WhatsOnYourMindBox from '@/components/molecules/WhatsOnYourMindBox';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { IBasicUserInfo, IUser } from '@/types/user';
 import { PostsFeedProps } from './types';
 
 export default function PostsFeed({ posts, ...rootProps }: PostsFeedProps) {
@@ -11,7 +10,7 @@ export default function PostsFeed({ posts, ...rootProps }: PostsFeedProps) {
 
   return (
     <StyledRoot {...rootProps}>
-      {user && <CreatePostTile user={user as IUser} />}
+      {user?.profileId && <WhatsOnYourMindBox user={user} />}
       {posts.map((post) => (
         <FeedPost key={post.id} post={post}></FeedPost>
       ))}

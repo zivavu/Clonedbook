@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { uuidv4 } from '@firebase/util';
 import Picture from '../Picture';
@@ -12,8 +12,6 @@ export default function ManyPicutresDisplay({
   pictureBorder,
   postId,
 }: ManyPicutresDisplayProps) {
-  const theme = useTheme();
-
   //Used in next/image component for image optimization
   function getPictureSizeAndQuality(i: number) {
     let size: pictureSize = 'medium';

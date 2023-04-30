@@ -1,5 +1,5 @@
 import Icon from '@/components/atoms/Icon/Icon';
-import { Box, Button, Menu, styled } from '@mui/material';
+import { Box, Button, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,

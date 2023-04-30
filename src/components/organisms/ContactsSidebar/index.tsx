@@ -6,7 +6,7 @@ import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
 
 export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) {
-  const { data: userData, isFetching, isLoading } = useFetchUserQuery({});
+  const { data: userData } = useFetchUserQuery({});
   const theme = useTheme();
   return (
     <StyledRoot {...rootProps}>

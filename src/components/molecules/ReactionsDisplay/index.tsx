@@ -3,7 +3,9 @@ import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
+import { useFetchUserQuery } from '@/features/userAPI';
 import deserializeReactions from '@/utils/deserializeReactions';
+import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { useState } from 'react';
 import ReactionsPortal from '../../organisms/ReactionsModal';
 import { ReactionsDisplayProps } from './types';
@@ -19,15 +21,20 @@ export default function ReactionsDisplay({
   ...rootProps
 }: ReactionsDisplayProps) {
   const theme = useTheme();
+  const { data: user } = useFetchUserQuery({});
   const [showModal, setShowModal] = useState(false);
 
   const { reactionsByTypes, largestByType, reactionsCount, usedReactions } =
     deserializeReactions(reactions);
 
   emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
-  const reactorsToDisplay = exampleReactors?.slice(0, 2) || [];
-  const othersCount = reactionsCount - reactorsToDisplay.length;
 
+  const haveYouReacted = reactions.some((reaction) => reaction.userId === user?.profileId);
+  const exampleReactorsSlice = exampleReactors?.slice(0, 2) || [];
+  const reactorsToDisplay = haveYouReacted
+    ? exampleReactorsSlice.filter((reactor) => reactor.profileId !== user?.profileId)
+    : exampleReactorsSlice;
+  const otherUsersCount = reactionsCount - reactorsToDisplay.length;
   const handleShowPortal = () => {
     setShowModal(true);
   };
@@ -65,26 +72,35 @@ export default function ReactionsDisplay({
           mt={theme.spacing(0.2)}
           color={theme.palette.text.secondary}
         >
-          {displayNames &&
-            reactorsToDisplay.map((reactor, i) => {
-              const isLast = reactorsToDisplay.length === i + 1;
-              const userText = [reactor.firstName, reactor.lastName].join(' ');
-              return (
-                <Box key={reactor.profileId}>
-                  {!isLast ? (
-                    <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
-                  ) : (
-                    <>
-                      <Typography variant='subtitle2'>
-                        {userText}&nbsp;
-                        {othersCount === 1 ? `and 1 other` : ''}
-                        {othersCount > 1 ? `and ${othersCount} others` : ''}
-                      </Typography>
-                    </>
-                  )}
-                </Box>
-              );
-            })}
+          {displayNames && (
+            <>
+              {haveYouReacted ? (
+                <Typography variant='subtitle2'>
+                  You {reactionsCount > 1 ? `and ${otherUsersCount} others` : ''}
+                </Typography>
+              ) : (
+                reactorsToDisplay.map((reactor, i) => {
+                  const isLast = reactorsToDisplay.length === i + 1;
+                  const userText = [reactor.firstName, reactor.lastName].join(' ');
+                  return (
+                    <Box key={reactor.profileId}>
+                      {!isLast ? (
+                        <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
+                      ) : (
+                        <>
+                          <Typography variant='subtitle2'>
+                            {userText}&nbsp;
+                            {otherUsersCount === 1 ? `and 1 other` : ''}
+                            {otherUsersCount > 1 ? `and ${otherUsersCount} others` : ''}
+                          </Typography>
+                        </>
+                      )}
+                    </Box>
+                  );
+                })
+              )}
+            </>
+          )}
           {displayCount && (
             <Typography pr={theme.spacing(0.7)} variant='caption'>
               {reactionsCount}

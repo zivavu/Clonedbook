@@ -28,21 +28,19 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
   const hasText = !!postText ? true : false;
   const isTextLong = (postText && postText.length > 130) || hasPictures ? true : false;
 
-  function handleShowMoreComments() {
-    setIsFullViewOpen(true);
-  }
-
   const exampleCommentsLength =
     comments[0]?.commentText?.length + (comments[1]?.commentText?.length || 0);
   const maxComments = exampleCommentsLength > 200 ? 1 : 2;
   const isMoreComments = comments.length > maxComments;
 
+  function handleShowMoreComments() {
+    setIsFullViewOpen(true);
+  }
   return (
     <>
       <StyledRoot {...rootProps}>
         <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
           <PostOwnerInfoDisplay owner={post.owner} createdAt={post.createdAt} />
-
           {hasText && (
             <Box sx={{ pt: theme.spacing(1) }}>
               {isTextLong ? (
@@ -64,14 +62,12 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
 
         <StyledContentWrapper>
           <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
-            {reactions.length > 0 && (
-              <ReactionsDisplay
-                reactions={post.reactions}
-                exampleReactors={post.exampleReactors}
-                userReaction={userReaction}
-                sx={{ pr: theme.spacing(0.25) }}
-              />
-            )}
+            <ReactionsDisplay
+              reactions={post.reactions}
+              exampleReactors={post.exampleReactors}
+              userReaction={userReaction}
+              sx={{ pr: theme.spacing(0.25) }}
+            />
             <StyledInteractButton
               sx={{ ml: 'auto' }}
               onClick={() => {

@@ -8,20 +8,20 @@ import { separateUserBasicInfo } from './separateUserBasicInfo';
 export async function userPostReact(
   post: IPost,
   user: IUser | IBasicUserInfo,
-  reaction: TReactionType,
+  reaction: TReactionType | null,
 ) {
   const { id: postId, reactions: postReactions, exampleReactors } = post;
   const { profileId: userId } = user;
   const userBasicInfo = separateUserBasicInfo(user);
-  const newReactions: IReactionReference[] = [
-    ...postReactions.filter((reaction) => reaction.userId !== userId),
-    { userId, type: reaction },
-  ];
-  const newExampleReactors: IBasicUserInfo[] = [...exampleReactors];
-  if (newExampleReactors.length < 4) {
-    newExampleReactors.filter((reactor) => reactor.profileId !== userId);
-    newExampleReactors.push(userBasicInfo);
-  }
+  const newReactions: IReactionReference[] = reaction
+    ? [
+        ...postReactions.filter((reaction) => reaction.userId !== userId),
+        { userId, type: reaction },
+      ]
+    : [...postReactions.filter((reaction) => reaction.userId !== userId)];
+  const newExampleReactors: IBasicUserInfo[] = exampleReactors.slice(-4);
+  newExampleReactors.filter((reactor) => reactor.profileId !== userId);
+  newExampleReactors.push(userBasicInfo);
 
   try {
     const docRef = doc(db, 'posts', postId);

@@ -31,12 +31,16 @@ export default function ActionButtons({
     setMouseOverReactionElements(false);
   }
 
-  function handleLike() {
+  function handleReactionClick() {
     if (!user) return;
-    setAnchorEl(null);
     setMouseOverReactionElements(false);
-    setUserReaction({ userId: user.profileId, type: 'like' });
-    userPostReact(post, user, 'like');
+    if (!userReaction) {
+      setUserReaction({ userId: user.profileId, type: 'like' });
+      userPostReact(post, user, 'like');
+    } else {
+      setUserReaction(null);
+      userPostReact(post, user, null);
+    }
   }
 
   const typesColors = {
@@ -47,6 +51,7 @@ export default function ActionButtons({
     wow: '#d49820',
     sad: '#d49820',
     angry: '#F44336',
+    default: theme.palette.text.secondary,
   };
 
   return (
@@ -64,7 +69,7 @@ export default function ActionButtons({
         ref={likeButtonRef}
         onMouseEnter={handleMouseOver}
         onMouseLeave={handleMouseOut}
-        onClick={handleLike}
+        onClick={handleReactionClick}
       >
         {userReaction ? (
           <ReactionIcon
@@ -72,7 +77,7 @@ export default function ActionButtons({
             size={20}
             showBorder={false}
             overlap={false}
-            pr={theme.spacing(3.5)}
+            sx={{ m: theme.spacing(0, 1) }}
           />
         ) : (
           <StyledActionIcon icon={['far', 'thumbs-up']} />
@@ -81,7 +86,7 @@ export default function ActionButtons({
           variant='subtitle2'
           fontWeight='400'
           textTransform='capitalize'
-          color={typesColors[userReaction?.type || 'like']}
+          color={typesColors[userReaction?.type || 'default']}
         >
           {userReaction?.type || 'Like'}
         </Typography>

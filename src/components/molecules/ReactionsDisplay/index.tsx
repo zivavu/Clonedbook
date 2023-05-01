@@ -5,7 +5,7 @@ import { StyledRoot } from './styles';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchUserQuery } from '@/features/userAPI';
 import deserializeReactions from '@/utils/deserializeReactions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactionsPortal from '../../organisms/ReactionsModal';
 import { ReactionsDisplayProps } from './types';
 
@@ -24,29 +24,29 @@ export default function ReactionsDisplay({
   const { data: user } = useFetchUserQuery({});
   const [showModal, setShowModal] = useState(false);
 
-  reactions = userReaction
-    ? [...reactions.filter((reaction) => reaction.userId !== userReaction.userId), userReaction]
-    : reactions;
+  reactions = [...reactions.filter((reaction) => reaction.userId !== user?.profileId)];
+  userReaction && reactions.push(userReaction);
 
   const { largestByType, reactionsCount, usedReactions } = deserializeReactions(reactions);
-
   emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
 
-  const exampleReactorsSlice = exampleReactors?.slice(0, 2) || [];
-  const reactorsToDisplay = userReaction
-    ? exampleReactorsSlice.filter((reactor) => reactor.profileId !== user?.profileId)
-    : exampleReactorsSlice;
+  const exampleReactorsSlice = exampleReactors?.slice(0, Math.min(reactions.length, 2)) || [];
+  const reactorsToDisplay = exampleReactorsSlice.filter(
+    (reactor) => reactor.profileId !== user?.profileId,
+  );
+  console.log(userReaction);
+
   const otherUsersCount = reactionsCount - reactorsToDisplay.length;
-  const handleShowPortal = () => {
+
+  const handleShowModal = () => {
     setShowModal(true);
   };
-
   return (
     <>
       {showModal && <ReactionsPortal setShowModal={setShowModal} reactionsArr={reactions} />}
       <StyledRoot {...rootProps} sx={sx}>
         <ButtonBase
-          onClick={() => handleShowPortal()}
+          onClick={() => handleShowModal()}
           TouchRippleProps={{
             style: { color: theme.palette.primary.main },
           }}

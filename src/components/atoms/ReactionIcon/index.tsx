@@ -54,7 +54,6 @@ export default function ReactionIcon({
   src = size > 30 ? src?.slice(0, -1) + '2' : src;
   return (
     <Box
-      {...rootProps}
       sx={{
         zIndex: zIndex || 0,
         marginRight: overlap ? `-4px` : '',
@@ -62,6 +61,7 @@ export default function ReactionIcon({
         height: `${size}px`,
         ...sx,
       }}
+      {...rootProps}
     >
       <Image
         width={size}

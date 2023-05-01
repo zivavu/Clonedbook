@@ -1,4 +1,4 @@
-import { Box, Popper, Stack, keyframes, styled } from '@mui/material';
+import { Box, Popper, keyframes, styled } from '@mui/material';
 
 export const StyledReactionsPopover = styled(Popper)(({ theme }) => ({
   zIndex: 20,

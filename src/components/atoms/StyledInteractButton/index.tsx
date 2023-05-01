@@ -1,5 +1,8 @@
 import { ButtonBase, ButtonBaseProps, useTheme } from '@mui/material';
 
+/**
+ * @description - A button that only styling is text underline on hover
+ */
 export default function StyledInteractButton({ children, sx, onClick }: ButtonBaseProps) {
   const theme = useTheme();
   return (

@@ -12,6 +12,7 @@ import { ReactionsDisplayProps } from './types';
 export default function ReactionsDisplay({
   reactions,
   exampleReactors,
+  userReaction,
   sx,
   emotesCount = 3,
   displayNames = true,
@@ -23,13 +24,16 @@ export default function ReactionsDisplay({
   const { data: user } = useFetchUserQuery({});
   const [showModal, setShowModal] = useState(false);
 
+  reactions = userReaction
+    ? [...reactions.filter((reaction) => reaction.userId !== userReaction.userId), userReaction]
+    : reactions;
+
   const { largestByType, reactionsCount, usedReactions } = deserializeReactions(reactions);
 
   emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
 
-  const haveYouReacted = reactions.some((reaction) => reaction.userId === user?.profileId);
   const exampleReactorsSlice = exampleReactors?.slice(0, 2) || [];
-  const reactorsToDisplay = haveYouReacted
+  const reactorsToDisplay = userReaction
     ? exampleReactorsSlice.filter((reactor) => reactor.profileId !== user?.profileId)
     : exampleReactorsSlice;
   const otherUsersCount = reactionsCount - reactorsToDisplay.length;
@@ -72,7 +76,7 @@ export default function ReactionsDisplay({
         >
           {displayNames && (
             <>
-              {haveYouReacted ? (
+              {userReaction ? (
                 <Typography variant='subtitle2'>
                   You {reactionsCount > 1 ? `and ${otherUsersCount} others` : ''}
                 </Typography>

@@ -4,6 +4,8 @@ import { StyledContentWrapper, StyledRoot } from './styles';
 
 import StyledInteractButton from '@/components/atoms/StyledInteractButton';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
+import { useFetchUserQuery } from '@/features/userAPI';
+import { IReactionReference } from '@/types/reaction';
 import { useState } from 'react';
 import ActionButtons from '../ActionButtons';
 import Comments from '../Comments';
@@ -13,9 +15,14 @@ import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
+  const { data: user } = useFetchUserQuery({});
   const { id: postId, comments, postPictures, postText, reactions } = post;
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
+
+  const [userReaction, setUserReaction] = useState<IReactionReference | null>(
+    post.reactions.find((reaction) => reaction.userId === user?.profileId) || null,
+  );
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
   const hasText = !!postText ? true : false;
@@ -35,6 +42,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
       <StyledRoot {...rootProps}>
         <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
           <PostOwnerInfoDisplay owner={post.owner} createdAt={post.createdAt} />
+
           {hasText && (
             <Box sx={{ pt: theme.spacing(1) }}>
               {isTextLong ? (
@@ -47,17 +55,20 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
             </Box>
           )}
         </StyledContentWrapper>
-        {hasPictures ? (
+
+        {hasPictures && (
           <Box mt={theme.spacing(1)}>
             <PicturesDisplay pictures={post.postPictures as string[]} postId={postId} />
           </Box>
-        ) : null}
+        )}
+
         <StyledContentWrapper>
           <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
             {reactions.length > 0 && (
               <ReactionsDisplay
                 reactions={post.reactions}
                 exampleReactors={post.exampleReactors}
+                userReaction={userReaction}
                 sx={{ pr: theme.spacing(0.25) }}
               />
             )}
@@ -76,7 +87,12 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
               </Typography>
             </StyledInteractButton>
           </Stack>
-          <ActionButtons post={post} />
+
+          <ActionButtons
+            post={post}
+            userReaction={userReaction}
+            setUserReaction={setUserReaction}
+          />
         </StyledContentWrapper>
         <StyledContentWrapper>
           {isMoreComments && (

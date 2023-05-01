@@ -56,11 +56,11 @@ export default function ReactionIcon({
     <Box
       {...rootProps}
       sx={{
-        ...sx,
         zIndex: zIndex || 0,
         marginRight: overlap ? `-4px` : '',
         width: `${size}px`,
         height: `${size}px`,
+        ...sx,
       }}
     >
       <Image

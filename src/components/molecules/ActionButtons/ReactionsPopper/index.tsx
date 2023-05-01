@@ -15,6 +15,7 @@ export default function ReactionsPopper({
   setAnchorEl,
   mouseOver,
   setMouseOver,
+  setUserReaction,
   sx,
 }: ReactionsPopperProps) {
   const theme = useTheme();
@@ -57,6 +58,7 @@ export default function ReactionsPopper({
   const reactionTypes: TReactionType[] = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
   function handleReaction(type: TReactionType) {
     if (!user) return;
+    setUserReaction({ userId: user.profileId, type });
     userPostReact(post, user, type);
     setOpen(false);
   }

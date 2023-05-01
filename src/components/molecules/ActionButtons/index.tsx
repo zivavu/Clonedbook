@@ -3,25 +3,31 @@ import { Typography, useTheme } from '@mui/material';
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import { useRef, useState } from 'react';
-import ReactionsPopover from './ReactionsPopover';
+import ReactionsPopper from './ReactionsPopper';
 import { ActionButtonsProps } from './types';
 
 export default function ActionButtons({ post, sx, ...rootProps }: ActionButtonsProps) {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [mouseOverReact, setMouseOverReact] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
-  function openReactionsMenu() {
+  function handleMouseOver() {
     setAnchorEl(likeButtonRef.current);
+    setMouseOverReact(true);
   }
-
+  function handleMouseOut() {
+    setMouseOverReact(false);
+  }
+  console.log(mouseOverReact);
   return (
     <StyledRoot {...rootProps} sx={sx}>
       <StyledActionButton
         value='like'
         ref={likeButtonRef}
-        onMouseOver={() => openReactionsMenu()}
-        onClick={() => openReactionsMenu()}
+        onMouseOver={handleMouseOver}
+        onMouseLeave={handleMouseOut}
+        onClick={handleMouseOver}
       >
         <StyledActionIcon icon={['far', 'thumbs-up']} />
         <Typography variant='subtitle2' fontWeight='500'>
@@ -40,7 +46,13 @@ export default function ActionButtons({ post, sx, ...rootProps }: ActionButtonsP
           Share
         </Typography>
       </StyledActionButton>
-      <ReactionsPopover post={post} anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+      <ReactionsPopper
+        post={post}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        mouseOver={mouseOverReact}
+        setMouseOver={setMouseOverReact}
+      />
     </StyledRoot>
   );
 }

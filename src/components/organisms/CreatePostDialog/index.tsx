@@ -90,8 +90,8 @@ export default function CreatePostDialog({
     }
   }
   return (
-    <form onSubmit={handleSubmit}>
-      <Dialog open onClose={() => setIsOpen(false)}>
+    <Dialog open onClose={() => setIsOpen(false)}>
+      <form onSubmit={handleSubmit} style={{ display: 'contents' }}>
         <StyledRoot sx={sx} {...rootProps}>
           <ErrorsFeed errors={errors} setErrors={setErrors} />
 
@@ -118,7 +118,7 @@ export default function CreatePostDialog({
             </PostSubmitButton>
           </Box>
         </StyledRoot>
-      </Dialog>
-    </form>
+      </form>
+    </Dialog>
   );
 }

@@ -17,18 +17,13 @@ export default function ErrorsFeed({ errors, setErrors, sx, ...rootProps }: Erro
       clearTimeout(errorTimeout);
     };
   }, [errors, setErrors]);
-
-  return (
+  return errors.length > 0 ? (
     <StyledRoot sx={sx} {...rootProps}>
-      {errors.length > 0 && (
-        <>
-          {errors.map((error, i) => (
-            <StyledErrorAlert key={error.content + i} severity={error.sevariety} variant='filled'>
-              <Typography>{error.content}</Typography>
-            </StyledErrorAlert>
-          ))}
-        </>
-      )}
+      {errors.map((error, i) => (
+        <StyledErrorAlert key={error.content + i} severity={error.sevariety} variant='filled'>
+          <Typography>{error.content}</Typography>
+        </StyledErrorAlert>
+      ))}
     </StyledRoot>
-  );
+  ) : null;
 }

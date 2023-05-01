@@ -2,9 +2,11 @@ import { IPost } from '@/types/post';
 import { SxProps, Theme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-export interface ReactionsPopoverProps {
+export interface ReactionsPopperProps {
   sx?: SxProps<Theme>;
   post: IPost;
   anchorEl: HTMLElement | null;
   setAnchorEl: Dispatch<SetStateAction<HTMLElement | null>>;
+  mouseOver: boolean;
+  setMouseOver: Dispatch<SetStateAction<boolean>>;
 }

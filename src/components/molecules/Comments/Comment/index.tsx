@@ -4,14 +4,58 @@ import { StyledRoot, StyledTextContent } from './styles';
 
 import StyledInteractButton from '@/components/atoms/StyledInteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import { useFetchUserQuery } from '@/features/userAPI';
+import { IReactionReference } from '@/types/reaction';
+import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
+import { userCommentReact } from '@/utils/userCommentReact';
+import { useRef, useState } from 'react';
+import ReactionsPopper from '../../ActionButtons/ReactionsPopper';
 import ReactionsDisplay from '../../ReactionsDisplay';
 import { CommentProps } from './types';
 
-export default function Comment({ comment, ...rootProps }: CommentProps) {
+export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   const theme = useTheme();
   const shouldDisplayOnRightSite = comment.commentText.length < 25;
+  const { data: user } = useFetchUserQuery({});
+  const [userReaction, setUserReaction] = useState<IReactionReference | null>(
+    comment.reactions?.find((reaction) => reaction.userId === user?.profileId) || null,
+  );
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [mouseOverReactionElements, setMouseOverReactionElements] = useState(false);
+  const likeButtonRef = useRef<HTMLButtonElement>(null);
+  function handleMouseEnter() {
+    setAnchorEl(likeButtonRef.current);
+    setMouseOverReactionElements(true);
+  }
+  function handleMouseLeave() {
+    setMouseOverReactionElements(false);
+  }
+
+  function handleLikeClick() {
+    console.log('handleLikeClick');
+    if (!user || !post) return;
+    setMouseOverReactionElements(false);
+    if (!userReaction) {
+      setUserReaction({ userId: user.profileId, type: 'like' });
+      userCommentReact(post, comment, separateUserBasicInfo(user), 'like');
+    } else {
+      setUserReaction(null);
+    }
+  }
+
   return (
     <StyledRoot {...rootProps}>
+      <ReactionsPopper
+        updateDocHandler={(type) => {
+          if (!user) return;
+          userCommentReact(post, comment, separateUserBasicInfo(user), type);
+        }}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        mouseOver={mouseOverReactionElements}
+        setMouseOver={setMouseOverReactionElements}
+        setUserReaction={setUserReaction}
+      />
       <Box display='flex' alignItems='center'>
         <UserAvatar src={comment.owner.profilePicture} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>
@@ -27,6 +71,7 @@ export default function Comment({ comment, ...rootProps }: CommentProps) {
               emotesCount={2}
               displayNames={false}
               displayCount={true}
+              userReaction={userReaction}
               sx={{
                 backgroundColor: theme.palette.secondary.light,
                 boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px',
@@ -41,7 +86,15 @@ export default function Comment({ comment, ...rootProps }: CommentProps) {
         </StyledTextContent>
       </Box>
       <Stack ml={theme.spacing(6)} direction='row' alignItems='center'>
-        <StyledInteractButton sx={{ mr: theme.spacing(1) }}>Like</StyledInteractButton>
+        <StyledInteractButton
+          buttonRef={likeButtonRef}
+          sx={{ mr: theme.spacing(1) }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClickHandler={handleLikeClick}
+        >
+          Like
+        </StyledInteractButton>
         <StyledInteractButton>Reply</StyledInteractButton>
       </Stack>
     </StyledRoot>

@@ -4,6 +4,8 @@ import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchUserQuery } from '@/features/userAPI';
+import { IUser } from '@/types/user';
+import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { userPostReact } from '@/utils/userPostReact';
 import { useRef, useState } from 'react';
 import ReactionsPopper from './ReactionsPopper';
@@ -57,8 +59,11 @@ export default function ActionButtons({
   return (
     <StyledRoot {...rootProps} sx={sx}>
       <ReactionsPopper
-        post={post}
         anchorEl={anchorEl}
+        updateDocHandler={(type) => {
+          if (!user) return;
+          userPostReact(post, separateUserBasicInfo(user), type);
+        }}
         setAnchorEl={setAnchorEl}
         mouseOver={mouseOverReactionElements}
         setMouseOver={setMouseOverReactionElements}

@@ -37,7 +37,7 @@ export default function FullPagePostView({
               </Typography>
             </Stack>
             <ActionButtons post={post} sx={{ borderBottom: 'none' }} />
-            <Comments comments={post.comments} maxComments='all' />
+            <Comments comments={post.comments} post={post} maxComments='all' />
           </StyledPostContentWrapper>
         </StyledRoot>
       </Modal>

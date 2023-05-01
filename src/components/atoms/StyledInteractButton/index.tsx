@@ -1,24 +1,38 @@
-import { ButtonBase, ButtonBaseProps, useTheme } from '@mui/material';
+import { Box, BoxProps, ButtonBase, ButtonBaseProps, useTheme } from '@mui/material';
+import { InteractButtonProps } from './types';
 
 /**
  * @description - A button that only styling is text underline on hover
  */
-export default function StyledInteractButton({ children, sx, onClick }: ButtonBaseProps) {
+export default function StyledInteractButton({
+  children,
+  onClickHandler,
+  buttonRef,
+  sx,
+  ...rootProps
+}: InteractButtonProps) {
   const theme = useTheme();
   return (
-    <ButtonBase
-      disableTouchRipple
-      focusRipple
-      onClick={onClick}
+    <Box
       sx={{
         padding: theme.spacing(0.2, 0.5),
-        '&:hover': {
-          textDecoration: 'underline',
-        },
         ...sx,
       }}
+      {...rootProps}
     >
-      {children}
-    </ButtonBase>
+      <ButtonBase
+        disableTouchRipple
+        focusRipple
+        ref={buttonRef}
+        onClick={onClickHandler}
+        sx={{
+          '&:hover': {
+            textDecoration: 'underline',
+          },
+        }}
+      >
+        {children}
+      </ButtonBase>
+    </Box>
   );
 }

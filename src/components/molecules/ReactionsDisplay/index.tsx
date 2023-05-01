@@ -34,7 +34,6 @@ export default function ReactionsDisplay({
   const reactorsToDisplay = exampleReactorsSlice.filter(
     (reactor) => reactor.profileId !== user?.profileId,
   );
-  console.log(userReaction);
 
   const otherUsersCount = reactionsCount - reactorsToDisplay.length;
 

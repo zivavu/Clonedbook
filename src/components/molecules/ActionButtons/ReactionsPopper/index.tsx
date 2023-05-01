@@ -10,9 +10,9 @@ import { Ref, useCallback, useEffect, useRef, useState } from 'react';
 import { ReactionsPopperProps } from './types';
 
 export default function ReactionsPopper({
-  post,
   anchorEl,
   setAnchorEl,
+  updateDocHandler,
   mouseOver,
   setMouseOver,
   setUserReaction,
@@ -56,10 +56,11 @@ export default function ReactionsPopper({
   }, [mouseOver, handleClose]);
 
   const reactionTypes: TReactionType[] = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
+
   function handleReaction(type: TReactionType) {
     if (!user) return;
     setUserReaction({ userId: user.profileId, type });
-    userPostReact(post, user, type);
+    updateDocHandler(type);
     setOpen(false);
   }
 

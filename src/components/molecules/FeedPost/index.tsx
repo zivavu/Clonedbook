@@ -101,7 +101,12 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
               </Typography>
             </StyledInteractButton>
           )}
-          <Comments comments={post?.comments} onlyUniqueUsers maxComments={maxComments} />
+          <Comments
+            comments={post?.comments}
+            onlyUniqueUsers
+            maxComments={maxComments}
+            post={post}
+          />
         </StyledContentWrapper>
       </StyledRoot>
       {isFullViewOpen && <FullPagePostView post={post} setOpen={setIsFullViewOpen} />}

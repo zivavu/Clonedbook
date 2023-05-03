@@ -13,26 +13,25 @@ import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { SelectButtonUnderline } from '@/components/atoms/SelectedButtonUnderline/styles';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { TReactionType } from '@/types/reaction';
-import deserializeReactions from '@/utils/deserializeReactions';
-import useGetReactorsData from '@/utils/useGetReactorsData';
+import useDeserializeReactions from '@/utils/useDeserializeReactions';
 import { useState } from 'react';
 import { ReactionsModalProps } from './types';
 
 export default function ReactionsPortal({
-  reactionsArr,
+  reactions,
   setShowModal,
   sx,
   ...rootProps
 }: ReactionsModalProps) {
   const theme = useTheme();
-  const { usersReactions, isLoading, error } = useGetReactorsData(reactionsArr);
-  const { reactionsByTypes, largestByType } = deserializeReactions(reactionsArr);
+  const { isLoading, reactingUsers, reactionsByTypes, largestByType } =
+    useDeserializeReactions(reactions);
 
   const [showedType, setShowedType] = useState<TReactionType | 'all'>('all');
   const reactionsToShow =
     showedType === 'all'
-      ? usersReactions
-      : usersReactions?.filter((reaction) => reaction.type === showedType);
+      ? reactingUsers
+      : reactingUsers?.filter((reaction) => reaction.type === showedType);
   return (
     <>
       <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
@@ -69,10 +68,10 @@ export default function ReactionsPortal({
               })}
             </ToggleButtonGroup>
           </Box>
-          {!isLoading && !error && (
+          {!isLoading && (
             <StyledUsersContainer spacing={1}>
               {reactionsToShow?.map((reaction) => {
-                const { firstName, lastName, profilePicture, profileId } = reaction.userInfo;
+                const { firstName, lastName, profilePicture, profileId } = reaction.info;
                 return (
                   <Stack key={profileId} direction='row' alignItems='center'>
                     <Box position='relative'>

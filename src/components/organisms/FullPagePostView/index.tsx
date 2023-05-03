@@ -7,6 +7,9 @@ import Comments from '@/components/molecules/Comments';
 import { StyledDevider } from '@/components/molecules/FeedPost/PicturesDisplay/styles';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
+import { TReactionType } from '@/types/reaction';
+import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
+import { useState } from 'react';
 import { FullPagePostViewProps } from './types';
 
 export default function FullPagePostView({
@@ -16,6 +19,7 @@ export default function FullPagePostView({
   ...rootProps
 }: FullPagePostViewProps) {
   const theme = useTheme();
+  const [userReaction, setUserReaction] = useState<TReactionType | null>(null);
   return (
     <>
       <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
@@ -31,12 +35,19 @@ export default function FullPagePostView({
             <PostOwnerInfoDisplay owner={post.owner} createdAt={post.createdAt} />
             <Typography variant='body2'>{post.postText}</Typography>
             <Stack direction='row' alignItems='center'>
-              <ReactionsDisplay exampleReactors={post.exampleReactors} reactions={post.reactions} />
+              <ReactionsDisplay userReaction={userReaction} reactions={post.reactions} />
               <Typography ml='auto' color={theme.palette.text.secondary} variant='caption'>
-                {post.comments.length > 1 ? `${post.comments.length} comments` : `1comment`}
+                {getEntriesLength(post.comments) > 1
+                  ? `${getEntriesLength(post.comments)} comments`
+                  : `1comment`}
               </Typography>
             </Stack>
-            <ActionButtons post={post} sx={{ borderBottom: 'none' }} />
+            <ActionButtons
+              userReaction={userReaction}
+              setUserReaction={setUserReaction}
+              post={post}
+              sx={{ borderBottom: 'none' }}
+            />
             <Comments comments={post.comments} post={post} maxComments='all' />
           </StyledPostContentWrapper>
         </StyledRoot>

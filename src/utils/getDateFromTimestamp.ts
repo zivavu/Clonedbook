@@ -1,4 +1,4 @@
-export function getDateFromTimestamp(seconds: number) {
+export default function getDateFromTimestamp(seconds: number) {
   const date = new Date(seconds * 1000);
   date.setMonth(date.getMonth());
   return {

@@ -1,10 +1,10 @@
 import { IChatReference } from './chat';
 import { ICreatedAt } from './createdAt';
-import { IBasicUserInfo } from './user';
+import { IUserBasicInfo } from './user';
 
 export interface IFriend {
   connectionId: string; // unique identifier for the connection
-  basicInfo: IBasicUserInfo; // info of the friend
+  basicInfo: IUserBasicInfo; // info of the friend
   chatReference: IChatReference;
   status: 'pending' | 'accepted' | 'rejected' | 'blocked';
   createdAt: ICreatedAt;

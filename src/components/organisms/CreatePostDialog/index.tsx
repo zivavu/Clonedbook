@@ -10,7 +10,7 @@ import {
 import Icon from '@/components/atoms/Icon/Icon';
 import { db, storage } from '@/config/firebase.config';
 import { IPost } from '@/types/post';
-import { IBasicUserInfo } from '@/types/user';
+import { IUserBasicInfo } from '@/types/user';
 import { optimizePhotos } from '@/utils/optimizePhotos';
 import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { uuidv4 } from '@firebase/util';
@@ -47,7 +47,7 @@ export default function CreatePostDialog({
       ]);
       return;
     }
-    const userBasicInfo: IBasicUserInfo = separateUserBasicInfo(user);
+    const userBasicInfo: IUserBasicInfo = separateUserBasicInfo(user);
     const postId = uuidv4();
     const downloadUrls: string[] = [];
 
@@ -68,12 +68,11 @@ export default function CreatePostDialog({
       const post: IPost = {
         postText: postTextRef.current,
         createdAt: Timestamp.now(),
-        exampleReactors: [],
         postPictures: downloadUrls,
-        comments: [],
+        comments: {},
         id: postId,
         owner: userBasicInfo,
-        reactions: [],
+        reactions: {},
         shareCount: 0,
       };
 

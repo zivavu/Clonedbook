@@ -1,13 +1,9 @@
-import { Typography, useTheme } from '@mui/material';
-
-import { StyledPostTextField, StyledRoot } from './styles';
+import { StyledPostTextField } from './styles';
 
 import { useState } from 'react';
 import { PostTextInputProps } from './types';
 
 export default function PostTextInput({ postTextRef, user, postPhotos }: PostTextInputProps) {
-  const theme = useTheme();
-
   const [fieldValue, setFieldValue] = useState('');
 
   const placeholder = `What's on your mind, ${user.firstName}?`;

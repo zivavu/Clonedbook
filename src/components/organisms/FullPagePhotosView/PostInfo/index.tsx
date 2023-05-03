@@ -6,12 +6,19 @@ import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
+import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
+import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
 import RightSection from '../../NavBar/RightSection';
 import { PostInfoProps } from './types';
 
-export default function PostInfo({ post, ...rootProps }: PostInfoProps) {
+export default function PostInfo({
+  post,
+  userReaction,
+  setUserReaction,
+  ...rootProps
+}: PostInfoProps) {
   const theme = useTheme();
-
+  const commentsLength = getEntriesLength(post.comments);
   return (
     <StyledRoot {...rootProps}>
       <Stack direction='row' width='100%' height='56px' justifyContent='flex-end'>
@@ -28,22 +35,30 @@ export default function PostInfo({ post, ...rootProps }: PostInfoProps) {
         <Typography variant='body2'>{post.postText}</Typography>
       </Box>
       <Stack width='100%' direction='row' justifyContent='space-between'>
-        {post.reactions.length > 0 && <ReactionsDisplay reactions={post.reactions} displayCount />}
+        {!isObjectEmpty(post.reactions) && (
+          <ReactionsDisplay userReaction={userReaction} reactions={post.reactions} displayCount />
+        )}
         <Box display='flex'>
           <Typography pr={theme.spacing(1)} variant='caption' sx={{ color: 'text.secondary' }}>
-            {post.comments.length === 0
+            {commentsLength === 0
               ? ''
-              : post.comments.length > 1
-              ? `${post.comments.length} comments`
-              : `${post.comments.length} comment`}
+              : commentsLength > 1
+              ? `${commentsLength} comments`
+              : `${commentsLength} comment`}
           </Typography>
           <Typography variant='caption' sx={{ color: 'text.secondary' }}>
             {post.shareCount} shares
           </Typography>
         </Box>
       </Stack>
-      <ActionButtons post={post} mt={theme.spacing(1)} mb={theme.spacing(4)} />
-      <Comments comments={post.comments} maxComments='all' />
+      <ActionButtons
+        userReaction={userReaction}
+        setUserReaction={setUserReaction}
+        post={post}
+        mt={theme.spacing(1)}
+        mb={theme.spacing(4)}
+      />
+      <Comments post={post} comments={post.comments} maxComments='all' />
     </StyledRoot>
   );
 }

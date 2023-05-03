@@ -1,26 +1,20 @@
-import { IComment } from './comment';
+import { IComment, ICommentMap } from './comment';
 import { ICreatedAt } from './createdAt';
-import { IReactionReference } from './reaction';
-import { IBasicUserInfo } from './user';
+import { IReactionsMap, TReactionType } from './reaction';
 
 export interface IPicture {
   id: string;
-  ownerInfo: IBasicUserInfo;
+  ownerId: string;
   pictureURL: string;
+  createdAt: ICreatedAt;
 }
 
 export interface IInProfilePicture extends IPicture {
-  reactions: IReactionReference[];
-  comments: IComment[];
+  reactions: IReactionsMap;
+  comments: ICommentMap;
   shareCount: number;
 }
 
 export interface IInChatPicture extends IPicture {
-  reaction?: string;
-}
-
-export interface IPicutreReference {
-  id: string;
-  ownerId: string;
-  createdAt: ICreatedAt;
+  reaction?: TReactionType;
 }

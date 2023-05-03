@@ -1,35 +1,24 @@
 import { db } from '@/config/firebase.config';
 import { IComment } from '@/types/comment';
 import { IPost } from '@/types/post';
-import { IReactionReference, TReactionType } from '@/types/reaction';
-import { IBasicUserInfo, IUser } from '@/types/user';
+import { TReactionType } from '@/types/reaction';
+import { IUser, IUserBasicInfo } from '@/types/user';
 import { doc, updateDoc } from 'firebase/firestore';
-import { separateUserBasicInfo } from './separateUserBasicInfo';
 
 export async function userCommentReact(
   post: IPost,
   comment: IComment,
-  user: IUser | IBasicUserInfo,
+  user: IUser | IUserBasicInfo,
   reaction: TReactionType | null,
 ) {
-  const { id: postId } = post;
-  const { id: commentId, reactions } = comment;
-  const { profileId: userId } = user;
-  const commReactions = reactions || [];
-  const newReactions: IReactionReference[] = reaction
-    ? [...commReactions.filter((react) => react.userId !== userId), { userId, type: reaction }]
-    : [...commReactions.filter((react) => react.userId !== userId)];
-
-  const newComments = post.comments?.map((comm) => {
-    if (comm.id === commentId) {
-      return { ...comm, reactions: newReactions };
-    }
-    return comm;
-  });
+  const postsDocRef = doc(db, 'posts', post.id);
+  const usersDocRef = doc(db, 'users', post.owner.profileId);
+  const postCommentPath = `comments.${comment.id}.reactions.${user.profileId}`;
+  const usersCommentPath = `posts.${post.id}.comments.${comment.id}.reactions.${user.profileId}`;
 
   try {
-    const docRef = doc(db, 'posts', postId);
-    await updateDoc(docRef, 'comments', newComments);
+    await updateDoc(postsDocRef, postCommentPath, reaction);
+    await updateDoc(usersDocRef, usersCommentPath, reaction);
   } catch (err) {
     console.log(err);
   }

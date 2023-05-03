@@ -1,0 +1,1 @@
+function getArrayFromObject(obj: Object) {}

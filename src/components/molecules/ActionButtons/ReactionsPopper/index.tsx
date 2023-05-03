@@ -5,8 +5,7 @@ import { StyledContentWrapper, StyledReactionsPopover as StyledReactionsPopper }
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { TReactionType } from '@/types/reaction';
-import { userPostReact } from '@/utils/userPostReact';
-import { Ref, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ReactionsPopperProps } from './types';
 
 export default function ReactionsPopper({
@@ -59,7 +58,7 @@ export default function ReactionsPopper({
 
   function handleReaction(type: TReactionType) {
     if (!user) return;
-    setUserReaction({ userId: user.profileId, type });
+    setUserReaction(type);
     updateDocHandler(type);
     setOpen(false);
   }

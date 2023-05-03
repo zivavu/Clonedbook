@@ -4,12 +4,13 @@
 //! It uploads a lots of data batch after batch so will take time to execute
 
 import { db } from '@/config/firebase.config';
-import { IComment } from '@/types/comment';
+import { ICommentMap } from '@/types/comment';
+import { ICreatedAt } from '@/types/createdAt';
 import { IFriend, IFriendConnection } from '@/types/firend';
 import { IInProfilePicture } from '@/types/picture';
 import { IPost } from '@/types/post';
-import { IReactionReference } from '@/types/reaction';
-import { IBasicUserInfo, IUser } from '@/types/user';
+import { IReactionsMap, TReactionType } from '@/types/reaction';
+import { IUser, IUserBasicInfo } from '@/types/user';
 import { IUserServerData } from '@/types/userServerData';
 import { faker } from '@faker-js/faker';
 import { uuidv4 } from '@firebase/util';
@@ -29,9 +30,12 @@ const randomPostPictures = [
 const randomProfilePictures = [faker.image.people, faker.internet.avatar];
 const randomBackgroundPictures = [faker.image.nature, faker.image.animals];
 
-export function getPastDate() {
-  const date = Timestamp.fromDate(faker.date.past(0.4, new Date()));
-  return date;
+function getPastDate() {
+  return Timestamp.fromDate(faker.date.past(0.4, new Date()));
+}
+function getDateAfterTimestamp(pastDate: ICreatedAt) {
+  const date = new Date(pastDate.seconds * 1000);
+  return Timestamp.fromDate(faker.date.between(date, new Date()));
 }
 
 const maxUsers = 80,
@@ -86,8 +90,24 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   function getRandomUserUID() {
     return usersUIDS[Math.floor(Math.random() * usersUIDS.length)];
   }
-  function getRandomComents(amount: number, reactionsCount: number) {
-    const comments: Array<IComment> = [];
+
+  function getRandomReactions(amount: number) {
+    const reactions: IReactionsMap = {};
+    const possibleReactions: Array<TReactionType> = ['angry', 'like', 'love', 'sad', 'wow', 'haha'];
+    const reactionsAmount = Math.floor(Math.random() * amount);
+    for (let i = 0; i < reactionsAmount; i++) {
+      const reactingUserUID = getRandomUserUID();
+      if (reactions[reactingUserUID]) {
+        continue;
+      }
+      reactions[reactingUserUID] = faker.helpers.arrayElement(possibleReactions);
+    }
+
+    return reactions;
+  }
+
+  function getRandomComments(amount: number, reactionsCount: number, parentCreateDate: ICreatedAt) {
+    const comments: ICommentMap = {};
     const discutantsRange = Math.ceil(Math.random() * amount) + 5;
     let discutantsStartIndex = Math.floor(Math.random() * usersAmount);
     if (discutantsStartIndex + discutantsRange > usersAmount) {
@@ -104,48 +124,24 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const ownerId = discutants[Math.floor(Math.random() * discutants.length) || 0];
       const ownerBasicUserInfo = usersBasicInfo.find(
         (user) => user.profileId === ownerId,
-      ) as IBasicUserInfo;
+      ) as IUserBasicInfo;
       const longCommnet = Math.random() > 0.5;
-      comments.push({
-        id: getRandomUIDv4(),
-        owner: ownerBasicUserInfo,
+      const commentId = getRandomUIDv4();
+      comments[commentId] = {
+        id: commentId,
+        ownerId: ownerBasicUserInfo.profileId,
+        createdAt: getDateAfterTimestamp(parentCreateDate),
         commentText: longCommnet
           ? faker.lorem.sentences(Math.floor(Math.random() * 2) + 1, '\n')
           : faker.lorem.words(Math.floor(Math.random() * 5) + 3),
-        commentResponses: [],
+        responses: {},
         reactions: getRandomReactions(reactionsCount),
-      });
+      };
     }
     return comments;
   }
 
-  function getRandomReactions(amount: number) {
-    const reactions: Array<IReactionReference> = [];
-    const possibleReactions: Array<IReactionReference['type']> = [
-      'angry',
-      'like',
-      'love',
-      'sad',
-      'wow',
-      'haha',
-    ];
-    const reactionsAmount = Math.floor(Math.random() * amount);
-    for (let i = 0; i < reactionsAmount; i++) {
-      const reactingUserUID = getRandomUserUID();
-      if (reactions.some((reaction) => reaction.userId === reactingUserUID)) {
-        continue;
-      }
-      const reaction = {
-        type: faker.helpers.arrayElement(possibleReactions),
-        userId: reactingUserUID,
-      };
-      reactions.push(reaction);
-    }
-
-    return reactions;
-  }
-
-  const usersBasicInfo: IBasicUserInfo[] = [];
+  const usersBasicInfo: IUserBasicInfo[] = [];
   for (let i = 0; i < usersAmount; i++) {
     const userUUID = usersUIDS[i];
     const basicUserInfo = {
@@ -157,24 +153,26 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     usersBasicInfo.push(basicUserInfo);
   }
 
-  function getRandomProfilePhotos(amount: number, basicUserInfo: IBasicUserInfo) {
+  function getRandomProfilePhotos(amount: number, basicUserInfo: IUserBasicInfo) {
     const photos: IInProfilePicture[] = [];
     const photosAmount = Math.ceil(Math.random() * amount) + 2;
     for (let i = 0; i < photosAmount; i++) {
+      const createdAt = getPastDate();
       const photoId = getRandomUIDv4();
       const photo: IInProfilePicture = {
-        ownerInfo: basicUserInfo,
         id: photoId,
+        ownerId: basicUserInfo.profileId,
+        createdAt,
         pictureURL: getRandomPhotoUrl(),
         reactions: getRandomReactions(60),
-        comments: getRandomComents(5, 7),
+        comments: getRandomComments(5, 7, createdAt),
         shareCount: Math.floor(Math.random() * 50),
       };
       photos.push(photo);
     }
     return photos;
   }
-  function getRandomPosts(amount: number, basicUserInfo: IBasicUserInfo) {
+  function getRandomPosts(amount: number, basicUserInfo: IUserBasicInfo) {
     const posts: Array<IPost> = [];
     const postAmount = Math.ceil(Math.random() * amount);
     for (let i = 0; i < postAmount; i++) {
@@ -187,21 +185,16 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const postId = getRandomUIDv4();
 
       const postReactions = getRandomReactions(Math.random() > 0.9 ? 70 : 40);
-      const exampleReactions = postReactions.slice(0, 3);
-      const exampleReactors = exampleReactions.map((reaction) => {
-        const reactorsBasicInfo = usersBasicInfo.find((user) => user.profileId === reaction.userId);
-        return reactorsBasicInfo as IBasicUserInfo;
-      });
+      const createdAt = getPastDate();
       const post: IPost = {
         id: postId,
         owner: basicUserInfo,
         postText: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
-        comments: getRandomComents(10, 8),
+        comments: getRandomComments(10, 8, createdAt),
         reactions: postReactions,
-        exampleReactors: exampleReactors,
         shareCount: Math.floor(Math.random() * 30),
-        createdAt: getPastDate(),
+        createdAt,
       };
       posts.push(post);
       allPosts.push(post);
@@ -294,7 +287,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
 
   function getRandomUsers() {
     const users: IUser[] = [];
-    const basicInfoOfUsers: IBasicUserInfo[] = [];
+    const basicInfoOfUsers: IUserBasicInfo[] = [];
     const postsOfUsers: IPost[][] = [];
     const picturesOfUsers: IInProfilePicture[][] = [];
     for (let i = 0; i < usersAmount; i++) {
@@ -358,7 +351,7 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
 
   const usersDataToCommit: IUserServerData[][] = [[], [], []];
   const friendsConnectionsToCommit: IFriendConnection[] = [];
-  const usersPublicDataToCommit: IBasicUserInfo[] = [];
+  const usersPublicDataToCommit: IUserBasicInfo[] = [];
   const postsToCommit: IPost[] = [];
 
   for (let i = 0; i < users.length; i++) {
@@ -455,16 +448,16 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     console.log(`COMMITING USERS PUBLIC DATA DONE`);
     await sleep(baseSleepTime * 1.5);
 
-    console.log(`\nCOMMITING FRIENDS CONNECTIONS`);
-    for (let i = 0; i < friendsConnectionsBatches.length; i++) {
-      const batch = friendsConnectionsBatches[i];
-      console.log(`commiting ${i + 1} friendsConnections batch`);
-      await batch.commit();
-      console.log(`commiting ${i + 1} friendsConnections batch done`);
-      await sleep(baseSleepTime / 2);
-    }
-    console.log(`COMMITING FRIENDS CONNECTIONS DONE`);
-    await sleep(baseSleepTime);
+    // console.log(`\nCOMMITING FRIENDS CONNECTIONS`);
+    // for (let i = 0; i < friendsConnectionsBatches.length; i++) {
+    //   const batch = friendsConnectionsBatches[i];
+    //   console.log(`commiting ${i + 1} friendsConnections batch`);
+    //   await batch.commit();
+    //   console.log(`commiting ${i + 1} friendsConnections batch done`);
+    //   await sleep(baseSleepTime / 2);
+    // }
+    // console.log(`COMMITING FRIENDS CONNECTIONS DONE`);
+    // await sleep(baseSleepTime);
 
     console.log(`\nCOMMITING POSTS`);
     for (let i = 0; i < postBatches.length; i++) {
@@ -487,5 +480,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(60, 50)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(30, 25)}>AddEm</Button>;
 }

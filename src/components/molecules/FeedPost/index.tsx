@@ -5,7 +5,8 @@ import { StyledContentWrapper, StyledRoot } from './styles';
 import StyledInteractButton from '@/components/atoms/StyledInteractButton';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { IReactionReference } from '@/types/reaction';
+import { TReactionType } from '@/types/reaction';
+import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useState } from 'react';
 import ActionButtons from '../ActionButtons';
 import Comments from '../Comments';
@@ -20,18 +21,20 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
-  const [userReaction, setUserReaction] = useState<IReactionReference | null>(
-    post.reactions.find((reaction) => reaction.userId === user?.profileId) || null,
+  const [userReaction, setUserReaction] = useState<TReactionType | null>(
+    reactions[user?.profileId || ''] || null,
   );
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
   const hasText = !!postText ? true : false;
   const isTextLong = (postText && postText.length > 130) || hasPictures ? true : false;
 
+  const commentsLength = getEntriesLength(comments);
+  const commentsSlice = Object.values(comments).slice(0, 2);
   const exampleCommentsLength =
-    comments[0]?.commentText?.length + (comments[1]?.commentText?.length || 0);
+    commentsSlice[0]?.commentText?.length + (commentsSlice[1]?.commentText?.length || 0);
   const maxComments = exampleCommentsLength > 200 ? 1 : 2;
-  const isMoreComments = comments.length > maxComments;
+  const isMoreComments = getEntriesLength(comments) > maxComments;
 
   function handleShowMoreComments() {
     setIsFullViewOpen(true);
@@ -64,7 +67,6 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
             <ReactionsDisplay
               reactions={post.reactions}
-              exampleReactors={post.exampleReactors}
               userReaction={userReaction}
               sx={{ pr: theme.spacing(0.25) }}
             />
@@ -72,14 +74,13 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
               sx={{ ml: 'auto' }}
               onClick={() => {
                 handleShowMoreComments();
-              }}
-            >
+              }}>
               <Typography variant='caption' color={theme.palette.text.secondary}>
-                {comments.length === 0
+                {commentsLength === 0
                   ? ''
-                  : comments.length > 1
-                  ? `${comments.length} comments`
-                  : `${comments.length} comment`}
+                  : commentsLength > 1
+                  ? `${commentsLength} comments`
+                  : `${commentsLength} comment`}
               </Typography>
             </StyledInteractButton>
           </Stack>
@@ -94,19 +95,13 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           {isMoreComments && (
             <StyledInteractButton
               sx={{ mb: theme.spacing(1) }}
-              onClick={() => handleShowMoreComments()}
-            >
+              onClick={() => handleShowMoreComments()}>
               <Typography variant='subtitle2' color={theme.palette.text.secondary} fontWeight='400'>
                 View more comments
               </Typography>
             </StyledInteractButton>
           )}
-          <Comments
-            comments={post?.comments}
-            onlyUniqueUsers
-            maxComments={maxComments}
-            post={post}
-          />
+          <Comments comments={comments} onlyUniqueUsers maxComments={maxComments} post={post} />
         </StyledContentWrapper>
       </StyledRoot>
       {isFullViewOpen && <FullPagePostView post={post} setOpen={setIsFullViewOpen} />}

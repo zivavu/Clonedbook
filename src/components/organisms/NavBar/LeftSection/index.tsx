@@ -29,8 +29,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
               <Icon icon='search' />
             </InputAdornment>
           ),
-        }}
-      ></TextField>
+        }}></TextField>
     </StyledRoot>
   );
 }

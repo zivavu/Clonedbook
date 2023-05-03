@@ -3,7 +3,7 @@ import { Stack, Typography } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
+import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 import { PostOwnerInfoDisplayProps } from './types';
 
 export default function PostOwnerInfoDisplay({

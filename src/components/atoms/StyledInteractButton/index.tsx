@@ -1,4 +1,4 @@
-import { Box, BoxProps, ButtonBase, ButtonBaseProps, useTheme } from '@mui/material';
+import { Box, ButtonBase, useTheme } from '@mui/material';
 import { InteractButtonProps } from './types';
 
 /**
@@ -18,8 +18,7 @@ export default function StyledInteractButton({
         padding: theme.spacing(0.2, 0.5),
         ...sx,
       }}
-      {...rootProps}
-    >
+      {...rootProps}>
       <ButtonBase
         disableTouchRipple
         focusRipple
@@ -29,8 +28,7 @@ export default function StyledInteractButton({
           '&:hover': {
             textDecoration: 'underline',
           },
-        }}
-      >
+        }}>
         {children}
       </ButtonBase>
     </Box>

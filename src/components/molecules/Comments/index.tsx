@@ -4,7 +4,6 @@ import { StyledRoot } from './styles';
 
 import { useFetchUserQuery } from '@/features/userAPI';
 import { IComment } from '@/types/comment';
-import { useEffect } from 'react';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
 import { CommentsProps } from './types';
@@ -17,18 +16,20 @@ export default function Comments({
   ...rootProps
 }: CommentsProps) {
   const { data: user } = useFetchUserQuery({});
-  const commentsToRender: IComment[] = [];
   if (!comments) return null;
+
+  let commentsToRender: IComment[] = [];
+  const sortedComments = Object.values(comments).sort(
+    (a, b) => a.createdAt.seconds - b.createdAt.seconds,
+  );
   onlyUniqueUsers
-    ? comments?.forEach((comment) => {
-        if (!commentsToRender.find((c) => c.owner.profileId === comment.owner.profileId)) {
+    ? sortedComments?.forEach((comment) => {
+        if (!commentsToRender.find((c) => c.ownerId === comment.ownerId)) {
           commentsToRender.push(comment);
         }
       })
-    : commentsToRender.push(...comments);
-  useEffect(() => {
-    console.log(post);
-  }, [post]);
+    : (commentsToRender = sortedComments);
+
   const commentsCutIndex = maxComments === 'all' ? undefined : maxComments;
   return (
     <StyledRoot {...rootProps}>

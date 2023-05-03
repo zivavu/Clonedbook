@@ -1,10 +1,15 @@
-import { IReactionReference } from './reaction';
-import { IBasicUserInfo } from './user';
+import { ICreatedAt } from './createdAt';
+import { IReactionsMap } from './reaction';
 
 export interface IComment {
   id: string;
-  owner: IBasicUserInfo;
+  ownerId: string;
   commentText: string;
-  commentResponses?: IComment[];
-  reactions?: IReactionReference[];
+  createdAt: ICreatedAt;
+  responses?: ICommentMap;
+  reactions?: IReactionsMap;
+}
+
+export interface ICommentMap {
+  [id: string]: IComment;
 }

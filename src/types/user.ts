@@ -1,7 +1,7 @@
 import { IChatReference } from './chat';
 import { IFriend } from './firend';
 
-export interface IUser extends IBasicUserInfo {
+export interface IUser extends IUserBasicInfo {
   email: string;
   phoneNumber?: string;
   backgroundPicture?: string;
@@ -35,10 +35,19 @@ export interface IUser extends IBasicUserInfo {
   };
 }
 
-export interface IBasicUserInfo {
+export interface IUserBasicInfo {
   profileId: string;
   firstName: string;
   middleName?: string;
   lastName: string;
   profilePicture?: string;
+}
+
+export interface IServerUserBasicInfo {
+  [key: string]: {
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    profilePicture?: string;
+  };
 }

@@ -1,11 +1,9 @@
-import { IReactionReference } from '@/types/reaction';
-import { IBasicUserInfo } from '@/types/user';
+import { IReactionsMap, TReactionType } from '@/types/reaction';
 import { BoxProps } from '@mui/material';
 
 export interface ReactionsDisplayProps extends BoxProps {
-  reactions: IReactionReference[];
-  userReaction: IReactionReference | null;
-  exampleReactors?: IBasicUserInfo[] | undefined;
+  reactions: IReactionsMap;
+  userReaction: TReactionType | null;
   displayNames?: boolean;
   displayCount?: boolean;
   emotesCount?: number;

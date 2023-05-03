@@ -5,20 +5,32 @@ import { StyledRoot, StyledTextContent } from './styles';
 import StyledInteractButton from '@/components/atoms/StyledInteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { IReactionReference } from '@/types/reaction';
+import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
+import { TReactionType } from '@/types/reaction';
+import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
 import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { userCommentReact } from '@/utils/userCommentReact';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactionsPopper from '../../ActionButtons/ReactionsPopper';
 import ReactionsDisplay from '../../ReactionsDisplay';
 import { CommentProps } from './types';
 
 export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   const theme = useTheme();
+  const { data: usersBasicData } = useFetchUsersPublicDataQuery({});
+
+  const [ownerData, setOwnerData] = useState(
+    (usersBasicData && usersBasicData[comment.ownerId]) || null,
+  );
+  useEffect(() => {
+    if (!usersBasicData) return;
+    setOwnerData(usersBasicData[comment.ownerId]);
+  }, [usersBasicData]);
+
   const shouldDisplayOnRightSite = comment.commentText.length < 25;
   const { data: user } = useFetchUserQuery({});
-  const [userReaction, setUserReaction] = useState<IReactionReference | null>(
-    comment.reactions?.find((reaction) => reaction.userId === user?.profileId) || null,
+  const [userReaction, setUserReaction] = useState<TReactionType | null>(
+    (comment.reactions && comment.reactions[user?.profileId || '']) || null,
   );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mouseOverReactionElements, setMouseOverReactionElements] = useState(false);
@@ -32,17 +44,15 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   }
 
   function handleLikeClick() {
-    console.log('handleLikeClick');
     if (!user || !post) return;
     setMouseOverReactionElements(false);
     if (!userReaction) {
-      setUserReaction({ userId: user.profileId, type: 'like' });
+      setUserReaction('like');
       userCommentReact(post, comment, separateUserBasicInfo(user), 'like');
     } else {
       setUserReaction(null);
     }
   }
-
   return (
     <StyledRoot {...rootProps}>
       <ReactionsPopper
@@ -57,15 +67,19 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
         setUserReaction={setUserReaction}
       />
       <Box display='flex' alignItems='center'>
-        <UserAvatar src={comment.owner.profilePicture} sx={{ alignSelf: 'start' }} size={32} />
+        <UserAvatar src={ownerData?.profilePicture || ''} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>
-          <Typography variant='body2' fontWeight='400' lineHeight='1.2rem'>
-            {comment.owner.firstName} {comment.owner.lastName}
-          </Typography>
-          <Typography variant='body2' lineHeight='1.2rem'>
-            {comment.commentText}
-          </Typography>
-          {!!comment?.reactions?.length && (
+          {!!ownerData && (
+            <>
+              <Typography variant='body2' fontWeight='400' lineHeight='1.2rem'>
+                {ownerData.firstName} {ownerData.lastName}
+              </Typography>
+              <Typography variant='body2' lineHeight='1.2rem'>
+                {comment.commentText}
+              </Typography>
+            </>
+          )}
+          {comment.reactions && !isObjectEmpty(comment.reactions) && (
             <ReactionsDisplay
               reactions={comment.reactions}
               emotesCount={2}
@@ -91,8 +105,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
           sx={{ mr: theme.spacing(1) }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onClickHandler={handleLikeClick}
-        >
+          onClickHandler={handleLikeClick}>
           Like
         </StyledInteractButton>
         <StyledInteractButton>Reply</StyledInteractButton>

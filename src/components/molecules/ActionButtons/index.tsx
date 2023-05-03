@@ -4,7 +4,6 @@ import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { IUser } from '@/types/user';
 import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { userPostReact } from '@/utils/userPostReact';
 import { useRef, useState } from 'react';
@@ -37,7 +36,7 @@ export default function ActionButtons({
     if (!user) return;
     setMouseOverReactionElements(false);
     if (!userReaction) {
-      setUserReaction({ userId: user.profileId, type: 'like' });
+      setUserReaction('like');
       userPostReact(post, user, 'like');
     } else {
       setUserReaction(null);
@@ -78,7 +77,7 @@ export default function ActionButtons({
       >
         {userReaction ? (
           <ReactionIcon
-            type={userReaction.type}
+            type={userReaction}
             size={20}
             showBorder={false}
             overlap={false}
@@ -91,9 +90,9 @@ export default function ActionButtons({
           variant='subtitle2'
           fontWeight='400'
           textTransform='capitalize'
-          color={typesColors[userReaction?.type || 'default']}
+          color={typesColors[userReaction || 'default']}
         >
-          {userReaction?.type || 'Like'}
+          {userReaction || 'Like'}
         </Typography>
       </StyledActionButton>
 

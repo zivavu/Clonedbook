@@ -1,8 +1,10 @@
 import { Box, GlobalStyles, IconButton, Portal, Stack, useTheme } from '@mui/material';
 
 import Icon from '@/components/atoms/Icon/Icon';
+import { TReactionType } from '@/types/reaction';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import PhotosCarousel from './PhotosCarousel';
 import PostInfo from './PostInfo';
 import { StyledRoot } from './styles';
@@ -16,7 +18,7 @@ export default function FullPagePhotosView({
   ...rootProps
 }: FullPagePhotosViewProps) {
   const theme = useTheme();
-
+  const [userReaction, setUserReaction] = useState<TReactionType | null>(null);
   if (!post.postPictures) return null;
   return (
     <Portal>
@@ -37,7 +39,11 @@ export default function FullPagePhotosView({
         </Box>
 
         <PhotosCarousel post={post} initialPhoto={initialPhoto} />
-        <PostInfo post={post}></PostInfo>
+        <PostInfo
+          userReaction={userReaction}
+          setUserReaction={setUserReaction}
+          post={post}
+        ></PostInfo>
       </StyledRoot>
     </Portal>
   );

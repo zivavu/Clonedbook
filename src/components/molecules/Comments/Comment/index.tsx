@@ -55,17 +55,6 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   }
   return (
     <StyledRoot {...rootProps}>
-      <ReactionsPopper
-        updateDocHandler={(type) => {
-          if (!user) return;
-          userCommentReact(post, comment, separateUserBasicInfo(user), type);
-        }}
-        anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
-        mouseOver={mouseOverReactionElements}
-        setMouseOver={setMouseOverReactionElements}
-        setUserReaction={setUserReaction}
-      />
       <Box display='flex' alignItems='center'>
         <UserAvatar src={ownerData?.profilePicture || ''} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>
@@ -110,6 +99,17 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
         </StyledInteractButton>
         <StyledInteractButton>Reply</StyledInteractButton>
       </Stack>
+      <ReactionsPopper
+        updateDocHandler={(type) => {
+          if (!user) return;
+          userCommentReact(post, comment, separateUserBasicInfo(user), type);
+        }}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        mouseOver={mouseOverReactionElements}
+        setMouseOver={setMouseOverReactionElements}
+        setUserReaction={setUserReaction}
+      />
     </StyledRoot>
   );
 }

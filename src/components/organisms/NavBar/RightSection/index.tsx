@@ -2,10 +2,12 @@ import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import { useFetchUserQuery } from '@/features/userAPI';
 import { useState } from 'react';
 import { Portal, RightSectionProps } from './types';
 
 export default function RightSection({ sx, classes, ...rootProps }: RightSectionProps) {
+  const { data: user } = useFetchUserQuery({});
   const [currentPortal, setCurrentPortal] = useState<Portal>('none');
   const handleSetPortal = (event: React.MouseEvent<HTMLElement>, portal: Portal) => {
     const newPortal = portal === currentPortal ? 'none' : portal;
@@ -18,8 +20,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
         selected={currentPortal === 'chats'}
         onClick={(e) => {
           handleSetPortal(e, 'chats');
-        }}
-      >
+        }}>
         <Icon icon={['fab', 'facebook-messenger']}></Icon>
       </StyledToggleButton>
       <StyledToggleButton
@@ -27,8 +28,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
         selected={currentPortal === 'notifications'}
         onClick={(e) => {
           handleSetPortal(e, 'notifications');
-        }}
-      >
+        }}>
         <Icon icon='bell'></Icon>
       </StyledToggleButton>
       <StyledToggleButton
@@ -36,9 +36,8 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
         selected={currentPortal === 'account'}
         onClick={(e) => {
           handleSetPortal(e, 'account');
-        }}
-      >
-        <UserAvatar size={42} />
+        }}>
+        <UserAvatar size={42} src={user?.profilePicture} />
       </StyledToggleButton>
     </StyledRoot>
   );

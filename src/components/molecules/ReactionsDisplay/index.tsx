@@ -4,7 +4,7 @@ import { StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchUserQuery } from '@/features/userAPI';
-import useDeserializeReactions from '@/utils/useDeserializeReactions';
+import useDeserializeReactions from '@/hooks/useDeserializeReactions';
 import { useState } from 'react';
 import ReactionsPortal from '../../organisms/ReactionsModal';
 import { ReactionsDisplayProps } from './types';
@@ -24,20 +24,27 @@ export default function ReactionsDisplay({
   const userId = user?.profileId || '';
   const [showModal, setShowModal] = useState(false);
 
-  reactions = userReaction ? { ...reactions, [userId]: userReaction } : reactions;
+  if (userReaction) {
+    reactions = { ...reactions, [userId]: userReaction };
+  }
+  if (userReaction === null && reactions) {
+    const { [userId]: type, ...otherReactions } = reactions;
+    reactions = otherReactions;
+  }
 
   const { isLoading, reactingUsers, largestByType, reactionsCount, usedReactions } =
-    useDeserializeReactions(reactions);
+    useDeserializeReactions(reactions || {});
 
   const otherUsersCount = reactionsCount;
   emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
-  const reactorsToDisplay = reactingUsers.slice(0, 3);
+  const reactorsToDisplay = reactingUsers.slice(0, 2);
+  displayCount = displayCount && reactionsCount > 0;
 
   const handleShowModal = () => {
     setShowModal(true);
   };
 
-  return isLoading ? null : (
+  return isLoading || !reactions ? null : (
     <>
       {showModal && <ReactionsPortal setShowModal={setShowModal} reactions={reactions} />}
       <StyledRoot {...rootProps} sx={sx}>

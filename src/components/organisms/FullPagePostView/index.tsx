@@ -7,20 +7,30 @@ import Comments from '@/components/molecules/Comments';
 import { StyledDevider } from '@/components/molecules/FeedPost/PicturesDisplay/styles';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
-import { TReactionType } from '@/types/reaction';
+import useGetPostData from '@/hooks/UseGetPostData';
+import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FullPagePostViewProps } from './types';
+import { useFetchUserQuery } from '@/features/userAPI';
 
 export default function FullPagePostView({
-  post,
+  postId,
   setOpen,
   sx,
   ...rootProps
 }: FullPagePostViewProps) {
   const theme = useTheme();
-  const [userReaction, setUserReaction] = useState<TReactionType | null>(null);
-  return (
+  const { postData: post, isError, isLoading } = useGetPostData(postId);
+  const { data: user } = useFetchUserQuery({});
+  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
+    post?.reactions[user?.profileId || ''] || undefined,
+  );
+  useEffect(() => {
+    setUserReaction(post?.reactions[user?.profileId || ''] || undefined);
+  }, [post, user?.profileId]);
+
+  return isLoading || isError || !post ? null : (
     <>
       <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
       <Modal open onClose={() => setOpen(false)}>

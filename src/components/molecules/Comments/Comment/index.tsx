@@ -6,7 +6,7 @@ import StyledInteractButton from '@/components/atoms/StyledInteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
-import { TReactionType } from '@/types/reaction';
+import { TLocalUserReaction } from '@/types/reaction';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
 import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { userCommentReact } from '@/utils/userCommentReact';
@@ -27,15 +27,16 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   const [mouseOverReactionElements, setMouseOverReactionElements] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
 
+  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
+    (comment.reactions && comment.reactions[user?.profileId || '']) || undefined,
+  );
+
   useEffect(() => {
     if (!allUsersBasicInfo) return;
     setOwnerData(allUsersBasicInfo[comment.ownerId]);
   }, [allUsersBasicInfo]);
 
   const shouldDisplayOnRightSite = comment.commentText.length < 25;
-  const [userReaction, setUserReaction] = useState<TReactionType | null>(
-    (comment.reactions && comment.reactions[user?.profileId || '']) || null,
-  );
 
   function handleMouseEnter() {
     setAnchorEl(likeButtonRef.current);
@@ -53,6 +54,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
       userCommentReact(post, comment, separateUserBasicInfo(user), 'like');
     } else {
       setUserReaction(null);
+      userCommentReact(post, comment, separateUserBasicInfo(user), undefined);
     }
   }
   return (
@@ -70,7 +72,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
               </Typography>
             </>
           )}
-          {comment.reactions && !isObjectEmpty(comment.reactions) && (
+          {(!isObjectEmpty(comment?.reactions) || userReaction) && (
             <ReactionsDisplay
               reactions={comment.reactions}
               emotesCount={2}

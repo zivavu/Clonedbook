@@ -1,4 +1,4 @@
-import { TReactionType } from '@/types/reaction';
+import { TLocalUserReaction, TReactionType } from '@/types/reaction';
 import { PopperProps, SxProps, Theme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -9,5 +9,5 @@ export interface ReactionsPopperProps extends PopperProps {
   setAnchorEl: Dispatch<SetStateAction<HTMLElement | null>>;
   mouseOver: boolean;
   setMouseOver: Dispatch<SetStateAction<boolean>>;
-  setUserReaction: Dispatch<SetStateAction<TReactionType | null>>;
+  setUserReaction: Dispatch<SetStateAction<TLocalUserReaction>>;
 }

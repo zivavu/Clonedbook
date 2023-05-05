@@ -34,6 +34,7 @@ export default function useDeserializeReactions(reactions: IReactionsMap) {
       return { userId, type, info } as IReactionWithBasicInfo;
     },
   );
+
   const reactionsCount = Object.keys(reactions).length || 0;
   const reactionsByTypes: ReactionsByTypes = {
     like: { count: 0, icon: LikeIcon },

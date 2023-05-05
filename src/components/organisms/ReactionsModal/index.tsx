@@ -12,8 +12,8 @@ import { StyledRoot, StyledToggleButton, StyledUsersContainer } from './styles';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { SelectButtonUnderline } from '@/components/atoms/SelectedButtonUnderline/styles';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import useDeserializeReactions from '@/hooks/useDeserializeReactions';
 import { TReactionType } from '@/types/reaction';
-import useDeserializeReactions from '@/utils/useDeserializeReactions';
 import { useState } from 'react';
 import { ReactionsModalProps } from './types';
 
@@ -43,8 +43,7 @@ export default function ReactionsPortal({
               value={showedType}
               onChange={(e, value) => {
                 setShowedType(value);
-              }}
-            >
+              }}>
               <StyledToggleButton value='all'>
                 <Typography variant='body1' textTransform='none' fontWeight='400'>
                   All

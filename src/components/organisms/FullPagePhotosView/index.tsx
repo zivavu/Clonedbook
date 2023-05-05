@@ -1,10 +1,12 @@
 import { Box, GlobalStyles, IconButton, Portal, Stack, useTheme } from '@mui/material';
 
 import Icon from '@/components/atoms/Icon/Icon';
-import { TReactionType } from '@/types/reaction';
+import { useFetchUserQuery } from '@/features/userAPI';
+import useGetPostData from '@/hooks/UseGetPostData';
+import { TLocalUserReaction } from '@/types/reaction';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PhotosCarousel from './PhotosCarousel';
 import PostInfo from './PostInfo';
 import { StyledRoot } from './styles';
@@ -13,14 +15,21 @@ import { FullPagePhotosViewProps } from './types';
 export default function FullPagePhotosView({
   sx,
   initialPhoto,
-  post,
+  postId,
   setOpen,
   ...rootProps
 }: FullPagePhotosViewProps) {
   const theme = useTheme();
-  const [userReaction, setUserReaction] = useState<TReactionType | null>(null);
-  if (!post.postPictures) return null;
-  return (
+  const { isError, isLoading, postData: post } = useGetPostData(postId);
+  const { data: user } = useFetchUserQuery({});
+  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
+    post?.reactions[user?.profileId || ''] || undefined,
+  );
+  useEffect(() => {
+    setUserReaction(post?.reactions[user?.profileId || ''] || undefined);
+  }, [post, user?.profileId]);
+
+  return isLoading || isError || !post || !post.postPictures ? null : (
     <Portal>
       <StyledRoot {...rootProps} sx={sx}>
         <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
@@ -28,8 +37,7 @@ export default function FullPagePhotosView({
           <Stack direction='row' sx={{ position: 'fixed', left: '18px', top: '8px', zIndex: 2 }}>
             <IconButton
               onClick={() => setOpen(false)}
-              TouchRippleProps={{ style: { color: 'white' } }}
-            >
+              TouchRippleProps={{ style: { color: 'white' } }}>
               <Icon icon='xmark' fontSize='25px' color={theme.palette.common.white} />
             </IconButton>
             <Link href='/' style={{ height: '40px', marginLeft: theme.spacing(1.4) }}>
@@ -42,8 +50,7 @@ export default function FullPagePhotosView({
         <PostInfo
           userReaction={userReaction}
           setUserReaction={setUserReaction}
-          post={post}
-        ></PostInfo>
+          post={post}></PostInfo>
       </StyledRoot>
     </Portal>
   );

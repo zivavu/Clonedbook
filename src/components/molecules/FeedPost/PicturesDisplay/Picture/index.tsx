@@ -76,8 +76,7 @@ export default function Picture({
             width: '100%',
             height: '100%',
             pointerEvents: 'all',
-          }}
-        >
+          }}>
           <Image
             src={photoSrc}
             alt={alt || "Post's picture"}
@@ -95,7 +94,7 @@ export default function Picture({
         </ButtonBase>
       </StyledRoot>
       {isFullViewOpen && postData?.postPictures && (
-        <FullPagePhotosView post={postData} initialPhoto={photoSrc} setOpen={setIsFullViewOpen} />
+        <FullPagePhotosView postId={postId} initialPhoto={photoSrc} setOpen={setIsFullViewOpen} />
       )}
     </>
   );

@@ -34,7 +34,7 @@ export const palette = {
     main: '#1b74e4',
   },
   reactionTypes: {
-    like: '#1b74e4',
+    like: '#2078f4',
     love: '#F44336',
     care: '#d49820',
     haha: '#d49820',

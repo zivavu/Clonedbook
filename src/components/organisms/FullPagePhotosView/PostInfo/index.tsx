@@ -36,7 +36,12 @@ export default function PostInfo({
       </Box>
       <Stack width='100%' direction='row' justifyContent='space-between'>
         {!isObjectEmpty(post.reactions) && (
-          <ReactionsDisplay userReaction={userReaction} reactions={post.reactions} displayCount />
+          <ReactionsDisplay
+            userReaction={userReaction}
+            reactions={post.reactions}
+            displayCount
+            displayNames={false}
+          />
         )}
         <Box display='flex'>
           <Typography pr={theme.spacing(1)} variant='caption' sx={{ color: 'text.secondary' }}>

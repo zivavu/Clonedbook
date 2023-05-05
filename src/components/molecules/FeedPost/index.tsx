@@ -5,7 +5,7 @@ import { StyledContentWrapper, StyledRoot } from './styles';
 import StyledInteractButton from '@/components/atoms/StyledInteractButton';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
 import { useFetchUserQuery } from '@/features/userAPI';
-import { TReactionType } from '@/types/reaction';
+import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useState } from 'react';
 import ActionButtons from '../ActionButtons';
@@ -21,8 +21,8 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
-  const [userReaction, setUserReaction] = useState<TReactionType | null>(
-    reactions[user?.profileId || ''] || null,
+  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
+    reactions[user?.profileId || ''] || undefined,
   );
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
@@ -104,7 +104,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           <Comments comments={comments} onlyUniqueUsers maxComments={maxComments} post={post} />
         </StyledContentWrapper>
       </StyledRoot>
-      {isFullViewOpen && <FullPagePostView post={post} setOpen={setIsFullViewOpen} />}
+      {isFullViewOpen && <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} />}
     </>
   );
 }

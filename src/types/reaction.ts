@@ -13,3 +13,6 @@ export interface IReactionsMap {
 }
 
 export type TReactionType = 'angry' | 'like' | 'love' | 'sad' | 'wow' | 'haha' | 'care';
+
+//undefined is used when the reaction was never set, and null is used when the reaction was removed
+export type TLocalUserReaction = TReactionType | undefined | null;

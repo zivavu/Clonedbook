@@ -8,6 +8,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   paddingTop: 0,
 
+  overflowX: 'hidden',
   overflowY: 'scroll',
   scrollbarWidth: 'thin',
   '&::-webkit-scrollbar': {

@@ -30,6 +30,7 @@ export default function ReactionsPopper({
     setAnchorEl(null);
   }, [setAnchorEl]);
 
+  // Opening the popper
   useEffect(() => {
     const openTimeout = setTimeout(() => {
       if (anchorEl && mouseOver) {
@@ -39,6 +40,7 @@ export default function ReactionsPopper({
     return () => clearTimeout(openTimeout);
   }, [anchorEl, mouseOver]);
 
+  // Closing and fading out the popper
   useEffect(() => {
     const closeTimeout = setTimeout(() => {
       if (!mouseOver) {

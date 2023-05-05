@@ -3,6 +3,7 @@ import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
+import { useFetchUserQuery } from '@/features/userAPI';
 import useDeserializeReactions from '@/utils/useDeserializeReactions';
 import { useState } from 'react';
 import ReactionsPortal from '../../organisms/ReactionsModal';
@@ -19,7 +20,11 @@ export default function ReactionsDisplay({
   ...rootProps
 }: ReactionsDisplayProps) {
   const theme = useTheme();
+  const { data: user } = useFetchUserQuery({});
+  const userId = user?.profileId || '';
   const [showModal, setShowModal] = useState(false);
+
+  reactions = userReaction ? { ...reactions, [userId]: userReaction } : reactions;
 
   const { isLoading, reactingUsers, largestByType, reactionsCount, usedReactions } =
     useDeserializeReactions(reactions);

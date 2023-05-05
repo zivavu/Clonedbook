@@ -1,7 +1,7 @@
-import { BoxProps } from '@mui/material';
+import { BoxProps, ButtonBaseProps } from '@mui/material';
 import { MouseEventHandler, RefObject } from 'react';
 
-export interface InteractButtonProps extends BoxProps {
+export interface InteractButtonProps extends ButtonBaseProps {
   onClickHandler?: MouseEventHandler<HTMLButtonElement> | undefined;
   disabled?: boolean;
   buttonRef?: RefObject<HTMLButtonElement>;

@@ -33,6 +33,16 @@ export const palette = {
   info: {
     main: '#1b74e4',
   },
+  reactionTypes: {
+    like: '#1b74e4',
+    love: '#F44336',
+    care: '#d49820',
+    haha: '#d49820',
+    wow: '#d49820',
+    sad: '#d49820',
+    angry: '#F44336',
+    default: '#65676b',
+  },
   divider: '#ced0d4',
   contrastThreshold: 6,
 } as PaletteOptions;

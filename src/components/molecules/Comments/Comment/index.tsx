@@ -17,24 +17,26 @@ import { CommentProps } from './types';
 
 export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   const theme = useTheme();
-  const { data: usersBasicData } = useFetchUsersPublicDataQuery({});
-
-  const [ownerData, setOwnerData] = useState(
-    (usersBasicData && usersBasicData[comment.ownerId]) || null,
-  );
-  useEffect(() => {
-    if (!usersBasicData) return;
-    setOwnerData(usersBasicData[comment.ownerId]);
-  }, [usersBasicData]);
-
-  const shouldDisplayOnRightSite = comment.commentText.length < 25;
   const { data: user } = useFetchUserQuery({});
-  const [userReaction, setUserReaction] = useState<TReactionType | null>(
-    (comment.reactions && comment.reactions[user?.profileId || '']) || null,
+  const { data: allUsersBasicInfo } = useFetchUsersPublicDataQuery({});
+  const [ownerData, setOwnerData] = useState(
+    (allUsersBasicInfo && allUsersBasicInfo[comment.ownerId]) || null,
   );
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mouseOverReactionElements, setMouseOverReactionElements] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!allUsersBasicInfo) return;
+    setOwnerData(allUsersBasicInfo[comment.ownerId]);
+  }, [allUsersBasicInfo]);
+
+  const shouldDisplayOnRightSite = comment.commentText.length < 25;
+  const [userReaction, setUserReaction] = useState<TReactionType | null>(
+    (comment.reactions && comment.reactions[user?.profileId || '']) || null,
+  );
+
   function handleMouseEnter() {
     setAnchorEl(likeButtonRef.current);
     setMouseOverReactionElements(true);
@@ -91,11 +93,15 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
       <Stack ml={theme.spacing(6)} direction='row' alignItems='center'>
         <StyledInteractButton
           buttonRef={likeButtonRef}
-          sx={{ mr: theme.spacing(1) }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onClickHandler={handleLikeClick}>
-          Like
+          onClickHandler={handleLikeClick}
+          sx={{
+            mr: theme.spacing(1),
+            textTransform: 'capitalize',
+            color: theme.palette.reactionTypes[userReaction || 'default'],
+          }}>
+          {userReaction ? userReaction : 'Like'}
         </StyledInteractButton>
         <StyledInteractButton>Reply</StyledInteractButton>
       </Stack>
@@ -104,6 +110,10 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
           if (!user) return;
           userCommentReact(post, comment, separateUserBasicInfo(user), type);
         }}
+        disablePortal={true}
+        open={false}
+        placement='top-start'
+        modifiers={[{ name: 'offset', options: { offset: [-30, 0] } }]}
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         mouseOver={mouseOverReactionElements}

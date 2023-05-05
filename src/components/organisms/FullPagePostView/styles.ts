@@ -20,7 +20,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
 export const StyledPostContentWrapper = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2),
   overflowY: 'auto',
-
+  height: '100%',
   scrollbarWidth: 'thin',
   '&::-webkit-scrollbar': {
     width: `8px`,

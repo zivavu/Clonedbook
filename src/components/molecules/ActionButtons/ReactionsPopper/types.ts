@@ -1,8 +1,8 @@
 import { TReactionType } from '@/types/reaction';
-import { SxProps, Theme } from '@mui/material';
+import { PopperProps, SxProps, Theme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-export interface ReactionsPopperProps {
+export interface ReactionsPopperProps extends PopperProps {
   sx?: SxProps<Theme>;
   updateDocHandler: (type: TReactionType | null) => void;
   anchorEl: HTMLElement | HTMLButtonElement | HTMLDivElement | null;

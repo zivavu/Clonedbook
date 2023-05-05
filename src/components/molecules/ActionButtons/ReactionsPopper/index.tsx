@@ -12,26 +12,28 @@ export default function ReactionsPopper({
   anchorEl,
   setAnchorEl,
   updateDocHandler,
+  open = false,
   mouseOver,
   setMouseOver,
   setUserReaction,
   sx,
+  ...rootProps
 }: ReactionsPopperProps) {
   const theme = useTheme();
   const { data: user } = useFetchUserQuery({});
 
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(open);
   const popperRef = useRef<HTMLDivElement | null>(null);
 
   const handleClose = useCallback(() => {
-    setOpen(false);
+    setIsOpen(false);
     setAnchorEl(null);
   }, [setAnchorEl]);
 
   useEffect(() => {
     const openTimeout = setTimeout(() => {
       if (anchorEl && mouseOver) {
-        setOpen(true);
+        setIsOpen(true);
       }
     }, 200);
     return () => clearTimeout(openTimeout);
@@ -60,19 +62,18 @@ export default function ReactionsPopper({
     if (!user) return;
     setUserReaction(type);
     updateDocHandler(type);
-    setOpen(false);
+    setIsOpen(false);
   }
 
   return (
     <StyledReactionsPopper
-      sx={sx}
+      {...rootProps}
       anchorEl={anchorEl}
-      placement='top-start'
+      open={isOpen}
       ref={popperRef}
+      sx={sx}
       onMouseEnter={() => setMouseOver(true)}
-      onMouseLeave={() => setMouseOver(false)}
-      open={open}
-    >
+      onMouseLeave={() => setMouseOver(false)}>
       <StyledContentWrapper>
         {reactionTypes.map((reactionType, i) => {
           const slidein = keyframes`
@@ -95,8 +96,7 @@ export default function ReactionsPopper({
                 '&:hover': {
                   transform: 'scale(1.2) translateY(-5px)',
                 },
-              }}
-            >
+              }}>
               <ReactionIcon size={40} type={reactionType} showBorder={false} overlap={false} />
             </IconButton>
           );

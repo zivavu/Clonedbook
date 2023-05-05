@@ -44,17 +44,6 @@ export default function ActionButtons({
     }
   }
 
-  const typesColors = {
-    like: theme.palette.primary.main,
-    love: '#F44336',
-    care: '#d49820',
-    haha: '#d49820',
-    wow: '#d49820',
-    sad: '#d49820',
-    angry: '#F44336',
-    default: theme.palette.text.secondary,
-  };
-
   return (
     <StyledRoot {...rootProps} sx={sx}>
       <ReactionsPopper
@@ -64,17 +53,18 @@ export default function ActionButtons({
           userPostReact(post, separateUserBasicInfo(user), type);
         }}
         setAnchorEl={setAnchorEl}
+        placement='top-start'
         mouseOver={mouseOverReactionElements}
         setMouseOver={setMouseOverReactionElements}
         setUserReaction={setUserReaction}
+        open={false}
       />
       <StyledActionButton
         value='like'
         ref={likeButtonRef}
         onMouseEnter={handleMouseOver}
         onMouseLeave={handleMouseOut}
-        onClick={handleReactionClick}
-      >
+        onClick={handleReactionClick}>
         {userReaction ? (
           <ReactionIcon
             type={userReaction}
@@ -90,8 +80,7 @@ export default function ActionButtons({
           variant='subtitle2'
           fontWeight='400'
           textTransform='capitalize'
-          color={typesColors[userReaction || 'default']}
-        >
+          color={theme.palette.reactionTypes[userReaction || 'default']}>
           {userReaction || 'Like'}
         </Typography>
       </StyledActionButton>

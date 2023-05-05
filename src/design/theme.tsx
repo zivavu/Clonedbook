@@ -47,13 +47,33 @@ export const palette = {
   contrastThreshold: 6,
 } as PaletteOptions;
 
+import { Source_Sans_3 } from 'next/font/google';
+const source_sans = Source_Sans_3({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+});
+
 export const mode = 'light';
 export const theme = createTheme({
   palette,
   typography: {
     allVariants: {
-      fontFamily: ['"Roboto"', 'Helvetica', 'sans-serif', 'Arial'].join(','),
-      fontWeight: 300,
+      fontFamily: [
+        `${source_sans.style.fontFamily}, 'Roboto', 'Helvetica', 'sans-serif', 'Arial'`,
+      ].join(','),
+      fontWeight: 360,
+      letterSpacing: '0',
+    },
+    subtitle1: {
+      fontSize: '0.9375rem',
+    },
+    body1: {
+      lineHeight: '1.165rem',
+      fontSize: '0.875rem',
+    },
+    body2: {
+      fontSize: '0.8rem',
     },
   },
   shape: {

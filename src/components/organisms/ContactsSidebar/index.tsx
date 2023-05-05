@@ -12,7 +12,7 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
     <StyledRoot {...rootProps}>
       <Box>
         <StyledHeadingContainer>
-          <Typography variant='body1' fontWeight={400}>
+          <Typography variant='subtitle1' fontWeight={400}>
             Contacts
           </Typography>
           <Box
@@ -20,8 +20,7 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
               width: '20%',
               display: 'flex',
               justifyContent: 'space-between',
-            }}
-          >
+            }}>
             <IconButton size='small'>
               <Icon icon='magnifying-glass' size='sm' />
             </IconButton>
@@ -38,7 +37,7 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
                   sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
                   src={friend.basicInfo.profilePicture || ''}
                 />
-                <Typography variant='body2'>
+                <Typography variant='body1'>
                   {friend.basicInfo.firstName} {friend.basicInfo.lastName}
                 </Typography>
               </ListItemButton>

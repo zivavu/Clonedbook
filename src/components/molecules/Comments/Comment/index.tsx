@@ -64,12 +64,10 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
         <StyledTextContent>
           {!!ownerData && (
             <>
-              <Typography variant='body2' fontWeight='400' lineHeight='1.2rem'>
+              <Typography variant='body1' fontWeight='500' lineHeight='1.2rem'>
                 {ownerData.firstName} {ownerData.lastName}
               </Typography>
-              <Typography variant='body2' lineHeight='1.2rem'>
-                {comment.commentText}
-              </Typography>
+              <Typography variant='body1'>{comment.commentText}</Typography>
             </>
           )}
           {(!isObjectEmpty(comment?.reactions) || userReaction) && (
@@ -86,7 +84,8 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
                 zIndex: 1,
                 position: 'absolute',
                 bottom: shouldDisplayOnRightSite ? theme.spacing(1) : theme.spacing(-2),
-                right: shouldDisplayOnRightSite ? theme.spacing(-5.5) : theme.spacing(-1),
+                right: shouldDisplayOnRightSite ? theme.spacing(1) : theme.spacing(-1),
+                transform: shouldDisplayOnRightSite ? 'translateX(100%)' : 'none',
               }}
             />
           )}
@@ -103,9 +102,15 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
             textTransform: 'capitalize',
             color: theme.palette.reactionTypes[userReaction || 'default'],
           }}>
-          {userReaction ? userReaction : 'Like'}
+          <Typography variant='body2' fontWeight={650}>
+            {userReaction ? userReaction : 'Like'}
+          </Typography>
         </StyledInteractButton>
-        <StyledInteractButton>Reply</StyledInteractButton>
+        <StyledInteractButton>
+          <Typography variant='body2' fontWeight={650}>
+            Reply
+          </Typography>
+        </StyledInteractButton>
       </Stack>
       <ReactionsPopper
         updateDocHandler={(type) => {

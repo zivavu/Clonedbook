@@ -79,7 +79,7 @@ export default function ReactionsDisplay({
           {displayNames && (
             <>
               {userReaction ? (
-                <Typography variant='subtitle2'>
+                <Typography variant='subtitle1'>
                   You {reactionsCount > 1 ? `and ${otherUsersCount} others` : ''}
                 </Typography>
               ) : (
@@ -89,10 +89,10 @@ export default function ReactionsDisplay({
                   return (
                     <Box key={reactor.info.profileId}>
                       {!isLast ? (
-                        <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
+                        <Typography variant='subtitle1'>{userText},&nbsp;</Typography>
                       ) : (
                         <>
-                          <Typography variant='subtitle2'>
+                          <Typography variant='subtitle1'>
                             {userText}&nbsp;
                             {otherUsersCount === 1 ? `and 1 other` : ''}
                             {otherUsersCount > 1 ? `and ${otherUsersCount} others` : ''}

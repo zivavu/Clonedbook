@@ -43,7 +43,7 @@ export default function FullPagePostView({
           </Stack>
           <StyledPostContentWrapper spacing={1}>
             <PostOwnerInfoDisplay owner={post.owner} createdAt={post.createdAt} />
-            <Typography variant='body2'>{post.postText}</Typography>
+            <Typography variant='body1'>{post.postText}</Typography>
             <Stack direction='row' alignItems='center'>
               <ReactionsDisplay userReaction={userReaction} reactions={post.reactions} />
               <Typography ml='auto' color={theme.palette.text.secondary} variant='caption'>

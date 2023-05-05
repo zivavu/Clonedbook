@@ -47,7 +47,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           {hasText && (
             <Box sx={{ pt: theme.spacing(1) }}>
               {isTextLong ? (
-                <Typography variant='body2'>{post.postText}</Typography>
+                <Typography variant='body1'>{post.postText}</Typography>
               ) : (
                 <Typography variant='h6' fontWeight='400' lineHeight='1.7rem'>
                   {post.postText}
@@ -75,7 +75,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
               onClick={() => {
                 handleShowMoreComments();
               }}>
-              <Typography variant='caption' color={theme.palette.text.secondary}>
+              <Typography variant='subtitle2' color={theme.palette.text.secondary}>
                 {commentsLength === 0
                   ? ''
                   : commentsLength > 1
@@ -96,7 +96,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
             <StyledInteractButton
               sx={{ mb: theme.spacing(1) }}
               onClick={() => handleShowMoreComments()}>
-              <Typography variant='subtitle2' color={theme.palette.text.secondary} fontWeight='400'>
+              <Typography variant='subtitle2' color={theme.palette.text.secondary} fontWeight='500'>
                 View more comments
               </Typography>
             </StyledInteractButton>

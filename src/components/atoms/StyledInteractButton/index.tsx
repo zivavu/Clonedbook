@@ -20,6 +20,7 @@ export default function StyledInteractButton({
       onClick={onClickHandler}
       sx={{
         padding: theme.spacing(0.2),
+        color: theme.palette.text.secondary,
         '&:hover': {
           textDecoration: 'underline',
         },

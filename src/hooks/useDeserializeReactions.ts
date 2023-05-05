@@ -28,12 +28,12 @@ export default function useDeserializeReactions(reactions: IReactionsMap) {
       }))
     : [];
 
-  const reactingUsers: IReactionWithBasicInfo[] = Object.entries(reactions).map(
-    ([userId, type]) => {
+  const reactingUsers: IReactionWithBasicInfo[] = Object.entries(reactions)
+    .filter(([userId, type]) => userId && type)
+    .map(([userId, type]) => {
       const info = usersPublicData?.find((user) => user.profileId === userId) as IUserBasicInfo;
       return { userId, type, info } as IReactionWithBasicInfo;
-    },
-  );
+    });
 
   const reactionsCount = Object.keys(reactions).length || 0;
   const reactionsByTypes: ReactionsByTypes = {

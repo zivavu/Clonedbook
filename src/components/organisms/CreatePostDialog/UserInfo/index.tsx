@@ -13,7 +13,7 @@ export default function UserInfo({ user, sx, ...rootProps }: UserInfoProps) {
       <Stack direction='row' spacing={1}>
         <UserAvatar src={user.profilePicture} />
         <Box>
-          <Typography fontWeight='400' variant='body2'>
+          <Typography fontWeight='500' variant='body1'>
             {user.firstName} {user.lastName}
           </Typography>
           <ButtonBase
@@ -22,8 +22,7 @@ export default function UserInfo({ user, sx, ...rootProps }: UserInfoProps) {
               padding: theme.spacing(0.2, 1),
               borderRadius: '6px',
               height: '24px',
-            }}
-          >
+            }}>
             <Icon icon='globe-africa' fontSize='12px' />
             <Typography ml={theme.spacing(0.5)} variant='caption' lineHeight='1rem'>
               Public

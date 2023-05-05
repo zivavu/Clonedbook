@@ -45,7 +45,7 @@ export default function ReactionsPortal({
                 setShowedType(value);
               }}>
               <StyledToggleButton value='all'>
-                <Typography variant='body1' textTransform='none' fontWeight='400'>
+                <Typography variant='subtitle1' textTransform='none' fontWeight='400'>
                   All
                 </Typography>
                 {showedType === 'all' && <SelectButtonUnderline />}
@@ -57,7 +57,7 @@ export default function ReactionsPortal({
                   <StyledToggleButton key={reaction.type} value={reaction.type}>
                     <Stack direction='row' alignItems='center'>
                       <ReactionIcon src={reaction.icon} size={18} showBorder={false} />
-                      <Typography variant='body2' fontWeight='400' ml={theme.spacing(1.3)}>
+                      <Typography variant='body1' fontWeight='400' ml={theme.spacing(1.3)}>
                         {reaction.count}
                       </Typography>
                     </Stack>
@@ -82,7 +82,7 @@ export default function ReactionsPortal({
                         size={18}
                       />
                     </Box>
-                    <Typography variant='body2' fontWeight='400'>
+                    <Typography variant='body1' fontWeight='500'>
                       {firstName} {lastName}
                     </Typography>
                   </Stack>

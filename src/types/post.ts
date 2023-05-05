@@ -1,6 +1,6 @@
-import { IComment, ICommentMap } from './comment';
+import { ICommentMap } from './comment';
 import { ICreatedAt } from './createdAt';
-import { IReactionReference, IReactionsMap } from './reaction';
+import { IReactionsMap } from './reaction';
 import { IUserBasicInfo } from './user';
 
 export interface IPost extends IPostReference {

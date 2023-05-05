@@ -80,7 +80,7 @@ export default function ActionButtons({
           variant='subtitle2'
           fontWeight='400'
           textTransform='capitalize'
-          color={theme.palette.reactionTypes[userReaction || 'default']}>
+          color={theme.palette.common.reactionTypes[userReaction || 'default']}>
           {userReaction || 'Like'}
         </Typography>
       </StyledActionButton>

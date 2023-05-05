@@ -1,7 +1,15 @@
 import { PaletteOptions, createTheme } from '@mui/material/styles';
+import { Source_Sans_3 } from 'next/font/google';
 import { componentOverrides } from './overrides';
+import { IReactionTypes } from './types';
 
-export const palette = {
+declare module '@mui/material/styles/createPalette' {
+  interface CommonColors {
+    reactionTypes: IReactionTypes;
+  }
+}
+
+export const palette: PaletteOptions = {
   primary: {
     main: '#1b74e4',
     light: '#e4f0fc',
@@ -18,9 +26,20 @@ export const palette = {
     '300': '#f0f2f5',
     '600': '#e4e6eb',
   },
+
   common: {
     white: '#fff',
     black: '#000',
+    reactionTypes: {
+      like: '#2078f4',
+      love: '#F44336',
+      care: '#d49820',
+      haha: '#d49820',
+      wow: '#d49820',
+      sad: '#d49820',
+      angry: '#F44336',
+      default: '#65676b',
+    },
   },
   background: {
     default: '#f0f2f5',
@@ -33,21 +52,11 @@ export const palette = {
   info: {
     main: '#1b74e4',
   },
-  reactionTypes: {
-    like: '#2078f4',
-    love: '#F44336',
-    care: '#d49820',
-    haha: '#d49820',
-    wow: '#d49820',
-    sad: '#d49820',
-    angry: '#F44336',
-    default: '#65676b',
-  },
+
   divider: '#ced0d4',
   contrastThreshold: 6,
-} as PaletteOptions;
+};
 
-import { Source_Sans_3 } from 'next/font/google';
 const source_sans = Source_Sans_3({
   subsets: ['latin'],
   display: 'swap',

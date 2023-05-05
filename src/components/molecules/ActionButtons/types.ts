@@ -1,5 +1,5 @@
 import { IPost } from '@/types/post';
-import { IReactionReference, TLocalUserReaction, TReactionType } from '@/types/reaction';
+import { TLocalUserReaction } from '@/types/reaction';
 import { BoxProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 

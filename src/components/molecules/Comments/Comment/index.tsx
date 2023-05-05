@@ -100,7 +100,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
           sx={{
             mr: theme.spacing(1),
             textTransform: 'capitalize',
-            color: theme.palette.reactionTypes[userReaction || 'default'],
+            color: theme.palette.common.reactionTypes[userReaction || 'default'],
           }}>
           <Typography variant='body2' fontWeight={650}>
             {userReaction ? userReaction : 'Like'}

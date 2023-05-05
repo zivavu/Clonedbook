@@ -1,4 +1,4 @@
-import { IComment, ICommentMap } from './comment';
+import { ICommentMap } from './comment';
 import { ICreatedAt } from './createdAt';
 import { IReactionsMap, TReactionType } from './reaction';
 

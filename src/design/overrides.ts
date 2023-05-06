@@ -2,6 +2,17 @@ import { Components, Palette } from '@mui/material';
 
 export const getCompoentsOverrides = (palette: Palette) => {
   const componentOverrides: Components = {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: palette.text?.primary,
+          textDecoration: 'none',
+          '&:hover': {
+            textDecoration: 'underline',
+          },
+        },
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {

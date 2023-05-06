@@ -9,12 +9,12 @@ import {
 } from '@mui/material';
 import { StyledRoot, StyledToggleButton, StyledUsersContainer } from './styles';
 
+import Link from '@/components/atoms/Link';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { SelectButtonUnderline } from '@/components/atoms/SelectedButtonUnderline/styles';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import useDeserializeReactions from '@/hooks/useDeserializeReactions';
 import { TReactionType } from '@/types/reaction';
-import Link from 'next/link';
 import { useState } from 'react';
 import { ReactionsModalProps } from './types';
 
@@ -88,10 +88,8 @@ export default function ReactionsPortal({
                         size={16}
                       />
                     </Box>
-                    <Link href={profileId}>
-                      <Typography variant='body1' fontWeight='500'>
-                        {firstName} {lastName}
-                      </Typography>
+                    <Link href={`profile/${profileId}`}>
+                      {firstName} {lastName}
                     </Link>
                   </Stack>
                 );

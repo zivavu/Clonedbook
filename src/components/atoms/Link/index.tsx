@@ -1,15 +1,14 @@
-import { Typography, useTheme } from '@mui/material';
+import { LinkProps, Link as MuiLink } from '@mui/material';
+import NextLink from 'next/link';
 
-import { StyledRoot } from './styles';
+/**
+ * @description - Default link for text. Uses Next.js Link with MUI theme styling.
+ */
 
-import { LinkProps } from './types';
-
-export default function Link({ sx, ...rootProps }: LinkProps) {
-	const theme = useTheme();
+export default function Link({ sx, children, ...rootProps }: LinkProps) {
   return (
-    <StyledRoot sx={sx} {...rootProps}>
-      <Typography>Link</Typography>
-    </StyledRoot>
+    <MuiLink sx={sx} {...rootProps} component={NextLink}>
+      {children}
+    </MuiLink>
   );
 }
-  

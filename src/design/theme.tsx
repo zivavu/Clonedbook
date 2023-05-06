@@ -4,6 +4,7 @@ import { getCompoentsOverrides } from './overrides';
 import { IReactionTypes } from './types';
 
 declare module '@mui/material/styles/createPalette' {
+  //eslint-disable-next-line no-unused-vars
   interface CommonColors {
     reactionTypes: IReactionTypes;
   }

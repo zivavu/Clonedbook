@@ -1,19 +1,22 @@
 import { db } from '@/config/firebase.config';
+import { IUser } from '@/types/user';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 export function useFetchAllUserData(userId: string) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [allUserData, setAllUserData] = useState();
+  const [userData, setUserData] = useState<IUser>();
   useEffect(() => {
     const getData = async () => {
       try {
         setIsLoading(true);
         const allUserData = await getDoc(doc(db, 'users', userId));
-        const data = allUserData.data();
+        const data = allUserData.data() as IUser;
         if (data) {
-          console.log(data.pictures);
+          setUserData(data);
+        } else {
+          setIsError(true);
         }
       } catch {
         setIsError(true);
@@ -23,4 +26,5 @@ export function useFetchAllUserData(userId: string) {
     };
     getData();
   }, [userId]);
+  return { isLoading, isError, userData };
 }

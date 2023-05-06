@@ -1,7 +1,8 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 import { PostOwnerInfoDisplayProps } from './types';
@@ -13,15 +14,18 @@ export default function PostOwnerInfoDisplay({
   ...rootProps
 }: PostOwnerInfoDisplayProps) {
   const date = getDateFromTimestamp(createdAt.seconds);
+  const theme = useTheme();
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack direction='row' spacing={1}>
         <UserAvatar src={owner.profilePicture} userId={owner.profileId} />
         <Stack justifyContent='center'>
-          <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
-            {owner.firstName} {owner.lastName}
-          </Typography>
-          <Typography variant='caption'>
+          <Link href={`profile/${owner.profileId}`}>
+            <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
+              {owner.firstName} {owner.lastName}
+            </Typography>
+          </Link>
+          <Typography variant='body2' color={theme.palette.text.secondary}>
             {date.month} {date.day}, {date.year}.
           </Typography>
         </Stack>

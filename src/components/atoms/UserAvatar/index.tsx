@@ -1,5 +1,6 @@
 import { Box, ButtonBase, useTheme } from '@mui/material';
 
+import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserAvatarProps } from './types';
@@ -12,19 +13,35 @@ export default function UserAvatar({
   userId,
   ...rootProps
 }: UserAvatarProps) {
+  const { data: userData } = useFetchUsersPublicDataQuery({});
+  const user = userId && userData ? userData[userId] : null;
   const px = `${size}px`;
   const theme = useTheme();
+
+  const UserImage = () => (
+    <Image
+      height={size}
+      width={size}
+      loading='eager'
+      src={src || user?.profilePicture || '/no-profile-picture-icon.svg'}
+      alt={alt || 'user avatar'}
+      style={{
+        borderRadius: '50%',
+      }}
+    />
+  );
+
   return (
     <Box
-      {...rootProps}
       sx={{
         ...sx,
         width: px,
         height: px,
-        bgcolor: theme.palette.primary.light,
+        backgroundColor: theme.palette.primary.light,
         position: 'relative',
         borderRadius: '50%',
-      }}>
+      }}
+      {...rootProps}>
       {userId ? (
         <ButtonBase
           sx={{
@@ -32,28 +49,10 @@ export default function UserAvatar({
           }}
           LinkComponent={Link}
           href={`/profile/${userId}`}>
-          <Image
-            height={size}
-            width={size}
-            loading='eager'
-            src={src || '/no-profile-picture-icon.svg'}
-            alt={alt || 'user avatar'}
-            style={{
-              borderRadius: '50%',
-            }}
-          />
+          <UserImage />
         </ButtonBase>
       ) : (
-        <Image
-          height={size}
-          width={size}
-          loading='eager'
-          src={src || '/no-profile-picture-icon.svg'}
-          alt={alt || 'user avatar'}
-          style={{
-            borderRadius: '50%',
-          }}
-        />
+        <UserImage />
       )}
     </Box>
   );

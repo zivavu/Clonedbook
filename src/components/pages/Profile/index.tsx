@@ -1,15 +1,14 @@
-import { Typography } from '@mui/material';
-
 import { StyledRoot } from './styles';
 
 import { useFetchAllUserData } from '@/hooks/useFetchAllUserData';
+import UserInfoSection from './UserInfoSection';
 import { ProfileProps } from './types';
 
 export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
-  useFetchAllUserData(userId);
-  return (
+  const { userData, isLoading, isError } = useFetchAllUserData(userId);
+  return isLoading || isError || !userData ? null : (
     <StyledRoot sx={sx} {...rootProps}>
-      <Typography>Profile</Typography>
+      <UserInfoSection userData={userData} />
     </StyledRoot>
   );
 }

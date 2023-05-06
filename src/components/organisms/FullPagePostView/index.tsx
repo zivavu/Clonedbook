@@ -26,6 +26,7 @@ export default function FullPagePostView({
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
     post?.reactions[user?.profileId || ''] || undefined,
   );
+
   useEffect(() => {
     setUserReaction(post?.reactions[user?.profileId || ''] || undefined);
   }, [post, user?.profileId]);

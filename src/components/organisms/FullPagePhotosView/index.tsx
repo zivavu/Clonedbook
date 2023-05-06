@@ -17,6 +17,7 @@ export default function FullPagePhotosView({
   initialPhoto,
   postId,
   setOpen,
+
   ...rootProps
 }: FullPagePhotosViewProps) {
   const theme = useTheme();

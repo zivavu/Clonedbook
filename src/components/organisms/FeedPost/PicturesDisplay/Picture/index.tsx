@@ -67,6 +67,9 @@ export default function Picture({
   }
   return (
     <>
+      {isFullViewOpen && postData?.postPictures && (
+        <FullPagePhotosView postId={postId} initialPhoto={photoSrc} setOpen={setIsFullViewOpen} />
+      )}
       <StyledRoot sx={sx} {...rootProps}>
         <ButtonBase
           onClick={() => handleClick()}
@@ -93,9 +96,6 @@ export default function Picture({
           {children}
         </ButtonBase>
       </StyledRoot>
-      {isFullViewOpen && postData?.postPictures && (
-        <FullPagePhotosView postId={postId} initialPhoto={photoSrc} setOpen={setIsFullViewOpen} />
-      )}
     </>
   );
 }

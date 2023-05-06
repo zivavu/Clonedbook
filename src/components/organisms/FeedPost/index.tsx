@@ -41,6 +41,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
   }
   return (
     <>
+      {isFullViewOpen && <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} />}
       <StyledRoot {...rootProps}>
         <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
           <PostOwnerInfoDisplay owner={post.owner} createdAt={post.createdAt} />
@@ -102,7 +103,6 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           <Comments comments={comments} onlyUniqueUsers maxComments={maxComments} post={post} />
         </StyledContentWrapper>
       </StyledRoot>
-      {isFullViewOpen && <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} />}
     </>
   );
 }

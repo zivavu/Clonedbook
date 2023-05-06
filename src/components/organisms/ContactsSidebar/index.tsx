@@ -2,6 +2,7 @@ import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
+import Link from 'next/link';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
 
@@ -32,7 +33,11 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
         <List sx={{ pt: theme.spacing(0) }}>
           {userData?.friends?.slice(0, 30).map((friend) => {
             return (
-              <ListItemButton key={friend.basicInfo.profileId} sx={{ pl: theme.spacing(1) }}>
+              <ListItemButton
+                LinkComponent={Link}
+                href={`/profile/${friend.basicInfo.profileId}`}
+                key={friend.basicInfo.profileId}
+                sx={{ pl: theme.spacing(1) }}>
                 <UserAvatar
                   sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
                   src={friend.basicInfo.profilePicture || ''}

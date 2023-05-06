@@ -20,8 +20,9 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
         size='small'
         InputProps={{
           sx: {
+            fontSize: '1rem',
             borderRadius: '50px',
-            width: '280px',
+            width: '240px',
             backgroundColor: theme.palette.secondary.main,
           },
           startAdornment: (

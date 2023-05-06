@@ -16,7 +16,7 @@ export default function PostOwnerInfoDisplay({
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack direction='row' spacing={1}>
-        <UserAvatar src={owner.profilePicture} />
+        <UserAvatar src={owner.profilePicture} userId={owner.profileId} />
         <Stack justifyContent='center'>
           <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
             {owner.firstName} {owner.lastName}

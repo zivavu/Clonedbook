@@ -14,6 +14,7 @@ import { SelectButtonUnderline } from '@/components/atoms/SelectedButtonUnderlin
 import UserAvatar from '@/components/atoms/UserAvatar';
 import useDeserializeReactions from '@/hooks/useDeserializeReactions';
 import { TReactionType } from '@/types/reaction';
+import Link from 'next/link';
 import { useState } from 'react';
 import { ReactionsModalProps } from './types';
 
@@ -74,7 +75,12 @@ export default function ReactionsPortal({
                 return (
                   <Stack key={profileId} direction='row' alignItems='center'>
                     <Box position='relative'>
-                      <UserAvatar src={profilePicture} mr={theme.spacing(1)} size={40} />
+                      <UserAvatar
+                        src={profilePicture}
+                        mr={theme.spacing(1)}
+                        size={40}
+                        userId={profileId}
+                      />
                       <ReactionIcon
                         src={reactionsByTypes[reaction.type].icon}
                         sx={{ position: 'absolute', bottom: '-4px', right: '10px' }}
@@ -82,9 +88,11 @@ export default function ReactionsPortal({
                         size={16}
                       />
                     </Box>
-                    <Typography variant='body1' fontWeight='500'>
-                      {firstName} {lastName}
-                    </Typography>
+                    <Link href={profileId}>
+                      <Typography variant='body1' fontWeight='500'>
+                        {firstName} {lastName}
+                      </Typography>
+                    </Link>
                   </Stack>
                 );
               })}

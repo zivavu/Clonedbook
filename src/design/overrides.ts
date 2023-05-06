@@ -1,13 +1,7 @@
-import { PaletteOptions } from '@mui/material';
+import { Components, Palette } from '@mui/material';
 
-export const componentOverrides = (palette: PaletteOptions) => {
-  return {
-    a: {
-      styleOverrides: {
-        color: palette.text?.primary,
-        textDecoration: 'none',
-      },
-    },
+export const getCompoentsOverrides = (palette: Palette) => {
+  const componentOverrides: Components = {
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
@@ -33,7 +27,6 @@ export const componentOverrides = (palette: PaletteOptions) => {
           textTransform: 'none',
 
           '&:hover': {
-            //@ts-ignore
             backgroundColor: palette.secondary?.main,
           },
         },
@@ -65,4 +58,5 @@ export const componentOverrides = (palette: PaletteOptions) => {
       },
     },
   };
+  return componentOverrides;
 };

@@ -13,7 +13,12 @@ export default function CommentInput({ ...rootProps }: CommentInputProps) {
   const [commentText, setCommentText] = useState<string>('');
   return (
     <StyledRoot {...rootProps}>
-      <UserAvatar size={30} sx={{ mr: theme.spacing(0.7) }} src={user?.profilePicture} />
+      <UserAvatar
+        size={30}
+        sx={{ mr: theme.spacing(0.7) }}
+        src={user?.profilePicture}
+        userId={user?.profileId}
+      />
       <StyledCommentInput
         multiline
         fullWidth

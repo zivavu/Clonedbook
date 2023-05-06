@@ -8,7 +8,7 @@ export default function Page({ children, title, description }: PageProps) {
   return (
     <>
       <Head>
-        <title>{title || 'Facebook Clone'}</title>
+        <title>{title || 'Clonedbook'}</title>
         <meta name='description' content={description || 'Miserable clone of Mark&#39;s empire.'} />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />

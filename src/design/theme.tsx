@@ -1,6 +1,6 @@
-import { PaletteOptions, createTheme } from '@mui/material/styles';
+import { Palette, PaletteOptions, createTheme } from '@mui/material/styles';
 import { Source_Sans_3 } from 'next/font/google';
-import { componentOverrides } from './overrides';
+import { getCompoentsOverrides } from './overrides';
 import { IReactionTypes } from './types';
 
 declare module '@mui/material/styles/createPalette' {
@@ -92,6 +92,5 @@ export const theme = createTheme({
     borderRadius: 8,
   },
 
-  //@ts-ignore
-  components: componentOverrides({ ...palette, mode }),
+  components: getCompoentsOverrides({ ...(palette as Palette), mode }),
 });

@@ -8,7 +8,7 @@ import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import { useFetchUserQuery } from '@/features/userAPI';
-import useGetPostData from '@/hooks/UseGetPostData';
+import useFetchPostData from '@/hooks/UseFetchPostData';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ export default function FullPagePostView({
   ...rootProps
 }: FullPagePostViewProps) {
   const theme = useTheme();
-  const { postData: post, isError, isLoading } = useGetPostData(postId);
+  const { postData: post, isError, isLoading } = useFetchPostData(postId);
   const { data: user } = useFetchUserQuery({});
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
     post?.reactions[user?.profileId || ''] || undefined,

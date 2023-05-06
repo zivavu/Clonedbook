@@ -3,7 +3,7 @@ import { IPost } from '@/types/post';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-export default function useGetPostData(postId: string) {
+export default function useFetchPostData(postId: string) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [postData, setPostData] = useState<IPost>();

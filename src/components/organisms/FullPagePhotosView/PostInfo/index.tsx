@@ -1,7 +1,8 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledDevider, StyledRoot } from './styles';
+import { StyledRoot } from './styles';
 
+import ContentDevider from '@/components/atoms/ContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
@@ -24,7 +25,7 @@ export default function PostInfo({
       <Stack direction='row' width='100%' height='56px' justifyContent='flex-end'>
         <RightSection mr={theme.spacing(0.5)} />
       </Stack>
-      <StyledDevider />
+      <ContentDevider />
       <PostOwnerInfoDisplay
         owner={post.owner}
         createdAt={post.createdAt}
@@ -32,7 +33,7 @@ export default function PostInfo({
         mb={theme.spacing(1)}
       />
       <Box mb={theme.spacing(4)}>
-        <Typography variant='body2'>{post.postText}</Typography>
+        <Typography variant='body1'>{post.postText}</Typography>
       </Box>
       <Stack width='100%' direction='row' justifyContent='space-between'>
         {!isObjectEmpty(post.reactions) && (
@@ -44,14 +45,14 @@ export default function PostInfo({
           />
         )}
         <Box display='flex'>
-          <Typography pr={theme.spacing(1)} variant='caption' sx={{ color: 'text.secondary' }}>
+          <Typography pr={theme.spacing(1)} variant='subtitle2' sx={{ color: 'text.secondary' }}>
             {commentsLength === 0
               ? ''
               : commentsLength > 1
               ? `${commentsLength} comments`
               : `${commentsLength} comment`}
           </Typography>
-          <Typography variant='caption' sx={{ color: 'text.secondary' }}>
+          <Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
             {post.shareCount} shares
           </Typography>
         </Box>

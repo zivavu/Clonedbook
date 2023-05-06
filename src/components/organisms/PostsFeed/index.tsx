@@ -1,7 +1,7 @@
 import { StyledRoot } from './styles';
 
-import FeedPost from '@/components/molecules/FeedPost';
 import WhatsOnYourMindBox from '@/components/molecules/WhatsOnYourMindBox';
+import FeedPost from '@/components/organisms/FeedPost';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { PostsFeedProps } from './types';
 

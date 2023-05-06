@@ -3,10 +3,10 @@ import { ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 import { StyledButtonIcon, StyledButtonText, StyledPostTypeButton, StyledRoot } from './styles';
 
 import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons';
+import ContentDevider from '@/components/atoms/ContentDevider';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
 import { useState } from 'react';
-import { StyledDevider } from '../FeedPost/PicturesDisplay/styles';
 import { WhatsOnYourMindBoxProps } from './types';
 
 export default function WhatsOnYourMindBox({ user, ...rootProps }: WhatsOnYourMindBoxProps) {
@@ -30,9 +30,8 @@ export default function WhatsOnYourMindBox({ user, ...rootProps }: WhatsOnYourMi
                 padding: theme.spacing(1, 2),
                 justifyContent: 'flex-start',
               }}
-              onClick={handleOpenDialog}
-            >
-              <Typography color={theme.palette.text.secondary}>
+              onClick={handleOpenDialog}>
+              <Typography color={theme.palette.text.secondary} variant='subtitle1' fontWeight={390}>
                 What&apos;s on Your mind, {user.firstName}?
               </Typography>
             </ButtonBase>
@@ -55,7 +54,7 @@ export default function WhatsOnYourMindBox({ user, ...rootProps }: WhatsOnYourMi
               <StyledButtonIcon width={24} height={24} alt='Live Event Icon' src={LiveEventIcon} />
               <StyledButtonText>Live event</StyledButtonText>
             </StyledPostTypeButton>
-            <StyledDevider top='0' />
+            <ContentDevider top='0' />
           </Stack>
         </Stack>
       </StyledRoot>

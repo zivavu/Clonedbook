@@ -1,7 +1,8 @@
 import { Stack, useTheme } from '@mui/material';
 
-import { StyledDevider, StyledPicturesContainer, StyledRoot } from './styles';
+import { StyledPicturesContainer, StyledRoot } from './styles';
 
+import ContentDevider from '@/components/atoms/ContentDevider';
 import ManyPicutresDisplay from './ManyPicutresDisplay';
 import Picture from './Picture';
 import { DisplayMode, PictureToDisplay, PicturesDisplayProps } from './types';
@@ -21,7 +22,7 @@ export default function PicturesDisplay({ pictures, postId, ...rootProps }: Pict
 
   return (
     <StyledRoot {...rootProps}>
-      <StyledDevider sx={{ top: '-1px' }} />
+      <ContentDevider sx={{ top: '-1px' }} />
 
       {mode === 'single' && (
         <StyledPicturesContainer>
@@ -56,7 +57,7 @@ export default function PicturesDisplay({ pictures, postId, ...rootProps }: Pict
           postId={postId}
         />
       )}
-      <StyledDevider sx={{ bottom: '0' }} />
+      <ContentDevider sx={{ bottom: '0' }} />
     </StyledRoot>
   );
 }

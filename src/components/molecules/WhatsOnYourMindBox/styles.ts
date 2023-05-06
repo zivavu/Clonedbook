@@ -29,5 +29,4 @@ export const StyledButtonIcon = styled(Image)(({ theme }) => ({
 export const StyledButtonText = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
   fontWeight: 500,
-  fontSize: '0.9rem',
 }));

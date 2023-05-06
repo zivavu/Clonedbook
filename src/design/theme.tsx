@@ -71,10 +71,13 @@ export const theme = createTheme({
       fontFamily: [
         `${source_sans.style.fontFamily}, 'Roboto', 'Helvetica', 'sans-serif', 'Arial'`,
       ].join(','),
-      fontWeight: 360,
+      fontWeight: 380,
       letterSpacing: '0',
     },
     subtitle1: {
+      fontSize: '1rem',
+    },
+    subtitle2: {
       fontSize: '0.9375rem',
     },
     body1: {

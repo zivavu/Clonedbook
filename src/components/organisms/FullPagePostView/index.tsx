@@ -2,17 +2,17 @@ import { GlobalStyles, Modal, Stack, Typography, useTheme } from '@mui/material'
 
 import { StyledPostContentWrapper, StyledRoot } from './styles';
 
+import ContentDevider from '@/components/atoms/ContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
-import { StyledDevider } from '@/components/molecules/FeedPost/PicturesDisplay/styles';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
+import { useFetchUserQuery } from '@/features/userAPI';
 import useGetPostData from '@/hooks/UseGetPostData';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useEffect, useState } from 'react';
 import { FullPagePostViewProps } from './types';
-import { useFetchUserQuery } from '@/features/userAPI';
 
 export default function FullPagePostView({
   postId,
@@ -39,7 +39,7 @@ export default function FullPagePostView({
             <Typography textAlign='center' variant='h6' fontWeight='600'>
               {post.owner.firstName}&apos;s Post
             </Typography>
-            <StyledDevider sx={{ bottom: 0 }} />
+            <ContentDevider sx={{ bottom: 0 }} />
           </Stack>
           <StyledPostContentWrapper spacing={1}>
             <PostOwnerInfoDisplay owner={post.owner} createdAt={post.createdAt} />

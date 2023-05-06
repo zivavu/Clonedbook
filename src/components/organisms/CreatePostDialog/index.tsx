@@ -7,6 +7,7 @@ import {
   StyledRoot,
 } from './styles';
 
+import ContentDevider from '@/components/atoms/ContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
 import { db, storage } from '@/config/firebase.config';
 import { IPost } from '@/types/post';
@@ -17,7 +18,6 @@ import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRef, useState } from 'react';
-import { StyledDevider } from '../FullPagePhotosView/PostInfo/styles';
 import ErrorsFeed from './ErrorsFeed';
 import PhotosInput from './PhotosInput';
 import PostTextInput from './PostTextInput';
@@ -98,7 +98,7 @@ export default function CreatePostDialog({
             <Typography textAlign='center' variant='h6' fontWeight='500'>
               Create Post
             </Typography>
-            <StyledDevider bottom='0' />
+            <ContentDevider bottom='0' />
           </Stack>
           <DialogCloseIconButton onClick={() => setIsOpen(false)}>
             <Icon icon='xmark' />

@@ -2,16 +2,16 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledContentWrapper, StyledRoot } from './styles';
 
-import StyledInteractButton from '@/components/atoms/StyledInteractButton';
+import InteractButton from '@/components/atoms/InteractButton';
+import ActionButtons from '@/components/molecules/ActionButtons';
+import Comments from '@/components/molecules/Comments';
+import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
+import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useState } from 'react';
-import ActionButtons from '../ActionButtons';
-import Comments from '../Comments';
-import PostOwnerInfoDisplay from '../PostOwnerInfoDisplay';
-import ReactionsDisplay from '../ReactionsDisplay';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
 
@@ -70,7 +70,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
               userReaction={userReaction}
               sx={{ pr: theme.spacing(0.25) }}
             />
-            <StyledInteractButton
+            <InteractButton
               sx={{ ml: 'auto' }}
               onClick={() => {
                 handleShowMoreComments();
@@ -82,7 +82,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
                   ? `${commentsLength} comments`
                   : `${commentsLength} comment`}
               </Typography>
-            </StyledInteractButton>
+            </InteractButton>
           </Stack>
 
           <ActionButtons
@@ -93,13 +93,11 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
         </StyledContentWrapper>
         <StyledContentWrapper>
           {isMoreComments && (
-            <StyledInteractButton
-              sx={{ mb: theme.spacing(1) }}
-              onClick={() => handleShowMoreComments()}>
+            <InteractButton sx={{ mb: theme.spacing(1) }} onClick={() => handleShowMoreComments()}>
               <Typography variant='subtitle2' color={theme.palette.text.secondary} fontWeight='500'>
                 View more comments
               </Typography>
-            </StyledInteractButton>
+            </InteractButton>
           )}
           <Comments comments={comments} onlyUniqueUsers maxComments={maxComments} post={post} />
         </StyledContentWrapper>

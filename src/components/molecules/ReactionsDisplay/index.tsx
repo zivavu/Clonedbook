@@ -6,7 +6,7 @@ import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchUserQuery } from '@/features/userAPI';
 import useDeserializeReactions from '@/hooks/useDeserializeReactions';
 import { useState } from 'react';
-import ReactionsPortal from '../../organisms/ReactionsModal';
+import ReactionsModal from '../../organisms/ReactionsModal';
 import { ReactionsDisplayProps } from './types';
 
 export default function ReactionsDisplay({
@@ -46,7 +46,7 @@ export default function ReactionsDisplay({
 
   return isLoading || !reactions ? null : (
     <>
-      {showModal && <ReactionsPortal setShowModal={setShowModal} reactions={reactions} />}
+      {showModal && <ReactionsModal setShowModal={setShowModal} reactions={reactions} />}
       <StyledRoot {...rootProps} sx={sx}>
         <ButtonBase
           onClick={() => handleShowModal()}
@@ -79,7 +79,7 @@ export default function ReactionsDisplay({
           {displayNames && (
             <>
               {userReaction ? (
-                <Typography variant='subtitle1'>
+                <Typography variant='subtitle2'>
                   You {reactionsCount > 1 ? `and ${otherUsersCount} others` : ''}
                 </Typography>
               ) : (
@@ -89,10 +89,10 @@ export default function ReactionsDisplay({
                   return (
                     <Box key={reactor.info.profileId}>
                       {!isLast ? (
-                        <Typography variant='subtitle1'>{userText},&nbsp;</Typography>
+                        <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
                       ) : (
                         <>
-                          <Typography variant='subtitle1'>
+                          <Typography variant='subtitle2'>
                             {userText}&nbsp;
                             {otherUsersCount === 1 ? `and 1 other` : ''}
                             {otherUsersCount > 1 ? `and ${otherUsersCount} others` : ''}
@@ -106,7 +106,7 @@ export default function ReactionsDisplay({
             </>
           )}
           {displayCount && (
-            <Typography pr={theme.spacing(0.7)} variant='caption'>
+            <Typography pr={theme.spacing(0.8)} variant='body1'>
               {reactionsCount}
             </Typography>
           )}

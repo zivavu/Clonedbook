@@ -11,8 +11,8 @@ export const StyledCommentInput = styled(TextField)(({ theme }) => ({
   '& .MuiInputBase-root': {
     padding: theme.spacing(1, 1.5),
     color: theme.palette.text.primary,
-    fontSize: '0.9rem',
-    lineHeight: '1.2rem',
+    fontSize: '1rem',
+    height: '38px',
     backgroundColor: theme.palette.secondary.main,
 
     '& .MuiOutlinedInput-input::placeholder': {

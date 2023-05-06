@@ -2,7 +2,7 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot, StyledTextContent } from './styles';
 
-import StyledInteractButton from '@/components/atoms/StyledInteractButton';
+import InteractButton from '@/components/atoms/InteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchUserQuery } from '@/features/userAPI';
 import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
@@ -92,7 +92,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
         </StyledTextContent>
       </Box>
       <Stack ml={theme.spacing(6)} direction='row' alignItems='center'>
-        <StyledInteractButton
+        <InteractButton
           buttonRef={likeButtonRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -105,12 +105,12 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
           <Typography variant='body2' fontWeight={650}>
             {userReaction ? userReaction : 'Like'}
           </Typography>
-        </StyledInteractButton>
-        <StyledInteractButton>
+        </InteractButton>
+        <InteractButton>
           <Typography variant='body2' fontWeight={650}>
             Reply
           </Typography>
-        </StyledInteractButton>
+        </InteractButton>
       </Stack>
       <ReactionsPopper
         updateDocHandler={(type) => {

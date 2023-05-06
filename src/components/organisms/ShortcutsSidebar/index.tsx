@@ -22,7 +22,7 @@ export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps
       <List sx={{ width: '100%' }}>
         <StyledListItem>
           <UserAvatar size={36} sx={{ mr: theme.spacing(1.5) }} src={user?.profilePicture} />
-          <Typography fontSize={'0.85rem'}>
+          <Typography variant='body1'>
             {user?.firstName} {user?.lastName}
           </Typography>
         </StyledListItem>
@@ -39,7 +39,7 @@ export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps
               }}
               disabled={!isActive}>
               <StyledListItemAvatar src={icon || PlaceholderIcon} alt={key}></StyledListItemAvatar>
-              <Typography textTransform={'capitalize'} fontSize={'0.85rem'}>
+              <Typography textTransform={'capitalize'} variant='body1'>
                 {key.split('-').join(' ')}
               </Typography>
             </StyledListItem>

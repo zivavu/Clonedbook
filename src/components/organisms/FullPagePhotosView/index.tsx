@@ -2,7 +2,7 @@ import { Box, GlobalStyles, IconButton, Portal, Stack, useTheme } from '@mui/mat
 
 import Icon from '@/components/atoms/Icon/Icon';
 import { useFetchUserQuery } from '@/features/userAPI';
-import useFetchPostData from '@/hooks/UseFetchPostData';
+import useFetchPostData from '@/hooks/useFetchPostData';
 import { TLocalUserReaction } from '@/types/reaction';
 import Image from 'next/image';
 import Link from 'next/link';

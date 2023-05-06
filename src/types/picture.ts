@@ -18,3 +18,7 @@ export interface IInProfilePicture extends IPicture {
 export interface IInChatPicture extends IPicture {
   reaction?: TReactionType;
 }
+
+export interface IPicturesMap {
+  [key: string]: IPicture;
+}

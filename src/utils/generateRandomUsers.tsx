@@ -1,14 +1,14 @@
 /* eslint-disable no-console*/
 
 //! This is a script that generates random users and adds them to the database. Use it only for testing purposes, it's not a part of the project, just a helper. Also it's far beyond the worst spaghetti code, don't try to understand it.
-//! It uploads a lots of data batch after batch so will take time to execute
+//! It uploads a significant amount of data batch after batch and takes sleeps in between to not overload firebase so will take time to execute
 
 import { db } from '@/config/firebase.config';
 import { ICommentMap } from '@/types/comment';
 import { ICreatedAt } from '@/types/createdAt';
-import { IFriend, IFriendConnection } from '@/types/firend';
-import { IInProfilePicture } from '@/types/picture';
-import { IPost } from '@/types/post';
+import { IFriend, IFriendConnection, IFriendsMap, IPublicFriendsMap } from '@/types/firend';
+import { IInProfilePicture, IPicturesMap } from '@/types/picture';
+import { IPost, IPostsMap } from '@/types/post';
 import { IReactionsMap, TReactionType } from '@/types/reaction';
 import { IUser, IUserBasicInfo } from '@/types/user';
 import { IUserServerData } from '@/types/userServerData';
@@ -154,7 +154,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
 
   function getRandomProfilePhotos(amount: number, basicUserInfo: IUserBasicInfo) {
-    const photos: IInProfilePicture[] = [];
+    const photos: IPicturesMap = {};
     const photosAmount = Math.ceil(Math.random() * amount) + 2;
     for (let i = 0; i < photosAmount; i++) {
       const createdAt = getPastDate();
@@ -164,16 +164,16 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         ownerId: basicUserInfo.profileId,
         createdAt,
         pictureURL: getRandomPhotoUrl(),
-        reactions: getRandomReactions(60),
-        comments: getRandomComments(5, 7, createdAt),
+        reactions: getRandomReactions(40),
+        comments: getRandomComments(4, 7, createdAt),
         shareCount: Math.floor(Math.random() * 50),
       };
-      photos.push(photo);
+      photos[photoId] = photo;
     }
     return photos;
   }
   function getRandomPosts(amount: number, basicUserInfo: IUserBasicInfo) {
-    const posts: Array<IPost> = [];
+    const posts: IPostsMap = {};
     const postAmount = Math.ceil(Math.random() * amount);
     for (let i = 0; i < postAmount; i++) {
       const postPictures: string[] = [];
@@ -196,7 +196,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         shareCount: Math.floor(Math.random() * 30),
         createdAt,
       };
-      posts.push(post);
+      posts[postId] = post;
       allPosts.push(post);
     }
     return posts;
@@ -224,9 +224,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         if (userToBefriendInfo.profileId === userToAddFriends.profileId) {
           continue;
         }
-        if (
-          usersFriends.some((friend) => friend.basicInfo.profileId === userToBefriendInfo.profileId)
-        ) {
+        if (usersFriends.some((friend) => friend.friendId === userToBefriendInfo.profileId)) {
           continue;
         }
         const connectionUUID = getRandomUIDv4();
@@ -250,10 +248,10 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           Math.random() < 0.8 ? 'accepted' : Math.random() > 0.1 ? 'pending' : 'blocked';
         const friend: IFriend = {
           connectionId: connectionUUID,
+          friendId: friendsBasicInfo.profileId,
           status: status,
-          createdAt: getPastDate(),
+          acceptedAt: getPastDate(),
           chatReference: chatReferenceInfo,
-          basicInfo: friendsBasicInfo,
         };
         const publicFriendship: IFriendConnection = {
           id: connectionUUID,
@@ -271,8 +269,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         const flippedFriend: IFriend = {
           connectionId: connectionUUID,
           status: friend.status,
-          createdAt: friend.createdAt,
-          basicInfo: usersBasicInfo,
+          friendId: usersBasicInfo.profileId,
+          acceptedAt: friend.acceptedAt,
           chatReference: chatReferenceInfo,
         };
 
@@ -288,12 +286,12 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   function getRandomUsers() {
     const users: IUser[] = [];
     const basicInfoOfUsers: IUserBasicInfo[] = [];
-    const postsOfUsers: IPost[][] = [];
-    const picturesOfUsers: IInProfilePicture[][] = [];
+    const postsOfUsers: IPostsMap[] = [];
+    const picturesOfUsers: IPicturesMap[] = [];
     for (let i = 0; i < usersAmount; i++) {
       const userBasicInfo = usersBasicInfo[i];
       const userPosts = getRandomPosts(2, userBasicInfo);
-      const userPictures = getRandomProfilePhotos(1, userBasicInfo);
+      const userPictures = getRandomProfilePhotos(4, userBasicInfo);
       const user: IUser = {
         ...userBasicInfo,
         backgroundPicture: getRandomBacgroundPicture(),
@@ -303,7 +301,14 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         chatReferences: [],
         groups: [],
         intrests: [],
-        friends: [],
+        friends: {
+          pending: {},
+          accepted: {},
+          blocked: {},
+          rejected: {},
+        },
+        posts: {},
+        pictures: {},
         about: {
           country: faker.address.country(),
           city: faker.address.city(),
@@ -355,19 +360,40 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
   const postsToCommit: IPost[] = [];
 
   for (let i = 0; i < users.length; i++) {
-    const data = users[i];
     friendsConnectionsToCommit.push(...allUsersFriendsConnections[i]);
     usersPublicDataToCommit.push(basicInfoOfUsers[i]);
-    const userDocRef = doc(db, 'users', data.profileId);
-    const userPostsCollectionRef = doc(collection(db, 'users', data.profileId, 'posts'));
-    const userPicturesCollectionRef = doc(collection(db, 'users', data.profileId, 'pictures'));
 
-    const allUserData = {
-      data,
-      posts: postsOfUsers[i],
-      pictures: picturesOfUsers[i],
-      friends: allUsersFreinds[i],
+    const friendsMap: IFriendsMap = {
+      pending: {},
+      accepted: {},
+      blocked: {},
+      rejected: {},
     };
+    const publicFriends: IPublicFriendsMap = {};
+
+    for (const friend of allUsersFreinds[i]) {
+      friendsMap[friend.status][friend.connectionId] = friend;
+      if (friend.status === 'accepted') {
+        publicFriends[friend.friendId] = friend.acceptedAt;
+      }
+    }
+
+    const mainDocData = {
+      ...users[i],
+      friends: friendsMap,
+      pictures: picturesOfUsers[i],
+      posts: postsOfUsers[i],
+    };
+
+    const allUserData: IUserServerData = {
+      data: mainDocData,
+      publicFriends: publicFriends,
+    };
+
+    const userDocRef = doc(db, 'users', mainDocData.profileId);
+    const usersPublicFriendsCollectionRef = doc(
+      collection(db, 'users', mainDocData.profileId, 'publicFriends'),
+    );
 
     const batchIndex = i % Math.ceil(users.length / 15);
     if (!userDataBatches[batchIndex]) {
@@ -378,11 +404,9 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
 
     userDataBatches[batchIndex].set(userDocRef, {
       ...allUserData.data,
-      friends: allUserData.friends,
     });
 
-    userDataBatches[batchIndex].set(userPostsCollectionRef, { ...postsOfUsers[i] });
-    userDataBatches[batchIndex].set(userPicturesCollectionRef, { ...picturesOfUsers[i] });
+    userDataBatches[batchIndex].set(usersPublicFriendsCollectionRef, publicFriends);
   }
 
   const postBatches: WriteBatch[] = [];
@@ -420,14 +444,14 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     usersPublicDataBatch.update(docRef, userPublicData);
   });
 
-  const baseSleepTime = 7000;
+  const baseSleepTime = 3000;
   //Don't care enought to make it good, that scripts drives me crazy, it just has to work
   console.log(`you going to commit:\n`);
   userDataBatches.forEach((batch, i) => {
     console.log(`batch ${i + 1}`, usersDataToCommit[i]);
   });
   console.log(`posts`, postsToCommit);
-  console.log(`friendsConnections`, friendsConnectionsToCommit);
+  // console.log(`friendsConnections`, friendsConnectionsToCommit);
   console.log(`usersPublicData`, usersPublicDataToCommit);
   console.log('commiting batches, hold tight');
   try {

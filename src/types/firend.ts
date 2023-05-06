@@ -3,15 +3,37 @@ import { ICreatedAt } from './createdAt';
 import { IUserBasicInfo } from './user';
 
 export interface IFriend {
-  connectionId: string; // unique identifier for the connection
-  basicInfo: IUserBasicInfo; // info of the friend
+  connectionId: string;
+  friendId: string;
   chatReference: IChatReference;
   status: 'pending' | 'accepted' | 'rejected' | 'blocked';
-  createdAt: ICreatedAt;
+  acceptedAt: ICreatedAt;
 }
-
 export interface IFriendConnection {
-  id: string; // unique identifier for the connection
+  id: string;
   usersIds: string[];
   status: 'pending' | 'accepted' | 'rejected' | 'blocked';
+}
+
+export interface IFriendWithBasicInfo extends IFriend {
+  basicInfo: IUserBasicInfo;
+}
+
+export interface IFriendsMap {
+  accepted: {
+    [key: string]: IFriend;
+  };
+  pending: {
+    [key: string]: IFriend;
+  };
+  rejected: {
+    [key: string]: IFriend;
+  };
+  blocked: {
+    [key: string]: IFriend;
+  };
+}
+
+export interface IPublicFriendsMap {
+  [key: string]: ICreatedAt;
 }

@@ -16,3 +16,6 @@ export interface IPostReference {
   owner: IUserBasicInfo;
   createdAt: ICreatedAt;
 }
+export interface IPostsMap {
+  [key: string]: IPost;
+}

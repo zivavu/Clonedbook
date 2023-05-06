@@ -8,7 +8,7 @@ import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import { useFetchUserQuery } from '@/features/userAPI';
-import useFetchPostData from '@/hooks/UseFetchPostData';
+import useFetchPostData from '@/hooks/useFetchPostData';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useEffect, useState } from 'react';

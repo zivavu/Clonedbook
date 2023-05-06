@@ -1,5 +1,7 @@
 import { IChatReference } from './chat';
-import { IFriend } from './firend';
+import { IFriendsMap } from './firend';
+import { IPicturesMap } from './picture';
+import { IPostsMap } from './post';
 
 export interface IUser extends IUserBasicInfo {
   email: string;
@@ -10,7 +12,9 @@ export interface IUser extends IUserBasicInfo {
   groups: [];
   intrests: [];
   chatReferences: IChatReference[];
-  friends: IFriend[];
+  friends: IFriendsMap;
+  posts: IPostsMap;
+  pictures: IPicturesMap;
   about: {
     address?: string;
     country?: string;

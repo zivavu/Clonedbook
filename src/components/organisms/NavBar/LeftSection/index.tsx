@@ -12,7 +12,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
   return (
     <StyledRoot sx={sx} className={classes?.root} {...rootProps}>
       <Link href='/' style={{ height: '40px', paddingRight: theme.spacing(1) }}>
-        <Image src='/facebook-logo.svg' width={40} height={40} alt='Site logo'></Image>
+        <Image unoptimized src='/facebook-logo.svg' width={40} height={40} alt='Site logo'></Image>
       </Link>
       <TextField
         variant='outlined'

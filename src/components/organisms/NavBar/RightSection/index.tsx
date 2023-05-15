@@ -21,7 +21,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
         onClick={(e) => {
           handleSetPortal(e, 'chats');
         }}>
-        <Icon icon={['fab', 'facebook-messenger']}></Icon>
+        <Icon icon={['fab', 'facebook-messenger']} />
       </StyledToggleButton>
       <StyledToggleButton
         value='notifications'
@@ -29,7 +29,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
         onClick={(e) => {
           handleSetPortal(e, 'notifications');
         }}>
-        <Icon icon='bell'></Icon>
+        <Icon icon='bell' />
       </StyledToggleButton>
       <StyledToggleButton
         value='account'

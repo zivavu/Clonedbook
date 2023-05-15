@@ -13,6 +13,9 @@ import {
   faHouse,
   faMagnifyingGlass,
   faPeopleGroup,
+  faUserCheck,
+  faUserPlus,
+  faUserXmark,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -37,7 +40,10 @@ const icons = [
   faEllipsis,
   faComment,
   faThumbsUp,
+  faUserCheck,
+  faUserPlus,
   faXmark,
+  faUserXmark,
   faAngleRight,
   faAngleLeft,
   faGlobeAfrica,
@@ -51,6 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          {/* @ts-expect-error Server Component */}
           <Component {...pageProps} />
         </ThemeProvider>
       </Provider>

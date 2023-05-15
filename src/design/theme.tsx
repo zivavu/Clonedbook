@@ -55,7 +55,7 @@ export const palette: PaletteOptions = {
   },
 
   divider: '#ced0d4',
-  contrastThreshold: 6,
+  contrastThreshold: 4.5,
 };
 
 const source_sans = Source_Sans_3({

@@ -61,9 +61,9 @@ export default function ReactionIcon({
         height: `${size}px`,
         ...sx,
       }}
-      {...rootProps}
-    >
+      {...rootProps}>
       <Image
+        unoptimized
         width={size}
         height={size}
         src={src || LikeIcon}

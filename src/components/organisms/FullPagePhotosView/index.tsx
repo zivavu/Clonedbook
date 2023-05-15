@@ -42,7 +42,7 @@ export default function FullPagePhotosView({
               <Icon icon='xmark' fontSize='25px' color={theme.palette.common.white} />
             </IconButton>
             <Link href='/' style={{ height: '40px', marginLeft: theme.spacing(1.4) }}>
-              <Image src='/facebook-logo.svg' width={40} height={40} alt='Site logo' />
+              <Image unoptimized src='/facebook-logo.svg' width={40} height={40} alt='Site logo' />
             </Link>
           </Stack>
         </Box>

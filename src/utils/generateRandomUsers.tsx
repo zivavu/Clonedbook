@@ -6,7 +6,7 @@
 import { db } from '@/config/firebase.config';
 import { ICommentMap } from '@/types/comment';
 import { ICreatedAt } from '@/types/createdAt';
-import { IFriend, IFriendConnection, IFriendsMap, IPublicFriendsMap } from '@/types/firend';
+import { IFriend, IFriendsMap, IPublicFriendsMap } from '@/types/firend';
 import { IInProfilePicture, IPicturesMap } from '@/types/picture';
 import { IPost, IPostsMap } from '@/types/post';
 import { IReactionsMap, TReactionType } from '@/types/reaction';
@@ -17,6 +17,7 @@ import { uuidv4 } from '@firebase/util';
 import { Button } from '@mui/material';
 
 import { Timestamp, WriteBatch, collection, doc, writeBatch } from 'firebase/firestore';
+import { separateUserBasicInfo } from './separateUserBasicInfo';
 
 const randomPostPictures = [
   faker.image.people,
@@ -27,15 +28,14 @@ const randomPostPictures = [
   faker.image.business,
 ];
 
-const randomProfilePictures = [faker.image.people, faker.internet.avatar];
-const randomBackgroundPictures = [faker.image.nature, faker.image.animals];
+const randomProfilePictures = [faker.image.people];
 
 function getPastDate() {
-  return Timestamp.fromDate(faker.date.past(0.4, new Date()));
+  return Timestamp.fromDate(faker.date.past({ refDate: new Date(), years: 0.5 }));
 }
 function getDateAfterTimestamp(pastDate: ICreatedAt) {
   const date = new Date(pastDate.seconds * 1000);
-  return Timestamp.fromDate(faker.date.between(date, new Date()));
+  return Timestamp.fromDate(faker.date.between({ from: date, to: new Date() }));
 }
 
 const maxUsers = 80,
@@ -45,8 +45,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   if (usersAmount > maxUsers) {
     usersAmount = maxUsers;
   }
-  if (usersAmount < 13) {
-    usersAmount = 13;
+  if (usersAmount < 15) {
+    usersAmount = 15;
   }
   const usersUIDS: string[] = [];
 
@@ -55,32 +55,26 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
   const allPosts: IPost[] = [];
 
-  function getRandomPhotoUrl() {
-    const randomPicture = randomPostPictures[Math.floor(Math.random() * randomPostPictures.length)];
-    const pictureURL =
-      typeof randomPicture === 'function'
-        ? //random aspect ratios
-          Math.random() > 0.5
-          ? randomPicture(700, 700, true)
-          : randomPicture(1000, 700, true)
-        : randomPicture;
-    return pictureURL;
+  function getRandomPicture() {
+    return randomPostPictures[Math.floor(Math.random() * randomPostPictures.length)](
+      800,
+      800,
+      true,
+    );
   }
-
   function getRandomProfilePicture() {
-    const randomPicture =
-      randomProfilePictures[Math.floor(Math.random() * randomProfilePictures.length)];
-    const pictureURL =
-      typeof randomPicture === 'function' ? randomPicture(800, 800, true) : randomPicture;
-    return pictureURL;
+    return randomProfilePictures[Math.floor(Math.random() * randomProfilePictures.length)](
+      800,
+      800,
+      true,
+    );
   }
-
   function getRandomBacgroundPicture() {
-    const randomPicture =
-      randomBackgroundPictures[Math.floor(Math.random() * randomBackgroundPictures.length)];
-    const pictureURL =
-      typeof randomPicture === 'function' ? randomPicture(1000, 550, true) : randomPicture;
-    return pictureURL;
+    return randomPostPictures[Math.floor(Math.random() * randomPostPictures.length)](
+      1200,
+      800,
+      true,
+    );
   }
 
   function getRandomUIDv4() {
@@ -146,8 +140,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     const userUUID = usersUIDS[i];
     const basicUserInfo = {
       profileId: userUUID,
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
       profilePicture: getRandomProfilePicture(),
     };
     usersBasicInfo.push(basicUserInfo);
@@ -163,7 +157,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         id: photoId,
         ownerId: basicUserInfo.profileId,
         createdAt,
-        pictureURL: getRandomPhotoUrl(),
+        pictureURL: getRandomPicture(),
         reactions: getRandomReactions(40),
         comments: getRandomComments(4, 7, createdAt),
         shareCount: Math.floor(Math.random() * 50),
@@ -180,7 +174,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const hasPictures = Math.random() > 0.3;
       const picturesAmount = Math.floor(Math.random() * 12);
       for (let i = 0; i < picturesAmount; i++) {
-        postPictures.push(getRandomPhotoUrl());
+        postPictures.push(getRandomPicture());
       }
       const postId = getRandomUIDv4();
 
@@ -210,77 +204,52 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       friendsAmount = 5;
     }
     const allUsersFreinds: IFriend[][] = new Array(usersAmount);
-    const allUsersFriendsConnections: IFriendConnection[][] = new Array(usersAmount);
     for (let i = 0; i < usersAmount; i++) {
       allUsersFreinds[i] = [];
-      allUsersFriendsConnections[i] = [];
     }
-    users.forEach((userToAddFriends) => {
+    users.forEach((userToAddFriends, i) => {
       const usersFriends: IFriend[] = [];
-      const usersPublicFriendships: IFriendConnection[] = [];
-      const friendsCount = Math.max(Math.floor(Math.random() * friendsAmount), 10);
-      for (let i = 0; i < friendsCount; i++) {
-        const userToBefriendInfo = users[Math.floor(Math.random() * users.length)];
-        if (userToBefriendInfo.profileId === userToAddFriends.profileId) {
-          continue;
+      const friendsCount = Math.max(Math.floor(Math.random() * friendsAmount), 2);
+      for (let j = 0; j < friendsCount; j++) {
+        let userToBefriendId: string | undefined = undefined;
+        while (
+          !userToBefriendId ||
+          userToBefriendId === userToAddFriends.profileId ||
+          usersFriends.some((friend) => friend.friendId === userToBefriendId)
+        ) {
+          userToBefriendId = users[Math.floor(Math.random() * users.length)].profileId;
         }
-        if (usersFriends.some((friend) => friend.friendId === userToBefriendInfo.profileId)) {
-          continue;
-        }
-        const connectionUUID = getRandomUIDv4();
-        const usersBasicInfo = {
-          profileId: userToAddFriends.profileId,
-          firstName: userToAddFriends.firstName,
-          lastName: userToAddFriends.lastName,
-          profilePicture: userToAddFriends.profilePicture,
-        };
-        const friendsBasicInfo = {
-          profileId: userToBefriendInfo.profileId,
-          firstName: userToBefriendInfo.firstName,
-          lastName: userToBefriendInfo.lastName,
-          profilePicture: userToBefriendInfo.profilePicture,
-        };
+
+        const userBasicInfo: IUserBasicInfo = separateUserBasicInfo(userToAddFriends);
+
         const chatReferenceInfo = {
           id: getRandomUIDv4(),
-          users: [userToBefriendInfo.profileId, userToAddFriends.profileId],
+          users: [userToBefriendId, userToAddFriends.profileId],
         };
         const status =
           Math.random() < 0.8 ? 'accepted' : Math.random() > 0.1 ? 'pending' : 'blocked';
+
         const friend: IFriend = {
-          connectionId: connectionUUID,
-          friendId: friendsBasicInfo.profileId,
+          friendId: userToBefriendId,
           status: status,
           acceptedAt: getPastDate(),
           chatReference: chatReferenceInfo,
         };
-        const publicFriendship: IFriendConnection = {
-          id: connectionUUID,
-          usersIds: [usersBasicInfo.profileId, userToBefriendInfo.profileId],
-          status: status,
-        };
-        usersPublicFriendships.push(publicFriendship);
         usersFriends.push(friend);
-        const befriendedUserIndex = users.findIndex(
-          (user) => user.profileId === userToBefriendInfo.profileId,
-        );
+        allUsersFreinds[i].push(friend);
 
-        allUsersFriendsConnections[befriendedUserIndex].push(publicFriendship);
-
+        const befriendedUserIndex = users.findIndex((user) => user.profileId === userToBefriendId);
         const flippedFriend: IFriend = {
-          connectionId: connectionUUID,
           status: friend.status,
-          friendId: usersBasicInfo.profileId,
+          friendId: userBasicInfo.profileId,
           acceptedAt: friend.acceptedAt,
           chatReference: chatReferenceInfo,
         };
-
         allUsersFreinds[befriendedUserIndex].push(flippedFriend);
       }
-      allUsersFriendsConnections.push(usersPublicFriendships);
-      allUsersFreinds.push(usersFriends);
     });
 
-    return { allUsersFreinds, allUsersFriendsConnections };
+    return { allUsersFreinds };
   }
 
   function getRandomUsers() {
@@ -307,13 +276,12 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           blocked: {},
           rejected: {},
         },
-        posts: {},
         pictures: {},
         about: {
-          country: faker.address.country(),
-          city: faker.address.city(),
-          address: faker.address.streetAddress(),
-          hometown: faker.address.city(),
+          country: faker.location.country(),
+          city: faker.location.city(),
+          address: faker.location.streetAddress(),
+          hometown: faker.location.city(),
           workplace: faker.company.name(),
           highSchool: faker.lorem.words(3),
           college: faker.lorem.words(3),
@@ -329,38 +297,33 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     return { users, postsOfUsers, picturesOfUsers, basicInfoOfUsers };
   }
   const { users, postsOfUsers, picturesOfUsers, basicInfoOfUsers } = getRandomUsers();
-  const { allUsersFreinds, allUsersFriendsConnections } = getRandomFriends(friendsAmount);
+  const { allUsersFreinds } = getRandomFriends(friendsAmount);
   return {
     users,
     postsOfUsers,
     picturesOfUsers,
     basicInfoOfUsers,
     allUsersFreinds,
-    allUsersFriendsConnections,
     allPosts,
   };
 }
 
 export async function generateUsersAndPostToDb(usersAmount: number, friendsAmount: number) {
-  console.log('generating users and other data...');
   const {
     users,
     postsOfUsers,
     picturesOfUsers,
-    allUsersFreinds,
-    allUsersFriendsConnections,
+    allUsersFreinds: allUsersFriends,
     basicInfoOfUsers,
     allPosts,
   } = generateUsers(usersAmount, friendsAmount);
   const userDataBatches: WriteBatch[] = [];
 
   const usersDataToCommit: IUserServerData[][] = [[], [], []];
-  const friendsConnectionsToCommit: IFriendConnection[] = [];
   const usersPublicDataToCommit: IUserBasicInfo[] = [];
   const postsToCommit: IPost[] = [];
 
   for (let i = 0; i < users.length; i++) {
-    friendsConnectionsToCommit.push(...allUsersFriendsConnections[i]);
     usersPublicDataToCommit.push(basicInfoOfUsers[i]);
 
     const friendsMap: IFriendsMap = {
@@ -371,8 +334,8 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     };
     const publicFriends: IPublicFriendsMap = {};
 
-    for (const friend of allUsersFreinds[i]) {
-      friendsMap[friend.status][friend.connectionId] = friend;
+    for (const friend of allUsersFriends[i]) {
+      friendsMap[friend.status][friend.friendId] = friend;
       if (friend.status === 'accepted') {
         publicFriends[friend.friendId] = friend.acceptedAt;
       }
@@ -382,7 +345,6 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
       ...users[i],
       friends: friendsMap,
       pictures: picturesOfUsers[i],
-      posts: postsOfUsers[i],
     };
 
     const allUserData: IUserServerData = {
@@ -420,16 +382,6 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     postsToCommit.push(post);
   });
 
-  const friendsConnectionsBatches: WriteBatch[] = [];
-  friendsConnectionsToCommit.forEach((friendConnection, i) => {
-    const batchIndex = i % Math.ceil(friendsConnectionsToCommit.length / 500);
-    const docRef = doc(db, 'friendsConnections', friendConnection.id);
-    if (!friendsConnectionsBatches[batchIndex]) {
-      friendsConnectionsBatches[batchIndex] = writeBatch(db);
-    }
-    friendsConnectionsBatches[batchIndex].set(docRef, friendConnection);
-  });
-
   const usersPublicDataBatch = writeBatch(db);
   const usersPublicDataDocId = uuidv4();
   const usersPublicDataAsObjects = usersPublicDataToCommit.map((publicData) => {
@@ -447,9 +399,6 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
   const baseSleepTime = 3000;
   //Don't care enought to make it good, that scripts drives me crazy, it just has to work
   console.log(`you going to commit:\n`);
-  userDataBatches.forEach((batch, i) => {
-    console.log(`batch ${i + 1}`, usersDataToCommit[i]);
-  });
   console.log(`posts`, postsToCommit);
   // console.log(`friendsConnections`, friendsConnectionsToCommit);
   console.log(`usersPublicData`, usersPublicDataToCommit);
@@ -472,17 +421,6 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     console.log(`COMMITING USERS PUBLIC DATA DONE`);
     await sleep(baseSleepTime * 1.5);
 
-    // console.log(`\nCOMMITING FRIENDS CONNECTIONS`);
-    // for (let i = 0; i < friendsConnectionsBatches.length; i++) {
-    //   const batch = friendsConnectionsBatches[i];
-    //   console.log(`commiting ${i + 1} friendsConnections batch`);
-    //   await batch.commit();
-    //   console.log(`commiting ${i + 1} friendsConnections batch done`);
-    //   await sleep(baseSleepTime / 2);
-    // }
-    // console.log(`COMMITING FRIENDS CONNECTIONS DONE`);
-    // await sleep(baseSleepTime);
-
     console.log(`\nCOMMITING POSTS`);
     for (let i = 0; i < postBatches.length; i++) {
       const batch = postBatches[i];
@@ -504,5 +442,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(30, 25)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(25, 8)}>AddEm</Button>;
 }

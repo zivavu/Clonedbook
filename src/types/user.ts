@@ -13,7 +13,6 @@ export interface IUser extends IUserBasicInfo {
   intrests: [];
   chatReferences: IChatReference[];
   friends: IFriendsMap;
-  posts: IPostsMap;
   pictures: IPicturesMap;
   about: {
     address?: string;

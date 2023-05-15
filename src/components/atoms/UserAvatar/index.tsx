@@ -20,6 +20,7 @@ export default function UserAvatar({
 
   const UserImage = () => (
     <Image
+      unoptimized
       height={size}
       width={size}
       loading='eager'

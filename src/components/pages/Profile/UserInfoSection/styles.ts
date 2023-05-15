@@ -29,8 +29,9 @@ export const StyledPictureGradient = styled(Box)(({ theme }) => ({
 }));
 
 export const StyledProfilePictureContainer = styled(Box)(({ theme }) => ({
-  height: '200px',
-  width: '200px',
+  position: 'relative',
+  minHeight: '174px',
+  minWidth: '174px',
   borderRadius: '50%',
   overflow: 'hidden',
   border: `4px solid ${theme.palette.secondary.light}`,
@@ -39,7 +40,7 @@ export const StyledProfilePictureContainer = styled(Box)(({ theme }) => ({
 
 export const StyledBasicInfoContainer = styled(Container)(({ theme }) => ({
   position: 'relative',
-  height: '150px',
   display: 'flex',
   flexDirection: 'row',
+  paddingBottom: theme.spacing(2),
 }));

@@ -81,6 +81,7 @@ export default function Picture({
             pointerEvents: 'all',
           }}>
           <Image
+            unoptimized
             src={photoSrc}
             alt={alt || "Post's picture"}
             fill

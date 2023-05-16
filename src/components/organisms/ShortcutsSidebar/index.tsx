@@ -4,7 +4,7 @@ import { StyledListItem, StyledListItemAvatar, StyledRoot } from './styles';
 
 import { PlaceholderIcon } from '@/assets/pageIcons';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { useRouter } from 'next/router';
 import { sidebarItems } from './data';
 import { ShortcutsSidebarProps } from './types';
@@ -12,7 +12,7 @@ import { ShortcutsSidebarProps } from './types';
 export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps) {
   const router = useRouter();
   const theme = useTheme();
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
 
   const handleRedirect = (href: string) => {
     router.push(href);

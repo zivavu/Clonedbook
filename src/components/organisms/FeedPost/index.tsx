@@ -8,7 +8,7 @@ import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useState } from 'react';
@@ -16,7 +16,7 @@ import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
   const { id: postId, comments, postPictures, postText, reactions } = post;
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);

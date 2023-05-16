@@ -12,14 +12,18 @@ export default function ProfileTabToggleGroup({ sx, ...rootProps }: ProfileTabTo
 
   const tabs: TProfileTabs[] = ['posts', 'about', 'friends', 'photos', 'music', 'likes'];
   const [selectedTab, setSelectedTab] = useState<TProfileTabs>('posts');
+  function handleTabSelection(tab: TProfileTabs) {
+    if (tab === selectedTab) return;
+    setSelectedTab(tab);
+  }
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <ToggleButtonGroup
-        exclusive
-        value={selectedTab}
-        onChange={(e, value) => setSelectedTab(value)}>
+      <ToggleButtonGroup exclusive value={selectedTab}>
         {tabs.map((tab) => (
-          <StyledToggleButton key={tab} value={tab}>
+          <StyledToggleButton
+            key={tab}
+            value={tab}
+            onClick={(e, value) => handleTabSelection(value)}>
             <Typography variant='subtitle2' fontWeight={500} textTransform='capitalize'>
               {tab}
             </Typography>

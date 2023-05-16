@@ -7,13 +7,13 @@ import FriendsButton from '@/components/atoms/FriendsButton';
 import Icon from '@/components/atoms/Icon/Icon';
 import MessageButton from '@/components/atoms/MessageButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import Image from 'next/image';
 import { UserInfoSectionProps } from './types';
 
 export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfoSectionProps) {
   const theme = useTheme();
-  const { data: loggedUser } = useFetchUserQuery({});
+  const { data: loggedUser } = useFetchLoggedUserQuery({});
   const friendsCount = Object.keys(userData.friends.accepted).length || 0;
 
   const mutalFriends = Object.values(userData.friends.accepted).filter((friend) => {

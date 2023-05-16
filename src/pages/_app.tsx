@@ -1,17 +1,20 @@
 import { theme } from '@/design/theme';
 import { config, library } from '@fortawesome/fontawesome-svg-core';
 
-import { faComment, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import { faComment, faHeart, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import {
   faAngleLeft,
   faAngleRight,
   faBell,
+  faBriefcase,
   faCaretDown,
   faClapperboard,
   faEllipsis,
   faFileCirclePlus,
   faGlobeAfrica,
+  faGraduationCap,
   faHouse,
+  faLocationPin,
   faMagnifyingGlass,
   faPeopleGroup,
   faUserCheck,
@@ -50,6 +53,11 @@ const icons = [
   faAngleLeft,
   faGlobeAfrica,
   faFileCirclePlus,
+  faHouse,
+  faLocationPin,
+  faHeart,
+  faGraduationCap,
+  faBriefcase,
 ] as any;
 library.add(...icons);
 

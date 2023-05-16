@@ -10,7 +10,7 @@ import { IFriend, IFriendsMap, IPublicFriendsMap } from '@/types/firend';
 import { IInProfilePicture, IPicturesMap } from '@/types/picture';
 import { IPost, IPostsMap } from '@/types/post';
 import { IReactionsMap, TReactionType } from '@/types/reaction';
-import { IUser, IUserBasicInfo } from '@/types/user';
+import { IUser, IUserBasicInfo, TRealationshipStatus } from '@/types/user';
 import { IUserServerData } from '@/types/userServerData';
 import { faker } from '@faker-js/faker';
 import { uuidv4 } from '@firebase/util';
@@ -257,6 +257,20 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     const basicInfoOfUsers: IUserBasicInfo[] = [];
     const postsOfUsers: IPostsMap[] = [];
     const picturesOfUsers: IPicturesMap[] = [];
+    const hasJob = Math.random() > 0.4;
+    const relationships: TRealationshipStatus[] = [
+      '',
+      'single',
+      'in a relationship',
+      'in an open relationship',
+      'engaged',
+      'married',
+      "it's complicated",
+      'widowed',
+      'separated',
+      'divorced',
+    ];
+    const randomRelationship = relationships[Math.floor(Math.random() * relationships.length)];
     for (let i = 0; i < usersAmount; i++) {
       const userBasicInfo = usersBasicInfo[i];
       const userPosts = getRandomPosts(2, userBasicInfo);
@@ -266,7 +280,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         backgroundPicture: getRandomBacgroundPicture(),
         email: faker.internet.email(),
         phoneNumber: faker.phone.number(),
-        biography: faker.lorem.paragraph(),
+        biography: faker.person.bio(),
         chatReferences: [],
         groups: [],
         intrests: [],
@@ -282,10 +296,12 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           city: faker.location.city(),
           address: faker.location.streetAddress(),
           hometown: faker.location.city(),
-          workplace: faker.company.name(),
+          sex: faker.person.sexType(),
+          workplace: hasJob ? faker.company.name() : '',
+          jobTitle: hasJob ? faker.person.jobTitle() : '',
           highSchool: faker.lorem.words(3),
           college: faker.lorem.words(3),
-          relationship: '',
+          relationship: randomRelationship,
         },
         isDummy: true,
       };

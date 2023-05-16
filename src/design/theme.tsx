@@ -24,8 +24,7 @@ export const palette: PaletteOptions = {
   },
   grey: {
     '100': '#f7f8fa',
-    '300': '#f0f2f5',
-    '600': '#e4e6eb',
+    '500': '#92979c',
   },
 
   common: {

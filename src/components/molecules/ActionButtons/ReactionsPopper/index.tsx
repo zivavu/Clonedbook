@@ -3,7 +3,7 @@ import { IconButton, keyframes, useTheme } from '@mui/material';
 import { StyledContentWrapper, StyledReactionsPopover as StyledReactionsPopper } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { TReactionType } from '@/types/reaction';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ReactionsPopperProps } from './types';
@@ -20,7 +20,7 @@ export default function ReactionsPopper({
   ...rootProps
 }: ReactionsPopperProps) {
   const theme = useTheme();
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
 
   const [isOpen, setIsOpen] = useState(open);
   const popperRef = useRef<HTMLDivElement | null>(null);

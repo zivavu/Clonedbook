@@ -1,13 +1,10 @@
 import { Box, styled } from '@mui/material';
 
-export const StyledRoot = styled(Box)(({ theme }) => ({
+export const StyledPageTile = styled(Box)(({ theme }) => ({
+  position: 'relative',
   color: theme.palette.text.primary,
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 2px 0px',
-}));
-
-export const StyledContentWrapper = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  paddingTop: theme.spacing(1),
+  padding: theme.spacing(2),
 }));

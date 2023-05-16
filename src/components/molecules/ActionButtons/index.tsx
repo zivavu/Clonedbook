@@ -3,7 +3,7 @@ import { Typography, useTheme } from '@mui/material';
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { userPostReact } from '@/utils/userPostReact';
 import { useRef, useState } from 'react';
@@ -17,7 +17,7 @@ export default function ActionButtons({
   sx,
   ...rootProps
 }: ActionButtonsProps) {
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

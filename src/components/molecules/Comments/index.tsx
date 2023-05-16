@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { IComment } from '@/types/comment';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
@@ -15,7 +15,7 @@ export default function Comments({
   onlyUniqueUsers = false,
   ...rootProps
 }: CommentsProps) {
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
   if (!comments) return null;
 
   let commentsToRender: IComment[] = [];

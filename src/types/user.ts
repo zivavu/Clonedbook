@@ -1,7 +1,6 @@
 import { IChatReference } from './chat';
 import { IFriendsMap } from './firend';
 import { IPicturesMap } from './picture';
-import { IPostsMap } from './post';
 
 export interface IUser extends IUserBasicInfo {
   email: string;
@@ -12,6 +11,7 @@ export interface IUser extends IUserBasicInfo {
   groups: [];
   intrests: [];
   chatReferences: IChatReference[];
+  links?: string[];
   friends: IFriendsMap;
   pictures: IPicturesMap;
   about: {
@@ -21,20 +21,10 @@ export interface IUser extends IUserBasicInfo {
     city?: string;
     college?: string;
     highSchool?: string;
-    relationship?:
-      | ''
-      | 'single'
-      | 'in a relationship'
-      | 'engaged'
-      | 'married'
-      | "it's complicated"
-      | 'open relationship'
-      | 'widowed'
-      | 'separated'
-      | 'divorced'
-      | 'in a civil union'
-      | 'in a domestic partnership';
+    relationship?: TRealationshipStatus;
     workplace?: string;
+    jobTitle?: string;
+    sex: TUserSex;
   };
 }
 
@@ -54,3 +44,17 @@ export interface IServerUserBasicInfo {
     profilePicture?: string;
   };
 }
+
+export type TUserSex = 'male' | 'female' | 'other';
+
+export type TRealationshipStatus =
+  | ''
+  | 'single'
+  | 'in a relationship'
+  | 'in an open relationship'
+  | 'engaged'
+  | 'married'
+  | "it's complicated"
+  | 'widowed'
+  | 'separated'
+  | 'divorced';

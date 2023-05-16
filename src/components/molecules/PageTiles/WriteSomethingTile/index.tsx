@@ -1,15 +1,16 @@
 import { ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledButtonIcon, StyledButtonText, StyledPostTypeButton, StyledRoot } from './styles';
+import { StyledButtonIcon, StyledButtonText, StyledPostTypeButton } from './styles';
 
 import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons';
 import ContentDevider from '@/components/atoms/ContentDevider';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
 import { useState } from 'react';
-import { WhatsOnYourMindBoxProps } from './types';
+import { StyledPageTile } from '../styles';
+import { WriteSomethingTileProps } from './types';
 
-export default function WhatsOnYourMindBox({ user, ...rootProps }: WhatsOnYourMindBoxProps) {
+export default function WriteSomethingTile({ user, sx, ...rootProps }: WriteSomethingTileProps) {
   const theme = useTheme();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   function handleOpenDialog() {
@@ -18,7 +19,7 @@ export default function WhatsOnYourMindBox({ user, ...rootProps }: WhatsOnYourMi
   return (
     <>
       {isDialogOpen && <CreatePostDialog user={user} setIsOpen={setIsDialogOpen} />}
-      <StyledRoot {...rootProps}>
+      <StyledPageTile sx={{ pb: 1, ...sx }} {...rootProps}>
         <Stack position='relative' spacing={1.5}>
           <Stack direction='row'>
             <UserAvatar src={user.profilePicture} userId={user.profileId} mr={theme.spacing(1)} />
@@ -57,7 +58,7 @@ export default function WhatsOnYourMindBox({ user, ...rootProps }: WhatsOnYourMi
             <ContentDevider top='0' />
           </Stack>
         </Stack>
-      </StyledRoot>
+      </StyledPageTile>
     </>
   );
 }

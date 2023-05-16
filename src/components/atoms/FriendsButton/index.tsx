@@ -2,7 +2,7 @@ import { useTheme } from '@mui/material';
 
 import { StyledButtonIcon, StyledButtonText, StyledFriendsButton } from './styles';
 
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { TFriendStatus } from '@/types/firend';
 import getFriendshipStatus from '@/utils/getFriendshipStatus';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -11,7 +11,7 @@ import { FriendsButtonProps } from './types';
 
 export default function FriendsButton({ friendsMap, sx, ...rootProps }: FriendsButtonProps) {
   const theme = useTheme();
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
   const [userStatus, setUserStatus] = useState<TFriendStatus | null>(null);
   useEffect(() => {
     if (friendsMap && user) {

@@ -1,6 +1,6 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
 import { IFriendWithBasicInfo } from '@/types/firend';
 import { Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
@@ -10,7 +10,7 @@ import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
 
 export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) {
-  const { data: userData } = useFetchUserQuery({});
+  const { data: userData } = useFetchLoggedUserQuery({});
   const { data: allUsersData } = useFetchUsersPublicDataQuery({});
   const [friends, setFriends] = useState<IFriendWithBasicInfo[] | []>([]);
 

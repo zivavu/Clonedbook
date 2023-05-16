@@ -1,19 +1,22 @@
 import { StyledRoot } from './styles';
 
-import WhatsOnYourMindBox from '@/components/molecules/WhatsOnYourMindBox';
+import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
 import FeedPost from '@/components/organisms/FeedPost';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
+import { Stack } from '@mui/material';
 import { PostsFeedProps } from './types';
 
 export default function PostsFeed({ posts, ...rootProps }: PostsFeedProps) {
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
 
   return (
     <StyledRoot {...rootProps}>
-      {user?.profileId && <WhatsOnYourMindBox user={user} />}
-      {posts.map((post) => (
-        <FeedPost key={post.id} post={post}></FeedPost>
-      ))}
+      <Stack spacing={2} mt={2} px={2}>
+        {user?.profileId && <WriteSomethingTile user={user} />}
+        {posts.map((post) => (
+          <FeedPost key={post.id} post={post}></FeedPost>
+        ))}
+      </Stack>
     </StyledRoot>
   );
 }

@@ -1,7 +1,7 @@
 import { Box, GlobalStyles, IconButton, Portal, Stack, useTheme } from '@mui/material';
 
 import Icon from '@/components/atoms/Icon/Icon';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import { TLocalUserReaction } from '@/types/reaction';
 import Image from 'next/image';
@@ -22,7 +22,7 @@ export default function FullPagePhotosView({
 }: FullPagePhotosViewProps) {
   const theme = useTheme();
   const { isError, isLoading, postData: post } = useFetchPostData(postId);
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
     post?.reactions[user?.profileId || ''] || undefined,
   );

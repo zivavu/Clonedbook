@@ -9,7 +9,7 @@ export const user = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ['user'],
   endpoints: (builder) => ({
-    fetchUser: builder.query({
+    fetchLoggedUser: builder.query({
       async queryFn() {
         try {
           const usersRef = collection(db, 'users');
@@ -27,4 +27,4 @@ export const user = createApi({
   }),
 });
 
-export const { useFetchUserQuery } = user;
+export const { useFetchLoggedUserQuery } = user;

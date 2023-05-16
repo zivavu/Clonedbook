@@ -3,12 +3,12 @@ import { useTheme } from '@mui/material';
 import { StyledCommentInput, StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { useState } from 'react';
 import { CommentInputProps } from './types';
 
 export default function CommentInput({ ...rootProps }: CommentInputProps) {
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
   const theme = useTheme();
   const [commentText, setCommentText] = useState<string>('');
   return (

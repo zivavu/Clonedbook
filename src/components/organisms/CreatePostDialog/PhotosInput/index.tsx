@@ -1,4 +1,4 @@
-import { Box, CardMedia, Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 
 import {
   StyledBorderBox,
@@ -9,7 +9,7 @@ import {
 } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
-import { ChangeEvent, DragEvent, useEffect, useState } from 'react';
+import { ChangeEvent, DragEvent, useState } from 'react';
 import UserPhotosDisplay from './UserPhotosDisplay';
 import { PhotosInputProps } from './types';
 
@@ -23,7 +23,7 @@ export default function PhotosInput({
   const theme = useTheme();
   const [isDraggedOver, setIsDraggedOver] = useState(false);
   const showPhotos = photos.length > 0 && !isDraggedOver;
-
+  const fileMiBLimit = 5;
   function handleFileUpload(e: DragEvent<HTMLLabelElement> | ChangeEvent<HTMLInputElement>) {
     let files: FileList | undefined;
     if (e.type === 'drop') {
@@ -44,10 +44,10 @@ export default function PhotosInput({
           ]);
           continue;
         }
-        if (file.size > 5000000) {
+        if (file.size / 1024 / 1024 > fileMiBLimit) {
           setErrors((prev) => [
             ...prev,
-            { content: `Photo is too big(max 5MB)`, sevariety: 'warning' },
+            { content: `Photo is too big(max ${fileMiBLimit}MiB)`, sevariety: 'warning' },
           ]);
           continue;
         }
@@ -61,8 +61,7 @@ export default function PhotosInput({
   return (
     <StyledRoot sx={{ ...sx }} {...rootProps}>
       <StyledBorderBox
-        sx={{ borderColor: isDraggedOver ? theme.palette.primary.main : theme.palette.divider }}
-      >
+        sx={{ borderColor: isDraggedOver ? theme.palette.primary.main : theme.palette.divider }}>
         {showPhotos && (
           <StyledPhotosResetIcon onClick={() => setPhotos([])}>
             <Icon icon='xmark' fontSize='24' />
@@ -82,8 +81,7 @@ export default function PhotosInput({
               e.preventDefault();
               setIsDraggedOver(false);
               handleFileUpload(e);
-            }}
-          >
+            }}>
             <input
               type='file'
               id='file-upload'
@@ -109,8 +107,7 @@ export default function PhotosInput({
                     <Typography
                       lineHeight='0.8rem'
                       color={theme.palette.text.secondary}
-                      variant='caption'
-                    >
+                      variant='caption'>
                       or drag and drop
                     </Typography>
                   </>

@@ -2,12 +2,12 @@ import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { useState } from 'react';
 import { Portal, RightSectionProps } from './types';
 
 export default function RightSection({ sx, classes, ...rootProps }: RightSectionProps) {
-  const { data: user } = useFetchUserQuery({});
+  const { data: user } = useFetchLoggedUserQuery({});
   const [currentPortal, setCurrentPortal] = useState<Portal>('none');
   const handleSetPortal = (event: React.MouseEvent<HTMLElement>, portal: Portal) => {
     const newPortal = portal === currentPortal ? 'none' : portal;

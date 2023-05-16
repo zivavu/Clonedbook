@@ -6,11 +6,11 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
 }));
 
 export const StyledMessageButton = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.dark,
-  margin: theme.spacing(0, 1),
-  padding: theme.spacing(1.2, 1.3),
-  borderRadius: theme.spacing(1),
-  height: '38px',
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  padding: theme.spacing(0, 1.5),
+  borderRadius: theme.spacing(0.75),
+  height: '100%',
 }));
 
 export const StyledButtonIcon = styled(Icon)(({ theme }) => ({

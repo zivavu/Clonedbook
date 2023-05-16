@@ -13,11 +13,13 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   margin: theme.spacing(0, 0.5),
+  transition: 'all 0.25s ease-in-out',
 
   '&.Mui-selected': {
-    height: `calc(100% - ${theme.spacing(0.5)})`,
+    height: `calc(100% - ${theme.spacing(0.4)})`,
     alignSelf: 'flex-end',
     color: theme.palette.info.main,
+    backgroundColor: theme.palette.primary.light,
     borderBottomLeftRadius: '0px',
     borderBottomRightRadius: '0px',
   },

@@ -2,10 +2,15 @@ import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { useTheme } from '@mui/material';
 import { useState } from 'react';
 import { MiddleSectionProps } from './types';
 
-const mainNavElements = [
+const mainNavElements: {
+  name: string;
+  icon: IconName;
+}[] = [
   {
     name: 'Home',
     icon: 'house',
@@ -21,6 +26,7 @@ const mainNavElements = [
 ];
 
 export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSectionProps) {
+  const theme = useTheme();
   const [currentPage, setCurrentPage] = useState('Home');
 
   const handleNavChange = (name: string) => {
@@ -37,7 +43,7 @@ export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSecti
             value={element.name}
             selected={selected}
             onClick={() => handleNavChange(element.name)}>
-            <Icon icon={['fas', element.icon] as never} fontSize='1.3rem'></Icon>
+            <Icon icon={['fas', element.icon]} fontSize='1.3rem'></Icon>
             {selected ? <SelectedButtonUnderline /> : null}
           </StyledToggleButton>
         );

@@ -1,5 +1,3 @@
-import { BoxProps } from '@mui/material';
+import { BoxProps, ButtonBaseProps } from '@mui/material';
 
-export interface MessageButtonProps extends BoxProps {
-}
-
+export interface MessageButtonProps extends ButtonBaseProps {}

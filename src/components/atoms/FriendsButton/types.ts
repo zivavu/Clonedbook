@@ -1,6 +1,6 @@
 import { IFriendsMap } from '@/types/firend';
-import { BoxProps } from '@mui/material';
+import { BoxProps, ButtonBaseProps } from '@mui/material';
 
-export interface FriendsButtonProps extends BoxProps {
+export interface FriendsButtonProps extends ButtonBaseProps {
   friendsMap: IFriendsMap;
 }

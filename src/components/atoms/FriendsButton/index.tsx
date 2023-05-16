@@ -1,10 +1,11 @@
 import { useTheme } from '@mui/material';
 
-import { StyledButtonIcon, StyledButtonText, StyledFriendsButton, StyledRoot } from './styles';
+import { StyledButtonIcon, StyledButtonText, StyledFriendsButton } from './styles';
 
 import { useFetchUserQuery } from '@/features/userAPI';
 import { TFriendStatus } from '@/types/firend';
 import getFriendshipStatus from '@/utils/getFriendshipStatus';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { useEffect, useState } from 'react';
 import { FriendsButtonProps } from './types';
 
@@ -25,34 +26,32 @@ export default function FriendsButton({ friendsMap, sx, ...rootProps }: FriendsB
     backgroundColor: buttonColor,
     color: textColor,
   };
+  let icon: IconProp;
+  let buttonText;
+  switch (userStatus) {
+    case 'accepted':
+      icon = 'user-check';
+      buttonText = 'Friends';
+      break;
+    case 'pending':
+      icon = 'user-xmark';
+      buttonText = 'Cancel Request';
+      break;
+    case 'rejected':
+    case 'blocked':
+      icon = 'user-xmark';
+      buttonText = "Can't befriend";
+      break;
+    default:
+      icon = 'user-plus';
+      buttonText = 'Add Friend';
+      break;
+  }
 
   return (
-    <StyledRoot sx={sx} {...rootProps}>
-      {!userStatus && (
-        <StyledFriendsButton sx={{ ...buttonSx }}>
-          <StyledButtonIcon icon='user-plus' />
-          <StyledButtonText>Add Friend</StyledButtonText>
-        </StyledFriendsButton>
-      )}
-      {userStatus === 'pending' && (
-        <StyledFriendsButton sx={{ ...buttonSx }}>
-          <StyledButtonIcon icon='user-xmark' />
-          <StyledButtonText>Cancel Request</StyledButtonText>
-        </StyledFriendsButton>
-      )}
-      {userStatus === 'accepted' && (
-        <StyledFriendsButton sx={{ ...buttonSx }}>
-          <StyledButtonIcon icon='user-check' />
-          <StyledButtonText>Friends</StyledButtonText>
-        </StyledFriendsButton>
-      )}
-      {userStatus === 'rejected' ||
-        (userStatus === 'blocked' && (
-          <StyledFriendsButton sx={{ ...buttonSx }}>
-            <StyledButtonIcon icon='user-xmark' />
-            <StyledButtonText>Can&apos;t befriend</StyledButtonText>
-          </StyledFriendsButton>
-        ))}
-    </StyledRoot>
+    <StyledFriendsButton sx={{ ...sx, ...buttonSx }} {...rootProps}>
+      <StyledButtonIcon icon={icon} />
+      <StyledButtonText>{buttonText}</StyledButtonText>
+    </StyledFriendsButton>
   );
 }

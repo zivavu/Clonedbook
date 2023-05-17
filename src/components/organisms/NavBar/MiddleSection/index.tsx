@@ -2,7 +2,6 @@ import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline';
-import { AddUsersButton } from '@/utils/generateRandomUsers';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { useTheme } from '@mui/material';
 import { useState } from 'react';
@@ -36,8 +35,6 @@ export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSecti
 
   return (
     <StyledRoot sx={sx} className={classes?.root} {...rootProps}>
-      <AddUsersButton />
-
       {mainNavElements.map((element) => {
         const selected = currentPage === element.name;
         return (

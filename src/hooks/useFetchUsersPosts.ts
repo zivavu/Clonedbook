@@ -12,7 +12,7 @@ export default function useFetchUsersPosts(id: string) {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
-        const q = query(collection(db, 'posts'), where('owner.profileId', '==', id));
+        const q = query(collection(db, 'posts'), where('ownerId', '==', id));
         const querySnapshot = await getDocs(q);
         const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as IPost[];
         setPosts(data);

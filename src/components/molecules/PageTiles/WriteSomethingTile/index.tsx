@@ -6,6 +6,7 @@ import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons
 import ContentDevider from '@/components/atoms/ContentDevider';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
+import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import { useState } from 'react';
 import { StyledPageTile } from '../styles';
 import { WriteSomethingTileProps } from './types';

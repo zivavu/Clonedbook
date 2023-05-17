@@ -66,12 +66,13 @@ export default function CreatePostDialog({
         });
       });
       const post: IPost = {
-        pictures: postTextRef.current,
+        text: postTextRef.current,
         createdAt: Timestamp.now(),
         pictures: downloadUrls,
         comments: {},
         id: postId,
-        owner: userBasicInfo,
+        ownerId: userBasicInfo.id,
+        wallOwnerId: userBasicInfo.id,
         reactions: {},
         shareCount: 0,
       };

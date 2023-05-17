@@ -16,27 +16,27 @@ export default function PhotosCarousel({
 }: PhotosCarouselProps) {
   const theme = useTheme();
   const [currentPictureIndex, setCurrentPicture] = useState(
-    post.postPictures?.indexOf(initialPhoto) || 0,
+    post.pictures?.indexOf(initialPhoto) || 0,
   );
   const [currentPictureUrl, setCurrentPictureUrl] = useState<string | undefined>(initialPhoto);
 
   const handleSwitchPicture = (direction: 'left' | 'right') => {
     if (direction === 'left') {
       if (currentPictureIndex === 0) {
-        setCurrentPicture((post.postPictures?.length || 1) - 1);
-        setCurrentPictureUrl(post.postPictures?.[post.postPictures?.length - 1]);
+        setCurrentPicture((post.pictures?.length || 1) - 1);
+        setCurrentPictureUrl(post.pictures?.[post.pictures?.length - 1]);
       } else {
         setCurrentPicture(currentPictureIndex - 1);
-        setCurrentPictureUrl(post.postPictures?.[currentPictureIndex - 1]);
+        setCurrentPictureUrl(post.pictures?.[currentPictureIndex - 1]);
       }
     }
     if (direction === 'right') {
-      if (currentPictureIndex === (post.postPictures?.length || 1) - 1) {
+      if (currentPictureIndex === (post.pictures?.length || 1) - 1) {
         setCurrentPicture(0);
-        setCurrentPictureUrl(post.postPictures?.[0]);
+        setCurrentPictureUrl(post.pictures?.[0]);
       } else {
         setCurrentPicture(currentPictureIndex + 1);
-        setCurrentPictureUrl(post.postPictures?.[currentPictureIndex + 1]);
+        setCurrentPictureUrl(post.pictures?.[currentPictureIndex + 1]);
       }
     }
   };
@@ -53,8 +53,8 @@ export default function PhotosCarousel({
     `1100px`,
   ].join(', ');
 
-  const isMoreThenOnePicture = (post?.postPictures?.length || 0) > 1 || false;
-  if (!post.postPictures) return null;
+  const isMoreThenOnePicture = (post?.pictures?.length || 0) > 1 || false;
+  if (!post.pictures) return null;
   return (
     <StyledRoot {...rootProps} sx={sx}>
       <Image
@@ -73,8 +73,7 @@ export default function PhotosCarousel({
           <StyledSwitchAreaButton
             onClick={() => handleSwitchPicture('left')}
             focusRipple
-            sx={{ left: 0 }}
-          >
+            sx={{ left: 0 }}>
             <StyledButtonIcon className='icon leftIcon'>
               <Icon icon='angle-left' fontSize='25px' />
             </StyledButtonIcon>

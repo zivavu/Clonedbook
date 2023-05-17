@@ -15,12 +15,13 @@ export default function PostOwnerInfoDisplay({
 }: PostOwnerInfoDisplayProps) {
   const date = getDateFromTimestamp(createdAt.seconds);
   const theme = useTheme();
+  if (!owner) return null;
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack direction='row' spacing={1}>
-        <UserAvatar src={owner.profilePicture} userId={owner.profileId} />
+        <UserAvatar src={owner.picture} userId={owner.id} />
         <Stack justifyContent='center'>
-          <Link href={`profile/${owner.profileId}`}>
+          <Link href={`profile/${owner.id}`}>
             <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
               {owner.firstName} {owner.lastName}
             </Typography>

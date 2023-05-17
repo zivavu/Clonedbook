@@ -13,7 +13,7 @@ export async function userCommentReact(
 ) {
   try {
     const postsDocRef = doc(db, 'posts', post.id);
-    const postCommentPath = `comments.${comment.id}.reactions.${user.profileId}`;
+    const postCommentPath = `comments.${comment.id}.reactions.${user.id}`;
     if (reaction) {
       await updateDoc(postsDocRef, postCommentPath, reaction);
     } else {

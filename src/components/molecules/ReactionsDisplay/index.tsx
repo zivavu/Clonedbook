@@ -21,7 +21,7 @@ export default function ReactionsDisplay({
 }: ReactionsDisplayProps) {
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
-  const userId = user?.profileId || '';
+  const userId = user?.id || '';
   const [showModal, setShowModal] = useState(false);
 
   if (userReaction) {
@@ -87,7 +87,7 @@ export default function ReactionsDisplay({
                   const isLast = reactorsToDisplay.length === i + 1;
                   const userText = [reactor.info.firstName, reactor.info.lastName].join(' ');
                   return (
-                    <Box key={reactor.info.profileId}>
+                    <Box key={reactor.info.id}>
                       {!isLast ? (
                         <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
                       ) : (

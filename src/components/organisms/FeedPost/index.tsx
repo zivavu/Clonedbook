@@ -14,15 +14,17 @@ import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
+import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 
 export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
   const { data: user } = useFetchLoggedUserQuery({});
-  const { id: postId, comments, postPictures, postText, reactions } = post;
+  const { id: postId, comments, pictures: postPictures, pictures: postText, reactions } = post;
+  const owner = useGetUsersPublicData(post.ownerId);
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    reactions[user?.profileId || ''] || undefined,
+    reactions[user?.id || ''] || undefined,
   );
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
@@ -44,14 +46,14 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
       {isFullViewOpen && <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} />}
       <StyledRoot {...rootProps}>
         <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
-          <PostOwnerInfoDisplay owner={post.owner} createdAt={post.createdAt} />
+          <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />
           {hasText && (
             <Box sx={{ pt: theme.spacing(1) }}>
               {isTextLong ? (
-                <Typography variant='body1'>{post.postText}</Typography>
+                <Typography variant='body1'>{post.pictures}</Typography>
               ) : (
                 <Typography variant='h6' fontWeight='400' lineHeight='1.7rem'>
-                  {post.postText}
+                  {post.pictures}
                 </Typography>
               )}
             </Box>
@@ -60,7 +62,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
 
         {hasPictures && (
           <Box mt={theme.spacing(1)}>
-            <PicturesDisplay pictures={post.postPictures as string[]} postId={postId} />
+            <PicturesDisplay pictures={post.pictures as string[]} postId={postId} />
           </Box>
         )}
 

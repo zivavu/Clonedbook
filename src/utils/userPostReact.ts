@@ -12,9 +12,9 @@ export async function userPostReact(
   try {
     const postsDocRef = doc(db, 'posts', post.id);
     if (reaction) {
-      await updateDoc(postsDocRef, `reactions.${user.profileId}`, reaction);
+      await updateDoc(postsDocRef, `reactions.${user.id}`, reaction);
     } else {
-      await updateDoc(postsDocRef, `reactions.${user.profileId}`, deleteField());
+      await updateDoc(postsDocRef, `reactions.${user.id}`, deleteField());
     }
   } catch (err) {
     console.log(err);

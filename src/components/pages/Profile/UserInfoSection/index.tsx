@@ -32,7 +32,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
             <Image
               unoptimized
               alt={`${userData?.firstName}'s Profile Picture`}
-              src={userData?.profilePicture || ''}
+              src={userData?.picture || ''}
               fill
               style={{ objectFit: 'cover' }}
             />

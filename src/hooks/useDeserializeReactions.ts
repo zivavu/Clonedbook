@@ -20,18 +20,18 @@ export default function useDeserializeReactions(reactions: IReactionsMap) {
   const { data, isLoading } = useFetchUsersPublicDataQuery({});
 
   const usersPublicData: IUserBasicInfo[] | [] = data
-    ? Object.entries(data).map(([profileId, profileData]) => ({
-        profileId,
+    ? Object.entries(data).map(([id, profileData]) => ({
+        id,
         firstName: profileData.firstName,
         lastName: profileData.lastName,
-        profilePicture: profileData.profilePicture,
+        picture: profileData.picture,
       }))
     : [];
 
   const reactingUsers: IReactionWithBasicInfo[] = Object.entries(reactions)
     .filter(([userId, type]) => userId && type)
     .map(([userId, type]) => {
-      const info = usersPublicData?.find((user) => user.profileId === userId) as IUserBasicInfo;
+      const info = usersPublicData?.find((user) => user.id === userId) as IUserBasicInfo;
       return { userId, type, info } as IReactionWithBasicInfo;
     });
 

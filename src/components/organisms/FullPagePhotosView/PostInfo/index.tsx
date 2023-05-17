@@ -7,6 +7,7 @@ import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
+import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
 import RightSection from '../../NavBar/RightSection';
@@ -20,6 +21,7 @@ export default function PostInfo({
 }: PostInfoProps) {
   const theme = useTheme();
   const commentsLength = getEntriesLength(post.comments);
+  const owner = useGetUsersPublicData(post.ownerId);
   return (
     <StyledRoot {...rootProps}>
       <Stack direction='row' width='100%' height='56px' justifyContent='flex-end'>
@@ -27,13 +29,13 @@ export default function PostInfo({
       </Stack>
       <ContentDevider />
       <PostOwnerInfoDisplay
-        owner={post.owner}
+        owner={owner}
         createdAt={post.createdAt}
         mt={theme.spacing(2)}
         mb={theme.spacing(1)}
       />
       <Box mb={theme.spacing(4)}>
-        <Typography variant='body1'>{post.postText}</Typography>
+        <Typography variant='body1'>{post.text}</Typography>
       </Box>
       <Stack width='100%' direction='row' justifyContent='space-between'>
         {!isObjectEmpty(post.reactions) && (

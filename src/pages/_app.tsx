@@ -1,7 +1,7 @@
 import { theme } from '@/design/theme';
 import { config, library } from '@fortawesome/fontawesome-svg-core';
 
-import { faComment, faHeart, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import { faComment, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import {
   faAngleLeft,
   faAngleRight,
@@ -13,9 +13,9 @@ import {
   faFileCirclePlus,
   faGlobeAfrica,
   faGraduationCap,
+  faHeart,
   faHouse,
   faLocationDot,
-  faLocationPin,
   faMagnifyingGlass,
   faPeopleGroup,
   faUserCheck,

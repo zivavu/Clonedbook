@@ -21,7 +21,7 @@ export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps
     <StyledRoot {...rootProps}>
       <List sx={{ width: '100%' }}>
         <StyledListItem>
-          <UserAvatar size={36} sx={{ mr: theme.spacing(1.5) }} src={user?.profilePicture} />
+          <UserAvatar size={36} sx={{ mr: theme.spacing(1.5) }} src={user?.picture} />
           <Typography variant='body1'>
             {user?.firstName} {user?.lastName}
           </Typography>

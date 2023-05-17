@@ -9,6 +9,7 @@ import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchPostData from '@/hooks/useFetchPostData';
+import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useEffect, useState } from 'react';
@@ -23,13 +24,14 @@ export default function FullPagePostView({
   const theme = useTheme();
   const { postData: post, isError, isLoading } = useFetchPostData(postId);
   const { data: user } = useFetchLoggedUserQuery({});
+  const owner = useGetUsersPublicData(post?.ownerId || '');
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    post?.reactions[user?.profileId || ''] || undefined,
+    post?.reactions[user?.id || ''] || undefined,
   );
 
   useEffect(() => {
-    setUserReaction(post?.reactions[user?.profileId || ''] || undefined);
-  }, [post, user?.profileId]);
+    setUserReaction(post?.reactions[user?.id || ''] || undefined);
+  }, [post, user?.id]);
 
   return isLoading || isError || !post ? null : (
     <>
@@ -38,13 +40,13 @@ export default function FullPagePostView({
         <StyledRoot sx={sx} {...rootProps}>
           <Stack p={theme.spacing(1.5, 0)} position='relative'>
             <Typography textAlign='center' variant='h6' fontWeight='600'>
-              {post.owner.firstName}&apos;s Post
+              {owner?.firstName || ''}&apos;s Post
             </Typography>
             <ContentDevider sx={{ bottom: 0 }} />
           </Stack>
           <StyledPostContentWrapper spacing={1}>
-            <PostOwnerInfoDisplay owner={post.owner} createdAt={post.createdAt} />
-            <Typography variant='body1'>{post.postText}</Typography>
+            <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />
+            <Typography variant='body1'>{post.pictures}</Typography>
             <Stack direction='row' alignItems='center'>
               <ReactionsDisplay userReaction={userReaction} reactions={post.reactions} />
               <Typography ml='auto' color={theme.palette.text.secondary} variant='caption'>

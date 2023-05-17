@@ -23,13 +23,13 @@ export default function FullPagePhotosView({
   const { isError, isLoading, postData: post } = useFetchPostData(postId);
   const { data: user } = useFetchLoggedUserQuery({});
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    post?.reactions[user?.profileId || ''] || undefined,
+    post?.reactions[user?.id || ''] || undefined,
   );
   useEffect(() => {
-    setUserReaction(post?.reactions[user?.profileId || ''] || undefined);
-  }, [post, user?.profileId]);
+    setUserReaction(post?.reactions[user?.id || ''] || undefined);
+  }, [post, user?.id]);
 
-  return isLoading || isError || !post || !post.postPictures ? null : (
+  return isLoading || isError || !post || !post.pictures ? null : (
     <Portal>
       <StyledRoot {...rootProps} sx={sx}>
         <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />

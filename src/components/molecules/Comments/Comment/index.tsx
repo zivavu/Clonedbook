@@ -28,7 +28,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   const likeButtonRef = useRef<HTMLButtonElement>(null);
 
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    (comment.reactions && comment.reactions[user?.profileId || '']) || undefined,
+    (comment.reactions && comment.reactions[user?.id || '']) || undefined,
   );
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   return (
     <StyledRoot {...rootProps}>
       <Box display='flex' alignItems='center'>
-        <UserAvatar src={ownerData?.profilePicture || ''} sx={{ alignSelf: 'start' }} size={32} />
+        <UserAvatar src={ownerData?.picture || ''} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>
           {!!ownerData && (
             <>

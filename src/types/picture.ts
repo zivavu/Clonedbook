@@ -1,24 +1,14 @@
-import { ICommentMap } from './comment';
-import { ICreatedAt } from './createdAt';
-import { IReactionsMap, TReactionType } from './reaction';
+import { IWallElement } from './misc';
+import { TReactionType } from './reaction';
 
-export interface IPicture {
-  id: string;
-  ownerId: string;
-  pictureURL: string;
-  createdAt: ICreatedAt;
+export interface IAccountPicture extends IWallElement {
+  url: string;
 }
 
-export interface IInProfilePicture extends IPicture {
-  reactions: IReactionsMap;
-  comments: ICommentMap;
-  shareCount: number;
-}
-
-export interface IInChatPicture extends IPicture {
+export interface IInChatPicture {
   reaction?: TReactionType;
 }
 
 export interface IPicturesMap {
-  [key: string]: IPicture;
+  [key: string]: IAccountPicture;
 }

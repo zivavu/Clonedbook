@@ -14,10 +14,10 @@ export const usersPublicData = createApi({
           const usersDataRef = collection(db, 'usersPublicData');
           const usersResponse = await getDocs(usersDataRef);
           const usersData = usersResponse.docs.map((doc) => doc.data())[0];
-
+          if (!usersData) throw 'There are no users in the database';
           return { data: usersData as IServerUserBasicInfo };
-        } catch (error: any) {
-          return { error: error.message };
+        } catch {
+          return { error: 'Couldnt fetch users' };
         }
       },
       providesTags: ['usersPublicData'],

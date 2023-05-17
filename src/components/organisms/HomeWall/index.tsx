@@ -12,7 +12,7 @@ export default function HomeWall({ ...rootProps }: HomeWallProps) {
 
   return (
     <StyledRoot {...rootProps}>
-      {user?.profileId && <WriteSomethingTile user={user} mb={2} />}
+      {user?.id && <WriteSomethingTile user={user} mb={2} />}
       {data ? <PostsFeed posts={data} /> : null}
     </StyledRoot>
   );

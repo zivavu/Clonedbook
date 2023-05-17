@@ -8,6 +8,7 @@ export interface IReactionReference {
 export interface IReactionWithBasicInfo extends IReactionReference {
   info: IUserBasicInfo;
 }
+
 export interface IReactionsMap {
   [key: string]: TReactionType | null;
 }

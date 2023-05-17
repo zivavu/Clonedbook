@@ -24,7 +24,7 @@ export default function UserAvatar({
       height={size}
       width={size}
       loading='eager'
-      src={src || user?.profilePicture || '/no-profile-picture-icon.svg'}
+      src={src || user?.picture || '/no-profile-picture-icon.svg'}
       alt={alt || 'user avatar'}
       style={{
         borderRadius: '50%',

@@ -15,7 +15,7 @@ export default function FriendsButton({ friendsMap, sx, ...rootProps }: FriendsB
   const [userStatus, setUserStatus] = useState<TFriendStatus | null>(null);
   useEffect(() => {
     if (friendsMap && user) {
-      setUserStatus(getFriendshipStatus(user.profileId, friendsMap));
+      setUserStatus(getFriendshipStatus(user.id, friendsMap));
     }
   }, [user]);
 

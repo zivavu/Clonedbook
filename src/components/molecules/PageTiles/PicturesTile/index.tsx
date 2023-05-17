@@ -53,14 +53,17 @@ export default function PicturesTile({ user, sx, ...rootProps }: PicturesTilePro
 }
 
 function PicturesRow({ pictures, user, sx, ...rootProps }: PicturesRowProps) {
+  const theme = useTheme();
+
   return (
     <StyledImagesRow direction='row' spacing={0.5} sx={sx} {...rootProps}>
       {pictures.map((picture) => {
         return (
           <StyledImageContainer key={picture.id}>
             <StyledTileImage
-              src={picture.pictureURL}
+              src={picture.url}
               fill
+              sizes='150px'
               alt={`${user.firstName} ${user.lastName} Picture`}
             />
           </StyledImageContainer>

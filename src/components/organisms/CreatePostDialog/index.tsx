@@ -66,9 +66,9 @@ export default function CreatePostDialog({
         });
       });
       const post: IPost = {
-        postText: postTextRef.current,
+        pictures: postTextRef.current,
         createdAt: Timestamp.now(),
-        postPictures: downloadUrls,
+        pictures: downloadUrls,
         comments: {},
         id: postId,
         owner: userBasicInfo,
@@ -76,7 +76,7 @@ export default function CreatePostDialog({
         shareCount: 0,
       };
 
-      const userDocRef = doc(db, 'users', `${user.profileId}/posts/${postId}`);
+      const userDocRef = doc(db, 'users', `${user.id}/posts/${postId}`);
       const postDocRef = doc(db, 'posts', postId);
       await setDoc(userDocRef, post);
       await setDoc(postDocRef, post);

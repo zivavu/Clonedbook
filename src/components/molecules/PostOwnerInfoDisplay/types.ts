@@ -3,6 +3,6 @@ import { IUserBasicInfo } from '@/types/user';
 import { BoxProps } from '@mui/material';
 
 export interface PostOwnerInfoDisplayProps extends BoxProps {
-  owner: IUserBasicInfo;
+  owner: IUserBasicInfo | null;
   createdAt: ICreatedAt;
 }

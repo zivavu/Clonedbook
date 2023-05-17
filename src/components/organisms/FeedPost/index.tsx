@@ -9,16 +9,16 @@ import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
+import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 
 export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
   const { data: user } = useFetchLoggedUserQuery({});
-  const { id: postId, comments, pictures: postPictures, pictures: postText, reactions } = post;
+  const { id: postId, comments, pictures: postPictures, text: postText, reactions } = post;
   const owner = useGetUsersPublicData(post.ownerId);
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
@@ -50,10 +50,10 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           {hasText && (
             <Box sx={{ pt: theme.spacing(1) }}>
               {isTextLong ? (
-                <Typography variant='body1'>{post.pictures}</Typography>
+                <Typography variant='body1'>{postText}</Typography>
               ) : (
                 <Typography variant='h6' fontWeight='400' lineHeight='1.7rem'>
-                  {post.pictures}
+                  {postText}
                 </Typography>
               )}
             </Box>
@@ -62,14 +62,14 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
 
         {hasPictures && (
           <Box mt={theme.spacing(1)}>
-            <PicturesDisplay pictures={post.pictures as string[]} postId={postId} />
+            <PicturesDisplay pictures={postPictures as string[]} postId={postId} />
           </Box>
         )}
 
         <StyledContentWrapper>
           <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
             <ReactionsDisplay
-              reactions={post.reactions}
+              reactions={reactions}
               userReaction={userReaction}
               sx={{ pr: theme.spacing(0.25) }}
             />

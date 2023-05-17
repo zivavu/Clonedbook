@@ -4,7 +4,8 @@ import { IAccountPicture } from './picture';
 import { IPost } from './post';
 import { IReactionsMap } from './reaction';
 
-export type TPostOrPicture = IPost | IAccountPicture;
+export type TPostOrPictureObj = IPost | IAccountPicture;
+export type TPostOrPicture = 'post' | 'picture';
 
 export interface IWallElement {
   id: string;

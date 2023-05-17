@@ -11,9 +11,10 @@ import ReactionsPopper from './ReactionsPopper';
 import { ActionButtonsProps } from './types';
 
 export default function ActionButtons({
-  post,
+  elementId,
   userReaction,
   setUserReaction,
+  type,
   sx,
   ...rootProps
 }: ActionButtonsProps) {
@@ -37,10 +38,10 @@ export default function ActionButtons({
     setMouseOverReactionElements(false);
     if (!userReaction) {
       setUserReaction('like');
-      userPostReact(post, user, 'like');
+      userPostReact(elementId, user, 'like');
     } else {
       setUserReaction(null);
-      userPostReact(post, user, null);
+      userPostReact(elementId, user, null);
     }
   }
 
@@ -50,7 +51,7 @@ export default function ActionButtons({
         anchorEl={anchorEl}
         updateDocHandler={(type) => {
           if (!user) return;
-          userPostReact(post, separateUserBasicInfo(user), type);
+          userPostReact(elementId, separateUserBasicInfo(user), type);
         }}
         setAnchorEl={setAnchorEl}
         placement='top-start'
@@ -60,6 +61,7 @@ export default function ActionButtons({
         open={false}
       />
       <StyledActionButton
+        focusRipple
         value='like'
         ref={likeButtonRef}
         onMouseEnter={handleMouseOver}
@@ -85,14 +87,17 @@ export default function ActionButtons({
         </Typography>
       </StyledActionButton>
 
-      <StyledActionButton value='comment' sx={{ mr: theme.spacing(0.3), ml: theme.spacing(0.3) }}>
+      <StyledActionButton
+        focusRipple
+        value='comment'
+        sx={{ mr: theme.spacing(0.3), ml: theme.spacing(0.3) }}>
         <StyledActionIcon icon={['far', 'comment']} />
         <Typography variant='subtitle2' fontWeight='400'>
           Comment
         </Typography>
       </StyledActionButton>
 
-      <StyledActionButton value='share'>
+      <StyledActionButton focusRipple value='share'>
         <StyledActionIcon icon={['far', 'share-square']} />
         <Typography variant='subtitle2' fontWeight='400'>
           Share

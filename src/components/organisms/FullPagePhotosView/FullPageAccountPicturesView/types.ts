@@ -1,8 +1,8 @@
 import { BoxProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-export interface FullPagePhotosViewProps extends BoxProps {
-  postId: string;
-  initialPhoto: string;
+export interface FullPageAccountPicturesViewProps extends BoxProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
+  initialPhotoIndex: number;
+  userId: string;
 }

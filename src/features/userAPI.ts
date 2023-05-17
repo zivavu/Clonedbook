@@ -17,7 +17,6 @@ export const user = createApi({
           const data = await getDocs(usersSnapshot);
           const users = data.docs.map((doc) => doc.data()) as IUser[];
           const selectedUser = users[1];
-          if (!selectedUser) throw 'There are no users in the database';
           return { data: selectedUser };
         } catch {
           return { error: 'Couldnt fetch the user' };

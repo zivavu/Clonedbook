@@ -49,6 +49,7 @@ export default function UserAvatar({
             borderRadius: '50%',
           }}
           LinkComponent={Link}
+          focusRipple
           href={`/profile/${userId}`}>
           <UserImage />
         </ButtonBase>

@@ -1,4 +1,4 @@
-import { Box, Stack, styled } from '@mui/material';
+import { Box, ButtonBase, Stack, styled } from '@mui/material';
 import Image from 'next/image';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
@@ -10,7 +10,7 @@ export const StyledImagesRow = styled(Stack)(({ theme }) => ({
   overflow: 'hidden',
 }));
 
-export const StyledImageContainer = styled(Box)(({ theme }) => ({
+export const StyledImageContainer = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
   width: 'calc(100% / 3)',
   aspectRatio: '1/1',

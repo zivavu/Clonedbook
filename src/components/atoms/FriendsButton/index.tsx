@@ -49,7 +49,7 @@ export default function FriendsButton({ friendsMap, sx, ...rootProps }: FriendsB
   }
 
   return (
-    <StyledFriendsButton sx={{ ...sx, ...buttonSx }} {...rootProps}>
+    <StyledFriendsButton focusRipple sx={{ ...sx, ...buttonSx }} {...rootProps}>
       <StyledButtonIcon icon={icon} />
       <StyledButtonText>{buttonText}</StyledButtonText>
     </StyledFriendsButton>

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 export default function useFetchUsersPictures(id: string) {
   const [picturesMap, setPicturesMap] = useState<IPicturesMap>({});
   const [isLoading, setisLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     try {
@@ -19,11 +19,11 @@ export default function useFetchUsersPictures(id: string) {
       };
       getPictures();
     } catch {
-      setError(true);
+      setIsError(true);
     } finally {
       setisLoading(false);
     }
   }, [id]);
 
-  return { picturesMap, isLoading, error };
+  return { picturesMap, isLoading, isError };
 }

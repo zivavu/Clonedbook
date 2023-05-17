@@ -1,7 +1,9 @@
 import { IPost } from '@/types/post';
 import { BoxProps } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface PhotosCarouselProps extends BoxProps {
-  post: IPost;
-  initialPhoto: string;
+  picturesUrls: IPost['pictures'];
+  currentPictureIndex: number;
+  setCurrentPictureIndex: Dispatch<SetStateAction<number>>;
 }

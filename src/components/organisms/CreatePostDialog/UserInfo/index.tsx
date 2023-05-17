@@ -17,6 +17,7 @@ export default function UserInfo({ user, sx, ...rootProps }: UserInfoProps) {
             {user.firstName} {user.lastName}
           </Typography>
           <ButtonBase
+            focusRipple
             sx={{
               backgroundColor: theme.palette.secondary.main,
               padding: theme.spacing(0.2, 1),

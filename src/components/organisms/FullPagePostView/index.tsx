@@ -56,9 +56,10 @@ export default function FullPagePostView({
               </Typography>
             </Stack>
             <ActionButtons
+              type='post'
+              elementId={post.id}
               userReaction={userReaction}
               setUserReaction={setUserReaction}
-              post={post}
               sx={{ borderBottom: 'none' }}
             />
             <Comments comments={post.comments} post={post} maxComments='all' />

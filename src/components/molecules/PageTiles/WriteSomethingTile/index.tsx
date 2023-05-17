@@ -6,7 +6,6 @@ import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons
 import ContentDevider from '@/components/atoms/ContentDevider';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
-import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import { useState } from 'react';
 import { StyledPageTile } from '../styles';
 import { WriteSomethingTileProps } from './types';
@@ -32,6 +31,7 @@ export default function WriteSomethingTile({ user, sx, ...rootProps }: WriteSome
                 padding: theme.spacing(1, 2),
                 justifyContent: 'flex-start',
               }}
+              focusRipple
               onClick={handleOpenDialog}>
               <Typography color={theme.palette.text.secondary} variant='subtitle1' fontWeight={390}>
                 What&apos;s on Your mind, {user.firstName}?
@@ -39,11 +39,11 @@ export default function WriteSomethingTile({ user, sx, ...rootProps }: WriteSome
             </ButtonBase>
           </Stack>
           <Stack direction='row' position='relative' pt={theme.spacing(1)}>
-            <StyledPostTypeButton onClick={handleOpenDialog}>
+            <StyledPostTypeButton focusRipple onClick={handleOpenDialog}>
               <StyledButtonIcon width={24} height={24} alt='Live Video Icon' src={LiveVideoIcon} />
               <StyledButtonText>Live video</StyledButtonText>
             </StyledPostTypeButton>
-            <StyledPostTypeButton onClick={handleOpenDialog}>
+            <StyledPostTypeButton focusRipple onClick={handleOpenDialog}>
               <StyledButtonIcon
                 width={24}
                 height={24}
@@ -52,7 +52,7 @@ export default function WriteSomethingTile({ user, sx, ...rootProps }: WriteSome
               />
               <StyledButtonText>Photo/video</StyledButtonText>
             </StyledPostTypeButton>
-            <StyledPostTypeButton onClick={handleOpenDialog}>
+            <StyledPostTypeButton focusRipple onClick={handleOpenDialog}>
               <StyledButtonIcon width={24} height={24} alt='Live Event Icon' src={LiveEventIcon} />
               <StyledButtonText>Live event</StyledButtonText>
             </StyledPostTypeButton>

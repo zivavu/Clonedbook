@@ -71,6 +71,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
             <FriendsButton friendsMap={userData.friends} />
             <MessageButton />
             <ButtonBase
+              focusRipple
               sx={{
                 height: '100%',
                 padding: theme.spacing(0, 2.5),

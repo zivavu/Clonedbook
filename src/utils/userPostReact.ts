@@ -1,16 +1,15 @@
 import { db } from '@/config/firebase.config';
-import { IPost } from '@/types/post';
 import { TReactionType } from '@/types/reaction';
 import { IUser, IUserBasicInfo } from '@/types/user';
 import { deleteField, doc, updateDoc } from 'firebase/firestore';
 
 export async function userPostReact(
-  post: IPost,
+  postId: string,
   user: IUser | IUserBasicInfo,
   reaction: TReactionType | null,
 ) {
   try {
-    const postsDocRef = doc(db, 'posts', post.id);
+    const postsDocRef = doc(db, 'posts', postId);
     if (reaction) {
       await updateDoc(postsDocRef, `reactions.${user.id}`, reaction);
     } else {

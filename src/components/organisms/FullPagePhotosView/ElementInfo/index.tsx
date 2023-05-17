@@ -11,17 +11,18 @@ import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
 import RightSection from '../../NavBar/RightSection';
-import { PostInfoProps } from './types';
+import { ElementInfoProps } from './types';
 
-export default function PostInfo({
-  post,
+export default function ElementInfo({
+  element,
+  type,
   userReaction,
   setUserReaction,
   ...rootProps
-}: PostInfoProps) {
+}: ElementInfoProps) {
   const theme = useTheme();
-  const commentsLength = getEntriesLength(post.comments);
-  const owner = useGetUsersPublicData(post.ownerId);
+  const commentsLength = getEntriesLength(element.comments);
+  const owner = useGetUsersPublicData(element.ownerId);
   return (
     <StyledRoot {...rootProps}>
       <Stack direction='row' width='100%' height='56px' justifyContent='flex-end'>
@@ -30,18 +31,18 @@ export default function PostInfo({
       <ContentDevider />
       <PostOwnerInfoDisplay
         owner={owner}
-        createdAt={post.createdAt}
+        createdAt={element.createdAt}
         mt={theme.spacing(2)}
         mb={theme.spacing(1)}
       />
       <Box mb={theme.spacing(4)}>
-        <Typography variant='body1'>{post.text}</Typography>
+        <Typography variant='body1'>{element.text}</Typography>
       </Box>
       <Stack width='100%' direction='row' justifyContent='space-between'>
-        {!isObjectEmpty(post.reactions) && (
+        {!isObjectEmpty(element.reactions) && (
           <ReactionsDisplay
             userReaction={userReaction}
-            reactions={post.reactions}
+            reactions={element.reactions}
             displayCount
             displayNames={false}
           />
@@ -55,18 +56,19 @@ export default function PostInfo({
               : `${commentsLength} comment`}
           </Typography>
           <Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
-            {post.shareCount} shares
+            {element.shareCount} shares
           </Typography>
         </Box>
       </Stack>
       <ActionButtons
         userReaction={userReaction}
         setUserReaction={setUserReaction}
-        post={post}
+        elementId={element.id}
+        type='post'
         mt={theme.spacing(1)}
         mb={theme.spacing(4)}
       />
-      <Comments post={post} comments={post.comments} maxComments='all' />
+      <Comments post={element} comments={element.comments} maxComments='all' />
     </StyledRoot>
   );
 }

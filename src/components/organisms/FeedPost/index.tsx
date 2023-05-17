@@ -89,7 +89,8 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           </Stack>
 
           <ActionButtons
-            post={post}
+            elementId={post.id}
+            type='post'
             userReaction={userReaction}
             setUserReaction={setUserReaction}
           />

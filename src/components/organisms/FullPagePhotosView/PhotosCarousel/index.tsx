@@ -5,38 +5,31 @@ import { StyledButtonIcon, StyledRoot, StyledSwitchAreaButton } from './styles';
 import Icon from '@/components/atoms/Icon/Icon';
 import Image from 'next/image';
 
-import { useState } from 'react';
 import { PhotosCarouselProps } from './types';
 
 export default function PhotosCarousel({
-  post,
-  initialPhoto,
+  picturesUrls,
+  currentPictureIndex,
+  setCurrentPictureIndex,
   sx,
   ...rootProps
 }: PhotosCarouselProps) {
   const theme = useTheme();
-  const [currentPictureIndex, setCurrentPicture] = useState(
-    post.pictures?.indexOf(initialPhoto) || 0,
-  );
-  const [currentPictureUrl, setCurrentPictureUrl] = useState<string | undefined>(initialPhoto);
+  const currentPicture = picturesUrls?.[currentPictureIndex];
 
   const handleSwitchPicture = (direction: 'left' | 'right') => {
     if (direction === 'left') {
       if (currentPictureIndex === 0) {
-        setCurrentPicture((post.pictures?.length || 1) - 1);
-        setCurrentPictureUrl(post.pictures?.[post.pictures?.length - 1]);
+        setCurrentPictureIndex((picturesUrls?.length || 1) - 1);
       } else {
-        setCurrentPicture(currentPictureIndex - 1);
-        setCurrentPictureUrl(post.pictures?.[currentPictureIndex - 1]);
+        setCurrentPictureIndex(currentPictureIndex - 1);
       }
     }
     if (direction === 'right') {
-      if (currentPictureIndex === (post.pictures?.length || 1) - 1) {
-        setCurrentPicture(0);
-        setCurrentPictureUrl(post.pictures?.[0]);
+      if (currentPictureIndex === (picturesUrls?.length || 1) - 1) {
+        setCurrentPictureIndex(0);
       } else {
-        setCurrentPicture(currentPictureIndex + 1);
-        setCurrentPictureUrl(post.pictures?.[currentPictureIndex + 1]);
+        setCurrentPictureIndex(currentPictureIndex + 1);
       }
     }
   };
@@ -53,17 +46,15 @@ export default function PhotosCarousel({
     `1100px`,
   ].join(', ');
 
-  const isMoreThenOnePicture = (post?.pictures?.length || 0) > 1 || false;
-  if (!post.pictures) return null;
+  const isMoreThenOnePicture = (picturesUrls?.length || 0) > 1 || false;
+  if (!picturesUrls) return null;
   return (
     <StyledRoot {...rootProps} sx={sx}>
       <Image
-        src={currentPictureUrl || ''}
+        src={currentPicture || ''}
         fill
         sizes={imageSizes}
         quality={100}
-        blurDataURL={currentPictureUrl || ''}
-        placeholder='blur'
         style={{ objectFit: 'contain', padding: theme.spacing(0, 16) }}
         alt='Full Size Photo'
       />

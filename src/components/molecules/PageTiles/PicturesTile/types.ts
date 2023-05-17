@@ -8,5 +8,6 @@ export interface PicturesTileProps extends BoxProps {
 
 export interface PicturesRowProps extends StackProps {
   pictures: IAccountPicture[];
+  startIndex: number;
   user: IUser;
 }

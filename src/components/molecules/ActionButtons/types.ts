@@ -1,10 +1,11 @@
-import { IPost } from '@/types/post';
+import { TPostOrPicture } from '@/types/misc';
 import { TLocalUserReaction } from '@/types/reaction';
 import { BoxProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface ActionButtonsProps extends BoxProps {
-  post: IPost;
+  elementId: string;
   userReaction: TLocalUserReaction;
   setUserReaction: Dispatch<SetStateAction<TLocalUserReaction>>;
+  type: TPostOrPicture;
 }

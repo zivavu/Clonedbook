@@ -7,7 +7,7 @@ import { MessageButtonProps } from './types';
 export default function MessageButton({ sx, ...rootProps }: MessageButtonProps) {
   const theme = useTheme();
   return (
-    <StyledMessageButton sx={sx} {...rootProps}>
+    <StyledMessageButton focusRipple sx={sx} {...rootProps}>
       <StyledButtonIcon icon={['fab', 'facebook-messenger']} />
       <StyledButtonText>Message</StyledButtonText>
     </StyledMessageButton>

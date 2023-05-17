@@ -2,7 +2,7 @@ import { ButtonBase, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import FullPagePhotosView from '@/components/organisms/FullPagePhotosView';
+import FullPagePostPicturesView from '@/components/organisms/FullPagePhotosView/FullPagePostPicturesView';
 import { useFetchPostsQuery } from '@/features/postsAPI';
 import { IPost } from '@/types/post';
 import Image from 'next/image';
@@ -68,7 +68,11 @@ export default function Picture({
   return (
     <>
       {isFullViewOpen && postData?.pictures && (
-        <FullPagePhotosView postId={postId} initialPhoto={photoSrc} setOpen={setIsFullViewOpen} />
+        <FullPagePostPicturesView
+          postId={postId}
+          initialPhoto={photoSrc}
+          setOpen={setIsFullViewOpen}
+        />
       )}
       <StyledRoot sx={sx} {...rootProps}>
         <ButtonBase

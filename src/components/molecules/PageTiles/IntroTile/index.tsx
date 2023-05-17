@@ -2,7 +2,7 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import ContentDevider from '@/components/atoms/ContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
-import { StyledPageTile } from '../styles';
+import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import { IDetail, IntroTileProps } from './types';
 
 export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
@@ -18,15 +18,13 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
     { label: 'Works at', value: workplace || null, icon: 'briefcase' },
     { label: 'Goes to', value: school, icon: 'graduation-cap' },
     { label: 'Relationship status', value: relationship || null, icon: 'heart' },
-    { label: 'From', value: hometown || null, icon: 'location-pin' },
+    { label: 'From', value: hometown || null, icon: 'location-dot' },
   ];
 
   return (
     <StyledPageTile sx={sx} {...rootProps}>
       <Stack spacing={2}>
-        <Typography variant='h6' fontWeight='700'>
-          Intro
-        </Typography>
+        <StyledPageTileHeader>Intro</StyledPageTileHeader>
         <Box position='relative'>
           <Typography textAlign='center' mb={2}>
             {user.biography}

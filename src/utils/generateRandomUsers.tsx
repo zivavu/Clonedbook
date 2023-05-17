@@ -183,6 +183,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const post: IPost = {
         id: postId,
         owner: basicUserInfo,
+        wallOwnerId: basicUserInfo.profileId,
         postText: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         postPictures: hasPictures ? postPictures : [],
         comments: getRandomComments(10, 8, createdAt),

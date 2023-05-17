@@ -14,6 +14,8 @@ export interface IPost extends IPostReference {
 export interface IPostReference {
   id: string;
   owner: IUserBasicInfo;
+  //It can be user, page, group, etc.
+  wallOwnerId?: string;
   createdAt: ICreatedAt;
 }
 export interface IPostsMap {

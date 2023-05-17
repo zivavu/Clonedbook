@@ -17,7 +17,7 @@ export const user = createApi({
           const data = await getDocs(usersSnapshot);
           const users = data.docs.map((doc) => doc.data()) as IUser[];
           const selectedUser = users[1];
-          return { data: { ...selectedUser } };
+          return { data: selectedUser };
         } catch (error: any) {
           return { error: error.message };
         }

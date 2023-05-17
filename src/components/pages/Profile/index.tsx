@@ -1,6 +1,7 @@
 import { StyledRoot } from './styles';
 
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';
+import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
 import PostsFeed from '@/components/organisms/PostsFeed';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
@@ -29,11 +30,12 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
       </Box>
       <Container sx={{ mt: 2 }}>
         <Stack direction='row' spacing={2}>
-          <Stack width='40%'>
+          <Stack width='43%' spacing={2}>
             <IntroTile user={profileData as IUser} />
+            <PicturesTile user={profileData} />
           </Stack>
-          <Stack width='60%'>
-            {!!loggedUser && <WriteSomethingTile user={loggedUser as IUser} />}
+          <Stack width='57%'>
+            {!!loggedUser && <WriteSomethingTile user={loggedUser} mb={2} />}
             {!arePostsLoading && !error && posts && posts.length > 0 ? (
               <PostsFeed posts={posts}></PostsFeed>
             ) : null}

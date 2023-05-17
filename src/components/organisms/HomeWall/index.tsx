@@ -1,10 +1,19 @@
 import { StyledRoot } from './styles';
 
+import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
 import { useFetchPostsQuery } from '@/features/postsAPI';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import PostsFeed from '../PostsFeed';
 import { HomeWallProps } from './types';
 
 export default function HomeWall({ ...rootProps }: HomeWallProps) {
   const { data } = useFetchPostsQuery({});
-  return <StyledRoot {...rootProps}>{data ? <PostsFeed posts={data} /> : null}</StyledRoot>;
+  const { data: user } = useFetchLoggedUserQuery({});
+
+  return (
+    <StyledRoot {...rootProps}>
+      {user?.profileId && <WriteSomethingTile user={user} mb={2} />}
+      {data ? <PostsFeed posts={data} /> : null}
+    </StyledRoot>
+  );
 }

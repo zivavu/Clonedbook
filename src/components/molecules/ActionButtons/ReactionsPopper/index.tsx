@@ -92,7 +92,7 @@ export default function ReactionsPopper({
               sx={{
                 width: '40px',
                 height: '40px',
-                margin: theme.spacing(0.3, 0.7),
+                margin: theme.spacing(0.3, 0.4),
                 transition: 'transform 0.1s ease-out',
                 animation: `${slidein} 0.2s ease-out`,
                 '&:hover': {

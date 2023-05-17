@@ -1,7 +1,7 @@
 import { Box, Popper, keyframes, styled } from '@mui/material';
 
 export const StyledReactionsPopover = styled(Popper)(({ theme }) => ({
-  zIndex: 20,
+  zIndex: theme.zIndex.modal + 10,
   pointerEvents: 'none',
   position: 'relative',
 

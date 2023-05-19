@@ -9,7 +9,6 @@ export default function useFetchUsersPictures(id: string) {
   const [isError, setIsError] = useState<boolean>(false);
   useEffect(() => {
     try {
-      console.log('fetching pictures');
       const getPictures = async () => {
         const picturesRef = collection(db, `users/${id}/pictures`);
         const picturesSnapshot = await getDocs(picturesRef);

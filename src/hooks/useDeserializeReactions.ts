@@ -24,7 +24,7 @@ export default function useDeserializeReactions(reactions: IReactionsMap) {
         id,
         firstName: profileData.firstName,
         lastName: profileData.lastName,
-        picture: profileData.picture,
+        picture: profileData.pictureUrl,
       }))
     : [];
 

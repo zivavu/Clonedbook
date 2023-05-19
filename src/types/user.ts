@@ -5,6 +5,7 @@ export interface IUser extends IUserBasicInfo {
   email: string;
   phoneNumber?: string;
   backgroundPicture?: string;
+  profilePictureId?: string;
   biography?: string;
   isDummy?: boolean;
   groups: [];
@@ -31,7 +32,7 @@ export interface IUserBasicInfo {
   firstName: string;
   middleName?: string;
   lastName: string;
-  picture?: string;
+  pictureUrl?: string;
 }
 
 export interface IServerUserBasicInfo {
@@ -39,7 +40,7 @@ export interface IServerUserBasicInfo {
     firstName: string;
     middleName?: string;
     lastName: string;
-    picture?: string;
+    pictureUrl?: string;
   };
 }
 

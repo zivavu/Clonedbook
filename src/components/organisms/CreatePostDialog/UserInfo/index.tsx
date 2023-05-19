@@ -11,7 +11,7 @@ export default function UserInfo({ user, sx, ...rootProps }: UserInfoProps) {
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack direction='row' spacing={1}>
-        <UserAvatar src={user.picture} userId={user.id} />
+        <UserAvatar src={user.pictureUrl} userId={user.id} />
         <Box>
           <Typography fontWeight='500' variant='body1'>
             {user.firstName} {user.lastName}

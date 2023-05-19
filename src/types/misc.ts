@@ -18,3 +18,7 @@ export interface IWallElement {
   comments: ICommentMap;
   shareCount: number;
 }
+
+export interface IOptionalId {
+  id?: string;
+}

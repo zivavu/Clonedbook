@@ -66,10 +66,9 @@ export default function ElementInfo({
         ownerId={element.ownerId}
         elementId={element.id}
         elementType={type}
-        mt={theme.spacing(1)}
-        mb={theme.spacing(4)}
+        my={theme.spacing(1)}
       />
-      <Comments post={element} comments={element.comments} maxComments='all' />
+      <Comments post={element} comments={element.comments} maxComments='all' mode='picture' />
     </StyledRoot>
   );
 }

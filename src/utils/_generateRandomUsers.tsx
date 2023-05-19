@@ -19,17 +19,6 @@ import { Button } from '@mui/material';
 import { Timestamp, WriteBatch, collection, doc, writeBatch } from 'firebase/firestore';
 import { separateUserBasicInfo } from './separateUserBasicInfo';
 
-const randomPostPictures = [
-  faker.image.people,
-  faker.image.nature,
-  faker.image.transport,
-  faker.image.abstract,
-  faker.image.animals,
-  faker.image.business,
-];
-
-const randomProfilePictures = [faker.image.people];
-
 function getPastDate() {
   return Timestamp.fromDate(faker.date.past({ refDate: new Date(), years: 0.5 }));
 }
@@ -55,26 +44,110 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
   const allPosts: IPost[] = [];
 
-  function getRandomPicture() {
-    return randomPostPictures[Math.floor(Math.random() * randomPostPictures.length)](
-      800,
-      800,
-      true,
-    );
+  const profilePictureCategories = [
+    'people',
+    'people,man',
+    'man,gym',
+    'man,sport',
+    'boy,fashion',
+    'boy,model',
+    'boy,sport',
+    'boy,skater',
+    'boy,football',
+    'man,golfer',
+    'man,surfer',
+    'boy,hipster',
+    'boy,photographer',
+    'man,guitarist',
+    'girl',
+    'face,girl',
+    'girl,actress',
+    'girl,singer',
+    'girl,sport',
+    'model,girl',
+    'girl,model',
+    'girl,popular',
+    'nature,girl',
+    'girl,city',
+    'people,girl',
+    'people,woman',
+    'girl,forest',
+  ];
+
+  const abstractCategories = [
+    'abstract,art',
+    'abstract,fractal',
+    'abstract,architecture',
+    'abstract,image',
+    'abstract,poster',
+  ];
+  const animalsCategories = [
+    'animals',
+    'animals,bird',
+    'animals,cat',
+    'animals,dog',
+    'animals,horse',
+  ];
+  const carsCategories = ['car', 'cars', 'car,old', 'car,supercar', 'car,sport'];
+  const natureCategories = [
+    'nature',
+    'nature,forest',
+    'nature,water',
+    'nature,beach',
+    'nature,sky',
+    'nature,tree',
+    'nature,flower',
+  ];
+  const artCategories = ['painting', 'art,modern', 'graffiti'];
+  const randomCategories = ['food', 'city', 'meme', 'technology', 'space'];
+  const postCategories = [
+    natureCategories,
+    abstractCategories,
+    animalsCategories,
+    carsCategories,
+    artCategories,
+    randomCategories,
+    profilePictureCategories,
+  ];
+
+  const getEl = faker.helpers.arrayElement;
+  const getRandomPictureCategory = () => {
+    const categories = getEl(postCategories);
+    const category = getEl(categories);
+    return category;
+  };
+  const getRandomProfilePictureCategory = () => {
+    const category = getEl(profilePictureCategories);
+    return category;
+  };
+
+  function getRandomPictureUrl(initCategory?: string) {
+    const getEl = faker.helpers.arrayElement;
+    const categories = getEl(postCategories);
+    const category = getEl(categories);
+    return faker.image.urlLoremFlickr({
+      category: initCategory ? initCategory : category,
+      height: 800,
+      width: 1200,
+    });
   }
-  function getRandomProfilePicture() {
-    return randomProfilePictures[Math.floor(Math.random() * randomProfilePictures.length)](
-      800,
-      800,
-      true,
-    );
+  function getRandomBacgroundPictureUrl(initCategory?: string) {
+    const getEl = faker.helpers.arrayElement;
+    const categories = getEl(postCategories);
+    const category = getEl(categories);
+    return faker.image.urlLoremFlickr({
+      category: initCategory ? initCategory : category,
+      height: 800,
+      width: 1200,
+    });
   }
-  function getRandomBacgroundPicture() {
-    return randomPostPictures[Math.floor(Math.random() * randomPostPictures.length)](
-      1200,
-      800,
-      true,
-    );
+  function getRandomProfilePictureUrl(initCategory?: string) {
+    const category = faker.helpers.arrayElement(profilePictureCategories);
+    return faker.image.urlLoremFlickr({
+      category: initCategory ? initCategory : category,
+      height: 800,
+      width: 800,
+    });
   }
 
   function getRandomUIDv4() {
@@ -142,12 +215,12 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       id: userUUID,
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
-      picture: getRandomProfilePicture(),
     };
     usersBasicInfo.push(basicUserInfo);
   }
 
   function getRandomProfilePhotos(amount: number, basicUserInfo: IUserBasicInfo) {
+    const populairy = Math.ceil(Math.random() * 20);
     const photos: IPicturesMap = {};
     const photosAmount = Math.ceil(Math.random() * amount) + 2;
     for (let i = 0; i < photosAmount; i++) {
@@ -159,10 +232,10 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         wallOwnerId: basicUserInfo.id,
         text: faker.lorem.words(Math.floor(Math.random() * 5) + 3),
         createdAt,
-        url: getRandomPicture(),
-        reactions: getRandomReactions(40),
-        comments: getRandomComments(4, 7, createdAt),
-        shareCount: Math.floor(Math.random() * 50),
+        url: getRandomProfilePictureUrl(),
+        reactions: getRandomReactions(10 * populairy),
+        comments: getRandomComments(Math.round(0.9 * populairy), 7, createdAt),
+        shareCount: Math.floor((Math.random() * populairy) / 2),
       };
       photos[photoId] = photo;
     }
@@ -170,17 +243,19 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
   function getRandomPosts(amount: number, basicUserInfo: IUserBasicInfo) {
     const posts: IPostsMap = {};
-    const postAmount = Math.ceil(Math.random() * amount);
-    for (let i = 0; i < postAmount; i++) {
+    const postsAmount = Math.ceil(Math.random() * amount);
+    for (let i = 0; i < postsAmount; i++) {
+      const popularity = Math.ceil(Math.random() * 10);
       const postPictures: string[] = [];
       const hasPictures = Math.random() > 0.3;
       const picturesAmount = Math.floor(Math.random() * 12);
+      const postPicturesCategory = getRandomPictureCategory();
       for (let i = 0; i < picturesAmount; i++) {
-        postPictures.push(getRandomPicture());
+        postPictures.push(getRandomPictureUrl(postPicturesCategory));
       }
       const postId = getRandomUIDv4();
 
-      const postReactions = getRandomReactions(Math.random() > 0.9 ? 70 : 40);
+      const postReactions = getRandomReactions(15 * popularity);
       const createdAt = getPastDate();
       const post: IPost = {
         id: postId,
@@ -188,9 +263,9 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         wallOwnerId: basicUserInfo.id,
         text: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         pictures: hasPictures ? postPictures : [],
-        comments: getRandomComments(18, 8, createdAt),
+        comments: getRandomComments(2 * popularity, Math.ceil(popularity / 4), createdAt),
         reactions: postReactions,
-        shareCount: Math.floor(Math.random() * 30),
+        shareCount: Math.floor(Math.random() * popularity),
         createdAt,
       };
       posts[postId] = post;
@@ -278,9 +353,12 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const userBasicInfo = usersBasicInfo[i];
       const userPosts = getRandomPosts(2, userBasicInfo);
       const userPictures = getRandomProfilePhotos(4, userBasicInfo);
+      const profilePicture = Object.values(userPictures)[0];
+      userBasicInfo.pictureUrl = profilePicture.url;
       const user: IUser = {
         ...userBasicInfo,
-        backgroundPicture: getRandomBacgroundPicture(),
+        backgroundPicture: getRandomBacgroundPictureUrl(),
+        profilePictureId: profilePicture.id,
         email: faker.internet.email(),
         phoneNumber: faker.phone.number(),
         biography: faker.person.bio(),
@@ -407,30 +485,29 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
   });
 
   const usersPublicDataBatch = writeBatch(db);
-  const usersPublicDataDocId = uuidv4();
   const usersPublicDataAsObjects = usersPublicDataToCommit.map((publicData) => {
     const key = publicData.id;
-    const { firstName, lastName, picture } = publicData;
-    const publicDataWithoutProfileId = { firstName, lastName, picture };
+    const { firstName, lastName, pictureUrl } = publicData;
+    const publicDataWithoutProfileId: Omit<IUserBasicInfo, 'id'> = {
+      firstName,
+      lastName,
+      pictureUrl,
+    };
     return { [key]: publicDataWithoutProfileId };
   });
 
-  const docRef = doc(db, 'usersPublicData', usersPublicDataDocId);
+  const docRef = doc(db, 'usersPublicData', 'usersPublicData');
   usersPublicDataBatch.set(docRef, {});
   usersPublicDataAsObjects.forEach((userPublicData) => {
     usersPublicDataBatch.update(docRef, userPublicData);
   });
 
-  const baseSleepTime = 2000;
-  //Don't care enought to make it good, that scripts drives me crazy, it just has to work
+  const baseSleepTime = 1000;
   console.log(`you going to commit:\n`);
   console.log(`posts`, postsToCommit);
   console.log(`usersData`, usersDataToCommit);
-  // console.log(`friendsConnections`, friendsConnectionsToCommit);
   console.log(`usersPublicData`, usersPublicDataToCommit);
-  console.log('commiting batches, hold tight');
   try {
-    // sleep increses the max amount of users cause promise is resolved before the batch is written
     console.log(`\nCOMMITTING USERS DATA`);
     for (let i = 0; i < userDataBatches.length; i++) {
       const batch = userDataBatches[i];
@@ -468,5 +545,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(60, 30)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(80, 30)}>AddEm</Button>;
 }

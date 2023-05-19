@@ -17,14 +17,13 @@ export default function UserAvatar({
   const user = userId && userData ? userData[userId] : null;
   const px = `${size}px`;
   const theme = useTheme();
-
   const UserImage = () => (
     <Image
       unoptimized
       height={size}
       width={size}
       loading='eager'
-      src={src || user?.picture || '/no-profile-picture-icon.svg'}
+      src={src || user?.pictureUrl || '/no-profile-picture-icon.svg'}
       alt={alt || 'user avatar'}
       style={{
         borderRadius: '50%',

@@ -47,7 +47,7 @@ export default function ActionButtons({
         loggedUserId,
         ownerId,
         elementType,
-        reaction: userReaction,
+        reaction: null,
       });
     }
   }

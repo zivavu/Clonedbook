@@ -9,6 +9,7 @@ export async function userPostReact(
 ) {
   try {
     const postsDocRef = doc(db, 'posts', postId);
+    console.log(postId, userId, reaction);
     if (reaction) {
       await updateDoc(postsDocRef, `reactions.${userId}`, reaction);
     } else {

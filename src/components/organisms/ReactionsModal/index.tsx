@@ -71,12 +71,12 @@ export default function ReactionsPortal({
           {!isLoading && (
             <StyledUsersContainer spacing={1}>
               {reactionsToShow?.map((reaction) => {
-                const { firstName, lastName, picture, id: profileId } = reaction.info;
+                const { firstName, lastName, pictureUrl, id: profileId } = reaction.info;
                 return (
                   <Stack key={profileId} direction='row' alignItems='center'>
                     <Box position='relative'>
                       <UserAvatar
-                        src={picture}
+                        src={pictureUrl}
                         mr={theme.spacing(1)}
                         size={40}
                         userId={profileId}

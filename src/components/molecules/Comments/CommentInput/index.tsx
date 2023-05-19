@@ -11,17 +11,28 @@ export default function CommentInput({ sx, mode, ...rootProps }: CommentInputPro
   const { data: user } = useFetchLoggedUserQuery({});
   const theme = useTheme();
   const [commentText, setCommentText] = useState<string>('');
-  const modeSx: SxProps<Theme> =
-    mode !== 'feed'
-      ? { p: theme.spacing(2, 0), position: 'sticky', bottom: 0 }
-      : { pb: theme.spacing(2) };
+
+  let modeSx: SxProps<Theme>;
+  switch (mode) {
+    case 'post':
+      modeSx = { p: theme.spacing(2, 0), position: 'sticky', bottom: 0 };
+      break;
+    case 'picture':
+      modeSx = { p: theme.spacing(1, 0), position: 'sticky', bottom: 0 };
+      break;
+    case 'feed':
+      modeSx = { pb: theme.spacing(1) };
+      break;
+    default:
+      modeSx = { pb: theme.spacing(1) };
+  }
   return (
     <StyledRoot sx={{ ...modeSx, ...sx }} {...rootProps}>
       <StyledWrapper>
         <UserAvatar
           size={30}
           sx={{ mr: theme.spacing(0.7) }}
-          src={user?.picture}
+          src={user?.pictureUrl}
           userId={user?.id}
         />
         <StyledCommentInput

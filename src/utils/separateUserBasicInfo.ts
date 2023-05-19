@@ -5,6 +5,6 @@ export function separateUserBasicInfo(user: IUser | IUserBasicInfo) {
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
-    picture: user.picture || '',
+    pictureUrl: user.pictureUrl || '',
   } as IUserBasicInfo;
 }

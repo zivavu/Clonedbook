@@ -60,7 +60,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
   return (
     <StyledRoot {...rootProps}>
       <Box display='flex' alignItems='center'>
-        <UserAvatar src={ownerData?.picture || ''} sx={{ alignSelf: 'start' }} size={32} />
+        <UserAvatar src={ownerData?.pictureUrl || ''} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>
           {!!ownerData && (
             <>

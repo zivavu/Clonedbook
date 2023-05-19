@@ -65,7 +65,7 @@ export default function ElementInfo({
         setUserReaction={setUserReaction}
         ownerId={element.ownerId}
         elementId={element.id}
-        type={type}
+        elementType={type}
         mt={theme.spacing(1)}
         mb={theme.spacing(4)}
       />

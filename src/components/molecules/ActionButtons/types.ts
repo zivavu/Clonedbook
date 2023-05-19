@@ -8,5 +8,5 @@ export interface ActionButtonsProps extends BoxProps {
   ownerId: string;
   userReaction: TLocalUserReaction;
   setUserReaction: Dispatch<SetStateAction<TLocalUserReaction>>;
-  type: TPostOrPicture;
+  elementType: TPostOrPicture;
 }

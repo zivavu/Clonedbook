@@ -90,7 +90,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
 
           <ActionButtons
             elementId={post.id}
-            type='post'
+            elementType='post'
             ownerId={post.ownerId}
             userReaction={userReaction}
             setUserReaction={setUserReaction}
@@ -104,7 +104,13 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
               </Typography>
             </InteractButton>
           )}
-          <Comments comments={comments} onlyUniqueUsers maxComments={maxComments} post={post} />
+          <Comments
+            comments={comments}
+            onlyUniqueUsers
+            maxComments={maxComments}
+            post={post}
+            mode='feed'
+          />
         </StyledContentWrapper>
       </StyledRoot>
     </>

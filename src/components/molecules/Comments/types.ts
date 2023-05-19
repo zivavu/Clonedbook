@@ -8,4 +8,6 @@ export interface CommentsProps extends BoxProps {
   post: IPost | IAccountPicture;
   maxComments?: number | 'all';
   onlyUniqueUsers?: boolean;
+  mode?: TDisplayMode;
 }
+export type TDisplayMode = 'post' | 'picture' | 'feed';

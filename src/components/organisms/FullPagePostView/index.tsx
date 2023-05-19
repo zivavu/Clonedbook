@@ -56,7 +56,7 @@ export default function FullPagePostView({
               </Typography>
             </Stack>
             <ActionButtons
-              type='post'
+              elementType='post'
               elementId={post.id}
               ownerId={post.ownerId}
               userReaction={userReaction}

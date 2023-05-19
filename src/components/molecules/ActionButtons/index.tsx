@@ -4,7 +4,7 @@ import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
-import { userPostReact } from '@/utils/userPostReact';
+import updateElementReaction from '@/utils/updateElementReaction';
 import { useRef, useState } from 'react';
 import ReactionsPopper from './ReactionsPopper';
 import { ActionButtonsProps } from './types';
@@ -14,7 +14,7 @@ export default function ActionButtons({
   ownerId,
   userReaction,
   setUserReaction,
-  type,
+  elementType,
   sx,
   ...rootProps
 }: ActionButtonsProps) {
@@ -36,12 +36,19 @@ export default function ActionButtons({
   function handleReactionClick() {
     if (!loggedUser) return;
     setMouseOverReactionElements(false);
+    const loggedUserId = loggedUser.id;
     if (!userReaction) {
       setUserReaction('like');
-      userPostReact(elementId, loggedUser, 'like');
+      updateElementReaction({ elementId, loggedUserId, ownerId, elementType, reaction: 'like' });
     } else {
       setUserReaction(null);
-      userPostReact(elementId, loggedUser, null);
+      updateElementReaction({
+        elementId,
+        loggedUserId,
+        ownerId,
+        elementType,
+        reaction: userReaction,
+      });
     }
   }
 
@@ -49,9 +56,16 @@ export default function ActionButtons({
     <StyledRoot {...rootProps} sx={sx}>
       <ReactionsPopper
         anchorEl={anchorEl}
-        updateDocHandler={(type) => {
+        updateDocHandler={(reaction) => {
           if (!loggedUser) return;
-          userPostReact(elementId, loggedUser, type);
+          const loggedUserId = loggedUser.id;
+          updateElementReaction({
+            elementId,
+            loggedUserId,
+            ownerId,
+            elementType,
+            reaction,
+          });
         }}
         setAnchorEl={setAnchorEl}
         placement='top-start'

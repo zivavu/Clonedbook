@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material';
+import { SxProps, Theme, useTheme } from '@mui/material';
 
 import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
 
@@ -7,12 +7,16 @@ import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { useState } from 'react';
 import { CommentInputProps } from './types';
 
-export default function CommentInput({ sx, ...rootProps }: CommentInputProps) {
+export default function CommentInput({ sx, mode, ...rootProps }: CommentInputProps) {
   const { data: user } = useFetchLoggedUserQuery({});
   const theme = useTheme();
   const [commentText, setCommentText] = useState<string>('');
+  const modeSx: SxProps<Theme> =
+    mode !== 'feed'
+      ? { p: theme.spacing(2, 0), position: 'sticky', bottom: 0 }
+      : { pb: theme.spacing(2) };
   return (
-    <StyledRoot sx={sx} {...rootProps}>
+    <StyledRoot sx={{ ...modeSx, ...sx }} {...rootProps}>
       <StyledWrapper>
         <UserAvatar
           size={30}

@@ -90,6 +90,7 @@ export default function Picture({
             alt={alt || "Post's picture"}
             fill
             quality={quality}
+            loading='lazy'
             sizes={imageSizes}
             onError={() => {
               setPhotoSrc(`https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/800/800`);

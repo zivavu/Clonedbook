@@ -3,12 +3,16 @@ import { IPicturesMap } from '@/types/picture';
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-export default function useFetchUsersPictures(id: string) {
+export default function useFetchUsersPictures(
+  id: string,
+  shouldRefetch?: boolean,
+  setShouldRefetch?: React.Dispatch<React.SetStateAction<boolean>>,
+) {
   const [picturesMap, setPicturesMap] = useState<IPicturesMap>({});
-  const [isLoading, setisLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-
   useEffect(() => {
+    if (!shouldRefetch) return;
     try {
       const getPictures = async () => {
         const picturesRef = collection(db, `users/${id}/pictures`);
@@ -21,9 +25,10 @@ export default function useFetchUsersPictures(id: string) {
     } catch {
       setIsError(true);
     } finally {
-      setisLoading(false);
+      setIsLoading(false);
+      if (setShouldRefetch) setShouldRefetch(false);
     }
-  }, [id]);
+  }, [id, shouldRefetch, setShouldRefetch]);
 
   return { picturesMap, isLoading, isError };
 }

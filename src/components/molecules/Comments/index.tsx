@@ -12,6 +12,7 @@ export default function Comments({
   maxComments,
   post,
   onlyUniqueUsers = false,
+  mode = 'post',
   sx,
   ...rootProps
 }: CommentsProps) {
@@ -40,7 +41,7 @@ export default function Comments({
             ))}
           </Stack>
         )}
-        <CommentInput />
+        <CommentInput mode={mode} />
       </Box>
     </StyledRoot>
   );

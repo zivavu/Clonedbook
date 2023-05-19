@@ -2,9 +2,7 @@ import { Box, TextField, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'sticky',
-  bottom: 0,
-  width: `calc(100% + ${theme.spacing(1)})`,
-  padding: theme.spacing(1, 0),
+  width: `calc(100% + ${theme.spacing(2)})`,
   color: theme.palette.text.primary,
   backgroundColor: theme.palette.secondary.light,
   zIndex: 5,

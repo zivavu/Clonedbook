@@ -9,11 +9,11 @@ export async function userPictureReact({
   reaction,
 }: IUpdateElementReaction) {
   try {
-    const pictureRef = doc(db, 'users', ownerId);
+    const picturesDocRef = doc(db, `users/${ownerId}/pictures/pictures`);
     if (reaction) {
-      await updateDoc(pictureRef, `reactions.${loggedUserId}`, reaction);
+      await updateDoc(picturesDocRef, `${elementId}.reactions.${loggedUserId}`, reaction);
     } else {
-      await updateDoc(pictureRef, `reactions.${loggedUserId}`, deleteField());
+      await updateDoc(picturesDocRef, `${elementId}.reactions.${loggedUserId}`, deleteField());
     }
   } catch (err) {
     console.log(err);

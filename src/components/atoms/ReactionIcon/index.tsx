@@ -67,7 +67,6 @@ export default function ReactionIcon({
         width={size}
         height={size}
         src={src || LikeIcon}
-        priority
         alt={alt || 'reaction icon'}
         style={{
           border: imageBorder,

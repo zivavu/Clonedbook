@@ -188,7 +188,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         wallOwnerId: basicUserInfo.id,
         text: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1, '\n'),
         pictures: hasPictures ? postPictures : [],
-        comments: getRandomComments(10, 8, createdAt),
+        comments: getRandomComments(18, 8, createdAt),
         reactions: postReactions,
         shareCount: Math.floor(Math.random() * 30),
         createdAt,
@@ -373,8 +373,12 @@ export async function generateUsersAndPostToDb(usersAmount: number, friendsAmoun
     const userDocRef = doc(db, 'users', mainDocData.id);
     const usersPublicFriendsCollectionRef = doc(
       collection(db, 'users', mainDocData.id, 'publicFriends'),
+      'publicFriends',
     );
-    const usersPicturesCollectionRef = doc(collection(db, 'users', mainDocData.id, 'pictures'));
+    const usersPicturesCollectionRef = doc(
+      collection(db, 'users', mainDocData.id, 'pictures'),
+      'pictures',
+    );
 
     const batchIndex = i % Math.ceil(users.length / 20);
     if (!userDataBatches[batchIndex]) {

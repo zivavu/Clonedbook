@@ -1,38 +1,30 @@
 import { StyledImageContainer, StyledImagesRow, StyledTileImage } from './styles';
 
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PicturesRowProps } from './types';
 
 export default function PicturesRow({
   pictures,
   startIndex,
   owner,
-  setShouldRefetch,
   sx,
   ...rootProps
 }: PicturesRowProps) {
-  const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>();
+  const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
   const [photoIndex, setPhotoIndex] = useState(0);
   const handleOpenFullView = (index: number) => {
     setPhotoIndex(index);
     setIsFullViewOpen(true);
   };
-  useEffect(() => {
-    if (isFullViewOpen === false) {
-      setShouldRefetch(true);
-    }
-  }, [isFullViewOpen, setShouldRefetch]);
 
   return (
     <>
       {isFullViewOpen && (
         <FullPageAccountPicturesView
           initialPhotoIndex={photoIndex}
-          pictures={pictures}
-          //@ts-ignore
           setOpen={setIsFullViewOpen}
-          userId={owner.id}
+          ownerId={owner.id}
         />
       )}
       <StyledImagesRow direction='row' spacing={0.5} sx={sx} {...rootProps}>

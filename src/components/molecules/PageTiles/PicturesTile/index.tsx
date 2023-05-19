@@ -2,20 +2,13 @@ import { Stack, useTheme } from '@mui/material';
 
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
-import { useState } from 'react';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import PicturesRow from './PicturesRow';
 import { PicturesTileProps } from './types';
 
 export default function PicturesTile({ user: owner, sx, ...rootProps }: PicturesTileProps) {
   const theme = useTheme();
-  const [shouldRefetch, setShouldRefetch] = useState<boolean>(true);
-  const { isError, isLoading, picturesMap } = useFetchUsersPictures(
-    owner.id,
-    shouldRefetch,
-    setShouldRefetch,
-  );
-
+  const { isError, isLoading, picturesMap } = useFetchUsersPictures(owner.id);
   const pictures = Object.values(picturesMap)
     .slice(0, 9)
     .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
@@ -30,7 +23,6 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
         <PicturesRow
           pictures={pictures}
           startIndex={0}
-          setShouldRefetch={setShouldRefetch}
           owner={owner}
           sx={{ borderTopRightRadius: theme.spacing(1), borderTopLeftRadius: theme.spacing(1) }}
         />
@@ -38,7 +30,6 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
           <PicturesRow
             pictures={pictures}
             owner={owner}
-            setShouldRefetch={setShouldRefetch}
             startIndex={3}
             sx={
               rowCount === 2
@@ -54,7 +45,6 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
           <PicturesRow
             pictures={pictures}
             startIndex={6}
-            setShouldRefetch={setShouldRefetch}
             owner={owner}
             sx={{
               borderBottomRightRadius: theme.spacing(1),

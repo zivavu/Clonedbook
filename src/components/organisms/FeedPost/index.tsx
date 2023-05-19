@@ -59,7 +59,6 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
             </Box>
           )}
         </StyledContentWrapper>
-
         {hasPictures && (
           <Box mt={theme.spacing(1)}>
             <PicturesDisplay pictures={postPictures as string[]} postId={postId} />

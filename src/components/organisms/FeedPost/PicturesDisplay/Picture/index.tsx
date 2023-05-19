@@ -3,8 +3,6 @@ import { ButtonBase, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import FullPagePostPicturesView from '@/components/organisms/FullPagePhotosView/FullPagePostPicturesView';
-import { useFetchPostsQuery } from '@/features/postsAPI';
-import { IPost } from '@/types/post';
 import Image from 'next/image';
 import { useState } from 'react';
 import { PictureProps } from './types';
@@ -21,14 +19,9 @@ export default function Picture({
 }: PictureProps) {
   const theme = useTheme();
   const [photoSrc, setPhotoSrc] = useState(src);
-  const { data } = useFetchPostsQuery({});
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
-  const [postData, setPostData] = useState<IPost | null>(null);
 
   const handleClick = () => {
-    const post = data?.find((post) => post?.id === postId);
-    if (!post) return;
-    setPostData(post);
     setIsFullViewOpen(!isFullViewOpen);
   };
 
@@ -67,7 +60,7 @@ export default function Picture({
   }
   return (
     <>
-      {isFullViewOpen && postData?.pictures && (
+      {isFullViewOpen && (
         <FullPagePostPicturesView
           postId={postId}
           initialPhoto={photoSrc}

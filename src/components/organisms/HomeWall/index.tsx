@@ -7,13 +7,13 @@ import PostsFeed from '../PostsFeed';
 import { HomeWallProps } from './types';
 
 export default function HomeWall({ ...rootProps }: HomeWallProps) {
-  const { data } = useFetchPostsQuery({});
+  const { data: posts } = useFetchPostsQuery({});
   const { data: user } = useFetchLoggedUserQuery({});
 
   return (
     <StyledRoot {...rootProps}>
       {user?.id && <WriteSomethingTile user={user} mb={2} />}
-      {data ? <PostsFeed posts={data} /> : null}
+      {posts ? <PostsFeed posts={posts} /> : null}
     </StyledRoot>
   );
 }

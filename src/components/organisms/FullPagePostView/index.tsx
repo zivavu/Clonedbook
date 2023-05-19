@@ -32,7 +32,6 @@ export default function FullPagePostView({
   useEffect(() => {
     setUserReaction(post?.reactions[user?.id || ''] || undefined);
   }, [post, user?.id]);
-
   return isLoading || isError || !post ? null : (
     <>
       <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />

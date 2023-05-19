@@ -4,7 +4,6 @@ import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
-import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { userPostReact } from '@/utils/userPostReact';
 import { useRef, useState } from 'react';
 import ReactionsPopper from './ReactionsPopper';
@@ -12,13 +11,14 @@ import { ActionButtonsProps } from './types';
 
 export default function ActionButtons({
   elementId,
+  ownerId,
   userReaction,
   setUserReaction,
   type,
   sx,
   ...rootProps
 }: ActionButtonsProps) {
-  const { data: user } = useFetchLoggedUserQuery({});
+  const { data: loggedUser } = useFetchLoggedUserQuery({});
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -34,14 +34,14 @@ export default function ActionButtons({
   }
 
   function handleReactionClick() {
-    if (!user) return;
+    if (!loggedUser) return;
     setMouseOverReactionElements(false);
     if (!userReaction) {
       setUserReaction('like');
-      userPostReact(elementId, user, 'like');
+      userPostReact(elementId, loggedUser, 'like');
     } else {
       setUserReaction(null);
-      userPostReact(elementId, user, null);
+      userPostReact(elementId, loggedUser, null);
     }
   }
 
@@ -50,8 +50,8 @@ export default function ActionButtons({
       <ReactionsPopper
         anchorEl={anchorEl}
         updateDocHandler={(type) => {
-          if (!user) return;
-          userPostReact(elementId, separateUserBasicInfo(user), type);
+          if (!loggedUser) return;
+          userPostReact(elementId, loggedUser, type);
         }}
         setAnchorEl={setAnchorEl}
         placement='top-start'

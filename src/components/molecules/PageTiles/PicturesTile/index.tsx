@@ -3,14 +3,19 @@ import { Stack, useTheme } from '@mui/material';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import { StyledImageContainer, StyledImagesRow, StyledTileImage } from './styles';
 import { PicturesRowProps, PicturesTileProps } from './types';
 
 export default function PicturesTile({ user, sx, ...rootProps }: PicturesTileProps) {
   const theme = useTheme();
-  const { isError, isLoading, picturesMap } = useFetchUsersPictures(user.id);
+  const [shouldRefetch, setShouldRefetch] = useState<boolean>(true);
+  const { isError, isLoading, picturesMap } = useFetchUsersPictures(
+    user.id,
+    shouldRefetch,
+    setShouldRefetch,
+  );
 
   const pictures = Object.values(picturesMap)
     .slice(0, 9)
@@ -26,6 +31,7 @@ export default function PicturesTile({ user, sx, ...rootProps }: PicturesTilePro
         <PicturesRow
           pictures={pictures}
           startIndex={0}
+          setShouldRefetch={setShouldRefetch}
           user={user}
           sx={{ borderTopRightRadius: theme.spacing(1), borderTopLeftRadius: theme.spacing(1) }}
         />
@@ -33,6 +39,7 @@ export default function PicturesTile({ user, sx, ...rootProps }: PicturesTilePro
           <PicturesRow
             pictures={pictures}
             user={user}
+            setShouldRefetch={setShouldRefetch}
             startIndex={3}
             sx={
               rowCount === 2
@@ -48,6 +55,7 @@ export default function PicturesTile({ user, sx, ...rootProps }: PicturesTilePro
           <PicturesRow
             pictures={pictures}
             startIndex={6}
+            setShouldRefetch={setShouldRefetch}
             user={user}
             sx={{
               borderBottomRightRadius: theme.spacing(1),
@@ -60,18 +68,32 @@ export default function PicturesTile({ user, sx, ...rootProps }: PicturesTilePro
   );
 }
 
-function PicturesRow({ pictures, startIndex, user, sx, ...rootProps }: PicturesRowProps) {
+function PicturesRow({
+  pictures,
+  startIndex,
+  user,
+  setShouldRefetch,
+  sx,
+  ...rootProps
+}: PicturesRowProps) {
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
   const handleOpenFullView = (index: number) => {
     setPhotoIndex(index);
     setIsFullViewOpen(true);
   };
+  useEffect(() => {
+    if (!isFullViewOpen) {
+      setShouldRefetch(true);
+    }
+  }, [isFullViewOpen, setShouldRefetch]);
+
   return (
     <>
       {isFullViewOpen && (
         <FullPageAccountPicturesView
           initialPhotoIndex={photoIndex}
+          pictures={pictures}
           setOpen={setIsFullViewOpen}
           userId={user.id}
         />

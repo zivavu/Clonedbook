@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 export interface ActionButtonsProps extends BoxProps {
   elementId: string;
+  ownerId: string;
   userReaction: TLocalUserReaction;
   setUserReaction: Dispatch<SetStateAction<TLocalUserReaction>>;
   type: TPostOrPicture;

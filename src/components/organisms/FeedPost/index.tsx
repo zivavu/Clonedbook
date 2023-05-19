@@ -91,6 +91,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
           <ActionButtons
             elementId={post.id}
             type='post'
+            ownerId={post.ownerId}
             userReaction={userReaction}
             setUserReaction={setUserReaction}
           />

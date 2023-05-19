@@ -1,5 +1,4 @@
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
-import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useEffect, useState } from 'react';
 import ElementInfo from '../ElementInfo';
@@ -12,20 +11,13 @@ export default function FullPageAccountPicturesView({
   initialPhotoIndex,
   userId,
   setOpen,
+  pictures,
   ...rootProps
 }: FullPageAccountPicturesViewProps) {
   const { data: loggedUser } = useFetchLoggedUserQuery({});
-  const { isError, isLoading, picturesMap } = useFetchUsersPictures(userId);
 
-  const [picturesArr, setPicturesArr] = useState(Object.values(picturesMap));
   const [currentPictureIndex, setCurrentPictureIndex] = useState(initialPhotoIndex);
-  const currentPicture = picturesArr[currentPictureIndex];
-  useEffect(() => {
-    setPicturesArr(Object.values(picturesMap));
-  }, [picturesMap]);
-  useEffect(() => {
-    setCurrentPictureIndex(initialPhotoIndex);
-  }, [initialPhotoIndex]);
+  const currentPicture = pictures[currentPictureIndex];
 
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
     currentPicture?.reactions[loggedUser?.id || ''] || undefined,
@@ -34,10 +26,10 @@ export default function FullPageAccountPicturesView({
     setUserReaction(currentPicture?.reactions[loggedUser?.id || ''] || undefined);
   }, [currentPicture, loggedUser?.id]);
 
-  return isLoading || isError || !picturesMap || !currentPicture ? null : (
+  return !pictures || !currentPicture ? null : (
     <FullPagePortal setOpen={setOpen} sx={sx} {...rootProps}>
       <PhotosCarousel
-        picturesUrls={picturesArr.map((picture) => picture.url)}
+        picturesUrls={pictures.map((picture) => picture.url)}
         currentPictureIndex={currentPictureIndex}
         setCurrentPictureIndex={setCurrentPictureIndex}
       />

@@ -63,8 +63,9 @@ export default function ElementInfo({
       <ActionButtons
         userReaction={userReaction}
         setUserReaction={setUserReaction}
+        ownerId={element.ownerId}
         elementId={element.id}
-        type='post'
+        type={type}
         mt={theme.spacing(1)}
         mb={theme.spacing(4)}
       />

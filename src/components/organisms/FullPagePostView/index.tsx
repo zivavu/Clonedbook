@@ -58,6 +58,7 @@ export default function FullPagePostView({
             <ActionButtons
               type='post'
               elementId={post.id}
+              ownerId={post.ownerId}
               userReaction={userReaction}
               setUserReaction={setUserReaction}
               sx={{ borderBottom: 'none' }}

@@ -10,4 +10,5 @@ export interface PicturesRowProps extends StackProps {
   pictures: IAccountPicture[];
   startIndex: number;
   user: IUser;
+  setShouldRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 }

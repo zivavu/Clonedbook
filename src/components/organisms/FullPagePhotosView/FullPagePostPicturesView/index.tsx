@@ -1,5 +1,3 @@
-import { useTheme } from '@mui/material';
-
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import { TLocalUserReaction } from '@/types/reaction';
@@ -16,7 +14,6 @@ export default function FullPagePostPicturesView({
   setOpen,
   ...rootProps
 }: FullPagePostPicturesViewProps) {
-  const theme = useTheme();
   const { isError, isLoading, postData: post } = useFetchPostData(postId);
   const { data: user } = useFetchLoggedUserQuery({});
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(

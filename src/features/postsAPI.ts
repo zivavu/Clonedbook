@@ -15,7 +15,13 @@ export const posts = createApi({
           const querySnapshot = query(ref, orderBy('createdAt', 'desc'), limit(10));
           const docs = await getDocs(querySnapshot);
           const posts = docs.docs.map((doc) => doc.data()) as IPost[];
-          return { data: posts };
+          return {
+            data: posts.sort((a, b) => {
+              const commentsArr = Object.values(a.comments);
+              const commentsArr2 = Object.values(b.comments);
+              return commentsArr2.length - commentsArr.length;
+            }),
+          };
         } catch (error: any) {
           return { error: error.message };
         }

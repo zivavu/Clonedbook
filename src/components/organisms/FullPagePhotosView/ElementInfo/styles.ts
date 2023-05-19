@@ -5,8 +5,8 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
   minWidth: '376px',
   maxWidth: '376px',
-  padding: theme.spacing(2),
-  paddingTop: 0,
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
 
   overflowX: 'hidden',
   overflowY: 'scroll',

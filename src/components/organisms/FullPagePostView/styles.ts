@@ -19,6 +19,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
 
 export const StyledPostContentWrapper = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2),
+  paddingBottom: 0,
   overflowY: 'auto',
   height: '100%',
   scrollbarWidth: 'thin',

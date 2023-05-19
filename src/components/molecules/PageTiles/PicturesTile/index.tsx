@@ -65,7 +65,6 @@ function PicturesRow({ pictures, startIndex, user, sx, ...rootProps }: PicturesR
   const [photoIndex, setPhotoIndex] = useState(0);
   const handleOpenFullView = (index: number) => {
     setPhotoIndex(index);
-    console.log(index);
     setIsFullViewOpen(true);
   };
   return (

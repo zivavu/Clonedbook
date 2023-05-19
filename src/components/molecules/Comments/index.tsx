@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -13,6 +13,7 @@ export default function Comments({
   maxComments,
   post,
   onlyUniqueUsers = false,
+  sx,
   ...rootProps
 }: CommentsProps) {
   const { data: user } = useFetchLoggedUserQuery({});
@@ -32,15 +33,17 @@ export default function Comments({
 
   const commentsCutIndex = maxComments === 'all' ? undefined : maxComments;
   return (
-    <StyledRoot {...rootProps}>
-      {!!comments && (
-        <Stack>
-          {commentsToRender.slice(0, commentsCutIndex).map((comment) => (
-            <Comment key={comment.id} comment={comment} post={post} />
-          ))}
-        </Stack>
-      )}
-      {user && <CommentInput user={user} />}
+    <StyledRoot sx={sx} {...rootProps}>
+      <Box>
+        {!!comments && (
+          <Stack>
+            {commentsToRender.slice(0, commentsCutIndex).map((comment) => (
+              <Comment key={comment.id} comment={comment} post={post} />
+            ))}
+          </Stack>
+        )}
+        <CommentInput />
+      </Box>
     </StyledRoot>
   );
 }

@@ -46,7 +46,7 @@ export default function FullPagePostView({
           </Stack>
           <StyledPostContentWrapper spacing={1}>
             <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />
-            <Typography variant='body1'>{post.pictures}</Typography>
+            <Typography variant='body1'>{post.text}</Typography>
             <Stack direction='row' alignItems='center'>
               <ReactionsDisplay userReaction={userReaction} reactions={post.reactions} />
               <Typography ml='auto' color={theme.palette.text.secondary} variant='caption'>
@@ -62,7 +62,12 @@ export default function FullPagePostView({
               setUserReaction={setUserReaction}
               sx={{ borderBottom: 'none' }}
             />
-            <Comments comments={post.comments} post={post} maxComments='all' />
+            <Comments
+              comments={post.comments}
+              post={post}
+              sx={{ height: '100%' }}
+              maxComments='all'
+            />
           </StyledPostContentWrapper>
         </StyledRoot>
       </Modal>

@@ -56,7 +56,7 @@ export default function usePostsInfiniteScrolling({ type, id }: IUsePostFeedInfi
       const { scrollTop, scrollHeight, clientHeight } = target;
       const scrollMax = scrollHeight - clientHeight;
       if (scrollTop > scrollMax - 800) {
-        if (!isLoading && !isError && canLoadMore.current) {
+        if (!isLoading && !isError && canLoadMore.current && lastDoc) {
           canLoadMore.current = false;
           const nextQuery = query(ref, orderBy('createdAt', 'desc'), limit(5), startAfter(lastDoc));
           fetchPosts(nextQuery);

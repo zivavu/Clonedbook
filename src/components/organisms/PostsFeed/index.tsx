@@ -4,7 +4,7 @@ import FeedPost from '@/components/organisms/FeedPost';
 import { Stack } from '@mui/material';
 import { PostsFeedProps } from './types';
 
-export default function PostsFeed({ posts, ...rootProps }: PostsFeedProps) {
+export default function PostsFeed({ posts, isLoading, isError, ...rootProps }: PostsFeedProps) {
   return (
     <StyledRoot {...rootProps}>
       <Stack spacing={2}>

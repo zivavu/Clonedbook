@@ -18,7 +18,7 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
   const theme = useTheme();
   const { userData: profileData, isLoading: isUserLoading, isError } = useFetchAllUserData(userId);
   const { data: loggedUser } = useFetchLoggedUserQuery({});
-  const { posts, isLoading: arePostsLoading, error } = useFetchUsersPosts(userId);
+  const { posts, isLoading: arePostsLoading, isError: isPostsError } = useFetchUsersPosts(userId);
   return isUserLoading || isError || !profileData ? null : (
     <StyledRoot sx={sx} {...rootProps}>
       <Box bgcolor={theme.palette.secondary.light} boxShadow={`rgba(0, 0, 0, 0.1) 0px 1px 2px 0px`}>
@@ -36,8 +36,11 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
           </Stack>
           <Stack width='57%'>
             {!!loggedUser && <WriteSomethingTile user={loggedUser} mb={2} />}
-            {!arePostsLoading && !error && posts && posts.length > 0 ? (
-              <PostsFeed posts={posts}></PostsFeed>
+            {!arePostsLoading && !isPostsError && posts && posts.length > 0 ? (
+              <PostsFeed
+                posts={posts}
+                isLoading={arePostsLoading}
+                isError={isPostsError}></PostsFeed>
             ) : null}
           </Stack>
         </Stack>

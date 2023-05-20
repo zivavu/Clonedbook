@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 export default function useFetchUsersPosts(id: string) {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isError, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -17,12 +17,12 @@ export default function useFetchUsersPosts(id: string) {
         const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as IPost[];
         setPosts(data);
       } catch (err) {
-        setError('Something went wrong');
+        setError(true);
       } finally {
         setIsLoading(false);
       }
     };
     fetchPosts();
   }, [id]);
-  return { posts, isLoading, error };
+  return { posts, isLoading, isError };
 }

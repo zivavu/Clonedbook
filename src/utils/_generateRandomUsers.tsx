@@ -66,7 +66,6 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     'boy,sport',
     'boy,skater',
     'boy,football',
-    'man,golfer',
     'man,surfer',
     'boy,hipster',
     'boy,photographer',
@@ -352,8 +351,10 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const userBasicInfo = usersBasicInfo[i];
       const usersSex = faker.person.sexType();
       const userPosts = getRandomPosts(2, userBasicInfo);
-      const userPictures = getRandomProfilePhotos(4, userBasicInfo, usersSex);
-      const profilePicture = Object.values(userPictures)[0];
+      const userPictures = getRandomProfilePhotos(9, userBasicInfo, usersSex);
+      const profilePicture = Object.values(userPictures).sort(
+        (a, b) => a.createdAt.seconds - b.createdAt.seconds,
+      )[0];
       userBasicInfo.pictureUrl = profilePicture.url;
       const user: IUser = {
         ...userBasicInfo,
@@ -545,5 +546,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(80, 30)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(70, 30)}>AddEm</Button>;
 }

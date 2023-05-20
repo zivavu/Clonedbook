@@ -44,8 +44,20 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
   }
   const allPosts: IPost[] = [];
 
-  const profilePictureCategories = [
-    'people',
+  const womanProfilePicturesCategories = [
+    'girl',
+    'girl,actress',
+    'girl,singer',
+    'girl,sport',
+    'model,girl',
+    'girl,popular',
+    'girl,city',
+    'people,girl',
+    'people,woman',
+    'girl,forest',
+  ];
+
+  const maleProfilePicturesCategories = [
     'people,man',
     'man,gym',
     'man,sport',
@@ -59,19 +71,6 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     'boy,hipster',
     'boy,photographer',
     'man,guitarist',
-    'girl',
-    'face,girl',
-    'girl,actress',
-    'girl,singer',
-    'girl,sport',
-    'model,girl',
-    'girl,model',
-    'girl,popular',
-    'nature,girl',
-    'girl,city',
-    'people,girl',
-    'people,woman',
-    'girl,forest',
   ];
 
   const abstractCategories = [
@@ -93,7 +92,6 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     'nature',
     'nature,forest',
     'nature,water',
-    'nature,beach',
     'nature,sky',
     'nature,tree',
     'nature,flower',
@@ -107,17 +105,13 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     carsCategories,
     artCategories,
     randomCategories,
-    profilePictureCategories,
+    maleProfilePicturesCategories,
   ];
 
   const getEl = faker.helpers.arrayElement;
   const getRandomPictureCategory = () => {
     const categories = getEl(postCategories);
     const category = getEl(categories);
-    return category;
-  };
-  const getRandomProfilePictureCategory = () => {
-    const category = getEl(profilePictureCategories);
     return category;
   };
 
@@ -141,8 +135,9 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       width: 1200,
     });
   }
-  function getRandomProfilePictureUrl(initCategory?: string) {
-    const category = faker.helpers.arrayElement(profilePictureCategories);
+  function getRandomProfilePictureUrl(sex: 'male' | 'female', initCategory?: string) {
+    const category =
+      sex === 'male' ? getEl(maleProfilePicturesCategories) : getEl(womanProfilePicturesCategories);
     return faker.image.urlLoremFlickr({
       category: initCategory ? initCategory : category,
       height: 800,
@@ -219,7 +214,11 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     usersBasicInfo.push(basicUserInfo);
   }
 
-  function getRandomProfilePhotos(amount: number, basicUserInfo: IUserBasicInfo) {
+  function getRandomProfilePhotos(
+    amount: number,
+    basicUserInfo: IUserBasicInfo,
+    usersSex: 'male' | 'female',
+  ) {
     const populairy = Math.ceil(Math.random() * 20);
     const photos: IPicturesMap = {};
     const photosAmount = Math.ceil(Math.random() * amount) + 2;
@@ -232,7 +231,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         wallOwnerId: basicUserInfo.id,
         text: faker.lorem.words(Math.floor(Math.random() * 5) + 3),
         createdAt,
-        url: getRandomProfilePictureUrl(),
+        url: getRandomProfilePictureUrl(usersSex),
         reactions: getRandomReactions(10 * populairy),
         comments: getRandomComments(Math.round(0.9 * populairy), 7, createdAt),
         shareCount: Math.floor((Math.random() * populairy) / 2),
@@ -351,8 +350,9 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     const randomRelationship = relationships[Math.floor(Math.random() * relationships.length)];
     for (let i = 0; i < usersAmount; i++) {
       const userBasicInfo = usersBasicInfo[i];
+      const usersSex = faker.person.sexType();
       const userPosts = getRandomPosts(2, userBasicInfo);
-      const userPictures = getRandomProfilePhotos(4, userBasicInfo);
+      const userPictures = getRandomProfilePhotos(4, userBasicInfo, usersSex);
       const profilePicture = Object.values(userPictures)[0];
       userBasicInfo.pictureUrl = profilePicture.url;
       const user: IUser = {
@@ -376,7 +376,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           city: faker.location.city(),
           address: faker.location.streetAddress(),
           hometown: faker.location.city(),
-          sex: faker.person.sexType(),
+          sex: usersSex,
           workplace: hasJob ? faker.company.name() : '',
           jobTitle: hasJob ? faker.person.jobTitle() : '',
           highSchool: faker.lorem.words(3),

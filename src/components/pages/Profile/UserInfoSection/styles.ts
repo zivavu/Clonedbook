@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, ButtonBase, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -6,7 +6,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'relative',
 }));
 
-export const StyledProfilePictureContainer = styled(Box)(({ theme }) => ({
+export const StyledProfilePictureButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
   minHeight: '174px',
   minWidth: '174px',

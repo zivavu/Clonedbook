@@ -16,7 +16,7 @@ import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
 
-export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
+export default function FeedPost({ post, sx, ...rootProps }: FeedPostProps) {
   const { data: user } = useFetchLoggedUserQuery({});
   const { id: postId, comments, pictures: postPictures, text: postText, reactions } = post;
   const owner = useGetUsersPublicData(post.ownerId);
@@ -44,7 +44,7 @@ export default function FeedPost({ post, ...rootProps }: FeedPostProps) {
   return (
     <>
       {isFullViewOpen && <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} />}
-      <StyledRoot {...rootProps}>
+      <StyledRoot sx={sx} {...rootProps}>
         <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
           <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />
           {hasText && (

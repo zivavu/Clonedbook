@@ -7,7 +7,12 @@ import ManyPicutresDisplay from './ManyPicutresDisplay';
 import Picture from './Picture';
 import { DisplayMode, PictureToDisplay, PicturesDisplayProps } from './types';
 
-export default function PicturesDisplay({ pictures, postId, ...rootProps }: PicturesDisplayProps) {
+export default function PicturesDisplay({
+  pictures,
+  postId,
+  sx,
+  ...rootProps
+}: PicturesDisplayProps) {
   const theme = useTheme();
   const mode: DisplayMode =
     pictures.length === 1 ? 'single' : pictures.length === 2 ? 'duo' : 'many';
@@ -21,7 +26,7 @@ export default function PicturesDisplay({ pictures, postId, ...rootProps }: Pict
   const pictureBorder = `1px solid ${theme.palette.secondary.light}`;
 
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps}>
       <ContentDevider sx={{ top: '-1px' }} />
 
       {mode === 'single' && (

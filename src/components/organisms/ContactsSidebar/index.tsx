@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 import { ContactsSidebarProps } from './types';
 
-export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) {
+export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarProps) {
   const { data: userData } = useFetchLoggedUserQuery({});
   const { data: allUsersData } = useFetchUsersPublicDataQuery({});
   const [friends, setFriends] = useState<IFriendWithBasicInfo[] | []>([]);
@@ -28,7 +28,7 @@ export default function ContactsSidebar({ ...rootProps }: ContactsSidebarProps) 
 
   const theme = useTheme();
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps}>
       <Box>
         <StyledHeadingContainer>
           <Typography variant='subtitle1' fontWeight={400}>

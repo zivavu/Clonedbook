@@ -15,7 +15,7 @@ import ReactionsPopper from '../../ActionButtons/ReactionsPopper';
 import ReactionsDisplay from '../../ReactionsDisplay';
 import { CommentProps } from './types';
 
-export default function Comment({ post, comment, ...rootProps }: CommentProps) {
+export default function Comment({ post, comment, sx, ...rootProps }: CommentProps) {
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
   const { data: allUsersBasicInfo } = useFetchUsersPublicDataQuery({});
@@ -58,7 +58,7 @@ export default function Comment({ post, comment, ...rootProps }: CommentProps) {
     }
   }
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps}>
       <Box display='flex' alignItems='center'>
         <UserAvatar src={ownerData?.pictureUrl || ''} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>

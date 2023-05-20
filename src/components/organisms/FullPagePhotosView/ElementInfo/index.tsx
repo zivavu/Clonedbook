@@ -18,13 +18,14 @@ export default function ElementInfo({
   type,
   userReaction,
   setUserReaction,
+  sx,
   ...rootProps
 }: ElementInfoProps) {
   const theme = useTheme();
   const commentsLength = getEntriesLength(element.comments);
   const owner = useGetUsersPublicData(element.ownerId);
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps}>
       <Stack direction='row' width='100%' height='56px' justifyContent='flex-end'>
         <RightSection mr={theme.spacing(0.5)} />
       </Stack>

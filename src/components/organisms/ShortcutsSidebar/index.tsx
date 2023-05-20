@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { sidebarItems } from './data';
 import { ShortcutsSidebarProps } from './types';
 
-export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps) {
+export default function ShortcutsSidebar({ sx, ...rootProps }: ShortcutsSidebarProps) {
   const router = useRouter();
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
@@ -18,7 +18,7 @@ export default function ShortcutsSidebar({ ...rootProps }: ShortcutsSidebarProps
     router.push(href);
   };
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps}>
       <List sx={{ width: '100%' }}>
         <StyledListItem>
           <UserAvatar size={36} sx={{ mr: theme.spacing(1.5) }} src={user?.pictureUrl} />

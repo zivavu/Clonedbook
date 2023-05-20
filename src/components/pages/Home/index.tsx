@@ -4,9 +4,9 @@ import ShortcutsSidebar from '@/components/organisms/ShortcutsSidebar';
 import { StyledRoot } from './styles';
 import { HomeProps } from './types';
 
-export default function Home({ ...rootProps }: HomeProps) {
+export default function Home({ sx, ...rootProps }: HomeProps) {
   return (
-    <StyledRoot {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps}>
       <ShortcutsSidebar />
       <HomeWall />
       <ContactsSidebar />

@@ -59,7 +59,7 @@ export default function PhotosInput({
   }
 
   return (
-    <StyledRoot sx={{ ...sx }} {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps}>
       <StyledBorderBox
         sx={{ borderColor: isDraggedOver ? theme.palette.primary.main : theme.palette.divider }}>
         {showPhotos && (

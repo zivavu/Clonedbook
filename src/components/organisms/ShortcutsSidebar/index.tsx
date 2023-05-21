@@ -1,6 +1,6 @@
 import { List, Typography, useTheme } from '@mui/material';
 
-import { StyledListItem, StyledListItemAvatar, StyledRoot } from './styles';
+import { StyledListItemAvatar, StyledListItem as StyledListItemButton, StyledRoot } from './styles';
 
 import { PlaceholderIcon } from '@/assets/pageIcons';
 import UserAvatar from '@/components/atoms/UserAvatar';
@@ -17,21 +17,22 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: ShortcutsSidebarP
   const handleRedirect = (href: string) => {
     router.push(href);
   };
+
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <List sx={{ width: '100%' }}>
-        <StyledListItem>
+        <StyledListItemButton onClick={() => handleRedirect('profile')}>
           <UserAvatar size={36} sx={{ mr: theme.spacing(1.5) }} src={user?.pictureUrl} />
           <Typography variant='body1'>
             {user?.firstName} {user?.lastName}
           </Typography>
-        </StyledListItem>
+        </StyledListItemButton>
 
         {sidebarItems.map((item) => {
           const { key, icon, href, active } = item;
           const isActive = active && href;
           return (
-            <StyledListItem
+            <StyledListItemButton
               key={key}
               onClick={() => {
                 if (!isActive) return;
@@ -42,7 +43,7 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: ShortcutsSidebarP
               <Typography textTransform={'capitalize'} variant='body1'>
                 {key.split('-').join(' ')}
               </Typography>
-            </StyledListItem>
+            </StyledListItemButton>
           );
         })}
       </List>

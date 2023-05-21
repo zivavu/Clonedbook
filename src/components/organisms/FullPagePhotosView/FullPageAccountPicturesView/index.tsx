@@ -9,7 +9,7 @@ import { FullPageAccountPicturesViewProps } from './types';
 
 export default function FullPageAccountPicturesView({
   sx,
-  initialPhotoIndex,
+  initialPhoto,
   ownerId,
   setOpen,
   ...rootProps
@@ -19,7 +19,16 @@ export default function FullPageAccountPicturesView({
   const pictures = Object.values(picturesMap)
     .slice(0, 9)
     .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
-  const [currentPictureIndex, setCurrentPictureIndex] = useState(initialPhotoIndex);
+
+  const initialPhotoIndex: number =
+    typeof initialPhoto === 'number'
+      ? initialPhoto
+      : pictures.findIndex((picture) => picture.id === initialPhoto.id);
+  useEffect(() => {
+    setCurrentPictureIndex(initialPhotoIndex);
+  }, [initialPhoto, initialPhotoIndex]);
+
+  const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(initialPhotoIndex);
   const currentPicture = pictures[currentPictureIndex];
 
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(

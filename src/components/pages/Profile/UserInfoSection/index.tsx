@@ -13,7 +13,6 @@ import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
-import Image from 'next/image';
 
 export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfoSectionProps) {
   const theme = useTheme();
@@ -36,7 +35,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
       {isFullViewOpen && !isLoading && !isError && (
         <FullPageAccountPicturesView
           setOpen={setIsFullViewOpen}
-          initialPhotoIndex={1}
+          initialPhoto={profilePictureData}
           ownerId={userData.id}
         />
       )}

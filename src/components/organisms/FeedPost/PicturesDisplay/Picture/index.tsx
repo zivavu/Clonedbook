@@ -2,8 +2,8 @@ import { ButtonBase, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import LazyImage from '@/components/atoms/LazyImage';
 import FullPagePostPicturesView from '@/components/organisms/FullPagePhotosView/FullPagePostPicturesView';
+import Image from 'next/image';
 import { useState } from 'react';
 import { PictureProps } from './types';
 
@@ -78,13 +78,12 @@ export default function Picture({
             pointerEvents: 'all',
             position: 'relative',
           }}>
-          <LazyImage
+          <Image
             unoptimized
             src={photoSrc}
             alt={alt || "Post's picture"}
             fill
             quality={quality}
-            loading='lazy'
             sizes={imageSizes}
             onError={() => {
               setPhotoSrc(`https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/800/800`);

@@ -23,7 +23,7 @@ export default function PicturesRow({
     <>
       {isFullViewOpen && (
         <FullPageAccountPicturesView
-          initialPhotoIndex={photoIndex}
+          initialPhoto={photoIndex}
           setOpen={setIsFullViewOpen}
           ownerId={owner.id}
         />

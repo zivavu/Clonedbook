@@ -1,5 +1,6 @@
-import { StyledImageContainer, StyledImagesRow, StyledTileImage } from './styles';
+import { StyledImageContainer, StyledImagesRow } from './styles';
 
+import LazyImage from '@/components/atoms/LazyImage';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
 import { useState } from 'react';
 import { PicturesRowProps } from './types';
@@ -37,11 +38,14 @@ export default function PicturesRow({
                 const pictureIndex = startIndex + i;
                 handleOpenFullView(pictureIndex);
               }}>
-              <StyledTileImage
+              <LazyImage
                 src={picture.url}
                 fill
                 sizes='150px'
                 unoptimized
+                style={{
+                  objectFit: 'cover',
+                }}
                 alt={`${owner.firstName} ${owner.lastName} Picture`}
               />
             </StyledImageContainer>

@@ -13,6 +13,7 @@ export const StyledProfilePictureButton = styled(ButtonBase)(({ theme }) => ({
   borderRadius: '50%',
   overflow: 'hidden',
   border: `4px solid ${theme.palette.secondary.light}`,
+  backgroundColor: theme.palette.secondary.light,
   transform: 'translateY(-20%)',
 }));
 

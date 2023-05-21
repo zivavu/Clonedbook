@@ -17,9 +17,9 @@ export default function LoadingPostPlaceholder({ sx, ...rootProps }: BoxProps) {
             </Stack>
           </Stack>
           <Stack direction='row' width='100%' justifyContent='space-around'>
-            <StyledHorizontalHole width='70px' />
-            <StyledHorizontalHole width='70px' />
-            <StyledHorizontalHole width='70px' />
+            <StyledHorizontalHole width='min(70px, 30%)' />
+            <StyledHorizontalHole width='min(70px, 30%)' />
+            <StyledHorizontalHole width='min(70px, 30%)' />
           </Stack>
         </Stack>
       </StyledContentWrapper>

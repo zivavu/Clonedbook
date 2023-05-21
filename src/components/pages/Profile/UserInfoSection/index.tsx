@@ -5,14 +5,15 @@ import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from
 import ContentDevider from '@/components/atoms/ContentDevider';
 import FriendsButton from '@/components/atoms/FriendsButton';
 import Icon from '@/components/atoms/Icon/Icon';
+import LazyImage from '@/components/atoms/LazyImage';
 import MessageButton from '@/components/atoms/MessageButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
-import Image from 'next/image';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
+import Image from 'next/image';
 
 export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfoSectionProps) {
   const theme = useTheme();
@@ -43,7 +44,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
         <StyledBasicInfoContainer>
           <Box height={containerHeight}>
             <StyledProfilePictureButton onClick={() => setIsFullViewOpen(true)}>
-              <Image
+              <LazyImage
                 unoptimized
                 alt={`${userData?.firstName}'s Profile Picture`}
                 src={profilePictureData?.url || userData?.pictureUrl || ''}

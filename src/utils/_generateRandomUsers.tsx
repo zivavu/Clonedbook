@@ -49,8 +49,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     'girl,actress',
     'girl,singer',
     'girl,sport',
+    'popular,girl',
     'model,girl',
-    'girl,popular',
     'girl,city',
     'people,girl',
     'people,woman',
@@ -353,7 +353,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
       const userPosts = getRandomPosts(2, userBasicInfo);
       const userPictures = getRandomProfilePhotos(9, userBasicInfo, usersSex);
       const profilePicture = Object.values(userPictures).sort(
-        (a, b) => a.createdAt.seconds - b.createdAt.seconds,
+        (a, b) => b.createdAt.seconds - a.createdAt.seconds,
       )[0];
       userBasicInfo.pictureUrl = profilePicture.url;
       const user: IUser = {

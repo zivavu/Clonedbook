@@ -6,7 +6,7 @@ export const StyledRoundHole = styled(Box)(({ theme }) => ({
   borderRadius: '50%',
   background: `linear-gradient(-45deg, ${theme.palette.secondary.light}, ${theme.palette.secondary.dark}, ${theme.palette.secondary.light})`,
   backgroundSize: `300% 300%`,
-  animation: `${gradient} 3s infinite`,
+  animation: `${gradient} 1.5s infinite`,
 }));
 
 export const StyledHorizontalHole = styled(Box)(({ theme }) => ({
@@ -14,7 +14,7 @@ export const StyledHorizontalHole = styled(Box)(({ theme }) => ({
   borderRadius: '15px',
   background: `linear-gradient(-45deg, ${theme.palette.secondary.light}, ${theme.palette.secondary.dark}, ${theme.palette.secondary.light})`,
   backgroundSize: `150% 150%`,
-  animation: `${gradient} 3s infinite`,
+  animation: `${gradient} 1.5s infinite`,
 }));
 
 const gradient = keyframes`

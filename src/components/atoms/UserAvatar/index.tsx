@@ -22,7 +22,6 @@ export default function UserAvatar({
       unoptimized
       height={size}
       width={size}
-      loading='eager'
       src={src || user?.pictureUrl || '/no-profile-picture-icon.svg'}
       alt={alt || 'user avatar'}
       style={{
@@ -34,12 +33,13 @@ export default function UserAvatar({
   return (
     <Box
       sx={{
-        ...sx,
         width: px,
         height: px,
         backgroundColor: theme.palette.primary.light,
-        position: 'relative',
         borderRadius: '50%',
+        position: 'relative',
+        overflow: 'hidden',
+        ...sx,
       }}
       {...rootProps}>
       {userId ? (

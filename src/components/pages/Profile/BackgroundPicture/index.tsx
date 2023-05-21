@@ -1,8 +1,6 @@
-import { useTheme } from '@mui/material';
-
 import { StyledBacgroundPictureContainer, StyledPictureGradient } from './styles';
 
-import Image from 'next/image';
+import LazyImage from '@/components/atoms/LazyImage';
 import { BackgroundPictureProps } from './types';
 
 export default function BackgroundPicture({ userData, sx, ...rootProps }: BackgroundPictureProps) {
@@ -10,7 +8,7 @@ export default function BackgroundPicture({ userData, sx, ...rootProps }: Backgr
     <>
       <StyledPictureGradient {...rootProps} sx={sx} />
       <StyledBacgroundPictureContainer>
-        <Image
+        <LazyImage
           unoptimized
           alt={`${userData?.firstName}'s Bacground Picture`}
           src={userData?.backgroundPicture || ''}

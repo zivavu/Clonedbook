@@ -2,8 +2,8 @@ import { ButtonBase, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import LazyImage from '@/components/atoms/LazyImage';
 import FullPagePostPicturesView from '@/components/organisms/FullPagePhotosView/FullPagePostPicturesView';
-import Image from 'next/image';
 import { useState } from 'react';
 import { PictureProps } from './types';
 
@@ -76,8 +76,9 @@ export default function Picture({
             width: '100%',
             height: '100%',
             pointerEvents: 'all',
+            position: 'relative',
           }}>
-          <Image
+          <LazyImage
             unoptimized
             src={photoSrc}
             alt={alt || "Post's picture"}

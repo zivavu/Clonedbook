@@ -11,10 +11,10 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.dark,
   width: '40px',
   height: '40px',
+  position: 'relative',
   borderRadius: '50%',
   margin: theme.spacing(0, 0.5),
   fontSize: '1.1rem',
-
   '&.Mui-selected': {
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.main,

@@ -3,8 +3,8 @@ import { Box, useTheme } from '@mui/material';
 import { StyledButtonIcon, StyledRoot, StyledSwitchAreaButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
-import Image from 'next/image';
 
+import Image from 'next/image';
 import { PhotosCarouselProps } from './types';
 
 export default function PhotosCarousel({
@@ -15,7 +15,7 @@ export default function PhotosCarousel({
   ...rootProps
 }: PhotosCarouselProps) {
   const theme = useTheme();
-  const currentPicture = picturesUrls?.[currentPictureIndex];
+  const currentPictureUrl = picturesUrls?.[currentPictureIndex];
 
   const handleSwitchPicture = (direction: 'left' | 'right') => {
     if (direction === 'left') {
@@ -33,7 +33,6 @@ export default function PhotosCarousel({
       }
     }
   };
-
   const screens = {
     small: `(max-width: ${theme.breakpoints.values.sm}px)`,
     medium: `(max-width: ${theme.breakpoints.values.md}px)`,
@@ -49,33 +48,36 @@ export default function PhotosCarousel({
   const isMoreThenOnePicture = (picturesUrls?.length || 0) > 1 || false;
   if (!picturesUrls) return null;
   return (
-    <StyledRoot {...rootProps} sx={sx}>
-      <Image
-        src={currentPicture || ''}
-        fill
-        sizes={imageSizes}
-        quality={100}
-        style={{ objectFit: 'contain', padding: theme.spacing(0, 16) }}
-        alt='Full Size Photo'
-      />
+    <>
+      <StyledRoot {...rootProps} sx={sx}>
+        <Image
+          src={currentPictureUrl || ''}
+          fill
+          sizes={imageSizes}
+          quality={80}
+          style={{ objectFit: 'contain', padding: theme.spacing(0, 16) }}
+          alt='Full Size Photo'
+          unoptimized
+        />
 
-      {isMoreThenOnePicture && (
-        <Box>
-          <StyledSwitchAreaButton
-            onClick={() => handleSwitchPicture('left')}
-            focusRipple
-            sx={{ left: 0 }}>
-            <StyledButtonIcon className='icon leftIcon'>
-              <Icon icon='angle-left' fontSize='25px' />
-            </StyledButtonIcon>
-          </StyledSwitchAreaButton>
-          <StyledSwitchAreaButton onClick={() => handleSwitchPicture('right')} sx={{ right: 0 }}>
-            <StyledButtonIcon className='icon rightIcon'>
-              <Icon icon='angle-right' fontSize='25px' />
-            </StyledButtonIcon>
-          </StyledSwitchAreaButton>
-        </Box>
-      )}
-    </StyledRoot>
+        {isMoreThenOnePicture && (
+          <Box>
+            <StyledSwitchAreaButton
+              onClick={() => handleSwitchPicture('left')}
+              focusRipple
+              sx={{ left: 0 }}>
+              <StyledButtonIcon className='icon leftIcon'>
+                <Icon icon='angle-left' fontSize='25px' />
+              </StyledButtonIcon>
+            </StyledSwitchAreaButton>
+            <StyledSwitchAreaButton onClick={() => handleSwitchPicture('right')} sx={{ right: 0 }}>
+              <StyledButtonIcon className='icon rightIcon'>
+                <Icon icon='angle-right' fontSize='25px' />
+              </StyledButtonIcon>
+            </StyledSwitchAreaButton>
+          </Box>
+        )}
+      </StyledRoot>
+    </>
   );
 }

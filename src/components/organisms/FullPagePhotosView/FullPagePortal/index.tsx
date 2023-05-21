@@ -15,23 +15,31 @@ export default function FullPagePortal({
 }: FullPagePortalProps) {
   const theme = useTheme();
   return (
-    <Portal>
-      <StyledRoot {...rootProps} sx={sx}>
-        <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
-        <Box position='relative'>
-          <Stack direction='row' sx={{ position: 'fixed', left: '18px', top: '8px', zIndex: 2 }}>
-            <IconButton
-              onClick={() => setOpen(false)}
-              TouchRippleProps={{ style: { color: 'white' } }}>
-              <Icon icon='xmark' fontSize='25px' color={theme.palette.common.white} />
-            </IconButton>
-            <Link href='/' style={{ height: '40px', marginLeft: theme.spacing(1.4) }}>
-              <Image unoptimized src='/facebook-logo.svg' width={40} height={40} alt='Site logo' />
-            </Link>
-          </Stack>
-        </Box>
-        {children}
-      </StyledRoot>
-    </Portal>
+    <>
+      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
+      <Portal>
+        <StyledRoot {...rootProps} sx={sx}>
+          <Box position='relative'>
+            <Stack direction='row' sx={{ position: 'fixed', left: '18px', top: '8px', zIndex: 2 }}>
+              <IconButton
+                onClick={() => setOpen(false)}
+                TouchRippleProps={{ style: { color: 'white' } }}>
+                <Icon icon='xmark' fontSize='25px' color={theme.palette.common.white} />
+              </IconButton>
+              <Link href='/' style={{ height: '40px', marginLeft: theme.spacing(1.4) }}>
+                <Image
+                  unoptimized
+                  src='/facebook-logo.svg'
+                  width={40}
+                  height={40}
+                  alt='Site logo'
+                />
+              </Link>
+            </Stack>
+          </Box>
+          {children}
+        </StyledRoot>
+      </Portal>
+    </>
   );
 }

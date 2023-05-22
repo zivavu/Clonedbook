@@ -4,7 +4,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
   display: 'flex',
   flexDirection: 'column',
-  position: 'absolute',
+  position: 'sticky',
   top: '0',
   left: '0',
   width: '100%',

@@ -1,4 +1,4 @@
-import { Box, CardMedia, IconButton, styled } from '@mui/material';
+import { Box, CardMedia, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -6,7 +6,6 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   minHeight: '100%',
   color: theme.palette.text.primary,
   borderRadius: '12px',
-  overflowX: 'hidden',
   pointerEvents: 'none',
 }));
 

@@ -20,11 +20,13 @@ export const StyledBorderBox = styled(Box)(({ theme }) => ({
 
 export const StyledPhotoAddButton = styled(ButtonBase)(({ theme }) => ({
   width: '100%',
-  minHeight: '240px',
   maxHeight: '100%',
+  minHeight: '240px',
   backgroundColor: theme.palette.grey[100],
   borderRadius: '6px',
   pointerEvents: 'all',
+  position: 'relative',
+  display: 'flex',
 
   '&:hover': {
     backgroundColor: theme.palette.secondary.main,
@@ -62,7 +64,7 @@ export const StyledPhotosResetIcon = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   zIndex: 20,
   pointerEvents: 'all',
-  boxShadow: 'rgba(0, 0, 0, 0.4) 0px 1px 4px;',
+  boxShadow: theme.shadows[7],
 
   '&:hover': {
     backgroundColor: theme.palette.secondary.dark,

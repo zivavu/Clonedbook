@@ -6,4 +6,8 @@ export interface AboutTabProps extends StackProps {
   profileData: IUser;
 }
 
-export type TAboutSections = 'overview' | 'work and education' | 'places lived';
+export type TAboutSections =
+  | 'overview'
+  | 'work and education'
+  | 'places lived'
+  | 'family and relationships';

@@ -17,7 +17,7 @@ export default function FullPageAccountPicturesView({
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const { isError, isLoading, picturesMap } = useFetchUsersPictures(ownerId);
   const pictures = picturesMap
-    ? Object.values(picturesMap)
+    ? Object.values(picturesMap.account)
         .slice(0, 9)
         .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
     : [];

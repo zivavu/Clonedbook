@@ -60,7 +60,7 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Box display='flex' alignItems='center'>
-        <UserAvatar userId={user?.id} sx={{ alignSelf: 'start' }} size={32} />
+        <UserAvatar userId={comment.ownerId} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>
           {!!ownerData && (
             <>

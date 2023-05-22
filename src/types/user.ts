@@ -22,10 +22,9 @@ export interface IUser extends IUserBasicInfo {
     highSchool?: string;
     workplace?: string;
     jobTitle?: string;
-    relationship?: TRealationshipStatus;
-    relationshipPartnerId?: string;
+    relationship?: IRelationship;
     birthDate?: ITimestamp;
-    relatives?: IRealativesMap;
+    relatives: IRealativesMap;
     sex: TUserSex;
   };
 }
@@ -36,6 +35,11 @@ export interface IUserBasicInfo {
   middleName?: string;
   lastName: string;
   pictureUrl?: string;
+}
+
+export interface IRelationship {
+  status: TRealationshipStatus;
+  partnerId?: string;
 }
 
 export interface IServerUserBasicInfo {
@@ -61,7 +65,7 @@ export type TKinship = 'parent' | 'sibling' | 'child' | 'cousin';
 export type TUserSex = 'male' | 'female' | 'other';
 
 export type TRealationshipStatus =
-  | ''
+  | null
   | 'single'
   | 'in relation'
   | "it's complicated"

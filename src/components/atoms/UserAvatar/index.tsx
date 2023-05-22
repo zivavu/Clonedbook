@@ -20,8 +20,7 @@ export default function UserAvatar({
   const UserImage = () => (
     <Image
       unoptimized
-      height={size}
-      width={size}
+      fill
       src={user?.pictureUrl || '/no-profile-picture-icon.svg'}
       alt={alt || 'user avatar'}
       style={{
@@ -33,18 +32,20 @@ export default function UserAvatar({
   return (
     <Box
       sx={{
-        width: px,
-        height: px,
         backgroundColor: theme.palette.primary.light,
         borderRadius: '50%',
         position: 'relative',
-        overflow: 'hidden',
+        width: px,
+        height: px,
         ...sx,
       }}
       {...rootProps}>
       {useLink && userId ? (
         <ButtonBase
           sx={{
+            position: 'relative',
+            width: px,
+            height: px,
             borderRadius: '50%',
           }}
           LinkComponent={Link}

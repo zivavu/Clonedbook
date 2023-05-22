@@ -17,7 +17,7 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
     { label: 'Lives in', value: publicAddres, icon: 'home' },
     { label: 'Works at', value: workplace || null, icon: 'briefcase' },
     { label: 'Goes to', value: school, icon: 'graduation-cap' },
-    { label: 'Relationship status', value: relationship || null, icon: 'heart' },
+    { label: 'Relationship status', value: relationship?.status || null, icon: 'heart' },
     { label: 'From', value: hometown || null, icon: 'location-dot' },
   ];
 

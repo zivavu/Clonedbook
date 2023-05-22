@@ -27,7 +27,7 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
         <StyledPageTileHeader>Intro</StyledPageTileHeader>
         <Box position='relative'>
           <Typography textAlign='center' mb={2}>
-            {user.biography}
+            {user.about.bio}
           </Typography>
           <ContentDevider bottom={0} />
         </Box>

@@ -16,9 +16,11 @@ export default function FullPageAccountPicturesView({
 }: FullPageAccountPicturesViewProps) {
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const { isError, isLoading, picturesMap } = useFetchUsersPictures(ownerId);
-  const pictures = Object.values(picturesMap)
-    .slice(0, 9)
-    .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
+  const pictures = picturesMap
+    ? Object.values(picturesMap)
+        .slice(0, 9)
+        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+    : [];
 
   const initialPhotoIndex: number =
     typeof initialPhoto === 'number'

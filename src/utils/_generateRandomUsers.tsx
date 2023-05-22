@@ -5,7 +5,7 @@
 
 import { db } from '@/config/firebase.config';
 import { ICommentMap } from '@/types/comment';
-import { ICreatedAt } from '@/types/createdAt';
+import { ITimestamp } from '@/types/createdAt';
 import { IFriend, IFriendsMap, IPublicFriendsMap } from '@/types/firend';
 import { IAccountPicture, IPicturesMap } from '@/types/picture';
 import { IPost, IPostsMap } from '@/types/post';
@@ -22,7 +22,7 @@ import { separateUserBasicInfo } from './separateUserBasicInfo';
 function getPastDate() {
   return Timestamp.fromDate(faker.date.past({ refDate: new Date(), years: 0.5 }));
 }
-function getDateAfterTimestamp(pastDate: ICreatedAt) {
+function getDateAfterTimestamp(pastDate: ITimestamp) {
   const date = new Date(pastDate.seconds * 1000);
   return Timestamp.fromDate(faker.date.between({ from: date, to: new Date() }));
 }
@@ -167,7 +167,7 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     return reactions;
   }
 
-  function getRandomComments(amount: number, reactionsCount: number, parentCreateDate: ICreatedAt) {
+  function getRandomComments(amount: number, reactionsCount: number, parentCreateDate: ITimestamp) {
     const comments: ICommentMap = {};
     const discutantsRange = Math.ceil(Math.random() * amount) + 5;
     let discutantsStartIndex = Math.floor(Math.random() * usersAmount);
@@ -213,15 +213,18 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     usersBasicInfo.push(basicUserInfo);
   }
 
-  function getRandomProfilePhotos(
+  function getRandomAccountPhotos(
     amount: number,
     basicUserInfo: IUserBasicInfo,
     usersSex: 'male' | 'female',
   ) {
     const populairy = Math.ceil(Math.random() * 20);
-    const photos: IPicturesMap = {};
+    const photos: IPicturesMap = {
+      account: {},
+      background: {},
+    };
     const photosAmount = Math.ceil(Math.random() * amount) + 2;
-    for (let i = 0; i < photosAmount; i++) {
+    const getPhotoData = () => {
       const createdAt = getPastDate();
       const photoId = getRandomUIDv4();
       const photo: IAccountPicture = {
@@ -235,10 +238,19 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
         comments: getRandomComments(Math.round(0.9 * populairy), 7, createdAt),
         shareCount: Math.floor((Math.random() * populairy) / 2),
       };
-      photos[photoId] = photo;
+      return photo;
+    };
+    for (let i = 0; i < photosAmount; i++) {
+      const photoData = getPhotoData();
+      photos.account[photoData.id] = photoData;
+    }
+    for (let i = 0; i < Math.ceil(Math.max(photosAmount / 2.5, 1)); i++) {
+      const photoData = getPhotoData();
+      photos.background[photoData.id] = photoData;
     }
     return photos;
   }
+
   function getRandomPosts(amount: number, basicUserInfo: IUserBasicInfo) {
     const posts: IPostsMap = {};
     const postsAmount = Math.ceil(Math.random() * amount);
@@ -337,42 +349,45 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
     const relationships: TRealationshipStatus[] = [
       '',
       'single',
-      'in a relationship',
-      'in an open relationship',
+      'in relation',
       'engaged',
       'married',
       "it's complicated",
       'widowed',
-      'separated',
-      'divorced',
     ];
     const randomRelationship = relationships[Math.floor(Math.random() * relationships.length)];
     for (let i = 0; i < usersAmount; i++) {
       const userBasicInfo = usersBasicInfo[i];
       const usersSex = faker.person.sexType();
-      const userPosts = getRandomPosts(2, userBasicInfo);
-      const userPictures = getRandomProfilePhotos(9, userBasicInfo, usersSex);
-      const profilePicture = Object.values(userPictures).sort(
+      const userPosts = getRandomPosts(7, userBasicInfo);
+      const userPictures = getRandomAccountPhotos(9, userBasicInfo, usersSex);
+      const profilePicture = Object.values(userPictures.account).sort(
+        (a, b) => b.createdAt.seconds - a.createdAt.seconds,
+      )[0];
+      const backgroundPicture = Object.values(userPictures.background).sort(
         (a, b) => b.createdAt.seconds - a.createdAt.seconds,
       )[0];
       userBasicInfo.pictureUrl = profilePicture.url;
       const user: IUser = {
         ...userBasicInfo,
-        backgroundPicture: getRandomBacgroundPictureUrl(),
         profilePictureId: profilePicture.id,
-        email: faker.internet.email(),
-        phoneNumber: faker.phone.number(),
-        biography: faker.person.bio(),
+        backgroundPicture: backgroundPicture.url,
+        backgroundPictureId: backgroundPicture.id,
         chatReferences: [],
         groups: [],
-        intrests: [],
         friends: {
           pending: {},
           accepted: {},
           blocked: {},
           rejected: {},
         },
+        contact: {
+          email: faker.internet.email(),
+          phoneNumber: faker.phone.number(),
+        },
         about: {
+          bio: faker.person.bio(),
+          intrests: [],
           country: faker.location.country(),
           city: faker.location.city(),
           address: faker.location.streetAddress(),
@@ -380,8 +395,8 @@ export function generateUsers(usersAmount: number = maxUsers, friendsAmount: num
           sex: usersSex,
           workplace: hasJob ? faker.company.name() : '',
           jobTitle: hasJob ? faker.person.jobTitle() : '',
-          highSchool: faker.lorem.words(3),
-          college: faker.lorem.words(3),
+          highSchool: faker.lorem.sentence({ min: 2, max: 4 }),
+          college: faker.lorem.sentence({ min: 2, max: 4 }),
           relationship: randomRelationship,
         },
         isDummy: true,
@@ -546,5 +561,5 @@ async function sleep(ms: number) {
 }
 
 export function AddUsersButton() {
-  return <Button onClick={() => generateUsersAndPostToDb(70, 30)}>AddEm</Button>;
+  return <Button onClick={() => generateUsersAndPostToDb(40, 30)}>AddEm</Button>;
 }

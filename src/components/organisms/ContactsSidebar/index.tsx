@@ -50,13 +50,14 @@ export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarPro
           {friends.slice(0, 30).map((friend) => {
             return (
               <ListItemButton
-                LinkComponent={Link}
+                component={Link}
                 href={`/profile/${friend.friendId}`}
                 key={friend.friendId}
                 sx={{ pl: theme.spacing(1) }}>
                 <UserAvatar
-                  sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
                   userId={friend.friendId}
+                  useLink={false}
+                  sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
                 />
                 <Typography variant='body1'>
                   {friend.basicInfo.firstName} {friend.basicInfo.lastName}

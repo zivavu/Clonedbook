@@ -4,7 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 export default function useFetchUsersPictures(id: string) {
-  const [picturesMap, setPicturesMap] = useState<IPicturesMap>({});
+  const [picturesMap, setPicturesMap] = useState<IPicturesMap>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
   useEffect(() => {
@@ -12,8 +12,11 @@ export default function useFetchUsersPictures(id: string) {
       const getPictures = async () => {
         const picturesRef = collection(db, `users/${id}/pictures`);
         const picturesSnapshot = await getDocs(picturesRef);
-        if (picturesSnapshot.empty) throw 'There are no pictures in the database';
         const picturesData = picturesSnapshot.docs[0].data() as IPicturesMap;
+        if (picturesSnapshot.empty || !picturesData) {
+          setIsError(true);
+          return;
+        }
         setPicturesMap(picturesData);
       };
       getPictures();

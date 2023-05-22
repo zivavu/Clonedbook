@@ -66,6 +66,7 @@ export default function ReactionIcon({
         unoptimized
         width={size}
         height={size}
+        loading='eager'
         src={src || LikeIcon}
         alt={alt || 'reaction icon'}
         style={{

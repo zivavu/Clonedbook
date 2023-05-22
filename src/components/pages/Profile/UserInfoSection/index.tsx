@@ -18,7 +18,9 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
   const theme = useTheme();
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const { isLoading, isError, picturesMap } = useFetchUsersPictures(userData.id);
-  const profilePictureData = picturesMap[userData?.profilePictureId || ''];
+  const profilePictureData = picturesMap
+    ? picturesMap.account[userData?.profilePictureId || '']
+    : null;
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
   const friendsCount = Object.keys(userData.friends.accepted).length || 0;
@@ -32,7 +34,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
   const containerHeight = '140px';
   return (
     <>
-      {isFullViewOpen && !isLoading && !isError && (
+      {isFullViewOpen && profilePictureData && !isLoading && !isError && (
         <FullPageAccountPicturesView
           setOpen={setIsFullViewOpen}
           initialPhoto={profilePictureData}

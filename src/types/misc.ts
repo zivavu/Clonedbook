@@ -1,5 +1,5 @@
 import { ICommentMap } from './comment';
-import { ICreatedAt } from './createdAt';
+import { ITimestamp } from './createdAt';
 import { IAccountPicture } from './picture';
 import { IPost } from './post';
 import { IReactionsMap } from './reaction';
@@ -12,7 +12,7 @@ export interface IWallElement {
   ownerId: string;
   //It can be user, page, group, etc.
   wallOwnerId: string;
-  createdAt: ICreatedAt;
+  createdAt: ITimestamp;
   text?: string;
   reactions: IReactionsMap;
   comments: ICommentMap;

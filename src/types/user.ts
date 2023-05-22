@@ -1,28 +1,31 @@
 import { IChatReference } from './chat';
+import { ITimestamp } from './createdAt';
 import { IFriendsMap } from './firend';
 
 export interface IUser extends IUserBasicInfo {
-  email: string;
-  phoneNumber?: string;
   backgroundPicture?: string;
+  backgroundPictureId?: string;
   profilePictureId?: string;
-  biography?: string;
   isDummy?: boolean;
-  groups: [];
-  intrests: [];
+  groups: Object;
   chatReferences: IChatReference[];
-  links?: string[];
   friends: IFriendsMap;
+  contact: IContactInfo;
   about: {
+    intrests: string[];
+    bio?: string;
     address?: string;
     country?: string;
     hometown?: string;
     city?: string;
     college?: string;
     highSchool?: string;
-    relationship?: TRealationshipStatus;
     workplace?: string;
     jobTitle?: string;
+    relationship?: TRealationshipStatus;
+    relationshipPartnerId?: string;
+    birthDate?: ITimestamp;
+    relatives?: IRealativesMap;
     sex: TUserSex;
   };
 }
@@ -44,16 +47,24 @@ export interface IServerUserBasicInfo {
   };
 }
 
+export interface IContactInfo {
+  email: string;
+  phoneNumber: string;
+}
+
+export interface IRealativesMap {
+  [key: string]: TKinship;
+}
+
+export type TKinship = 'parent' | 'sibling' | 'child' | 'cousin';
+
 export type TUserSex = 'male' | 'female' | 'other';
 
 export type TRealationshipStatus =
   | ''
   | 'single'
-  | 'in a relationship'
-  | 'in an open relationship'
+  | 'in relation'
+  | "it's complicated"
   | 'engaged'
   | 'married'
-  | "it's complicated"
-  | 'widowed'
-  | 'separated'
-  | 'divorced';
+  | 'widowed';

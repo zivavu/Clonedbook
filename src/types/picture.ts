@@ -10,5 +10,10 @@ export interface IInChatPicture {
 }
 
 export interface IPicturesMap {
-  [key: string]: IAccountPicture;
+  account: {
+    [key: string]: IAccountPicture;
+  };
+  background: {
+    [key: string]: IAccountPicture;
+  };
 }

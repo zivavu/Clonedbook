@@ -1,4 +1,4 @@
-import { ICreatedAt } from './createdAt';
+import { ITimestamp } from './createdAt';
 import { IInChatPicture } from './picture';
 
 export interface IMessage {
@@ -7,5 +7,5 @@ export interface IMessage {
   chatId: string;
   text?: string;
   pictures?: IInChatPicture[];
-  createdAt: ICreatedAt;
+  createdAt: ITimestamp;
 }

@@ -5,7 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { UserAvatarProps } from './types';
 
-export default function UserAvatar({ sx, size = 40, alt, userId, ...rootProps }: UserAvatarProps) {
+export default function UserAvatar({
+  sx,
+  size = 40,
+  alt,
+  userId,
+  useLink = true,
+  ...rootProps
+}: UserAvatarProps) {
   const { data: userData } = useFetchUsersPublicDataQuery({});
   const user = userId && userData ? userData[userId] : null;
   const px = `${size}px`;
@@ -35,7 +42,7 @@ export default function UserAvatar({ sx, size = 40, alt, userId, ...rootProps }:
         ...sx,
       }}
       {...rootProps}>
-      {userId ? (
+      {useLink && userId ? (
         <ButtonBase
           sx={{
             borderRadius: '50%',

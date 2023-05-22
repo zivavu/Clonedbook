@@ -1,12 +1,12 @@
 import { IChatReference } from './chat';
-import { ICreatedAt } from './createdAt';
+import { ITimestamp } from './createdAt';
 import { IUserBasicInfo } from './user';
 
 export interface IFriend {
   friendId: string;
   chatReference: IChatReference;
   status: TFriendStatus;
-  acceptedAt: ICreatedAt;
+  acceptedAt: ITimestamp;
 }
 
 export type TFriendStatus = 'pending' | 'accepted' | 'rejected' | 'blocked';
@@ -31,5 +31,5 @@ export interface IFriendsMap {
 }
 
 export interface IPublicFriendsMap {
-  [key: string]: ICreatedAt;
+  [key: string]: ITimestamp;
 }

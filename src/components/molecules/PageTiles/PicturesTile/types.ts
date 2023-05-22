@@ -1,6 +1,5 @@
-import { IAccountPicture } from '@/types/picture';
 import { IUser } from '@/types/user';
-import { BoxProps, StackProps } from '@mui/material';
+import { BoxProps } from '@mui/material';
 
 export interface PicturesTileProps extends BoxProps {
   user: IUser;

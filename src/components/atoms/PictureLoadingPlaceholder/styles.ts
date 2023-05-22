@@ -11,13 +11,13 @@ const placeholderElementStyles: CSSObject = {
 
 const gradientColors = 'rgba(0,0,0,0) 20%, rgba(150,150,150,0.3) 50%, rgba(0,0,0,0) 80%';
 
-export const StyledGradient1 = styled(Box)(({ theme }) => ({
+export const StyledGradient1 = styled(Box)(({}) => ({
   background: `linear-gradient(${gradientColors})`,
   animation: `${gradient1} 2.5s infinite`,
   ...placeholderElementStyles,
 }));
 
-export const StyledGradient2 = styled(Box)(({ theme }) => ({
+export const StyledGradient2 = styled(Box)(({}) => ({
   background: `linear-gradient(90deg, ${gradientColors})`,
   animation: `${gradient2} 2.5s infinite`,
   ...placeholderElementStyles,

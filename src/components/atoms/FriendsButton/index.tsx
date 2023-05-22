@@ -17,7 +17,7 @@ export default function FriendsButton({ friendsMap, sx, ...rootProps }: FriendsB
     if (friendsMap && user) {
       setUserStatus(getFriendshipStatus(user.id, friendsMap));
     }
-  }, [user]);
+  }, [user, friendsMap]);
 
   const buttonColor =
     userStatus === 'accepted' ? theme.palette.secondary.dark : theme.palette.primary.main;

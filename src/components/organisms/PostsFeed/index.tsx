@@ -6,8 +6,6 @@ import LoadingPostPlaceholder from '../FeedPost/LoadingPostPlaceholder';
 import { PostsFeedProps } from './types';
 
 export default function PostsFeed({ posts, isLoading, isError, sx, ...rootProps }: PostsFeedProps) {
-  const popularList = [];
-
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack spacing={2}>

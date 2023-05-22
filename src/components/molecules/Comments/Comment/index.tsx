@@ -34,7 +34,7 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
   useEffect(() => {
     if (!allUsersBasicInfo) return;
     setOwnerData(allUsersBasicInfo[comment.ownerId]);
-  }, [allUsersBasicInfo]);
+  }, [allUsersBasicInfo, comment.ownerId]);
 
   const shouldDisplayOnRightSite = comment.commentText.length < 25;
 

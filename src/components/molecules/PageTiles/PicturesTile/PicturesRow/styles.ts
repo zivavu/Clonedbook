@@ -5,14 +5,14 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-export const StyledImagesRow = styled(Stack)(({ theme }) => ({
+export const StyledImagesRow = styled(Stack)(({}) => ({
   width: '100%',
 }));
 
-export const StyledImageContainer = styled(ButtonBase)(({ theme }) => ({
+export const StyledImageContainer = styled(ButtonBase)(({}) => ({
   position: 'relative',
   width: '32.5%',
   aspectRatio: '1/1',
 }));
 
-export const StyledTileImage = styled(Image)(({ theme }) => ({}));
+export const StyledTileImage = styled(Image)(({}) => ({}));

@@ -1,5 +1,4 @@
 import { IUser } from '@/types/user';
-import { BoxProps } from '@mui/material';
 import { MutableRefObject } from 'react';
 
 export interface PostTextInputProps {

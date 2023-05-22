@@ -1,4 +1,4 @@
-import { IReactionReference, IReactionsMap } from '@/types/reaction';
+import { IReactionsMap } from '@/types/reaction';
 import { BoxProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 

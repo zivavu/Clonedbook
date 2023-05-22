@@ -16,12 +16,10 @@ export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarPro
 
   useEffect(() => {
     if (userData && allUsersData) {
-      const friendsWithBasicInfo = Object.entries(userData.friends.accepted).map(
-        ([connection, friend]) => {
-          const friendData = allUsersData[friend.friendId];
-          return { basicInfo: friendData, ...friend } as IFriendWithBasicInfo;
-        },
-      );
+      const friendsWithBasicInfo = Object.values(userData.friends.accepted).map((friend) => {
+        const friendData = allUsersData[friend.friendId];
+        return { basicInfo: friendData, ...friend } as IFriendWithBasicInfo;
+      });
       setFriends(friendsWithBasicInfo);
     }
   }, [userData, allUsersData]);

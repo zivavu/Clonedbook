@@ -35,7 +35,7 @@ export const DialogCloseIconButton = styled(IconButton)(({ theme }) => ({
   height: '36px',
 }));
 
-export const StyledMainContentStack = styled(Stack)(({ theme }) => ({
+export const StyledMainContentStack = styled(Stack)(({}) => ({
   maxHeight: '100%',
 }));
 

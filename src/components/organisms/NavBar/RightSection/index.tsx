@@ -37,7 +37,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
         onClick={(e) => {
           handleSetPortal(e, 'account');
         }}>
-        <UserAvatar size={42} sx={{ position: 'absolute' }} src={user?.pictureUrl} />
+        <UserAvatar size={42} sx={{ position: 'absolute' }} userId={user?.id} />
       </StyledToggleButton>
     </StyledRoot>
   );

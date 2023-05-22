@@ -11,7 +11,7 @@ export const StyledBacgroundPictureContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
 }));
 
-export const StyledPictureGradient = styled(Box)(({ theme }) => ({
+export const StyledPictureGradient = styled(Box)(({}) => ({
   position: 'absolute',
   width: '100%',
   height: '350px',

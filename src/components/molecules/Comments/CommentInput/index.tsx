@@ -29,12 +29,7 @@ export default function CommentInput({ sx, mode, ...rootProps }: CommentInputPro
   return (
     <StyledRoot sx={{ ...modeSx, ...sx }} {...rootProps}>
       <StyledWrapper>
-        <UserAvatar
-          size={30}
-          sx={{ mr: theme.spacing(0.7) }}
-          src={user?.pictureUrl}
-          userId={user?.id}
-        />
+        <UserAvatar size={30} sx={{ mr: theme.spacing(0.7) }} userId={user?.id} />
         <StyledCommentInput
           multiline
           fullWidth

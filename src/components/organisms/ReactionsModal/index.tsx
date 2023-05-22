@@ -75,12 +75,7 @@ export default function ReactionsPortal({
                 return (
                   <Stack key={profileId} direction='row' alignItems='center'>
                     <Box position='relative'>
-                      <UserAvatar
-                        src={pictureUrl}
-                        mr={theme.spacing(1)}
-                        size={40}
-                        userId={profileId}
-                      />
+                      <UserAvatar userId={profileId} mr={theme.spacing(1)} size={40} />
                       <ReactionIcon
                         src={reactionsByTypes[reaction.type].icon}
                         sx={{ position: 'absolute', bottom: '-4px', right: '10px' }}

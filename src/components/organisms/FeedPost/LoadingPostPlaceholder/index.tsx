@@ -1,10 +1,9 @@
-import { BoxProps, Stack, useTheme } from '@mui/material';
+import { BoxProps, Stack } from '@mui/material';
 
 import { StyledContentWrapper, StyledRoot } from '../styles';
 import { StyledHorizontalHole, StyledRoundHole } from './styles';
 
 export default function LoadingPostPlaceholder({ sx, ...rootProps }: BoxProps) {
-  const theme = useTheme();
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <StyledContentWrapper height={300} position='relative' overflow='hidden'>

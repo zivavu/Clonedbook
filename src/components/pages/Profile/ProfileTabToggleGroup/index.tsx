@@ -1,4 +1,4 @@
-import { ToggleButtonGroup, Typography, useTheme } from '@mui/material';
+import { ToggleButtonGroup, Typography } from '@mui/material';
 
 import { StyledRoot, StyledToggleButton } from './styles';
 
@@ -12,8 +12,6 @@ export default function ProfileTabToggleGroup({
   sx,
   ...rootProps
 }: ProfileTabToggleGroupProps) {
-  const theme = useTheme();
-
   const tabs: TProfileTabs[] = ['posts', 'about', 'friends', 'photos', 'music', 'likes'];
   function handleTabSelection(tab: TProfileTabs) {
     if (tab === selectedTab) return;

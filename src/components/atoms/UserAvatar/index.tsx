@@ -5,14 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { UserAvatarProps } from './types';
 
-export default function UserAvatar({
-  sx,
-  size = 40,
-  alt,
-  src,
-  userId,
-  ...rootProps
-}: UserAvatarProps) {
+export default function UserAvatar({ sx, size = 40, alt, userId, ...rootProps }: UserAvatarProps) {
   const { data: userData } = useFetchUsersPublicDataQuery({});
   const user = userId && userData ? userData[userId] : null;
   const px = `${size}px`;
@@ -22,7 +15,7 @@ export default function UserAvatar({
       unoptimized
       height={size}
       width={size}
-      src={src || user?.pictureUrl || '/no-profile-picture-icon.svg'}
+      src={user?.pictureUrl || '/no-profile-picture-icon.svg'}
       alt={alt || 'user avatar'}
       style={{
         borderRadius: '50%',

@@ -3,15 +3,18 @@ import { ToggleButtonGroup, Typography, useTheme } from '@mui/material';
 import { StyledRoot, StyledToggleButton } from './styles';
 
 import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline';
-import { useState } from 'react';
 import { TProfileTabs } from '../types';
 import { ProfileTabToggleGroupProps } from './types';
 
-export default function ProfileTabToggleGroup({ sx, ...rootProps }: ProfileTabToggleGroupProps) {
+export default function ProfileTabToggleGroup({
+  selectedTab,
+  setSelectedTab,
+  sx,
+  ...rootProps
+}: ProfileTabToggleGroupProps) {
   const theme = useTheme();
 
   const tabs: TProfileTabs[] = ['posts', 'about', 'friends', 'photos', 'music', 'likes'];
-  const [selectedTab, setSelectedTab] = useState<TProfileTabs>('posts');
   function handleTabSelection(tab: TProfileTabs) {
     if (tab === selectedTab) return;
     setSelectedTab(tab);

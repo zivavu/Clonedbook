@@ -1,5 +1,6 @@
 import { Palette, PaletteOptions, createTheme } from '@mui/material/styles';
 import { Source_Sans_3 } from 'next/font/google';
+import { getCustomShadows } from './customShadows';
 import { getCompoentsOverrides } from './overrides';
 import { IReactionTypes } from './types';
 
@@ -62,8 +63,9 @@ const source_sans = Source_Sans_3({
   display: 'swap',
   preload: true,
 });
-
 export const mode = 'light';
+
+const customShadows = getCustomShadows(mode);
 export const theme = createTheme({
   palette,
   typography: {
@@ -91,6 +93,7 @@ export const theme = createTheme({
   shape: {
     borderRadius: 8,
   },
+  shadows: customShadows,
 
-  components: getCompoentsOverrides({ ...(palette as Palette), mode }),
+  components: getCompoentsOverrides({ ...(palette as Palette), mode }, customShadows),
 });

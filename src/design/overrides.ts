@@ -1,6 +1,6 @@
-import { Components, Palette } from '@mui/material';
+import { Components, Palette, Shadows } from '@mui/material';
 
-export const getCompoentsOverrides = (palette: Palette) => {
+export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
   const componentOverrides: Components = {
     MuiLink: {
       styleOverrides: {
@@ -44,14 +44,6 @@ export const getCompoentsOverrides = (palette: Palette) => {
       },
     },
 
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          height: '56px',
-          boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 5px',
-        },
-      },
-    },
     MuiListItemButton: {
       styleOverrides: {
         root: {
@@ -64,6 +56,16 @@ export const getCompoentsOverrides = (palette: Palette) => {
         root: {
           '& .MuiBackdrop-root': {
             backgroundColor: 'rgba(255, 255, 255, 0.55)',
+          },
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          '& .MuiPaper-root': {
+            borderRadius: '8px',
+            boxShadow: shadows[14],
           },
         },
       },

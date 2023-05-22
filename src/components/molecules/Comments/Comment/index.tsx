@@ -60,7 +60,7 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Box display='flex' alignItems='center'>
-        <UserAvatar src={ownerData?.pictureUrl || ''} sx={{ alignSelf: 'start' }} size={32} />
+        <UserAvatar userId={user?.id} sx={{ alignSelf: 'start' }} size={32} />
         <StyledTextContent>
           {!!ownerData && (
             <>
@@ -79,7 +79,7 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
               userReaction={userReaction}
               sx={{
                 backgroundColor: theme.palette.secondary.light,
-                boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px',
+                boxShadow: theme.shadows[7],
                 borderRadius: '10px',
                 zIndex: 1,
                 position: 'absolute',

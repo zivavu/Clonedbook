@@ -22,7 +22,7 @@ export default function WriteSomethingTile({ user, sx, ...rootProps }: WriteSome
       <StyledPageTile sx={{ pb: 1, ...sx }} {...rootProps}>
         <Stack position='relative' spacing={1.5}>
           <Stack direction='row'>
-            <UserAvatar src={user.pictureUrl} userId={user.id} mr={theme.spacing(1)} />
+            <UserAvatar userId={user.id} mr={theme.spacing(1)} />
             <ButtonBase
               sx={{
                 backgroundColor: theme.palette.secondary.main,

@@ -39,6 +39,7 @@ export default function CreatePostDialog({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (isLoading) return;
     setIsLoading(true);
     if (postTextRef.current.length === 0 && postPhotos.length === 0) {
       setErrors((prev) => [

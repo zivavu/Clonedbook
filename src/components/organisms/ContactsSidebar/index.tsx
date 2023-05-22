@@ -58,7 +58,7 @@ export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarPro
                 sx={{ pl: theme.spacing(1) }}>
                 <UserAvatar
                   sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
-                  src={friend.basicInfo.pictureUrl || ''}
+                  userId={friend.friendId}
                 />
                 <Typography variant='body1'>
                   {friend.basicInfo.firstName} {friend.basicInfo.lastName}

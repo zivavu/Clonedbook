@@ -22,7 +22,7 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: ShortcutsSidebarP
     <StyledRoot sx={sx} {...rootProps}>
       <List sx={{ width: '100%' }}>
         <StyledListItemButton onClick={() => handleRedirect('profile')}>
-          <UserAvatar size={36} sx={{ mr: theme.spacing(1.5) }} src={user?.pictureUrl} />
+          <UserAvatar size={36} sx={{ mr: theme.spacing(1.5) }} userId={user?.id} />
           <Typography variant='body1'>
             {user?.firstName} {user?.lastName}
           </Typography>

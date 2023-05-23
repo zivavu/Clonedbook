@@ -11,7 +11,7 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { UserInfoSectionProps } from './types';
 
 export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfoSectionProps) {
@@ -24,12 +24,14 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
   const friendsCount = Object.keys(userData.friends.accepted).length || 0;
-  const mutalFriends = Object.values(userData.friends.accepted).filter((friend) => {
-    if (!loggedUser?.friends.accepted) return false;
-    return Object.values(loggedUser?.friends.accepted).some(
-      (loggedUserFriend) => loggedUserFriend.friendId === friend.friendId,
-    );
-  });
+  const mutalFriends = useMemo(() => {
+    return Object.values(userData.friends.accepted).filter((friend) => {
+      if (!loggedUser?.friends.accepted) return false;
+      return Object.values(loggedUser?.friends.accepted).some(
+        (loggedUserFriend) => loggedUserFriend.friendId === friend.friendId,
+      );
+    });
+  }, []);
 
   const containerHeight = '140px';
   return (

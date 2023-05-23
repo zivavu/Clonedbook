@@ -68,7 +68,6 @@ export type TRealationshipStatus =
   | null
   | 'single'
   | 'in relation'
-  | "it's complicated"
   | 'engaged'
   | 'married'
-  | 'widowed';
+  | "it's complicated";

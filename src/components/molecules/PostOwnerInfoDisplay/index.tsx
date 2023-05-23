@@ -21,7 +21,7 @@ export default function PostOwnerInfoDisplay({
       <Stack direction='row' spacing={1}>
         <UserAvatar userId={owner.id} />
         <Stack justifyContent='center'>
-          <Link href={`profile/${owner.id}`}>
+          <Link href={`/profile/${owner.id}`}>
             <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
               {owner.firstName} {owner.lastName}
             </Typography>

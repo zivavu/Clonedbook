@@ -5,7 +5,6 @@ export const StyledRoot = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.light,
   flexDirection: 'row',
   width: '100%',
-  marginBottom: theme.spacing(2),
   borderRadius: theme.spacing(1),
   boxShadow: theme.shadows[3],
 }));

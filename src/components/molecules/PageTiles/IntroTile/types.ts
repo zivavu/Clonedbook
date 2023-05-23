@@ -10,4 +10,5 @@ export interface IDetail {
   label: string;
   value: string | null;
   icon: IconName;
+  valueLink?: string;
 }

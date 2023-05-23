@@ -2,6 +2,8 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import ContentDevider from '@/components/atoms/ContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
+import Link from '@/components/atoms/Link';
+import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import { IDetail, IntroTileProps } from './types';
 
@@ -10,6 +12,20 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
   const { about } = user;
   const { relationship, city, college, country, highSchool, hometown, workplace } = about;
 
+  const partner = useGetUsersPublicData(relationship?.partnerId || '');
+  const partnerName = `${partner?.firstName} ${partner?.lastName}` || undefined;
+  const relationshipLabel = !partner
+    ? 'Relationship status'
+    : (relationship?.status &&
+        relationship?.status?.charAt(0).toUpperCase() + relationship?.status?.slice(1)) ||
+      '';
+  const relationshipStatus: IDetail = {
+    icon: 'heart',
+    label: relationshipLabel,
+    value: (!partner ? relationship?.status : `with ${partnerName}`) || '',
+    valueLink: partner ? `/profile/${partner.id}` : undefined,
+  };
+
   const publicAddres =
     city && country ? `${city}, ${country}` : city || country ? `${city}${country}` : null;
   const school = college || highSchool || null;
@@ -17,7 +33,7 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
     { label: 'Lives in', value: publicAddres, icon: 'home' },
     { label: 'Works at', value: workplace || null, icon: 'briefcase' },
     { label: 'Goes to', value: school, icon: 'graduation-cap' },
-    { label: 'Relationship status', value: relationship?.status || null, icon: 'heart' },
+    relationshipStatus,
     { label: 'From', value: hometown || null, icon: 'location-dot' },
   ];
 
@@ -32,7 +48,7 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
           <ContentDevider bottom={0} />
         </Box>
         <Stack spacing={2}>
-          {details.map(({ label, value, icon }) => {
+          {details.map(({ label, value, icon, valueLink }) => {
             if (!value) return null;
             return (
               <Stack key={label} direction='row' alignItems='center' spacing={0.5}>
@@ -40,9 +56,17 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
                 <Typography variant='subtitle2' fontWeight='360' pl={0.5}>
                   {label}
                 </Typography>
-                <Typography variant='subtitle2' fontWeight='400'>
-                  {value}
-                </Typography>
+                {valueLink ? (
+                  <Link href={valueLink}>
+                    <Typography variant='subtitle2' fontWeight='400'>
+                      {value}
+                    </Typography>
+                  </Link>
+                ) : (
+                  <Typography variant='subtitle2' fontWeight='400'>
+                    {value}
+                  </Typography>
+                )}
               </Stack>
             );
           })}

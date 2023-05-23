@@ -83,7 +83,7 @@ export default function ReactionsPortal({
                         size={16}
                       />
                     </Box>
-                    <Link href={`profile/${profileId}`}>
+                    <Link href={`/profile/${profileId}`}>
                       {firstName} {lastName}
                     </Link>
                   </Stack>

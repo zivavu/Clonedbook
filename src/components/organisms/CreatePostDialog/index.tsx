@@ -110,6 +110,7 @@ export default function CreatePostDialog({
       setIsLoading(false);
     }
   }
+
   return (
     <Dialog open onClose={() => setIsOpen(false)}>
       <form onSubmit={handleSubmit} style={{ display: 'contents' }}>

@@ -17,9 +17,7 @@ export default function FullPageAccountPicturesView({
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const { isError, isLoading, picturesMap } = useFetchUsersPictures(ownerId);
   const pictures = picturesMap
-    ? Object.values(picturesMap.account)
-        .slice(0, 9)
-        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+    ? Object.values(picturesMap.account).sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
     : [];
 
   const initialPhotoIndex: number =
@@ -51,7 +49,7 @@ export default function FullPageAccountPicturesView({
       />
       <ElementInfo
         userReaction={userReaction}
-        type='picture'
+        type='accountPicture'
         setUserReaction={setUserReaction}
         element={currentPicture}></ElementInfo>
     </FullPagePortal>

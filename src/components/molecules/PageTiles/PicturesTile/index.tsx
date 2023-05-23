@@ -11,8 +11,8 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
   const { isError, isLoading, picturesMap } = useFetchUsersPictures(owner.id);
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
-        .slice(0, 9)
         .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+        .slice(0, 9)
     : [];
 
   const rowCount = pictures.length > 6 ? 3 : pictures.length > 3 ? 2 : 1;

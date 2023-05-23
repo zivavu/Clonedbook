@@ -3,7 +3,7 @@ import { ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 import { StyledButtonIcon, StyledButtonText, StyledPostTypeButton } from './styles';
 
 import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons';
-import ContentDevider from '@/components/atoms/ContentDevider';
+import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
 import { useState } from 'react';
@@ -56,7 +56,7 @@ export default function WriteSomethingTile({ user, sx, ...rootProps }: WriteSome
               <StyledButtonIcon width={24} height={24} alt='Live Event Icon' src={LiveEventIcon} />
               <StyledButtonText>Live event</StyledButtonText>
             </StyledPostTypeButton>
-            <ContentDevider top='0' />
+            <HorizontalContentDevider top='0' />
           </Stack>
         </Stack>
       </StyledPageTile>

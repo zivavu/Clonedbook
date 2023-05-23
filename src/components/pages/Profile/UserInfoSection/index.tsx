@@ -2,7 +2,7 @@ import { Box, ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from './styles';
 
-import ContentDevider from '@/components/atoms/ContentDevider';
+import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import FriendsButton from '@/components/atoms/FriendsButton';
 import Icon from '@/components/atoms/Icon/Icon';
 import LazyImage from '@/components/atoms/LazyImage';
@@ -98,7 +98,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
               </ButtonBase>
             </Stack>
           </Stack>
-          <ContentDevider sx={{ bottom: 0 }} />
+          <HorizontalContentDevider sx={{ bottom: 0 }} />
         </StyledBasicInfoContainer>
       </StyledRoot>
     </>

@@ -1,41 +1,16 @@
 import { Box, Stack, Typography } from '@mui/material';
 
-import AccountAboutItem from '@/components/atoms/AccountAboutItem';
-import { IAccountDetail } from '@/components/atoms/AccountAboutItem/types';
-import ContentDevider from '@/components/atoms/ContentDevider';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
+import From from '@/components/atoms/AccountDetaills/DetailCategories/From';
+import GoesTo from '@/components/atoms/AccountDetaills/DetailCategories/GoesTo';
+import LivesIn from '@/components/atoms/AccountDetaills/DetailCategories/LivesIn';
+import Relationship from '@/components/atoms/AccountDetaills/DetailCategories/Relationship';
+import WorksAt from '@/components/atoms/AccountDetaills/DetailCategories/WorksAt';
+import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import { IntroTileProps } from './types';
 
 export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
-  const { about } = user;
-  const { relationship, city, college, country, highSchool, hometown, workplace } = about;
-
-  const partner = useGetUsersPublicData(relationship?.partnerId || '');
-  const partnerName = `${partner?.firstName} ${partner?.lastName}` || undefined;
-  const relationshipLabel = !partner
-    ? 'Relationship status'
-    : (relationship?.status &&
-        relationship?.status?.charAt(0).toUpperCase() + relationship?.status?.slice(1)) ||
-      '';
-
-  const relationshipStatus: IAccountDetail = {
-    icon: 'heart',
-    label: relationshipLabel,
-    value: (!partner ? relationship?.status : `with ${partnerName}`) || '',
-    valueLink: partner ? `/profile/${partner.id}` : undefined,
-  };
-  const publicAddres =
-    city && country ? `${city}, ${country}` : city || country ? `${city}${country}` : null;
-  const school = college || highSchool || null;
-  const details: IAccountDetail[] = [
-    { label: 'Lives in', value: publicAddres, icon: 'home' },
-    { label: 'Works at', value: workplace || null, icon: 'briefcase' },
-    { label: 'Goes to', value: school, icon: 'graduation-cap' },
-    { label: 'From', value: hometown || null, icon: 'location-dot' },
-    relationshipStatus,
-  ];
-
+  const iconSize = 20;
   return (
     <StyledPageTile sx={sx} {...rootProps}>
       <Stack spacing={2}>
@@ -44,22 +19,14 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
           <Typography textAlign='center' mb={2}>
             {user.about.bio}
           </Typography>
-          <ContentDevider bottom={0} />
+          <HorizontalContentDevider bottom={0} />
         </Box>
         <Stack spacing={2}>
-          {details.map(({ label, value, icon, valueLink }) => {
-            if (!value) return null;
-            return (
-              <AccountAboutItem
-                key={label}
-                label={label}
-                value={value}
-                icon={icon}
-                valueLink={valueLink}
-                iconSize={20}
-              />
-            );
-          })}
+          <LivesIn userData={user} iconSize={iconSize} showPlaceholder={false} />
+          <WorksAt userData={user} iconSize={iconSize} showPlaceholder={false} />
+          <GoesTo userData={user} iconSize={iconSize} showPlaceholder={false} />
+          <Relationship userData={user} iconSize={iconSize} showPlaceholder={false} />
+          <From userData={user} iconSize={iconSize} showPlaceholder={false} />
         </Stack>
       </Stack>
     </StyledPageTile>

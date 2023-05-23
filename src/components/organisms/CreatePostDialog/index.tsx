@@ -7,7 +7,7 @@ import {
   StyledRoot,
 } from './styles';
 
-import ContentDevider from '@/components/atoms/ContentDevider';
+import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
 import { db, storage } from '@/config/firebase.config';
 import { IPost } from '@/types/post';
@@ -121,7 +121,7 @@ export default function CreatePostDialog({
             <Typography textAlign='center' variant='h6' fontWeight='500'>
               Create Post
             </Typography>
-            <ContentDevider bottom='0' />
+            <HorizontalContentDevider bottom='0' />
           </Stack>
           <DialogCloseIconButton onClick={() => setIsOpen(false)}>
             <Icon icon='xmark' />

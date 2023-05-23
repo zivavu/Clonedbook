@@ -2,7 +2,7 @@ import { GlobalStyles, Modal, Stack, Typography, useTheme } from '@mui/material'
 
 import { StyledPostContentWrapper, StyledRoot } from './styles';
 
-import ContentDevider from '@/components/atoms/ContentDevider';
+import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
@@ -41,7 +41,7 @@ export default function FullPagePostView({
             <Typography textAlign='center' variant='h6' fontWeight='600'>
               {owner?.firstName || ''}&apos;s Post
             </Typography>
-            <ContentDevider sx={{ bottom: 0 }} />
+            <HorizontalContentDevider sx={{ bottom: 0 }} />
           </Stack>
           <StyledPostContentWrapper spacing={1}>
             <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />

@@ -2,7 +2,7 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import ContentDevider from '@/components/atoms/ContentDevider';
+import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
@@ -29,7 +29,7 @@ export default function ElementInfo({
       <Stack direction='row' width='100%' height='56px' justifyContent='flex-end'>
         <RightSection mr={theme.spacing(0.5)} />
       </Stack>
-      <ContentDevider />
+      <HorizontalContentDevider />
       <PostOwnerInfoDisplay
         owner={owner}
         createdAt={element.createdAt}

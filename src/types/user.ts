@@ -61,13 +61,8 @@ export interface IRealativesMap {
 }
 
 export type TKinship = 'parent' | 'sibling' | 'child' | 'cousin';
+export type TPartnerStatus = 'engaged' | 'married' | 'in relation';
 
 export type TUserSex = 'male' | 'female' | 'other';
 
-export type TRealationshipStatus =
-  | null
-  | 'single'
-  | 'in relation'
-  | 'engaged'
-  | 'married'
-  | "it's complicated";
+export type TRealationshipStatus = 'single' | "it's complicated" | TPartnerStatus | null;

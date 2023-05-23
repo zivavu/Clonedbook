@@ -2,7 +2,7 @@ import { Stack, useTheme } from '@mui/material';
 
 import { StyledPicturesContainer, StyledRoot } from './styles';
 
-import ContentDevider from '@/components/atoms/ContentDevider';
+import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ManyPicutresDisplay from './ManyPicutresDisplay';
 import Picture from './Picture';
 import { DisplayMode, PictureToDisplay, PicturesDisplayProps } from './types';
@@ -27,7 +27,7 @@ export default function PicturesDisplay({
 
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <ContentDevider sx={{ top: '-1px' }} />
+      <HorizontalContentDevider sx={{ top: '-1px' }} />
 
       {mode === 'single' && (
         <StyledPicturesContainer>
@@ -62,7 +62,7 @@ export default function PicturesDisplay({
           postId={postId}
         />
       )}
-      <ContentDevider sx={{ bottom: '0' }} />
+      <HorizontalContentDevider sx={{ bottom: '0' }} />
     </StyledRoot>
   );
 }

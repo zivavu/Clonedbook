@@ -9,5 +9,8 @@ export interface AboutTabProps extends StackProps {
 export type TAboutSections =
   | 'overview'
   | 'work and education'
-  | 'places lived'
-  | 'family and relationships';
+  | 'family and relationships'
+  | 'contact and basic info';
+export interface SectionProps extends StackProps {
+  profileData: IUser;
+}

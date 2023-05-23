@@ -19,10 +19,15 @@ export async function optimizePhotos(photos: File[]) {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
       const MAX_WIDTH = 1400;
-      const MAX_HEIGHT = 1400;
-      const ratio = Math.min(MAX_WIDTH / img.width, MAX_HEIGHT / img.height);
-      canvas.width = img.width * ratio;
-      canvas.height = img.height * ratio;
+      const MAX_HEIGHT = 1200;
+      if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
+        const ratio = Math.min(MAX_WIDTH / img.width, MAX_HEIGHT / img.height);
+        canvas.width = img.width * ratio;
+        canvas.height = img.height * ratio;
+      } else {
+        canvas.width = img.width;
+        canvas.height = img.height;
+      }
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       canvas.toBlob((blob) => resolve(blob), 'image/webp', 0.8);
     });

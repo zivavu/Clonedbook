@@ -33,7 +33,6 @@ export default function PhotosInput({
       e = e as ChangeEvent<HTMLInputElement>;
       files = e.target.files || undefined;
     }
-
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];

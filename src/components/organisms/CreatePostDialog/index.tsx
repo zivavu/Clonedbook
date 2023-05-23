@@ -50,22 +50,29 @@ export default function CreatePostDialog({
     }
     const userBasicInfo: IUserBasicInfo = separateUserBasicInfo(user);
     const postId = uuidv4();
-    const downloadUrls: string[] = [];
+    const picturesIds: string[] = [];
 
     const optimizedPhotosBlobs = await optimizePhotos(postPhotos);
     const uploadPhotosPromises = optimizedPhotosBlobs.map((photo) => {
-      const photoRef = ref(storage, `posts/${postId}/${uuidv4()}`);
+      const pictureId = uuidv4();
+      picturesIds.push(pictureId);
+      const photoRef = ref(storage, `posts/${postId}/${pictureId}`);
       return uploadBytes(photoRef, photo, { contentType: 'image/webp' });
     });
     try {
-      await Promise.allSettled(uploadPhotosPromises).then((results) => {
-        results.forEach(async (result) => {
-          if (result.status === 'fulfilled') {
-            const downloadUrl = await getDownloadURL(result.value.ref);
-            downloadUrls.push(downloadUrl);
-          }
-        });
+      const results = await Promise.allSettled(uploadPhotosPromises);
+      const getDownloadUrlsPromises = results.map((result) => {
+        if (result.status === 'rejected') return;
+        return getDownloadURL(result.value.ref);
       });
+      const urlsResults = await Promise.allSettled(getDownloadUrlsPromises);
+      const downloadUrls = urlsResults
+        .map((result) => {
+          if (result.status === 'rejected') return;
+          return result.value as string;
+        })
+        .filter((url) => url !== undefined) as string[];
+
       const post: IPost = {
         text: postTextRef.current,
         createdAt: Timestamp.now(),
@@ -78,16 +85,29 @@ export default function CreatePostDialog({
         shareCount: 0,
       };
 
-      const userDocRef = doc(db, 'users', `${user.id}/posts/${postId}`);
       const postDocRef = doc(db, 'posts', postId);
-      await setDoc(userDocRef, post);
       await setDoc(postDocRef, post);
     } catch (err) {
-      const deleteRef = ref(storage, `posts/${postId}`);
-      await deleteObject(deleteRef);
+      try {
+        const picturesRefs = picturesIds.map((id) => ref(storage, `posts/${postId}/${id}`));
+        const deletePromises = picturesRefs.map((id) => deleteObject(id));
+        await Promise.allSettled(deletePromises);
+      } catch {
+        setErrors((prev) => [
+          ...prev,
+          { content: 'Problem with deleting photos occurred', sevariety: 'error' },
+        ]);
+      }
+      setErrors((prev) => [
+        { content: 'Problem with creating post occurred. Try again', sevariety: 'error' },
+        ...prev,
+      ]);
     } finally {
+      if (!errors[0]) setErrors([{ content: 'Post created successfully', sevariety: 'success' }]);
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 1500);
       setIsLoading(false);
-      setIsOpen(false);
     }
   }
   return (

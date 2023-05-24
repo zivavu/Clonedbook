@@ -9,7 +9,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { useEffect, useState } from 'react';
 import { FriendsButtonProps } from './types';
 
-export default function FriendsButton({ friendsMap, sx, ...rootProps }: FriendsButtonProps) {
+export default function AddFriendButton({ friendsMap, sx, ...rootProps }: FriendsButtonProps) {
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
   const [userStatus, setUserStatus] = useState<TFriendStatus | null>(null);

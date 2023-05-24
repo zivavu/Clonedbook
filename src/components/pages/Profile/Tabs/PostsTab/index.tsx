@@ -7,17 +7,13 @@ import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import PostsFeed from '@/components/organisms/PostsFeed';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchUsersPosts from '@/hooks/useFetchUsersPosts';
 import { PostsTabProps } from './types';
 
-export default function PostsTab({
-  userId,
-  profileData,
-  loggedUser,
-  sx,
-  ...rootProps
-}: PostsTabProps) {
+export default function PostsTab({ userId, profileData, sx, ...rootProps }: PostsTabProps) {
   const { posts, isLoading: arePostsLoading, isError: isPostsError } = useFetchUsersPosts(userId);
+  const loggedUser = useFetchLoggedUserQuery({});
   const theme = useTheme();
   return (
     <>
@@ -36,7 +32,7 @@ export default function PostsTab({
           </InvisibleScrollableStack>
         )}
         <Stack width='57%' spacing={2}>
-          {!!loggedUser && <WriteSomethingTile user={loggedUser} />}
+          {!!loggedUser && <WriteSomethingTile />}
           {!arePostsLoading && !isPostsError && posts && posts.length > 0 ? (
             <PostsFeed posts={posts} isLoading={arePostsLoading} isError={isPostsError}></PostsFeed>
           ) : null}

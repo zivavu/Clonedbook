@@ -6,16 +6,19 @@ import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
+import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { useState } from 'react';
 import { StyledPageTile } from '../styles';
 import { WriteSomethingTileProps } from './types';
 
-export default function WriteSomethingTile({ user, sx, ...rootProps }: WriteSomethingTileProps) {
+export default function WriteSomethingTile({ sx, ...rootProps }: WriteSomethingTileProps) {
   const theme = useTheme();
+  const { data: user } = useFetchLoggedUserQuery({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   function handleOpenDialog() {
     setIsDialogOpen(true);
   }
+  if (!user) return null;
   return (
     <>
       {isDialogOpen && <CreatePostDialog user={user} setIsOpen={setIsDialogOpen} />}

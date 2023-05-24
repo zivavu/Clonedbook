@@ -13,6 +13,7 @@ export default function BornIn({
     label: 'Born in',
     value: hometown || null,
     icon: 'location-dot',
+    placeholder: 'Hometown not specified',
   };
 
   return (

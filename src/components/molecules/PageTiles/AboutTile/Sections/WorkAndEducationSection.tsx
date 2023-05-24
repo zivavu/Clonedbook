@@ -1,4 +1,4 @@
-import { Box, Stack, useTheme } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 import College from '@/components/atoms/AccountDetaills/DetailCategories/College';
 import HighSchool from '@/components/atoms/AccountDetaills/DetailCategories/HighSchool';
@@ -8,7 +8,6 @@ import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 
 export default function WorkAndEducationSection({ profileData, sx, ...rootProps }: SectionProps) {
-  const theme = useTheme();
   return (
     <SectionRoot sx={sx} {...rootProps} spacing={4} mb={2}>
       <Box>

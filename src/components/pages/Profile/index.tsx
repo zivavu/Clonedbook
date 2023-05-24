@@ -27,10 +27,8 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
         </Container>
       </Box>
       <Container sx={{ mt: 2, pb: 4, minHeight: '100vh' }}>
-        {selectedTab === 'posts' && (
-          <PostsTab userId={userId} loggedUser={loggedUser} profileData={profileData} />
-        )}
-        {selectedTab === 'about' && <AboutTab loggedUser={loggedUser} profileData={profileData} />}
+        {selectedTab === 'posts' && <PostsTab userId={userId} profileData={profileData} />}
+        {selectedTab === 'about' && <AboutTab profileData={profileData} />}
       </Container>
     </StyledRoot>
   );

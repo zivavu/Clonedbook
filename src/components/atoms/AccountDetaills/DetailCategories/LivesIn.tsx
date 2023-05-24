@@ -15,6 +15,7 @@ export default function LivesIn({
     label: 'Lives in',
     value: publicAddres,
     icon: 'home',
+    placeholder: 'Address not specified',
   };
 
   return (

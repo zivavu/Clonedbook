@@ -3,7 +3,7 @@ import { Box, ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from './styles';
 
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
-import FriendsButton from '@/components/atoms/FriendsButton';
+import AddFriendButton from '@/components/atoms/FriendsButton';
 import Icon from '@/components/atoms/Icon/Icon';
 import LazyImage from '@/components/atoms/LazyImage';
 import MessageButton from '@/components/atoms/MessageButton';
@@ -84,7 +84,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
               spacing={1}
               mb={1}
               height={36}>
-              <FriendsButton friendsMap={userData.friends} />
+              <AddFriendButton friendsMap={userData.friends} />
               <MessageButton />
               <ButtonBase
                 focusRipple

@@ -22,6 +22,7 @@ export default function Relationship({
     label: `${relationshipLabel} ${!!partner ? 'with' : ''}`,
     value: (!partner ? relationship?.status : partnerName) || '',
     valueLink: partner ? `/profile/${partner.id}` : undefined,
+    placeholder: 'No relationship info to show',
   };
   return (
     <TextAccountDetail

@@ -37,24 +37,24 @@ export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: Fr
           {friendsCount} ({mutalFriends.length} mutual)
         </Typography>
       </Stack>
-      <Stack spacing={1.5}>
+      <Stack spacing={2}>
         <>
           {rowsCount >= 1 && (
-            <Stack direction='row' spacing={0.5}>
+            <Stack direction='row' spacing={1.3}>
               {friendsArr.slice(0, 3).map((friend) => (
                 <Friend key={friend.id} friendId={friend.id} />
               ))}
             </Stack>
           )}
           {rowsCount >= 2 && (
-            <Stack direction='row' spacing={0.5}>
+            <Stack direction='row' spacing={1.3}>
               {friendsArr.slice(3, 6).map((friend) => (
                 <Friend key={friend.id} friendId={friend.id} />
               ))}
             </Stack>
           )}
           {rowsCount >= 3 && (
-            <Stack direction='row' spacing={0.5}>
+            <Stack direction='row' spacing={1.3}>
               {friendsArr.slice(6, 9).map((friend) => (
                 <Friend key={friend.id} friendId={friend.id} />
               ))}

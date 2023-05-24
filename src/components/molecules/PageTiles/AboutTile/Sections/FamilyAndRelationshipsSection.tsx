@@ -1,16 +1,14 @@
-import { Box, Stack, useTheme } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 import FamilyMember from '@/components/atoms/AccountDetaills/DetailCategories/FamilyMember';
 import Relationship from '@/components/atoms/AccountDetaills/DetailCategories/Relationship';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
-
 export default function FamilyAndRelationshipsSection({
   profileData,
   sx,
   ...rootProps
 }: SectionProps) {
-  const theme = useTheme();
   const partnertId = profileData?.about.relationship?.partnerId;
   const status = profileData?.about.relationship?.status;
   const hasPartner =

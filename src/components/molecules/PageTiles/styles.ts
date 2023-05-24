@@ -1,4 +1,4 @@
-import { Box, Typography, styled } from '@mui/material';
+import { Box, Stack, Typography, styled } from '@mui/material';
 
 export const StyledPageTile = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -14,4 +14,12 @@ export const StyledPageTileHeader = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.h6.fontSize,
   lineHeight: theme.typography.h6.fontSize,
   padding: theme.spacing(0.5, 0),
+}));
+
+export const StyledFullSizePageTile = styled(Stack)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  backgroundColor: theme.palette.secondary.light,
+  width: '100%',
+  borderRadius: theme.spacing(1),
+  boxShadow: theme.shadows[3],
 }));

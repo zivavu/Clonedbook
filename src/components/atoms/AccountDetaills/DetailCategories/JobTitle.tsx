@@ -18,7 +18,7 @@ export default function JobTitle({
   return (
     <TextAccountDetail
       accountDetail={accountDetail}
-      showPlaceholder={showPlaceholder}
+      showPlaceholder={showPlaceholder || false}
       iconSize={iconSize}
       sx={sx}
       {...rootProps}

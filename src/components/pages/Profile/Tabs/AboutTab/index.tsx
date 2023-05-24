@@ -5,6 +5,7 @@ import { useState } from 'react';
 import ContactAndBasicInfo from './Sections/ContactsAndBasicInfo';
 import FamilyAndRelationshipsSection from './Sections/FamilyAndRelationshipsSection';
 import OverviewSection from './Sections/OverviewSection';
+import PlacesLived from './Sections/PlacesLived';
 import WorkAndEducationSection from './Sections/WorkAndEducationSection';
 import { StyledListItemButton, StyledRoot } from './styles';
 import { AboutTabProps, TAboutSections } from './types';
@@ -17,6 +18,7 @@ export default function AboutTab({ loggedUser, profileData, sx, ...rootProps }: 
     'contact and basic info',
     'work and education',
     'family and relationships',
+    'places lived',
   ];
   return (
     <StyledRoot sx={sx} {...rootProps}>
@@ -54,6 +56,7 @@ export default function AboutTab({ loggedUser, profileData, sx, ...rootProps }: 
           {currentSection === 'family and relationships' && (
             <FamilyAndRelationshipsSection profileData={profileData} />
           )}
+          {currentSection === 'places lived' && <PlacesLived profileData={profileData} />}
         </Stack>
       </Stack>
     </StyledRoot>

@@ -26,7 +26,7 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
           <ProfileTabToggleGroup selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </Container>
       </Box>
-      <Container sx={{ mt: 2, pb: 4 }}>
+      <Container sx={{ mt: 2, pb: 4, minHeight: '100vh' }}>
         {selectedTab === 'posts' && (
           <PostsTab userId={userId} loggedUser={loggedUser} profileData={profileData} />
         )}

@@ -12,7 +12,8 @@ export default function TextAccountDetail({
   ...rootProps
 }: TextAccountDetailProps) {
   const theme = useTheme();
-  const { icon, label, value, valueLink, placeholder } = accountDetail;
+  const { icon, label, value, valueLink } = accountDetail;
+  const placeholder = accountDetail.placeholder || "Didn't specified";
   const showingPlaceholder = showPlaceholder && placeholder && !value;
   if ((!value || !icon) && !showingPlaceholder) return null;
   return (

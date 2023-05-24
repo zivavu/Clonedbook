@@ -1,7 +1,7 @@
 import TextAccountDetail from '../AccountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 
-export default function From({
+export default function BornIn({
   userData,
   iconSize,
   showPlaceholder,
@@ -10,7 +10,7 @@ export default function From({
 }: CategoryProps) {
   const { hometown } = userData.about;
   const accountDetail: ITextAccountDetail = {
-    label: 'From',
+    label: 'Born in',
     value: hometown || null,
     icon: 'location-dot',
   };

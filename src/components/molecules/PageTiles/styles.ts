@@ -10,7 +10,7 @@ export const StyledPageTile = styled(Box)(({ theme }) => ({
 }));
 
 export const StyledPageTileHeader = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
+  fontWeight: 650,
   fontSize: theme.typography.pxToRem(22),
   padding: theme.spacing(0.5, 0),
 }));

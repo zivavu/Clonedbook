@@ -1,4 +1,5 @@
-import { Box, Stack, styled } from '@mui/material';
+import ScrollableStack from '@/components/atoms/Scrollables/ScrollableStack';
+import { Box, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -17,26 +18,9 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
 }));
 
-export const StyledPostContentWrapper = styled(Stack)(({ theme }) => ({
+export const StyledPostContentWrapper = styled(ScrollableStack)(({ theme }) => ({
   padding: theme.spacing(2),
   paddingBottom: 0,
   overflowY: 'auto',
   height: '100%',
-  scrollbarWidth: 'thin',
-  '&::-webkit-scrollbar': {
-    width: `8px`,
-  },
-
-  scrollbarColor: `transparent transparent`,
-  '&::-webkit-scrollbar-thumb': {
-    background: theme.palette.secondary.main,
-    borderRadius: '8px',
-  },
-
-  '&:hover::-webkit-scrollbar-thumb': {
-    background: theme.palette.text.disabled,
-  },
-  '&:hover': {
-    scrollbarColor: `${theme.palette.text.disabled}${theme.palette.secondary.main}`,
-  },
 }));

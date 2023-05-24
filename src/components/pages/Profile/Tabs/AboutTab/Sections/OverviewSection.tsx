@@ -1,4 +1,4 @@
-import From from '@/components/atoms/AccountDetaills/DetailCategories/From';
+import BornIn from '@/components/atoms/AccountDetaills/DetailCategories/BornIn';
 import GoesTo from '@/components/atoms/AccountDetaills/DetailCategories/GoesTo';
 import LivesIn from '@/components/atoms/AccountDetaills/DetailCategories/LivesIn';
 import Relationship from '@/components/atoms/AccountDetaills/DetailCategories/Relationship';
@@ -14,7 +14,7 @@ export default function OverviewSection({ profileData, sx, ...rootProps }: Secti
       <WorksAt userData={profileData} />
       <GoesTo userData={profileData} />
       <LivesIn userData={profileData} />
-      <From userData={profileData} />
+      <BornIn userData={profileData} />
       <Relationship userData={profileData} />
     </SectionRoot>
   );

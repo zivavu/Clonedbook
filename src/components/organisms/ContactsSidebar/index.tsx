@@ -27,46 +27,44 @@ export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarPro
   const theme = useTheme();
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <Box>
-        <StyledHeadingContainer>
-          <Typography variant='subtitle1' fontWeight={400}>
-            Contacts
-          </Typography>
-          <Box
-            sx={{
-              width: '20%',
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}>
-            <IconButton size='small'>
-              <Icon icon='magnifying-glass' size='sm' />
-            </IconButton>
-            <IconButton size='small'>
-              <Icon icon='ellipsis' />
-            </IconButton>
-          </Box>
-        </StyledHeadingContainer>
-        <List sx={{ pt: theme.spacing(0) }}>
-          {friends.slice(0, 30).map((friend) => {
-            return (
-              <ListItemButton
-                component={Link}
-                href={`/profile/${friend.friendId}`}
-                key={friend.friendId}
-                sx={{ pl: theme.spacing(1) }}>
-                <UserAvatar
-                  userId={friend.friendId}
-                  useLink={false}
-                  sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
-                />
-                <Typography variant='body1'>
-                  {friend.basicInfo.firstName} {friend.basicInfo.lastName}
-                </Typography>
-              </ListItemButton>
-            );
-          })}
-        </List>
-      </Box>
+      <StyledHeadingContainer>
+        <Typography variant='subtitle1' fontWeight={400}>
+          Contacts
+        </Typography>
+        <Box
+          sx={{
+            width: '20%',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+          <IconButton size='small'>
+            <Icon icon='magnifying-glass' size='sm' />
+          </IconButton>
+          <IconButton size='small'>
+            <Icon icon='ellipsis' />
+          </IconButton>
+        </Box>
+      </StyledHeadingContainer>
+      <List sx={{ pt: theme.spacing(0) }}>
+        {friends.slice(0, 30).map((friend) => {
+          return (
+            <ListItemButton
+              component={Link}
+              href={`/profile/${friend.friendId}`}
+              key={friend.friendId}
+              sx={{ pl: theme.spacing(1) }}>
+              <UserAvatar
+                userId={friend.friendId}
+                useLink={false}
+                sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
+              />
+              <Typography variant='body1'>
+                {friend.basicInfo.firstName} {friend.basicInfo.lastName}
+              </Typography>
+            </ListItemButton>
+          );
+        })}
+      </List>
     </StyledRoot>
   );
 }

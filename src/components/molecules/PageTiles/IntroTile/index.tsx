@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 
-import From from '@/components/atoms/AccountDetaills/DetailCategories/From';
+import BornIn from '@/components/atoms/AccountDetaills/DetailCategories/BornIn';
 import GoesTo from '@/components/atoms/AccountDetaills/DetailCategories/GoesTo';
 import LivesIn from '@/components/atoms/AccountDetaills/DetailCategories/LivesIn';
 import Relationship from '@/components/atoms/AccountDetaills/DetailCategories/Relationship';
@@ -26,7 +26,7 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
           <WorksAt userData={user} iconSize={iconSize} showPlaceholder={false} />
           <GoesTo userData={user} iconSize={iconSize} showPlaceholder={false} />
           <Relationship userData={user} iconSize={iconSize} showPlaceholder={false} />
-          <From userData={user} iconSize={iconSize} showPlaceholder={false} />
+          <BornIn userData={user} iconSize={iconSize} showPlaceholder={false} />
         </Stack>
       </Stack>
     </StyledPageTile>

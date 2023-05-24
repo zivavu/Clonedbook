@@ -26,7 +26,10 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
           pictures={pictures}
           startIndex={0}
           owner={owner}
-          sx={{ borderTopRightRadius: theme.spacing(1), borderTopLeftRadius: theme.spacing(1) }}
+          sx={{
+            borderTopRightRadius: theme.spacing(1),
+            borderTopLeftRadius: theme.spacing(1),
+          }}
         />
         {rowCount > 1 && (
           <PicturesRow

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 export default function useFetchUsersPosts(id: string) {
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState<boolean>(false);
 
   useEffect(() => {

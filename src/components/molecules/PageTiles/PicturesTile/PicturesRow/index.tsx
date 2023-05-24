@@ -1,4 +1,4 @@
-import { StyledImageContainer, StyledImagesRow } from './styles';
+import { StyledImageButton, StyledImagesRow } from './styles';
 
 import LazyImage from '@/components/atoms/LazyImage';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
@@ -31,7 +31,7 @@ export default function PicturesRow({
       <StyledImagesRow direction='row' spacing={0.5} sx={sx} {...rootProps}>
         {pictures.slice(startIndex, startIndex + 3).map((picture, i) => {
           return (
-            <StyledImageContainer
+            <StyledImageButton
               key={picture.id}
               focusRipple
               onClick={() => {
@@ -48,7 +48,7 @@ export default function PicturesRow({
                 }}
                 alt={`${owner.firstName} ${owner.lastName} Picture`}
               />
-            </StyledImageContainer>
+            </StyledImageButton>
           );
         })}
       </StyledImagesRow>

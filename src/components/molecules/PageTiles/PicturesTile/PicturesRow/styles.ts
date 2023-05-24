@@ -7,9 +7,10 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
 
 export const StyledImagesRow = styled(Stack)(({}) => ({
   width: '100%',
+  overflow: 'hidden',
 }));
 
-export const StyledImageContainer = styled(ButtonBase)(({}) => ({
+export const StyledImageButton = styled(ButtonBase)(({}) => ({
   position: 'relative',
   width: '32.5%',
   aspectRatio: '1/1',

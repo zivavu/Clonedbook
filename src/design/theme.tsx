@@ -76,6 +76,9 @@ export const theme = createTheme({
       fontWeight: 380,
       letterSpacing: '0',
     },
+    h6: {
+      fontSize: '1.375rem',
+    },
     subtitle1: {
       fontSize: '1rem',
     },

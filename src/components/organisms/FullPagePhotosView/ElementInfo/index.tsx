@@ -10,6 +10,7 @@ import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
+import { NAVBAR_HEIGHT } from '../../NavBar';
 import RightSection from '../../NavBar/RightSection';
 import { ElementInfoProps } from './types';
 
@@ -26,7 +27,7 @@ export default function ElementInfo({
   const owner = useGetUsersPublicData(element.ownerId);
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <Stack direction='row' width='100%' height='56px' justifyContent='flex-end'>
+      <Stack direction='row' width='100%' height={NAVBAR_HEIGHT} justifyContent='flex-end'>
         <RightSection mr={theme.spacing(0.5)} />
       </Stack>
       <HorizontalContentDevider />

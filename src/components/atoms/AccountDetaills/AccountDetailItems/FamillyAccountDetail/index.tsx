@@ -2,7 +2,6 @@ import { Stack, Typography, useTheme } from '@mui/material';
 
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useRouter } from 'next/router';
 import { FamilyAcountDetailProps } from '../../types';
 import { StyledRoot } from './styles';
 
@@ -13,7 +12,6 @@ export default function FamilyAccountDetail({
   sx,
   ...rootProps
 }: FamilyAcountDetailProps) {
-  const router = useRouter();
   const theme = useTheme();
   return (
     <StyledRoot sx={sx} {...rootProps}>

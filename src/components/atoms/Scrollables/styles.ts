@@ -23,10 +23,37 @@ const getScrollableStyles = (theme: Theme) => {
   } as CSSObject;
 };
 
+const getInvisibleScrollStyles = (theme: Theme) => {
+  return {
+    overflowX: 'hidden',
+    overflowY: 'auto',
+
+    scrollbarWidth: 'thin',
+    '&::-webkit-scrollbar': {
+      width: `0`,
+    },
+    scrollbarColor: `transparent transparent`,
+    '&::-webkit-scrollbar-thumb': {
+      background: 'taransparent',
+      borderRadius: '8',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+      background: 'taransparent',
+    },
+    '&:hover': {
+      scrollbarColor: 'taransparent',
+    },
+  } as CSSObject;
+};
+
 export const StyledScrollableBox = styled(Box)(({ theme }) => ({
   ...getScrollableStyles(theme),
 }));
 
 export const StyledScrollableStack = styled(Stack)(({ theme }) => ({
   ...getScrollableStyles(theme),
+}));
+
+export const StyledInvisibleScrollableStack = styled(Stack)(({ theme }) => ({
+  ...getInvisibleScrollStyles(theme),
 }));

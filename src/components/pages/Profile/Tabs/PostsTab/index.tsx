@@ -1,8 +1,11 @@
 import { Stack, useTheme } from '@mui/material';
 
+import { InvisibleScrollableStack } from '@/components/atoms/Scrollables/ScrollableStack';
+import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';
 import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
+import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import PostsFeed from '@/components/organisms/PostsFeed';
 import useFetchUsersPosts from '@/hooks/useFetchUsersPosts';
 import { PostsTabProps } from './types';
@@ -20,16 +23,17 @@ export default function PostsTab({
     <>
       <Stack direction='row' spacing={2} sx={sx} {...rootProps}>
         {profileData && (
-          <Stack
+          <InvisibleScrollableStack
             width='43%'
             spacing={2}
-            height='min-content'
+            borderRadius={1}
+            maxHeight={`calc(100vh - ${NAVBAR_HEIGHT} - ${theme.spacing(2)})`}
             position='sticky'
-            top={theme.spacing(9)}>
+            top={`calc(${NAVBAR_HEIGHT})`}>
             <IntroTile user={profileData} />
             <PicturesTile user={profileData} />
-            <PicturesTile user={profileData} />
-          </Stack>
+            <FriendsTile user={profileData} friendsLimit={9} />
+          </InvisibleScrollableStack>
         )}
         <Stack width='57%' spacing={2}>
           {!!loggedUser && <WriteSomethingTile user={loggedUser} />}

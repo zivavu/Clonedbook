@@ -5,6 +5,7 @@ import { StyledContentContainer } from './styles';
 import LeftSection from './LeftSection';
 import MiddleSection from './MiddleSection';
 import RightSection from './RightSection';
+export const NAVBAR_HEIGHT = '56px';
 export default function NavBar() {
   const theme = useTheme();
   return (
@@ -13,7 +14,7 @@ export default function NavBar() {
         backgroundColor: theme.palette.secondary.light,
         boxShadow: theme.shadows[9],
         position: 'sticky',
-        height: '56px',
+        height: NAVBAR_HEIGHT,
       }}>
       <StyledContentContainer>
         <LeftSection />

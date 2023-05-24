@@ -1,10 +1,11 @@
 import ScrollableBox from '@/components/atoms/Scrollables/ScrollableBox';
 import { Box, styled } from '@mui/material';
+import { NAVBAR_HEIGHT } from '../NavBar';
 
 export const StyledRoot = styled(ScrollableBox)(({ theme }) => ({
   position: 'sticky',
-  top: '56px',
-  height: `calc(100vh - ${theme.spacing(7)})`,
+  top: NAVBAR_HEIGHT,
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   color: theme.palette.text.primary,
   width: '19%',
 }));

@@ -1,9 +1,10 @@
 import { Avatar, Box, ListItemButton, styled } from '@mui/material';
+import { NAVBAR_HEIGHT } from '../NavBar';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'sticky',
-  top: '56px',
-  height: `calc(100vh - 56px)`,
+  top: NAVBAR_HEIGHT,
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
 
   color: theme.palette.text.primary,
   width: '15%',

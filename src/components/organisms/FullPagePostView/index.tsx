@@ -38,7 +38,7 @@ export default function FullPagePostView({
       <Modal open onClose={() => setOpen(false)}>
         <StyledRoot sx={sx} {...rootProps}>
           <Stack p={theme.spacing(1.5, 0)} position='relative'>
-            <Typography textAlign='center' variant='h6' fontWeight='600'>
+            <Typography textAlign='center' variant='h4' fontWeight='600'>
               {owner?.firstName || ''}&apos;s Post
             </Typography>
             <HorizontalContentDevider sx={{ bottom: 0 }} />

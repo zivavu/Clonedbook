@@ -5,8 +5,8 @@ import SingleFriend from '../../SingleFriend';
 import { StyledSectionStack } from '../../styles';
 import { SectionProps } from '../../types';
 
-export default function MutalFriendsSection({ profileId, sx, ...rootProps }: SectionProps) {
-  const mutalFriends = useGetMutalFriends(profileId);
+export default function MutalFriendsSection({ profileId, limit, sx, ...rootProps }: SectionProps) {
+  const mutalFriends = useGetMutalFriends(profileId).slice(0, limit);
 
   return (
     <StyledSectionStack sx={sx} {...rootProps}>

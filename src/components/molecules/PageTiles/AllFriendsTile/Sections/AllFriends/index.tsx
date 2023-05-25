@@ -6,15 +6,17 @@ import SingleFriend from '../../SingleFriend';
 import { StyledSectionStack } from '../../styles';
 import { SectionProps } from '../../types';
 
-export default function AllFriendsSection({ profileId, sx, ...rootProps }: SectionProps) {
+export default function AllFriendsSection({ profileId, limit, sx, ...rootProps }: SectionProps) {
   const publicFriends = useGetUsersPublicFriends(profileId);
   if (!publicFriends) return null;
-  const friends = Object.entries(publicFriends).map(([id, timestamp]) => {
-    return {
-      id,
-      timestamp,
-    } as IPublicFriend;
-  });
+  const friends = Object.entries(publicFriends)
+    .map(([id, timestamp]) => {
+      return {
+        id,
+        timestamp,
+      } as IPublicFriend;
+    })
+    .slice(0, limit);
 
   return (
     <StyledSectionStack sx={sx} {...rootProps}>

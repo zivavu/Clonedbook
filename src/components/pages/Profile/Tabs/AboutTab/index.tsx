@@ -1,17 +1,15 @@
-import { useTheme } from '@mui/material';
-
 import AboutTile from '@/components/molecules/PageTiles/AboutTile';
 import AllFriendsTile from '@/components/molecules/PageTiles/AllFriendsTile';
-import { StyledRoot } from './styles';
+import AllPicturesTile from '@/components/molecules/PageTiles/AllPicturesTile';
+import { Stack } from '@mui/material';
 import { AboutTabProps } from './types';
 
-export default function AboutTab({ profileData, sx, ...rootProps }: AboutTabProps) {
-  const theme = useTheme();
-
+export default function AboutTab({ setSelectedTab, profileData, sx, ...rootProps }: AboutTabProps) {
   return (
-    <StyledRoot sx={sx} {...rootProps} spacing={2}>
+    <Stack sx={sx} {...rootProps} spacing={2}>
       <AboutTile profileData={profileData} />
-      <AllFriendsTile profileData={profileData} />
-    </StyledRoot>
+      <AllFriendsTile profileData={profileData} limit={8} setSelectedTab={setSelectedTab} />
+      <AllPicturesTile profileData={profileData} />
+    </Stack>
   );
 }

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import BackgroundPicture from './BackgroundPicture';
 import ProfileTabToggleGroup from './ProfileTabToggleGroup';
 import AboutTab from './Tabs/AboutTab';
+import FriendsTab from './Tabs/FriendsTab';
 import PostsTab from './Tabs/PostsTab';
 import UserInfoSection from './UserInfoSection';
 import { ProfileProps, TProfileTabs } from './types';
@@ -26,9 +27,12 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
           <ProfileTabToggleGroup selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </Container>
       </Box>
-      <Container sx={{ mt: 2, pb: 4, minHeight: '100vh' }}>
+      <Container sx={{ mt: 2, pb: 4, minHeight: '70vh' }}>
         {selectedTab === 'posts' && <PostsTab userId={userId} profileData={profileData} />}
-        {selectedTab === 'about' && <AboutTab profileData={profileData} />}
+        {selectedTab === 'about' && (
+          <AboutTab profileData={profileData} setSelectedTab={setSelectedTab} />
+        )}
+        {selectedTab === 'friends' && <FriendsTab profileData={profileData} />}
       </Container>
     </StyledRoot>
   );

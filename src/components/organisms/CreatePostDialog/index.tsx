@@ -118,7 +118,7 @@ export default function CreatePostDialog({
           <ErrorsFeed errors={errors} setErrors={setErrors} />
 
           <Stack p={theme.spacing(2)} position='relative'>
-            <Typography textAlign='center' variant='h6' fontWeight='500'>
+            <Typography textAlign='center' variant='h4' fontWeight='500'>
               Create Post
             </Typography>
             <HorizontalContentDevider bottom='0' />

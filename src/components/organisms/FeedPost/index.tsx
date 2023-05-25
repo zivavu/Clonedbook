@@ -52,7 +52,7 @@ export default function FeedPost({ post, sx, ...rootProps }: FeedPostProps) {
               {isTextLong ? (
                 <Typography variant='body1'>{postText}</Typography>
               ) : (
-                <Typography variant='h6' fontWeight='400' lineHeight='1.7rem'>
+                <Typography variant='h4' fontWeight='400' lineHeight='1.7rem'>
                   {postText}
                 </Typography>
               )}

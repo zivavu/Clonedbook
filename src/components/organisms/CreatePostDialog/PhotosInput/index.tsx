@@ -94,7 +94,7 @@ export default function PhotosInput({
             {!photos[0] && (
               <Stack>
                 {isDraggedOver ? (
-                  <Typography fontWeight={400} variant='h6' color={theme.palette.primary.dark}>
+                  <Typography fontWeight={400} variant='h4' color={theme.palette.primary.dark}>
                     Drop Your photo here
                   </Typography>
                 ) : (

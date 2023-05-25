@@ -1,7 +1,7 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
-import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
+import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
 import { IFriendWithBasicInfo } from '@/types/firend';
 import { Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ import { ContactsSidebarProps } from './types';
 
 export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarProps) {
   const { data: userData } = useFetchLoggedUserQuery({});
-  const { data: allUsersData } = useFetchUsersPublicDataQuery({});
+  const { data: allUsersData } = useFetchUsersBasicInfoQuery({});
   const [friends, setFriends] = useState<IFriendWithBasicInfo[] | []>([]);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
-import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
+import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
 import { IUserBasicInfo } from '@/types/user';
 
-export default function useGetUsersPublicData(userId: string | '') {
-  const { data: userData } = useFetchUsersPublicDataQuery({});
+export default function useGetUsersPublicData(userId: string | '' | undefined) {
+  const { data: userData } = useFetchUsersBasicInfoQuery({});
   if (!userId) return null;
   const user: IUserBasicInfo | null =
     userId && userData ? { ...userData[userId], id: userId } : null;

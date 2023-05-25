@@ -1,10 +1,10 @@
 import * as Pages from '@/components/pages';
-import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
+import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
 import Page from '@/templates/Page';
 import { useRouter } from 'next/router';
 
 export default function ProfilePage() {
-  const { data: users, isLoading, isError } = useFetchUsersPublicDataQuery({});
+  const { data: users, isLoading, isError } = useFetchUsersBasicInfoQuery({});
   const router = useRouter();
   const idParam = router.query.id as string;
   const user = users?.[idParam];

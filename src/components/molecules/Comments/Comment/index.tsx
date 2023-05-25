@@ -5,7 +5,7 @@ import { StyledRoot, StyledTextContent } from './styles';
 import InteractButton from '@/components/atoms/InteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
-import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
+import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
 import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
@@ -18,7 +18,7 @@ import { CommentProps } from './types';
 export default function Comment({ post, comment, sx, ...rootProps }: CommentProps) {
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
-  const { data: allUsersBasicInfo } = useFetchUsersPublicDataQuery({});
+  const { data: allUsersBasicInfo } = useFetchUsersBasicInfoQuery({});
   const [ownerData, setOwnerData] = useState(
     (allUsersBasicInfo && allUsersBasicInfo[comment.ownerId]) || null,
   );

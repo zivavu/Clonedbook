@@ -1,6 +1,6 @@
 import { IChatReference } from './chat';
 import { ITimestamp } from './createdAt';
-import { IFriendsMap } from './firend';
+import { IFriendsMap, IPublicFriendsMap } from './firend';
 
 export interface IUser extends IUserBasicInfo {
   backgroundPicture?: string;
@@ -49,6 +49,10 @@ export interface IServerUserBasicInfo {
     lastName: string;
     pictureUrl?: string;
   };
+}
+
+export interface IServerUserPublicFriends {
+  [key: string]: IPublicFriendsMap;
 }
 
 export interface IContactInfo {

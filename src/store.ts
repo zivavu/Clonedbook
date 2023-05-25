@@ -1,19 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { posts } from './features/postsAPI';
 import { user } from './features/userAPI';
-import { usersPublicData } from './features/usersPublicDataAPI';
+import { usersPublicData } from './features/usersBasicInfoAPI';
+import { userPublicFriends } from './features/usersPublicFriendsAPI';
 
 export const store = configureStore({
   reducer: {
     [user.reducerPath]: user.reducer,
     [posts.reducerPath]: posts.reducer,
     [usersPublicData.reducerPath]: usersPublicData.reducer,
+    [userPublicFriends.reducerPath]: userPublicFriends.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
       user.middleware,
       posts.middleware,
       usersPublicData.middleware,
+      userPublicFriends.middleware,
     ),
 });
 

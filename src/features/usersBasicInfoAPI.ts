@@ -1,28 +1,28 @@
 import { db } from '@/config/firebase.config';
 import { IServerUserBasicInfo } from '@/types/user';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 export const usersPublicData = createApi({
   reducerPath: 'usersPublicDataAPI',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['usersPublicData'],
+  tagTypes: ['usersBasicInfo'],
   endpoints: (builder) => ({
-    fetchUsersPublicData: builder.query({
+    fetchUsersBasicInfo: builder.query({
       async queryFn() {
         try {
-          const usersDataRef = collection(db, 'usersPublicData');
-          const usersResponse = await getDocs(usersDataRef);
-          const usersData = usersResponse.docs.map((doc) => doc.data())[0];
-          if (!usersData) throw 'There are no users in the database';
+          const usersDataRef = doc(db, 'usersPublicData', 'usersBasicInfo');
+          const usersResponse = await getDoc(usersDataRef);
+          const usersData = usersResponse.data();
+          if (!usersData) throw new Error();
           return { data: usersData as IServerUserBasicInfo };
         } catch {
           return { error: 'Couldnt fetch users' };
         }
       },
-      providesTags: ['usersPublicData'],
+      providesTags: ['usersBasicInfo'],
     }),
   }),
 });
 
-export const { useFetchUsersPublicDataQuery } = usersPublicData;
+export const { useFetchUsersBasicInfoQuery } = usersPublicData;

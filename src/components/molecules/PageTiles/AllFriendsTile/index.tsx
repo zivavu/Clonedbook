@@ -1,7 +1,7 @@
 import { Stack, ToggleButtonGroup, Typography, useTheme } from '@mui/material';
 
 import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline';
-import useFetchUsersPublicFriends from '@/hooks/useFetchUsersPublicFriends';
+import { default as useGetUsersPublicFriends } from '@/hooks/useFetchUsersPublicFriends';
 import { useState } from 'react';
 import { StyledFullSizePageTile, StyledPageTileHeader } from '../styles';
 import SingleFriend from './SingleFriend';
@@ -10,7 +10,7 @@ import { AllFriendsTileProps, TFriendsSections } from './types';
 
 export default function AllFriendsTile({ profileData, sx, ...rootProps }: AllFriendsTileProps) {
   const theme = useTheme();
-  const { publicFriends } = useFetchUsersPublicFriends(profileData.id);
+  const publicFriends = useGetUsersPublicFriends(profileData.id);
   const [currentSection, setCurrentSection] = useState<TFriendsSections>('all friends');
   const friendsSections: TFriendsSections[] = ['all friends', 'mutual friends', 'recently added'];
   if (!publicFriends) return null;

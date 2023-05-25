@@ -1,7 +1,6 @@
 import { Box, ButtonBase, useTheme } from '@mui/material';
 
-import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
-import { IUserBasicInfo } from '@/types/user';
+import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserAvatarProps, UserImageProps } from './types';
@@ -15,8 +14,7 @@ export default function UserAvatar({
   useLink = true,
   ...rootProps
 }: UserAvatarProps) {
-  const { data: userData } = useFetchUsersPublicDataQuery({});
-  const user: Omit<IUserBasicInfo, 'id'> | null = userId && userData ? userData[userId] : null;
+  const user = useGetUsersPublicData(userId);
   const px = `${size}px`;
   const theme = useTheme();
 

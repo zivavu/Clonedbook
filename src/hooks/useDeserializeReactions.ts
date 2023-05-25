@@ -7,7 +7,7 @@ import {
   SadIcon,
   WowIcon,
 } from '@/assets/reactionIcons';
-import { useFetchUsersPublicDataQuery } from '@/features/usersPublicDataAPI';
+import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
 import { IReactionWithBasicInfo, IReactionsMap, TReactionType } from '@/types/reaction';
 import { IUserBasicInfo } from '@/types/user';
 
@@ -17,7 +17,7 @@ type ReactionsByTypes = {
 };
 
 export default function useDeserializeReactions(reactions: IReactionsMap) {
-  const { data, isLoading } = useFetchUsersPublicDataQuery({});
+  const { data, isLoading } = useFetchUsersBasicInfoQuery({});
 
   const usersPublicData: IUserBasicInfo[] | [] = data
     ? Object.entries(data).map(([id, profileData]) => ({

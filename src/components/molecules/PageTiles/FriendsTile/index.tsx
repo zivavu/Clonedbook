@@ -1,5 +1,5 @@
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
-import useFetchUsersPublicFriends from '@/hooks/useFetchUsersPublicFriends';
+import { default as useGetUsersPublicFriends } from '@/hooks/useFetchUsersPublicFriends';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import Friend from './Friend';
@@ -7,7 +7,8 @@ import { FriendsTileProps } from './types';
 
 export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: FriendsTileProps) {
   const theme = useTheme();
-  const { isLoading, isError, publicFriends } = useFetchUsersPublicFriends(user.id);
+  const publicFriends = useGetUsersPublicFriends(user.id);
+
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const friendsArr = publicFriends
     ? Object.entries(publicFriends)
@@ -28,7 +29,7 @@ export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: Fr
       })
     : [];
 
-  if (isLoading || isError || !publicFriends) return null;
+  if (!publicFriends) return null;
   return (
     <StyledPageTile sx={sx} {...rootProps}>
       <Stack>

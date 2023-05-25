@@ -22,7 +22,7 @@ export default function AboutTile({ profileData, sx, ...rootProps }: AboutTilePr
     'places lived',
   ];
   return (
-    <StyledFullSizePageTile sx={sx} {...rootProps} direction='row'>
+    <StyledFullSizePageTile sx={{ padding: 0, ...sx }} {...rootProps} direction='row'>
       <Stack width='max(25%, 250px)' position='relative'>
         <StyledPageTileHeader ml={theme.spacing(2)} mt={theme.spacing(1.5)}>
           About

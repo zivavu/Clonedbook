@@ -1,5 +1,4 @@
 import { Box, ButtonBase, Stack, styled } from '@mui/material';
-import Image from 'next/image';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -10,10 +9,9 @@ export const StyledImagesRow = styled(Stack)(({}) => ({
   overflow: 'hidden',
 }));
 
-export const StyledImageButton = styled(ButtonBase)(({}) => ({
+export const StyledImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
-  width: '32.5%',
+  width: '33.33%',
   aspectRatio: '1/1',
+  border: `2px solid ${theme.palette.secondary.light}`,
 }));
-
-export const StyledTileImage = styled(Image)(({}) => ({}));

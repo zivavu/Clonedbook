@@ -8,4 +8,5 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   aspectRatio: '1 / 1',
   borderRadius: theme.spacing(1),
   overflow: 'hidden',
+  border: `1px solid ${theme.palette.secondary.main}`,
 }));

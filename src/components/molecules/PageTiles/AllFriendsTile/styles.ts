@@ -20,7 +20,6 @@ export const SeeAllButton = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   width: '100%',
   height: '40px',
-  marginBottom: theme.spacing(2),
   borderRadius: theme.spacing(1),
 
   '&:hover': {
@@ -28,9 +27,9 @@ export const SeeAllButton = styled(ButtonBase)(({ theme }) => ({
   },
 }));
 
-export const StyledSectionStack = styled(Stack)(({ theme }) => ({
+export const StyledFriendsSectionStack = styled(Stack)(({ theme }) => ({
   width: '100%',
-  padding: theme.spacing(3, 2),
+  padding: theme.spacing(2),
   flexDirection: 'row',
   flexWrap: 'wrap',
   justifyContent: 'space-between',

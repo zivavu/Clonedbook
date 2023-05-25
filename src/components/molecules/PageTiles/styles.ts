@@ -22,4 +22,5 @@ export const StyledFullSizePageTile = styled(Stack)(({ theme }) => ({
   width: '100%',
   borderRadius: theme.spacing(1),
   boxShadow: theme.shadows[3],
+  padding: theme.spacing(2),
 }));

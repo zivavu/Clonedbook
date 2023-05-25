@@ -21,14 +21,14 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
   return (
     <StyledPageTile sx={{ ...sx }} {...rootProps}>
       <StyledPageTileHeader>Photos</StyledPageTileHeader>
-      <Stack spacing={0.5} mt={2}>
+      <Stack mt={2}>
         <PicturesRow
           pictures={pictures}
           startIndex={0}
           owner={owner}
           sx={{
-            borderTopRightRadius: theme.spacing(1),
-            borderTopLeftRadius: theme.spacing(1),
+            borderTopRightRadius: theme.spacing(2),
+            borderTopLeftRadius: theme.spacing(2),
           }}
         />
         {rowCount > 1 && (
@@ -39,8 +39,8 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
             sx={
               rowCount === 2
                 ? {
-                    borderBottomRightRadius: theme.spacing(1),
-                    borderBottomLeftRadius: theme.spacing(1),
+                    borderBottomRightRadius: theme.spacing(2),
+                    borderBottomLeftRadius: theme.spacing(2),
                   }
                 : {}
             }
@@ -52,8 +52,8 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
             startIndex={6}
             owner={owner}
             sx={{
-              borderBottomRightRadius: theme.spacing(1),
-              borderBottomLeftRadius: theme.spacing(1),
+              borderBottomRightRadius: theme.spacing(2),
+              borderBottomLeftRadius: theme.spacing(2),
             }}
           />
         )}

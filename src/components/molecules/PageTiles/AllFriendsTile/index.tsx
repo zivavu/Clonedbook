@@ -21,8 +21,8 @@ export default function AllFriendsTile({
   const friendsSections: TFriendsSections[] = ['all friends', 'mutual friends', 'recently added'];
 
   return (
-    <StyledFullSizePageTile sx={sx} {...rootProps} px={2}>
-      <StyledPageTileHeader mt={theme.spacing(1.5)}>Friends</StyledPageTileHeader>
+    <StyledFullSizePageTile sx={sx} {...rootProps}>
+      <StyledPageTileHeader>Friends</StyledPageTileHeader>
       <Stack direction='row'>
         <ToggleButtonGroup exclusive onChange={(e, value) => setCurrentSection(value)}>
           {friendsSections.map((section) => {

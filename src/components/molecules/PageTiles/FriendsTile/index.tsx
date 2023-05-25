@@ -10,6 +10,8 @@ export default function FriendsTile({ friend, friendsLimit, sx, ...rootProps }: 
   const publicFriends = useGetUsersPublicFriends(friend.id);
 
   const mutalFriends = useGetMutalFriends(friend.id);
+  const friendsCount = (publicFriends && Object.entries(publicFriends).length) || 0;
+
   const friendsArr = publicFriends
     ? Object.entries(publicFriends)
         .map(([id, timestamp]) => {
@@ -18,8 +20,7 @@ export default function FriendsTile({ friend, friendsLimit, sx, ...rootProps }: 
         .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds)
         .slice(0, friendsLimit)
     : [];
-  const rowsCount = friendsArr.length > 6 ? 3 : friendsArr.length > 3 ? 2 : 1;
-  const friendsCount = friendsArr.length || 0;
+  const rowsCount = friendsArr.length > 8 ? 3 : friendsArr.length > 5 ? 2 : 1;
 
   if (!publicFriends) return null;
   return (

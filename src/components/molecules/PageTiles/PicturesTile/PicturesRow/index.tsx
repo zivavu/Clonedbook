@@ -2,6 +2,7 @@ import { StyledImageButton, StyledImagesRow } from './styles';
 
 import LazyImage from '@/components/atoms/LazyImage';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
+import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { PicturesRowProps } from './types';
 
@@ -12,6 +13,7 @@ export default function PicturesRow({
   sx,
   ...rootProps
 }: PicturesRowProps) {
+  const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
   const [photoIndex, setPhotoIndex] = useState(0);
   const handleOpenFullView = (index: number) => {
@@ -28,7 +30,7 @@ export default function PicturesRow({
           ownerId={owner.id}
         />
       )}
-      <StyledImagesRow direction='row' spacing={0.5} sx={sx} {...rootProps}>
+      <StyledImagesRow direction='row' sx={sx} {...rootProps}>
         {pictures.slice(startIndex, startIndex + 3).map((picture, i) => {
           return (
             <StyledImageButton
@@ -37,17 +39,24 @@ export default function PicturesRow({
               onClick={() => {
                 const pictureIndex = startIndex + i;
                 handleOpenFullView(pictureIndex);
-              }}>
-              <LazyImage
-                src={picture.url}
-                fill
-                sizes='150px'
-                unoptimized
-                style={{
-                  objectFit: 'cover',
-                }}
-                alt={`${owner.firstName} ${owner.lastName} Picture`}
-              />
+              }}
+              sx={{ borderLeft: i === 0 ? 0 : '', borderRight: i === 2 ? 0 : '' }}>
+              <Box
+                border={`1px solid ${theme.palette.secondary.main}`}
+                width='100%'
+                height='100%'
+                position='relative'>
+                <LazyImage
+                  src={picture.url}
+                  fill
+                  sizes='150px'
+                  unoptimized
+                  style={{
+                    objectFit: 'cover',
+                  }}
+                  alt={`${owner.firstName} ${owner.lastName} Picture`}
+                />
+              </Box>
             </StyledImageButton>
           );
         })}

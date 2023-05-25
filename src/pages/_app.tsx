@@ -80,7 +80,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {/* @ts-expect-error Server Component */}
+          {/* @ts-ignore Server Component */}
           <Component {...pageProps} />
         </ThemeProvider>
       </Provider>

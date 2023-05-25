@@ -1,5 +1,5 @@
-import { ITimestamp } from './createdAt';
 import { IInChatPicture } from './picture';
+import { ITimestamp } from './timestamp';
 
 export interface IMessage {
   id: string;

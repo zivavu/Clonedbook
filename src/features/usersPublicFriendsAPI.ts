@@ -17,7 +17,7 @@ export const userPublicFriends = createApi({
           if (!usersData) throw new Error();
           return { data: usersData as IServerUserPublicFriends };
         } catch {
-          return { error: 'Couldnt fetch users' };
+          return { error: 'Couldnt fetch users public friends' };
         }
       },
       providesTags: ['userPublicFriends'],

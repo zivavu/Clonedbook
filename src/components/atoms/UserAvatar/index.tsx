@@ -17,7 +17,6 @@ export default function UserAvatar({
   const user = useGetUsersPublicData(userId);
   const px = `${size}px`;
   const theme = useTheme();
-
   return (
     <Box
       sx={{

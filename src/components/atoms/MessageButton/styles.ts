@@ -1,16 +1,14 @@
-import { Box, ButtonBase, Typography, styled } from '@mui/material';
+import { ButtonBase, Typography, darken, styled } from '@mui/material';
 import Icon from '../Icon/Icon';
 
-export const StyledRoot = styled(Box)(({ theme }) => ({
-  color: theme.palette.text.primary,
-}));
-
-export const StyledMessageButton = styled(ButtonBase)(({ theme }) => ({
+export const StyledRoot = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
   padding: theme.spacing(0, 1.5),
   borderRadius: theme.spacing(0.75),
-  height: '100%',
+  '&:hover': {
+    backgroundColor: darken(theme.palette.primary.main, 0.1),
+  },
 }));
 
 export const StyledButtonIcon = styled(Icon)(({ theme }) => ({

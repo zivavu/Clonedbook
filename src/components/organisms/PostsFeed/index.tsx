@@ -1,6 +1,7 @@
 import { StyledRoot } from './styles';
 
 import FeedPost from '@/components/organisms/FeedPost';
+import { IPost } from '@/types/post';
 import { Stack } from '@mui/material';
 import LoadingPostPlaceholder from '../FeedPost/LoadingPostPlaceholder';
 import { PostsFeedProps } from './types';
@@ -21,4 +22,8 @@ export default function PostsFeed({ posts, isLoading, isError, sx, ...rootProps 
       </Stack>
     </StyledRoot>
   );
+}
+
+function PostListItem({ index, style, posts }: { index: number; style: any; posts: IPost[] }) {
+  return <FeedPost key={posts[index].id} post={posts[index]} style={style}></FeedPost>;
 }

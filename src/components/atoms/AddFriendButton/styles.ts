@@ -1,10 +1,9 @@
 import { ButtonBase, Typography, styled } from '@mui/material';
 import Icon from '../Icon/Icon';
 
-export const StyledFriendsButton = styled(ButtonBase)(({ theme }) => ({
+export const StyledRoot = styled(ButtonBase)(({ theme }) => ({
   padding: theme.spacing(0, 1.5),
   borderRadius: theme.spacing(0.75),
-  height: '100%',
 }));
 
 export const StyledButtonIcon = styled(Icon)(({ theme }) => ({

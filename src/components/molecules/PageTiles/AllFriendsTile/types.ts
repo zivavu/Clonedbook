@@ -8,5 +8,5 @@ export interface AllFriendsTileProps extends StackProps {
 export type TFriendsSections = 'all friends' | 'mutual friends' | 'recently added';
 
 export interface SectionProps extends StackProps {
-  friendsIds: string[];
+  profileId: string;
 }

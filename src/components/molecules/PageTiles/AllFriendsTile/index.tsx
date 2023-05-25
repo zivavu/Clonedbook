@@ -1,24 +1,21 @@
 import { Stack, ToggleButtonGroup, Typography, useTheme } from '@mui/material';
 
 import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline';
-import { default as useGetUsersPublicFriends } from '@/hooks/useFetchUsersPublicFriends';
 import { useState } from 'react';
 import { StyledFullSizePageTile, StyledPageTileHeader } from '../styles';
-import SingleFriend from './SingleFriend';
+import AllFriendsSection from './Sections/AllFriends';
+import MutalFriendsSection from './Sections/MutalFriends';
 import { StyledToggleButton } from './styles';
 import { AllFriendsTileProps, TFriendsSections } from './types';
+import RecentlyAddedSection from './Sections/RecentlyAdded';
 
 export default function AllFriendsTile({ profileData, sx, ...rootProps }: AllFriendsTileProps) {
   const theme = useTheme();
-  const publicFriends = useGetUsersPublicFriends(profileData.id);
   const [currentSection, setCurrentSection] = useState<TFriendsSections>('all friends');
   const friendsSections: TFriendsSections[] = ['all friends', 'mutual friends', 'recently added'];
-  if (!publicFriends) return null;
-  const friendsIds = Object.entries(publicFriends)
-    .sort(([idA, timestampA], [idB, timestampB]) => timestampA.seconds - timestampB.seconds)
-    .map(([id]) => id);
+
   return (
-    <StyledFullSizePageTile sx={sx} {...rootProps} px={2} pb={2}>
+    <StyledFullSizePageTile sx={sx} {...rootProps} px={2}>
       <StyledPageTileHeader mt={theme.spacing(1.5)}>Friends</StyledPageTileHeader>
       <Stack direction='row'>
         <ToggleButtonGroup exclusive onChange={(e, value) => setCurrentSection(value)}>
@@ -35,11 +32,9 @@ export default function AllFriendsTile({ profileData, sx, ...rootProps }: AllFri
           })}
         </ToggleButtonGroup>
       </Stack>
-      <Stack spacing={2}>
-        {friendsIds.map((friendId) => (
-          <SingleFriend key={friendId} friendId={friendId} />
-        ))}
-      </Stack>
+      {currentSection === 'all friends' && <AllFriendsSection profileId={profileData.id} />}
+      {currentSection === 'mutual friends' && <MutalFriendsSection profileId={profileData.id} />}
+      {currentSection === 'recently added' && <RecentlyAddedSection profileId={profileData.id} />}
     </StyledFullSizePageTile>
   );
 }

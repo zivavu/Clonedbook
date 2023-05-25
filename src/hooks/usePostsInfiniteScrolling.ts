@@ -37,13 +37,14 @@ export default function usePostsInfiniteScrolling({ type, id }: IUsePostFeedInfi
       }
       setLastDoc(res.docs[res.docs.length - 1]);
       const postsData = res.docs.map((doc) => doc.data()) as IPost[];
-      setPosts([...posts, ...postsData]);
+      setPosts((currentPosts) => currentPosts.concat(postsData));
     } catch {
       setIsError(true);
     } finally {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     if (posts[0] || isLoading || isError) return;
     fetchPosts(initialQuery);

@@ -11,18 +11,20 @@ import { ContactsSidebarProps } from './types';
 
 export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarProps) {
   const { data: userData } = useFetchLoggedUserQuery({});
-  const { data: allUsersData } = useFetchUsersBasicInfoQuery({});
+  const { data: everyUserData } = useFetchUsersBasicInfoQuery({});
   const [friends, setFriends] = useState<IFriendWithBasicInfo[] | []>([]);
 
   useEffect(() => {
-    if (userData && allUsersData) {
-      const friendsWithBasicInfo = Object.values(userData.friends.accepted).map((friend) => {
-        const friendData = allUsersData[friend.friendId];
-        return { basicInfo: friendData, ...friend } as IFriendWithBasicInfo;
-      });
+    if (userData && everyUserData) {
+      const friendsWithBasicInfo = Object.values(userData.friends)
+        .filter((friend) => friend.status === 'accepted')
+        .map((friend) => {
+          const friendData = everyUserData[friend.id];
+          return { basicInfo: friendData, ...friend } as IFriendWithBasicInfo;
+        });
       setFriends(friendsWithBasicInfo);
     }
-  }, [userData, allUsersData]);
+  }, [userData, everyUserData]);
 
   const theme = useTheme();
   return (
@@ -50,11 +52,11 @@ export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarPro
           return (
             <ListItemButton
               component={Link}
-              href={`/profile/${friend.friendId}`}
-              key={friend.friendId}
+              href={`/profile/${friend.id}`}
+              key={friend.id}
               sx={{ pl: theme.spacing(1) }}>
               <UserAvatar
-                userId={friend.friendId}
+                userId={friend.id}
                 useLink={false}
                 sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
               />

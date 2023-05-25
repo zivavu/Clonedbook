@@ -1,8 +1,8 @@
 import { ICommentMap } from './comment';
-import { ITimestamp } from './createdAt';
 import { IAccountPicture } from './picture';
 import { IPost } from './post';
 import { IReactionsMap } from './reaction';
+import { ITimestamp } from './timestamp';
 
 export type TPostOrPictureObj = IPost | IAccountPicture;
 export type TElementTypes = 'post' | 'accountPicture' | 'backgroundPicture';

@@ -1,15 +1,15 @@
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { default as useGetUsersPublicFriends } from '@/hooks/useFetchUsersPublicFriends';
+import useGetMutalFriends from '@/hooks/useGetMutalFriends';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import Friend from './Friend';
 import { FriendsTileProps } from './types';
 
-export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: FriendsTileProps) {
+export default function FriendsTile({ friend, friendsLimit, sx, ...rootProps }: FriendsTileProps) {
   const theme = useTheme();
-  const publicFriends = useGetUsersPublicFriends(user.id);
+  const publicFriends = useGetUsersPublicFriends(friend.id);
 
-  const { data: loggedUser } = useFetchLoggedUserQuery({});
+  const mutalFriends = useGetMutalFriends(friend.id);
   const friendsArr = publicFriends
     ? Object.entries(publicFriends)
         .map(([id, timestamp]) => {
@@ -20,14 +20,6 @@ export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: Fr
     : [];
   const rowsCount = friendsArr.length > 6 ? 3 : friendsArr.length > 3 ? 2 : 1;
   const friendsCount = friendsArr.length || 0;
-  const mutalFriends = loggedUser
-    ? Object.values(loggedUser.friends.accepted).filter((friend) => {
-        if (!loggedUser?.friends?.accepted) return false;
-        return Object.values(loggedUser?.friends.accepted).some(
-          (loggedUserFriend) => loggedUserFriend.friendId === friend.friendId,
-        );
-      })
-    : [];
 
   if (!publicFriends) return null;
   return (

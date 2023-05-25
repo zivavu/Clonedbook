@@ -51,23 +51,22 @@ export default function ReactionsDisplay({
         <ButtonBase
           onClick={() => handleShowModal()}
           TouchRippleProps={{
-            style: { color: theme.palette.primary.main },
+            style: { color: theme.palette.primary.main, opacity: 0.4 },
           }}
           focusRipple
           sx={{
             borderRadius: theme.spacing(3),
-            padding: displayNames ? theme.spacing(2) : 0,
+            padding: displayNames ? theme.spacing(1.7) : 0,
             position: 'absolute',
             left: '-2%',
             width: '104%',
-            height: '100%',
-            zIndex: 3,
+            zIndex: 4,
           }}
         />
         <Box display='flex' sx={{ pr: theme.spacing(0.25), pointerEvents: 'none' }}>
           {largestByType.slice(0, emotesCount).map((reaction, i) => {
             return (
-              <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={3 - i} size={size} />
+              <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={2 - i} size={size} />
             );
           })}
         </Box>

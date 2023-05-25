@@ -17,7 +17,7 @@ export const usersPublicData = createApi({
           if (!usersData) throw new Error();
           return { data: usersData as IServerUserBasicInfo };
         } catch {
-          return { error: 'Couldnt fetch users' };
+          return { error: 'Couldnt fetch users basic info' };
         }
       },
       providesTags: ['usersBasicInfo'],

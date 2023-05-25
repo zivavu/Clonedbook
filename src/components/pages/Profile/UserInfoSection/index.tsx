@@ -2,34 +2,29 @@ import { Box, ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from './styles';
 
+import AddFriendButton from '@/components/atoms/AddFriendButton';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
-import AddFriendButton from '@/components/atoms/FriendsButton';
 import Icon from '@/components/atoms/Icon/Icon';
 import LazyImage from '@/components/atoms/LazyImage';
 import MessageButton from '@/components/atoms/MessageButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
+import useGetMutalFriends from '@/hooks/useGetMutalFriends';
+import getAcceptedFriends from '@/utils/getAcceptedFriends';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
 
 export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfoSectionProps) {
   const theme = useTheme();
-  const { data: loggedUser } = useFetchLoggedUserQuery({});
   const { isLoading, isError, picturesMap } = useFetchUsersPictures(userData.id);
   const profilePictureData = picturesMap
     ? picturesMap.account[userData?.profilePictureId || '']
     : null;
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
-  const friendsCount = Object.keys(userData.friends.accepted).length || 0;
-  const mutalFriends = Object.values(userData.friends.accepted).filter((friend) => {
-    if (!loggedUser?.friends?.accepted) return false;
-    return Object.values(loggedUser?.friends.accepted).some(
-      (loggedUserFriend) => loggedUserFriend.friendId === friend.friendId,
-    );
-  });
+  const friendsCount = getAcceptedFriends(userData).length || 0;
+  const mutalFriends = useGetMutalFriends(userData.id);
 
   const containerHeight = '140px';
   return (
@@ -65,8 +60,8 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
               <Stack direction='row' mt={0.8} ml={1}>
                 {mutalFriends.slice(0, 8).map((friend, i) => (
                   <UserAvatar
-                    key={friend.friendId}
-                    userId={friend.friendId}
+                    key={friend.id}
+                    userId={friend.id}
                     size={30}
                     sx={{
                       zIndex: 10 - i,
@@ -84,7 +79,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
               spacing={1}
               mb={1}
               height={36}>
-              <AddFriendButton friendsMap={userData.friends} />
+              <AddFriendButton friendId={userData.id} />
               <MessageButton />
               <ButtonBase
                 focusRipple

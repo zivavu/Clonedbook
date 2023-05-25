@@ -1,6 +1,6 @@
 import { IChatReference } from './chat';
-import { ITimestamp } from './createdAt';
 import { IFriendsMap, IPublicFriendsMap } from './firend';
+import { ITimestamp } from './timestamp';
 
 export interface IUser extends IUserBasicInfo {
   backgroundPicture?: string;

@@ -1,5 +1,5 @@
-import { ITimestamp } from './createdAt';
 import { IReactionsMap } from './reaction';
+import { ITimestamp } from './timestamp';
 
 export interface IComment {
   id: string;

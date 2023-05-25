@@ -1,8 +1,8 @@
 import Image, { ImageProps } from 'next/image';
 import { useState } from 'react';
-import PictureLoadingPlaceholder from '../PictureLoadingPlaceholder';
+import LoadingPlaceholder from '../LoadingPlaceholder';
 
-export default function LazyImage({ alt, ...rootProps }: ImageProps) {
+export default function GradientLoadingImage({ alt, ...rootProps }: ImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   return (
     <>
@@ -13,7 +13,7 @@ export default function LazyImage({ alt, ...rootProps }: ImageProps) {
         alt={alt}
         {...rootProps}
       />
-      {isLoading && <PictureLoadingPlaceholder />}
+      {isLoading && <LoadingPlaceholder />}
     </>
   );
 }

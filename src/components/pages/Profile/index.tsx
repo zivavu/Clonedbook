@@ -8,6 +8,7 @@ import BackgroundPicture from './BackgroundPicture';
 import ProfileTabToggleGroup from './ProfileTabToggleGroup';
 import AboutTab from './Tabs/AboutTab';
 import FriendsTab from './Tabs/FriendsTab';
+import PhotosTab from './Tabs/PhotosTab';
 import PostsTab from './Tabs/PostsTab';
 import UserInfoSection from './UserInfoSection';
 import { ProfileProps, TProfileTabs } from './types';
@@ -33,6 +34,7 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
           <AboutTab profileData={profileData} setSelectedTab={setSelectedTab} />
         )}
         {selectedTab === 'friends' && <FriendsTab profileData={profileData} />}
+        {selectedTab === 'photos' && <PhotosTab profileData={profileData} />}
       </Container>
     </StyledRoot>
   );

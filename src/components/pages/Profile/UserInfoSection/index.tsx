@@ -4,8 +4,8 @@ import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from
 
 import AddFriendButton from '@/components/atoms/AddFriendButton';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
+import GradientLoadingImage from '@/components/atoms/GradientLoadingImage';
 import Icon from '@/components/atoms/Icon/Icon';
-import LazyImage from '@/components/atoms/LazyImage';
 import MessageButton from '@/components/atoms/MessageButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
@@ -40,7 +40,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
         <StyledBasicInfoContainer>
           <Box height={containerHeight}>
             <StyledProfilePictureButton onClick={() => setIsFullViewOpen(true)}>
-              <LazyImage
+              <GradientLoadingImage
                 unoptimized
                 alt={`${userData?.firstName}'s Profile Picture`}
                 src={profilePictureData?.url || userData?.pictureUrl || ''}

@@ -3,6 +3,7 @@ import { Stack, Typography, useTheme } from '@mui/material';
 import Icon from '../../../Icon/Icon';
 import Link from '../../../Link';
 import { TextAccountDetailProps } from '../../types';
+import { StyledTextDetailValue } from './styles';
 
 export default function TextAccountDetail({
   accountDetail,
@@ -22,20 +23,23 @@ export default function TextAccountDetail({
       <Typography
         variant='subtitle2'
         color={showingPlaceholder ? theme.palette.text.secondary : theme.palette.text.primary}
+        sx={{
+          whiteSpace: 'nowrap',
+        }}
         fontWeight='360'
         pl={0.5}>
         {showingPlaceholder ? placeholder : label}
       </Typography>
       {valueLink ? (
         <Link href={valueLink}>
-          <Typography variant='subtitle2' fontWeight='500'>
+          <StyledTextDetailValue variant='subtitle2' fontWeight='500'>
             {value}
-          </Typography>
+          </StyledTextDetailValue>
         </Link>
       ) : (
-        <Typography variant='subtitle2' fontWeight='500'>
+        <StyledTextDetailValue variant='subtitle2' fontWeight='500'>
           {value}
-        </Typography>
+        </StyledTextDetailValue>
       )}
     </Stack>
   );

@@ -1,6 +1,6 @@
 import { StyledBacgroundPictureContainer, StyledPictureGradient } from './styles';
 
-import LazyImage from '@/components/atoms/LazyImage';
+import GradientLoadingImage from '@/components/atoms/GradientLoadingImage';
 import { BackgroundPictureProps } from './types';
 
 export default function BackgroundPicture({ userData, sx, ...rootProps }: BackgroundPictureProps) {
@@ -8,7 +8,7 @@ export default function BackgroundPicture({ userData, sx, ...rootProps }: Backgr
     <>
       <StyledPictureGradient {...rootProps} sx={sx} />
       <StyledBacgroundPictureContainer>
-        <LazyImage
+        <GradientLoadingImage
           unoptimized
           alt={`${userData?.firstName}'s Bacground Picture`}
           src={userData?.backgroundPicture || ''}

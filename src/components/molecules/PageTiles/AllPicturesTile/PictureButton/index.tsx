@@ -1,17 +1,14 @@
-import { useTheme } from '@mui/material';
-
 import { StyledRoot } from './styles';
 
-import LazyImage from '@/components/atoms/LazyImage';
+import GradientLoadingImage from '@/components/atoms/GradientLoadingImage';
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { PictureButtonProps } from './types';
 
 export default function PictureButton({ picture, onClick, sx, ...rootProps }: PictureButtonProps) {
   const owner = useGetUsersPublicData(picture.ownerId);
-  const theme = useTheme();
   return (
     <StyledRoot sx={sx} {...rootProps} key={picture.id} focusRipple onClick={onClick}>
-      <LazyImage
+      <GradientLoadingImage
         src={picture.url}
         fill
         sizes='300px'

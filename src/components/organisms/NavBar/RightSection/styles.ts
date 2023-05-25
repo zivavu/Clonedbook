@@ -9,8 +9,8 @@ export const StyledRoot = styled(StyledContentSection)(({ theme }) => ({
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   color: theme.palette.text.primary,
   backgroundColor: theme.palette.secondary.dark,
-  width: '40px',
-  height: '40px',
+  minWidth: '40px',
+  minHeight: '40px',
   position: 'relative',
   borderRadius: '50%',
   margin: theme.spacing(0, 0.5),

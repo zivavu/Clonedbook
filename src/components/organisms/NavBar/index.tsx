@@ -14,7 +14,9 @@ export default function NavBar() {
         backgroundColor: theme.palette.secondary.light,
         boxShadow: theme.shadows[9],
         position: 'sticky',
+        width: '100vw',
         height: NAVBAR_HEIGHT,
+        paddingRight: '17px !important',
       }}>
       <StyledContentContainer>
         <LeftSection />

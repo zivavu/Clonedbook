@@ -1,4 +1,4 @@
-import { GlobalStyles, Modal, Stack, Typography, useTheme } from '@mui/material';
+import { Modal, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledPostContentWrapper, StyledRoot } from './styles';
 
@@ -34,7 +34,6 @@ export default function FullPagePostView({
   }, [post, user?.id]);
   return isLoading || isError || !post ? null : (
     <>
-      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
       <Modal open onClose={() => setOpen(false)}>
         <StyledRoot sx={sx} {...rootProps}>
           <Stack p={theme.spacing(1.5, 0)} position='relative'>

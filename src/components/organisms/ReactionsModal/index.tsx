@@ -1,12 +1,4 @@
-import {
-  Box,
-  GlobalStyles,
-  Modal,
-  Stack,
-  ToggleButtonGroup,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Modal, Stack, ToggleButtonGroup, Typography, useTheme } from '@mui/material';
 import { StyledRoot, StyledToggleButton, StyledUsersContainer } from './styles';
 
 import Link from '@/components/atoms/Link';
@@ -35,7 +27,6 @@ export default function ReactionsPortal({
       : reactingUsers?.filter((reaction) => reaction.type === showedType);
   return (
     <>
-      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
       <Modal open onClose={() => setShowModal(false)}>
         <StyledRoot sx={sx} {...rootProps}>
           <Box>

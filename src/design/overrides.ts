@@ -34,9 +34,8 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
       styleOverrides: {
         root: {
           borderRadius: '8px',
-          transition: 'background-color 50ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+          transition: 'none',
           textTransform: 'none',
-
           '&:hover': {
             backgroundColor: palette.secondary?.main,
           },

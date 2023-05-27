@@ -2,7 +2,7 @@ import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import LoggedUserPopper from '@/components/molecules/LoggedUserPopper';
+import LoggedUserPopover from '@/components/molecules/LoggedUserPopover';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { MouseEvent, useRef, useState } from 'react';
 import { RightSectionProps, TPopper } from './types';
@@ -34,8 +34,9 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
         onClick={handlePopoverChange}>
         <UserAvatar size={42} sx={{ position: 'absolute' }} userId={user?.id} useLink={false} />
       </StyledToggleButton>
-      <LoggedUserPopper
+      <LoggedUserPopover
         open={currentPopper === 'account'}
+        onClose={handlePopoverChange}
         anchorEl={accountButtonAnchorElRef.current}
       />
     </StyledRoot>

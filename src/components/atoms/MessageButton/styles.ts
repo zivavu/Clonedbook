@@ -14,6 +14,7 @@ export const StyledRoot = styled(ButtonBase)(({ theme }) => ({
 export const StyledButtonIcon = styled(Icon)(({ theme }) => ({
   fontSize: theme.typography.pxToRem(16),
   marginRight: theme.spacing(0.5),
+  color: theme.palette.common.white,
 }));
 
 export const StyledButtonText = styled(Typography)(({ theme }) => ({

@@ -34,10 +34,9 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { CssBaseline } from '@mui/material';
 import type { AppProps } from 'next/app';
 
-import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
+import { faFacebookMessenger, faGithub } from '@fortawesome/free-brands-svg-icons';
 
 import ThemeModeProvider from '@/design/ThemeModeProvider';
 import { store } from '@/redux/store';
@@ -61,7 +60,6 @@ const icons = [
   faCaretDown,
   faMoon,
   faSun,
-  faEnvelopesBulk,
   faXmark,
   faUserXmark,
   faAngleRight,
@@ -81,6 +79,7 @@ const icons = [
   faHeart,
   faGraduationCap,
   faBriefcase,
+  faGithub,
 ] as any;
 library.add(...icons);
 
@@ -89,7 +88,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Provider store={store}>
         <ThemeModeProvider>
-          <CssBaseline />
           <Component {...pageProps} />
         </ThemeModeProvider>
       </Provider>

@@ -13,7 +13,7 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   margin: theme.spacing(0, 0.5),
-  transition: 'all 0.25s ease-in-out',
+  transition: 'height 0.25s ease-in-out',
 
   '&.Mui-selected': {
     height: `calc(100% - ${theme.spacing(0.4)})`,

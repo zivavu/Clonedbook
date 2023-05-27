@@ -1,5 +1,6 @@
 import { RootState } from '@/redux/store';
 import { ThemeProvider } from '@emotion/react';
+import { CssBaseline } from '@mui/material';
 import { ReactNode, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { getDesignTokens } from './theme';
@@ -9,5 +10,10 @@ export default function ThemeModeProvider({ children }: { children: ReactNode })
   const theme = useMemo(() => {
     return getDesignTokens(mode);
   }, [mode]);
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {children}
+    </ThemeProvider>
+  );
 }

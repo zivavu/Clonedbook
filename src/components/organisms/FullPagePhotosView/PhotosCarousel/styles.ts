@@ -20,7 +20,7 @@ export const StyledSwitchAreaButton = styled(ButtonBase)(({ theme }) => ({
   height: '100%',
   '&:hover': {
     '& .icon': {
-      backgroundColor: theme.palette.common.white,
+      backgroundColor: theme.palette.mode === 'light' ? theme.palette.common.white : 'transparent',
       opacity: '1 !important',
     },
     '& .rightIcon': {
@@ -47,7 +47,6 @@ export const StyledButtonIcon = styled(Box)(({ theme }) => ({
   top: '50%',
   transform: 'translateY(-50%)',
 
-  backgroundColor: theme.palette.common.white,
   opacity: '0',
 
   transition: [

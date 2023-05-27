@@ -39,9 +39,9 @@ export default function PhotosCarousel({
     large: `(max-width: ${theme.breakpoints.values.xl}px)`,
   };
   const imageSizes = [
-    `${screens.small} 400px`,
-    `${screens.medium} 500px`,
-    `${screens.large} 600px`,
+    `${screens.small} 600px`,
+    `${screens.medium} 700px`,
+    `${screens.large} 800px`,
     `1100px`,
   ].join(', ');
 
@@ -54,7 +54,7 @@ export default function PhotosCarousel({
           src={currentPictureUrl || ''}
           fill
           sizes={imageSizes}
-          quality={80}
+          quality={100}
           style={{ objectFit: 'contain', padding: theme.spacing(0, 16) }}
           alt='Full Size Photo'
           unoptimized

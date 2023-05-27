@@ -11,7 +11,7 @@ import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
 import { IReactionWithBasicInfo, IReactionsMap, TReactionType } from '@/types/reaction';
 import { IUserBasicInfo } from '@/types/user';
 
-type ReactionsByTypes = {
+type TReactionsByTypes = {
   //eslint-disable-next-line no-unused-vars
   [key in TReactionType]: { count: number; icon: string };
 };
@@ -36,7 +36,7 @@ export default function useDeserializeReactions(reactions: IReactionsMap) {
     });
 
   const reactionsCount = Object.keys(reactions).length || 0;
-  const reactionsByTypes: ReactionsByTypes = {
+  const reactionsByTypes: TReactionsByTypes = {
     like: { count: 0, icon: LikeIcon },
     love: { count: 0, icon: HeartIcon },
     haha: { count: 0, icon: LaughIcon },

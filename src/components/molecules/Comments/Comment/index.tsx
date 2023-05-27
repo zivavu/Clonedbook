@@ -7,6 +7,7 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
 import { TLocalUserReaction } from '@/types/reaction';
+import getShortDate from '@/utils/dateManagment/getShortDate';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
 import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { userCommentReact } from '@/utils/userCommentReact';
@@ -91,14 +92,13 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
           )}
         </StyledTextContent>
       </Box>
-      <Stack ml={theme.spacing(6)} direction='row' alignItems='center'>
+      <Stack ml={theme.spacing(6)} direction='row' alignItems='center' spacing={1}>
         <InteractButton
           buttonRef={likeButtonRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onClickHandler={handleLikeClick}
           sx={{
-            mr: theme.spacing(1),
             textTransform: 'capitalize',
             color: theme.palette.common.reactionTypes[userReaction || 'default'],
           }}>
@@ -111,6 +111,9 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
             Reply
           </Typography>
         </InteractButton>
+        <Typography variant='body2' color={theme.palette.text.secondary}>
+          {getShortDate(comment.createdAt.seconds)}
+        </Typography>
       </Stack>
       <ReactionsPopper
         updateDocHandler={(type) => {

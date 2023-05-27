@@ -47,7 +47,7 @@ export default function FullPagePostView({
             <Typography variant='body1'>{post.text}</Typography>
             <Stack direction='row' alignItems='center'>
               <ReactionsDisplay userReaction={userReaction} reactions={post.reactions} />
-              <Typography ml='auto' color={theme.palette.text.secondary} variant='caption'>
+              <Typography ml='auto' color={theme.palette.text.secondary} variant='body1'>
                 {getEntriesLength(post.comments) > 1
                   ? `${getEntriesLength(post.comments)} comments`
                   : `1comment`}

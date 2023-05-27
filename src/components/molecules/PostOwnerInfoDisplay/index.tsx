@@ -4,7 +4,7 @@ import { StyledRoot } from './styles';
 
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
+import getShortDate from '@/utils/dateManagment/getShortDate';
 import { PostOwnerInfoDisplayProps } from './types';
 
 export default function PostOwnerInfoDisplay({
@@ -13,7 +13,6 @@ export default function PostOwnerInfoDisplay({
   sx,
   ...rootProps
 }: PostOwnerInfoDisplayProps) {
-  const date = getDateFromTimestamp(createdAt.seconds);
   const theme = useTheme();
   if (!owner) return null;
   return (
@@ -27,7 +26,7 @@ export default function PostOwnerInfoDisplay({
             </Typography>
           </Link>
           <Typography variant='body2' color={theme.palette.text.secondary}>
-            {date.month} {date.day}, {date.year}.
+            {getShortDate(createdAt.seconds, 'week')}
           </Typography>
         </Stack>
       </Stack>

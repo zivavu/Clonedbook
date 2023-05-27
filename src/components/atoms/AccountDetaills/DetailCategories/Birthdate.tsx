@@ -1,4 +1,4 @@
-import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
+import getDateFromTimestamp from '@/utils/dateManagment/getDateFromTimestamp';
 import TextAccountDetail from '../AccountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 

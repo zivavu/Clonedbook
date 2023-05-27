@@ -20,7 +20,7 @@ export default function Comments({
 
   let commentsToRender: IComment[] = [];
   const sortedComments = Object.values(comments).sort(
-    (a, b) => a.createdAt.seconds - b.createdAt.seconds,
+    (a, b) => b.createdAt.seconds - a.createdAt.seconds,
   );
   onlyUniqueUsers
     ? sortedComments?.forEach((comment) => {

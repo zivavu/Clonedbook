@@ -11,7 +11,7 @@ export default function GoesTo({
   const { highSchool, college } = userData.about;
   const school = college || highSchool || '';
   const accountDetail: ITextAccountDetail = {
-    label: 'Goes to',
+    label: 'Studied at',
     value: school,
     icon: 'graduation-cap',
     placeholder: 'No schools to show',

@@ -6,6 +6,7 @@ export interface UserAvatarProps extends BoxProps {
   alt?: string;
   size?: number;
   useLink?: boolean;
+  showBorder?: boolean;
 }
 
 export interface UserImageProps {

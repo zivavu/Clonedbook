@@ -9,7 +9,6 @@ import Icon from '@/components/atoms/Icon/Icon';
 import MessageButton from '@/components/atoms/MessageButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
-import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import useGetMutalFriends from '@/hooks/useGetMutalFriends';
 import getAcceptedFriends from '@/utils/getAcceptedFriends';
 import { useState } from 'react';
@@ -67,10 +66,10 @@ export default function UserInfoSection({
                     key={friend.id}
                     userId={friend.id}
                     size={30}
+                    showBorder={true}
                     sx={{
                       zIndex: 10 - i,
-                      boxShadow: `0 0 0 2px ${theme.palette.secondary.light}`,
-                      marginLeft: theme.spacing(-0.7),
+                      marginLeft: theme.spacing(-0.5),
                     }}
                   />
                 ))}

@@ -3,11 +3,11 @@ import { Typography, useTheme } from '@mui/material';
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import updateElementReaction from '@/utils/updateElementReaction';
 import { useRef, useState } from 'react';
 import ReactionsPopper from './ReactionsPopper';
 import { ActionButtonsProps } from './types';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 
 export default function ActionButtons({
   elementId,

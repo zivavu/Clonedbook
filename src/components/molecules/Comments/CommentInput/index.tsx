@@ -3,7 +3,7 @@ import { SxProps, Theme, useTheme } from '@mui/material';
 import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useState } from 'react';
 import { CommentInputProps } from './types';
 

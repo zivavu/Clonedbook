@@ -1,4 +1,4 @@
-import { useFetchUsersPublicFriendsQuery } from '@/features/usersPublicFriendsAPI';
+import { useFetchUsersPublicFriendsQuery } from '@/redux/services/usersPublicFriendsAPI';
 import { IPublicFriendsMap } from '@/types/firend';
 
 export default function useGetUsersPublicFriends(userId: string | '' | undefined) {

@@ -1,5 +1,5 @@
 import * as Pages from '@/components/pages';
-import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
+import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import Page from '@/templates/Page';
 import { useRouter } from 'next/router';
 

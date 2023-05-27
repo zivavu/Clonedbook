@@ -43,7 +43,6 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
         },
       },
     },
-
     MuiListItemButton: {
       styleOverrides: {
         root: {
@@ -55,7 +54,8 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
       styleOverrides: {
         root: {
           '& .MuiBackdrop-root': {
-            backgroundColor: 'rgba(255, 255, 255, 0.55)',
+            backgroundColor: palette.secondary.light,
+            opacity: `0.65 !important`,
           },
         },
       },
@@ -65,7 +65,7 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
         root: {
           '& .MuiPaper-root': {
             borderRadius: '8px',
-            boxShadow: shadows[14],
+            boxShadow: shadows[20],
           },
         },
       },

@@ -1,7 +1,8 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
-import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
+
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import { IFriendWithBasicInfo } from '@/types/firend';
 import { Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';

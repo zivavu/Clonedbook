@@ -2,7 +2,7 @@ import { Box, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.light,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[3],
 }));

@@ -1,6 +1,5 @@
 import { StyledRoot } from './styles';
 
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import { useFetchAllUserData } from '@/hooks/useFetchAllUserData';
 import { Box, Container, useTheme } from '@mui/material';
 import { useState } from 'react';
@@ -16,7 +15,6 @@ import { ProfileProps, TProfileTabs } from './types';
 export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
   const theme = useTheme();
   const { userData: profileData, isLoading: isUserLoading, isError } = useFetchAllUserData(userId);
-  const { data: loggedUser } = useFetchLoggedUserQuery({});
   const [selectedTab, setSelectedTab] = useState<TProfileTabs>('posts');
 
   return isUserLoading || isError || !profileData ? null : (

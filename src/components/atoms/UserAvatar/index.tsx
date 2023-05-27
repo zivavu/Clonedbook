@@ -1,28 +1,24 @@
-import { Box, ButtonBase, useTheme } from '@mui/material';
+import { ButtonBase } from '@mui/material';
 
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import Image from 'next/image';
 import Link from 'next/link';
+import { StyledRoot } from './styles';
 import { UserAvatarProps, UserImageProps } from './types';
 
 export default function UserAvatar({
   sx,
   size = 40,
   alt,
-  src,
   userId,
   useLink = true,
   ...rootProps
 }: UserAvatarProps) {
   const user = useGetUsersPublicData(userId);
   const px = `${size}px`;
-  const theme = useTheme();
   return (
-    <Box
+    <StyledRoot
       sx={{
-        backgroundColor: theme.palette.primary.light,
-        borderRadius: '50%',
-        position: 'relative',
         width: px,
         height: px,
         ...sx,
@@ -32,9 +28,9 @@ export default function UserAvatar({
         <ButtonBase
           sx={{
             position: 'relative',
+            borderRadius: '50%',
             width: px,
             height: px,
-            borderRadius: '50%',
           }}
           LinkComponent={Link}
           focusRipple
@@ -44,7 +40,7 @@ export default function UserAvatar({
       ) : (
         <UserImage user={user} alt={alt} />
       )}
-    </Box>
+    </StyledRoot>
   );
 }
 

@@ -4,6 +4,7 @@ import { InteractButtonProps } from './types';
 /**
  * @description - A button that only styling is text underline on hover
  */
+
 export default function InteractButton({
   children,
   onClickHandler,

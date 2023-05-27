@@ -8,4 +8,4 @@ export interface RightSectionClasses {
   root: string;
 }
 
-export type Portal = 'chats' | 'notifications' | 'account' | 'none';
+export type TPopper = 'chats' | 'notifications' | 'account' | 'none';

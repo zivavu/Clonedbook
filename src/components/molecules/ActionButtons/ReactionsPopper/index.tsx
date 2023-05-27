@@ -3,7 +3,7 @@ import { IconButton, keyframes, useTheme } from '@mui/material';
 import { StyledContentWrapper, StyledReactionsPopover as StyledReactionsPopper } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TReactionType } from '@/types/reaction';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ReactionsPopperProps } from './types';

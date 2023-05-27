@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { posts } from './features/postsAPI';
-import { user } from './features/userAPI';
-import { usersPublicData } from './features/usersBasicInfoAPI';
-import { userPublicFriends } from './features/usersPublicFriendsAPI';
+import themeModeSlice from './features/themeSlice';
+import { posts } from './services/postsAPI';
+import { user } from './services/userAPI';
+import { usersPublicData } from './services/usersBasicInfoAPI';
+import { userPublicFriends } from './services/usersPublicFriendsAPI';
 
 export const store = configureStore({
   reducer: {
@@ -10,7 +11,9 @@ export const store = configureStore({
     [posts.reducerPath]: posts.reducer,
     [usersPublicData.reducerPath]: usersPublicData.reducer,
     [userPublicFriends.reducerPath]: userPublicFriends.reducer,
+    theme: themeModeSlice,
   },
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
       user.middleware,

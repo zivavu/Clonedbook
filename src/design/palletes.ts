@@ -1,0 +1,90 @@
+import { PaletteOptions } from '@mui/material';
+
+export const lightPalette: PaletteOptions = {
+  mode: 'light',
+  primary: {
+    main: '#1b74e4',
+    light: '#e4f0fc',
+  },
+  secondary: {
+    light: '#fff',
+    main: '#f0f2f5',
+    dark: '#e4e6eb',
+  },
+  grey: {
+    '100': '#f7f8fa',
+    '500': '#92979c',
+  },
+  common: {
+    white: '#fff',
+    black: '#000',
+    reactionTypes: {
+      like: '#2078f4',
+      love: '#F44336',
+      care: '#d49820',
+      haha: '#d49820',
+      wow: '#d49820',
+      sad: '#d49820',
+      angry: '#F44336',
+      default: '#65676b',
+    },
+  },
+  background: {
+    default: '#f0f2f5',
+  },
+  text: {
+    primary: '#000',
+    secondary: '#65676b',
+    disabled: '#b7b9bd',
+  },
+  info: {
+    main: '#1b74e4',
+  },
+  divider: '#ced0d4',
+  contrastThreshold: 4.5,
+};
+
+export const darkPalette: PaletteOptions = {
+  mode: 'dark',
+  primary: {
+    main: '#1b74e4',
+    light: '#263951',
+  },
+  secondary: {
+    light: '#242526',
+    main: '#18191a',
+    dark: '#18191a',
+  },
+  grey: {
+    '100': '#f7f8fa',
+    '500': '#92979c',
+  },
+  common: {
+    white: '#fff',
+    black: '#000',
+    reactionTypes: {
+      like: '#2078f4',
+      love: '#F44336',
+      care: '#d49820',
+      haha: '#d49820',
+      wow: '#d49820',
+      sad: '#d49820',
+      angry: '#F44336',
+      default: '#a8aab1',
+    },
+  },
+  background: {
+    default: '#18191a',
+  },
+  text: {
+    primary: '#e4e6eb',
+    secondary: '#b8babf',
+    disabled: '#a6a9ad',
+  },
+  info: {
+    main: '#1b74e4',
+  },
+
+  divider: '#3e4042',
+  contrastThreshold: 4.5,
+};

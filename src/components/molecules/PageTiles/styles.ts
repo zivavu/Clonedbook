@@ -3,7 +3,7 @@ import { Box, Stack, Typography, styled } from '@mui/material';
 export const StyledPageTile = styled(Box)(({ theme }) => ({
   position: 'relative',
   color: theme.palette.text.primary,
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.light,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[3],
   padding: theme.spacing(2),

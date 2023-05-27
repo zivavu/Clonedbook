@@ -4,7 +4,7 @@ import { StyledListItemAvatar, StyledListItem as StyledListItemButton, StyledRoo
 
 import { PlaceholderIcon } from '@/assets/pageIcons';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useRouter } from 'next/router';
 import { sidebarItems } from './data';
 import { ShortcutsSidebarProps } from './types';

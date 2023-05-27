@@ -4,8 +4,8 @@ import { StyledRoot, StyledTextContent } from './styles';
 
 import InteractButton from '@/components/atoms/InteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
-import { useFetchUsersBasicInfoQuery } from '@/features/usersBasicInfoAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import getShortDate from '@/utils/dateManagment/getShortDate';
 import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';

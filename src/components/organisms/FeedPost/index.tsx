@@ -8,13 +8,13 @@ import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 
 export default function FeedPost({ post, sx, ...rootProps }: FeedPostProps) {
   const { data: user } = useFetchLoggedUserQuery({});

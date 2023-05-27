@@ -7,9 +7,9 @@ import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useEffect, useState } from 'react';
@@ -50,7 +50,7 @@ export default function FullPagePostView({
               <Typography ml='auto' color={theme.palette.text.secondary} variant='body1'>
                 {getEntriesLength(post.comments) > 1
                   ? `${getEntriesLength(post.comments)} comments`
-                  : `1comment`}
+                  : `1 comment`}
               </Typography>
             </Stack>
             <ActionButtons

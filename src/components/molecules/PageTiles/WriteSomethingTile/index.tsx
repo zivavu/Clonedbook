@@ -6,7 +6,7 @@ import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useState } from 'react';
 import { StyledPageTile } from '../styles';
 import { WriteSomethingTileProps } from './types';

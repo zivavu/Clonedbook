@@ -3,11 +3,11 @@ import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useFetchLoggedUserQuery } from '@/features/userAPI';
 import useDeserializeReactions from '@/hooks/useDeserializeReactions';
 import { useState } from 'react';
 import ReactionsModal from '../../organisms/ReactionsModal';
 import { ReactionsDisplayProps } from './types';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 
 export default function ReactionsDisplay({
   reactions,

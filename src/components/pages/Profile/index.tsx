@@ -1,6 +1,7 @@
 import { StyledRoot } from './styles';
 
 import { useFetchAllUserData } from '@/hooks/useFetchAllUserData';
+import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import { Box, Container, useTheme } from '@mui/material';
 import { useState } from 'react';
 import BackgroundPicture from './BackgroundPicture';
@@ -15,14 +16,15 @@ import { ProfileProps, TProfileTabs } from './types';
 export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
   const theme = useTheme();
   const { userData: profileData, isLoading: isUserLoading, isError } = useFetchAllUserData(userId);
+  const { picturesMap } = useFetchUsersPictures(userId);
   const [selectedTab, setSelectedTab] = useState<TProfileTabs>('posts');
 
   return isUserLoading || isError || !profileData ? null : (
     <StyledRoot sx={sx} {...rootProps}>
       <Box bgcolor={theme.palette.secondary.light} boxShadow={theme.shadows[1]}>
-        <BackgroundPicture userData={profileData} />
+        <BackgroundPicture userData={profileData} picturesMap={picturesMap} />
         <Container>
-          <UserInfoSection userData={profileData} />
+          <UserInfoSection userData={profileData} picturesMap={picturesMap} />
           <ProfileTabToggleGroup selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </Container>
       </Box>

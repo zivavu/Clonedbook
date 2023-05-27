@@ -1,11 +1,9 @@
-import { ButtonBase } from '@mui/material';
+import { Box, ButtonBase, CSSObject } from '@mui/material';
 
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import Image from 'next/image';
 import Link from 'next/link';
-import { StyledRoot } from './styles';
 import { UserAvatarProps, UserImageProps } from './types';
-
 export default function UserAvatar({
   sx,
   size = 40,
@@ -16,22 +14,18 @@ export default function UserAvatar({
 }: UserAvatarProps) {
   const user = useGetUsersPublicData(userId);
   const px = `${size}px`;
+  const containerSx: CSSObject = {
+    minWidth: px,
+    minHeight: px,
+    aspectRatio: '1/1',
+    borderRadius: '50%',
+    position: 'relative',
+  };
   return (
-    <StyledRoot
-      sx={{
-        width: px,
-        height: px,
-        ...sx,
-      }}
-      {...rootProps}>
+    <Box sx={{ ...containerSx, ...sx }} {...rootProps}>
       {useLink && userId ? (
         <ButtonBase
-          sx={{
-            position: 'relative',
-            borderRadius: '50%',
-            width: px,
-            height: px,
-          }}
+          sx={{ ...containerSx, ...sx }}
           LinkComponent={Link}
           focusRipple
           href={`/profile/${userId}`}>
@@ -40,7 +34,7 @@ export default function UserAvatar({
       ) : (
         <UserImage user={user} alt={alt} />
       )}
-    </StyledRoot>
+    </Box>
   );
 }
 

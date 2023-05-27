@@ -3,6 +3,7 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { StyledRoot, StyledTextContent } from './styles';
 
 import InteractButton from '@/components/atoms/InteractButton';
+import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
@@ -65,9 +66,11 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
         <StyledTextContent>
           {!!ownerData && (
             <>
-              <Typography variant='body1' fontWeight='500' lineHeight='1.2rem'>
-                {ownerData.firstName} {ownerData.lastName}
-              </Typography>
+              <Link href={`/profile/${comment.ownerId}`}>
+                <Typography variant='body1' fontWeight='500' lineHeight='1.2rem'>
+                  {ownerData.firstName} {ownerData.lastName}
+                </Typography>
+              </Link>
               <Typography variant='body1'>{comment.commentText}</Typography>
             </>
           )}

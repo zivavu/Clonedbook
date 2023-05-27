@@ -1,6 +1,6 @@
 import { db } from '@/config/firebase.config';
 import { IPicturesMap } from '@/types/picture';
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 export default function useFetchUsersPictures(id: string) {
@@ -10,10 +10,10 @@ export default function useFetchUsersPictures(id: string) {
   useEffect(() => {
     try {
       const getPictures = async () => {
-        const picturesRef = collection(db, `users/${id}/pictures`);
-        const picturesSnapshot = await getDocs(picturesRef);
-        const picturesData = picturesSnapshot.docs[0].data() as IPicturesMap;
-        if (picturesSnapshot.empty || !picturesData) {
+        const picturesRef = doc(db, `users/${id}/pictures/pictures`);
+        const picturesSnapshot = await getDoc(picturesRef);
+        const picturesData = picturesSnapshot.data() as IPicturesMap;
+        if (!picturesSnapshot.exists || !picturesData) {
           setIsError(true);
           return;
         }

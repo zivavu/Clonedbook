@@ -1,5 +1,5 @@
-import { default as useGetUsersPublicFriends } from '@/hooks/useFetchUsersPublicFriends';
 import useGetMutalFriends from '@/hooks/useGetMutalFriends';
+import { default as useGetUsersPublicFriends } from '@/hooks/useGetUsersPublicFriends';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import Friend from './Friend';

@@ -15,9 +15,13 @@ import getAcceptedFriends from '@/utils/getAcceptedFriends';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
 
-export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfoSectionProps) {
+export default function UserInfoSection({
+  userData,
+  picturesMap,
+  sx,
+  ...rootProps
+}: UserInfoSectionProps) {
   const theme = useTheme();
-  const { isLoading, isError, picturesMap } = useFetchUsersPictures(userData.id);
   const profilePictureData = picturesMap
     ? picturesMap.account[userData?.profilePictureId || '']
     : null;
@@ -29,7 +33,7 @@ export default function UserInfoSection({ userData, sx, ...rootProps }: UserInfo
   const containerHeight = '140px';
   return (
     <>
-      {isFullViewOpen && profilePictureData && !isLoading && !isError && (
+      {isFullViewOpen && profilePictureData && (
         <FullPageAccountPicturesView
           setOpen={setIsFullViewOpen}
           initialPhoto={profilePictureData}

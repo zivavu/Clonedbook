@@ -1,4 +1,4 @@
-import useGetUsersPublicFriends from '@/hooks/useFetchUsersPublicFriends';
+import useGetUsersPublicFriends from '@/hooks/useGetUsersPublicFriends';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import getAcceptedFriends from '@/utils/getAcceptedFriends';
 

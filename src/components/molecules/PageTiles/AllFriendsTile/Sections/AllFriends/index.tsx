@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import useGetUsersPublicFriends from '@/hooks/useFetchUsersPublicFriends';
+import useGetUsersPublicFriends from '@/hooks/useGetUsersPublicFriends';
 import { IPublicFriend } from '@/types/firend';
 import SingleFriend from '../../SingleFriend';
 import { StyledFriendsSectionStack } from '../../styles';

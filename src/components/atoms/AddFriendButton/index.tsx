@@ -6,7 +6,12 @@ import useGetFriendshipStatus from '@/hooks/useGetFriendshipStatus';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { AddFriendButtonProps } from './types';
 
-export default function AddFriendButton({ friendId, sx, ...rootProps }: AddFriendButtonProps) {
+export default function AddFriendButton({
+  friendId,
+  showIcon = true,
+  sx,
+  ...rootProps
+}: AddFriendButtonProps) {
   const theme = useTheme();
   const userStatus = useGetFriendshipStatus(friendId);
 
@@ -47,7 +52,7 @@ export default function AddFriendButton({ friendId, sx, ...rootProps }: AddFrien
 
   return (
     <StyledRoot focusRipple sx={{ ...sx, ...buttonSx }} {...rootProps}>
-      <StyledButtonIcon icon={icon} color={iconColor} />
+      {showIcon && <StyledButtonIcon icon={icon} color={iconColor} />}
       <StyledButtonText>{buttonText}</StyledButtonText>
     </StyledRoot>
   );

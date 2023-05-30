@@ -16,7 +16,7 @@ export const user = createApi({
           const usersSnapshot = query(usersRef, limit(10));
           const data = await getDocs(usersSnapshot);
           const users = data.docs.map((doc) => doc.data()) as IUser[];
-          const selectedUser = users[1];
+          const selectedUser = users[2];
           return { data: selectedUser };
         } catch {
           return { error: 'Couldnt fetch the user' };

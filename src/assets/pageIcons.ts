@@ -14,3 +14,6 @@ export const PlaceholderIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/yc/r/y7p
 export const LiveVideoIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/yr/r/c0dWho49-X3.png';
 export const PhotoVideoIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/Ivw7nhRtXyo.png';
 export const LiveEventIcon = 'https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/pkbalDbTOVI.png';
+
+export const SelectProfileFromListPlaceholderIcon =
+  'https://www.facebook.com/images/comet/empty_states_icons/people/null_states_people_dark_mode.svg';

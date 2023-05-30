@@ -51,7 +51,7 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
         root: {
           borderRadius: '8px',
           '&.Mui-disabled': {
-            opacity: 0.9,
+            opacity: 0.7,
           },
         },
       },

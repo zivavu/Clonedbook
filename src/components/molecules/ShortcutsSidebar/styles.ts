@@ -1,5 +1,5 @@
 import { Avatar, Box, ListItemButton, styled } from '@mui/material';
-import { NAVBAR_HEIGHT } from '../NavBar';
+import { NAVBAR_HEIGHT } from '../../organisms/NavBar';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'sticky',

@@ -6,7 +6,7 @@ import { PlaceholderIcon } from '@/assets/pageIcons';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useRouter } from 'next/router';
-import { sidebarItems } from './data';
+import { sidebarItems } from './sidebarItemsData';
 
 export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
   const router = useRouter();

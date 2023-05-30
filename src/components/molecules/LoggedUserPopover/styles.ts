@@ -38,7 +38,7 @@ export const StyledIconContainer = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: '50%',
-  height: '36px',
+  height: '38px',
   aspectRatio: '1/1',
   marginRight: theme.spacing(1),
 }));

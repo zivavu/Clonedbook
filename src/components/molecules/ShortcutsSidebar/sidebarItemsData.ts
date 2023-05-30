@@ -12,19 +12,19 @@ export const sidebarItems: Shortcut[] = [
     key: 'groups',
     icon: icons.GroupsIcon,
     href: '/groups',
-    active: true,
+    active: false,
   },
   {
     key: 'pages',
     icon: icons.PagesIcon,
     href: '/pages',
-    active: true,
+    active: false,
   },
   {
     key: 'events',
     icon: icons.EventsIcon,
     href: '/events',
-    active: true,
+    active: false,
   },
   {
     key: 'most-recent',

@@ -2,7 +2,12 @@ import { ToggleButton, styled } from '@mui/material';
 import { StyledContentSection } from '../styles';
 
 export const StyledRoot = styled(StyledContentSection)(({ theme }) => ({
+  width: 'max(25%, 300px)',
   color: theme.palette.text.primary,
+
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
 }));
 
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({

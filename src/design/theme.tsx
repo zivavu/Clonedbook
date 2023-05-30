@@ -66,6 +66,15 @@ export function getDesignTokens(mode: 'light' | 'dark') {
     shape: {
       borderRadius: 8,
     },
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 900,
+        lg: 1120,
+        xl: 1520,
+      },
+    },
     shadows: customShadows,
 
     components: getCompoentsOverrides({ ...(currentPalette as Palette), mode }, customShadows),

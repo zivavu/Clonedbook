@@ -16,8 +16,8 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
       </Link>
       <TextField
         variant='outlined'
-        placeholder='Search Facebook'
         size='small'
+        placeholder='Search Facebook'
         InputProps={{
           sx: {
             fontSize: '1rem',
@@ -29,13 +29,18 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
               theme.palette.mode === 'light'
                 ? theme.palette.secondary.main
                 : theme.palette.secondary.light,
+
+            [theme.breakpoints.down('sm')]: {
+              width: '44px',
+            },
           },
           startAdornment: (
             <InputAdornment position='start'>
               <Icon icon='search' fontSize={16} color={theme.palette.text.secondary} />
             </InputAdornment>
           ),
-        }}></TextField>
+        }}
+      />
     </StyledRoot>
   );
 }

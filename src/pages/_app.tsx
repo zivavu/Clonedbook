@@ -11,7 +11,6 @@ import {
   faClapperboard,
   faEllipsis,
   faEnvelope,
-  faEnvelopesBulk,
   faFileCirclePlus,
   faGlobeAfrica,
   faGraduationCap,

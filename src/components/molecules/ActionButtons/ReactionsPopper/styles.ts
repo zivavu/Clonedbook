@@ -4,6 +4,7 @@ export const StyledReactionsPopover = styled(Popper)(({ theme }) => ({
   zIndex: theme.zIndex.modal + 10,
   pointerEvents: 'none',
   position: 'relative',
+  backgroundColor: theme.palette.background.paper,
 
   '&.fade-out': {
     animation: `${fadeout} 0.17s ease-in`,

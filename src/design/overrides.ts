@@ -27,6 +27,10 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
       styleOverrides: {
         root: {
           border: 'none',
+          '&.Mui-disabled': {
+            color: palette.text.secondary,
+            border: 'none',
+          },
         },
       },
     },
@@ -46,6 +50,9 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
       styleOverrides: {
         root: {
           borderRadius: '8px',
+          '&.Mui-disabled': {
+            opacity: 0.9,
+          },
         },
       },
     },

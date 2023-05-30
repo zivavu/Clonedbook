@@ -4,13 +4,20 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import { IFriendWithBasicInfo } from '@/types/firend';
-import { Box, IconButton, List, ListItemButton, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  BoxProps,
+  IconButton,
+  List,
+  ListItemButton,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { StyledHeadingContainer, StyledRoot } from './styles';
-import { ContactsSidebarProps } from './types';
 
-export default function ContactsSidebar({ sx, ...rootProps }: ContactsSidebarProps) {
+export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
   const { data: userData } = useFetchLoggedUserQuery({});
   const { data: everyUserData } = useFetchUsersBasicInfoQuery({});
   const [friends, setFriends] = useState<IFriendWithBasicInfo[] | []>([]);

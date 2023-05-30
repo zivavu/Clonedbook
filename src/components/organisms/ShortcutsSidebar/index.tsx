@@ -1,4 +1,4 @@
-import { List, Typography, useTheme } from '@mui/material';
+import { BoxProps, List, Typography, useTheme } from '@mui/material';
 
 import { StyledListItemAvatar, StyledListItem as StyledListItemButton, StyledRoot } from './styles';
 
@@ -7,9 +7,8 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useRouter } from 'next/router';
 import { sidebarItems } from './data';
-import { ShortcutsSidebarProps } from './types';
 
-export default function ShortcutsSidebar({ sx, ...rootProps }: ShortcutsSidebarProps) {
+export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
   const router = useRouter();
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});

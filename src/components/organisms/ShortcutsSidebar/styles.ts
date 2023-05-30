@@ -6,10 +6,13 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   top: NAVBAR_HEIGHT,
   height: `calc(100vh - ${NAVBAR_HEIGHT})`,
 
-  color: theme.palette.text.primary,
-  width: '15%',
+  minWidth: 'max(15%, 240px)',
   padding: theme.spacing(1, 0),
   marginLeft: theme.spacing(1),
+
+  [theme.breakpoints.down('lg')]: {
+    display: 'none',
+  },
 }));
 
 export const StyledListItem = styled(ListItemButton)(({ theme }) => ({

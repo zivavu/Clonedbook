@@ -7,7 +7,11 @@ export const StyledRoot = styled(ScrollableBox)(({ theme }) => ({
   top: NAVBAR_HEIGHT,
   height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   color: theme.palette.text.primary,
-  width: '19%',
+  minWidth: 'max(18%, 300px)',
+
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
 }));
 
 export const StyledHeadingContainer = styled(Box)(({ theme }) => ({

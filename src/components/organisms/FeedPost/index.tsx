@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledContentWrapper, StyledRoot } from './styles';
 
@@ -9,12 +9,12 @@ import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 
 export default function FeedPost({ post, sx, ...rootProps }: FeedPostProps) {
   const { data: user } = useFetchLoggedUserQuery({});
@@ -26,6 +26,8 @@ export default function FeedPost({ post, sx, ...rootProps }: FeedPostProps) {
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
     reactions[user?.id || ''] || undefined,
   );
+
+  const displayReactorNames = useMediaQuery(theme.breakpoints.up('sm'));
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
   const hasText = !!postText ? true : false;
@@ -70,7 +72,9 @@ export default function FeedPost({ post, sx, ...rootProps }: FeedPostProps) {
             <ReactionsDisplay
               reactions={reactions}
               userReaction={userReaction}
-              sx={{ pr: theme.spacing(0.25) }}
+              displayNames={displayReactorNames}
+              displayCount={!displayReactorNames}
+              sx={{ pr: theme.spacing(0.25), maxWidth: '75%' }}
             />
             <InteractButton
               sx={{ ml: 'auto' }}

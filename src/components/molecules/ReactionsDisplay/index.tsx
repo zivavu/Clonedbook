@@ -74,6 +74,11 @@ export default function ReactionsDisplay({
           display='flex'
           ml={theme.spacing(0.5)}
           mt={theme.spacing(0.2)}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
           color={theme.palette.text.secondary}>
           {displayNames && (
             <>

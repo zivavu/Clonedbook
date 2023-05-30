@@ -1,7 +1,7 @@
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { ButtonBase } from '@mui/material';
 import Link from 'next/link';
-import GradientLoadingImage from '../GradientLoadingImage';
+import ImageWithGradientLoading from '../ImageWithGradientLoading';
 import { StyledRoot } from './styles';
 import { FriendPictureProps } from './types';
 
@@ -10,7 +10,7 @@ export default function FriendPicture({ friendId, sx, ...rootProps }: FriendPict
   if (!friend) return null;
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <GradientLoadingImage
+      <ImageWithGradientLoading
         fill
         src={friend.pictureUrl || '/no-profile-picture-icon.svg'}
         alt={`${friend.firstName} ${friend.lastName} Profile picture`}

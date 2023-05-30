@@ -14,4 +14,5 @@ export const StyledButtonIcon = styled(Icon)(({ theme }) => ({
 export const StyledButtonText = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
   fontSize: theme.typography.pxToRem(14),
+  whiteSpace: 'nowrap',
 }));

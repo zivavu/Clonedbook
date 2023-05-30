@@ -1,5 +1,6 @@
-import { List, Stack, Typography, useTheme } from '@mui/material';
+import { List, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
+import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import VerticalContentDevider from '@/components/atoms/ContentDeviders/VerticalContentDevider';
 import { useState } from 'react';
 import FamilyAndRelationshipsSection from '../AboutTile/Sections/FamilyAndRelationshipsSection';
@@ -21,9 +22,11 @@ export default function AboutTile({ profileData, sx, ...rootProps }: AboutTilePr
     'family and relationships',
     'places lived',
   ];
+
+  const mainDirection = useMediaQuery(theme.breakpoints.down('md')) ? 'column' : 'row';
   return (
-    <StyledFullSizePageTile sx={{ padding: 0, ...sx }} {...rootProps} direction='row'>
-      <Stack width='max(25%, 250px)' position='relative'>
+    <StyledFullSizePageTile sx={{ padding: 0, ...sx }} {...rootProps} direction={mainDirection}>
+      <Stack width={mainDirection === 'row' ? `max(25%, 250px)` : '100%'} position='relative'>
         <StyledPageTileHeader ml={theme.spacing(2)} mt={theme.spacing(1.5)}>
           About
         </StyledPageTileHeader>
@@ -43,7 +46,11 @@ export default function AboutTile({ profileData, sx, ...rootProps }: AboutTilePr
             </StyledListItemButton>
           ))}
         </List>
-        <VerticalContentDevider right={0} />
+        {mainDirection === 'row' ? (
+          <VerticalContentDevider right={0} />
+        ) : (
+          <HorizontalContentDevider bottom={0} />
+        )}
       </Stack>
       <Stack>
         {currentSection === 'overview' && <OverviewSection profileData={profileData} />}

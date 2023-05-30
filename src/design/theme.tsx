@@ -68,10 +68,10 @@ export function getDesignTokens(mode: 'light' | 'dark') {
     },
     breakpoints: {
       values: {
-        xs: 0,
+        xs: 450,
         sm: 600,
         md: 900,
-        lg: 1120,
+        lg: 1220,
         xl: 1520,
       },
     },

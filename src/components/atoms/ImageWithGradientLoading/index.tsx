@@ -2,7 +2,7 @@ import Image, { ImageProps } from 'next/image';
 import { useState } from 'react';
 import LoadingPlaceholder from '../LoadingPlaceholder';
 
-export default function GradientLoadingImage({ alt, ...rootProps }: ImageProps) {
+export default function ImageWithGradientLoading({ alt, ...rootProps }: ImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   return (
     <>

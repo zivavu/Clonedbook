@@ -1,5 +1,3 @@
-import { Stack } from '@mui/material';
-
 import useGetUsersPublicFriends from '@/hooks/useGetUsersPublicFriends';
 import { IPublicFriend } from '@/types/firend';
 import SingleFriend from '../../SingleFriend';
@@ -28,9 +26,7 @@ export default function RecentlyAddedSection({ profileId, limit, sx, ...rootProp
   return (
     <StyledFriendsSectionStack sx={sx} {...rootProps}>
       {friends.map((friend) => (
-        <Stack key={friend.id} width='48%' my={1.5}>
-          <SingleFriend friendId={friend.id} />
-        </Stack>
+        <SingleFriend key={friend.id} friendId={friend.id} />
       ))}
     </StyledFriendsSectionStack>
   );

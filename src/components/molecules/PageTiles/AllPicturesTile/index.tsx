@@ -2,10 +2,11 @@ import LoadingPlaceholder from '@/components/atoms/LoadingPlaceholder';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import { IAccountPicture } from '@/types/picture';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { StyledFullSizePageTile, StyledPageTileHeader } from '../styles';
 import PictureButton from './PictureButton';
+import { StyledPictureContainer } from './styles';
 import { AllPicturesTileProps } from './types';
 
 export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPicturesTileProps) {
@@ -44,19 +45,13 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
         ) : (
           <Stack direction='row' flexWrap='wrap' justifyContent='flex-start'>
             {pictures.map((picture) => (
-              <Box
-                key={picture.id}
-                sx={{
-                  maxWidth: '20%',
-                  flex: `1 0 20%`,
-                  border: `4px solid ${theme.palette.background.paper}`,
-                }}>
+              <StyledPictureContainer key={picture.id}>
                 <PictureButton
                   key={picture.id}
                   picture={picture}
                   onClick={() => handleOpenFullView(picture)}
                 />
-              </Box>
+              </StyledPictureContainer>
             ))}
             {!pictures[0] && (
               <Typography

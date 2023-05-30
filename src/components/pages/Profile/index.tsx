@@ -23,12 +23,12 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
     <StyledRoot sx={sx} {...rootProps}>
       <Box bgcolor={theme.palette.background.paper} boxShadow={theme.shadows[1]}>
         <BackgroundPicture userData={profileData} picturesMap={picturesMap} />
-        <Container>
+        <Container maxWidth='lg'>
           <UserInfoSection userData={profileData} picturesMap={picturesMap} />
           <ProfileTabToggleGroup selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </Container>
       </Box>
-      <Container sx={{ mt: 2, pb: 4, minHeight: '70vh' }}>
+      <Container maxWidth='lg' sx={{ mt: 2, pb: 4, minHeight: '70vh', paddingX: theme.spacing(1) }}>
         {selectedTab === 'posts' && <PostsTab userId={userId} profileData={profileData} />}
         {selectedTab === 'about' && (
           <AboutTab profileData={profileData} setSelectedTab={setSelectedTab} />

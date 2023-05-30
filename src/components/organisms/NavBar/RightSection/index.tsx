@@ -2,7 +2,7 @@ import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import LoggedUserPopover from '@/components/organisms/LoggedUserPopover';
+import LoggedUserPopover from '@/components/molecules/LoggedUserPopover';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useTheme } from '@mui/material';
 import { MouseEvent, useRef, useState } from 'react';

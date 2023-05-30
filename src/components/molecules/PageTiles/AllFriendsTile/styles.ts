@@ -33,4 +33,8 @@ export const StyledFriendsSectionStack = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   flexWrap: 'wrap',
   justifyContent: 'space-between',
+
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2, 0),
+  },
 }));

@@ -1,4 +1,4 @@
-import { Stack, ToggleButtonGroup, Typography, useTheme } from '@mui/material';
+import { Stack, ToggleButtonGroup, Typography } from '@mui/material';
 
 import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline';
 import { useState } from 'react';
@@ -16,7 +16,6 @@ export default function AllFriendsTile({
   sx,
   ...rootProps
 }: AllFriendsTileProps) {
-  const theme = useTheme();
   const [currentSection, setCurrentSection] = useState<TFriendsSections>('all friends');
   const friendsSections: TFriendsSections[] = ['all friends', 'mutual friends', 'recently added'];
 

@@ -1,6 +1,6 @@
 import { StyledBacgroundPictureContainer, StyledPictureGradient } from './styles';
 
-import GradientLoadingImage from '@/components/atoms/GradientLoadingImage';
+import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import FullPageBackgroundPicturesView from '@/components/organisms/FullPagePhotosView/FullPageBackgroundPicturesView';
 import { ButtonBase } from '@mui/material';
 import { useState } from 'react';
@@ -28,7 +28,7 @@ export default function BackgroundPicture({
       <StyledPictureGradient {...rootProps} sx={sx} />
       <StyledBacgroundPictureContainer>
         <ButtonBase sx={{ width: '100%', height: '100%' }} onClick={() => setIsFullViewOpen(true)}>
-          <GradientLoadingImage
+          <ImageWithGradientLoading
             unoptimized
             alt={`${userData?.firstName}'s Bacground Picture`}
             src={userData?.backgroundPicture || ''}

@@ -1,6 +1,6 @@
 import { StyledRoot } from './styles';
 
-import GradientLoadingImage from '@/components/atoms/GradientLoadingImage';
+import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { PictureButtonProps } from './types';
 
@@ -8,7 +8,7 @@ export default function PictureButton({ picture, onClick, sx, ...rootProps }: Pi
   const owner = useGetUsersPublicData(picture.ownerId);
   return (
     <StyledRoot sx={sx} {...rootProps} key={picture.id} focusRipple onClick={onClick}>
-      <GradientLoadingImage
+      <ImageWithGradientLoading
         src={picture.url}
         fill
         sizes='300px'

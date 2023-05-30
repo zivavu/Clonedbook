@@ -1,6 +1,6 @@
 import { StyledImageButton, StyledImagesRow } from './styles';
 
-import GradientLoadingImage from '@/components/atoms/GradientLoadingImage';
+import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
@@ -46,7 +46,7 @@ export default function PicturesRow({
                 width='100%'
                 height='100%'
                 position='relative'>
-                <GradientLoadingImage
+                <ImageWithGradientLoading
                   src={picture.url}
                   fill
                   sizes='150px'

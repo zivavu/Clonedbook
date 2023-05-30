@@ -1,4 +1,4 @@
-import { Stack, useTheme } from '@mui/material';
+import { Stack, useMediaQuery, useTheme } from '@mui/material';
 
 import { InvisibleScrollableStack } from '@/components/atoms/Scrollables/ScrollableStack';
 import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
@@ -15,23 +15,28 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
   const { posts, isLoading: arePostsLoading, isError: isPostsError } = useFetchUsersPosts(userId);
   const loggedUser = useFetchLoggedUserQuery({});
   const theme = useTheme();
+  const mainDirection = useMediaQuery(theme.breakpoints.down('md')) ? 'column' : 'row';
   return (
     <>
-      <Stack direction='row' spacing={2} sx={sx} {...rootProps}>
+      <Stack direction={mainDirection} spacing={2} sx={sx} {...rootProps}>
         {profileData && (
           <InvisibleScrollableStack
-            width='43%'
+            width={mainDirection === 'column' ? '100%' : '45%'}
             spacing={2}
             borderRadius={1}
-            maxHeight={`calc(100vh - ${NAVBAR_HEIGHT} - ${theme.spacing(2)})`}
-            position='sticky'
+            maxHeight={
+              mainDirection === 'row'
+                ? `calc(100vh - ${NAVBAR_HEIGHT} - ${theme.spacing(2)})`
+                : 'none'
+            }
+            position={mainDirection === 'column' ? 'static' : 'sticky'}
             top={`calc(${NAVBAR_HEIGHT})`}>
             <IntroTile user={profileData} />
             <PicturesTile user={profileData} />
             <FriendsTile friend={profileData} friendsLimit={9} />
           </InvisibleScrollableStack>
         )}
-        <Stack width='57%' spacing={2}>
+        <Stack width={mainDirection === 'column' ? '100%' : '55%'} spacing={2}>
           {!!loggedUser && <WriteSomethingTile />}
           {!arePostsLoading && !isPostsError && posts && posts.length > 0 ? (
             <PostsFeed posts={posts} isLoading={arePostsLoading} isError={isPostsError}></PostsFeed>

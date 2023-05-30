@@ -10,5 +10,5 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
 }));
 
 export const StyledPhotoCardMedia = styled(CardMedia)(({ theme }) => ({
-  border: `1px solid ${theme.palette.secondary.light}`,
+  border: `1px solid ${theme.palette.background.paper}`,
 }));

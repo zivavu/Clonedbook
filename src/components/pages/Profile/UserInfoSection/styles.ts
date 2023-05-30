@@ -12,8 +12,8 @@ export const StyledProfilePictureButton = styled(ButtonBase)(({ theme }) => ({
   minWidth: '174px',
   borderRadius: '50%',
   overflow: 'hidden',
-  border: `4px solid ${theme.palette.secondary.light}`,
-  backgroundColor: theme.palette.secondary.light,
+  border: `4px solid ${theme.palette.background.paper}`,
+  backgroundColor: theme.palette.background.paper,
   transform: 'translateY(-20%)',
 }));
 

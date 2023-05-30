@@ -11,12 +11,11 @@ export default function NavBar() {
   return (
     <AppBar
       sx={{
-        backgroundColor: theme.palette.secondary.light,
+        borderBottom: `1px solid ${theme.palette.divider}`,
         boxShadow: theme.shadows[9],
         position: 'sticky',
-        width: '100vw',
+        maxWidth: '100vw',
         height: NAVBAR_HEIGHT,
-        paddingRight: '17px !important',
       }}>
       <StyledContentContainer>
         <LeftSection />

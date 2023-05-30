@@ -6,13 +6,13 @@ export const StyledRoot = styled(ScrollableBox)(({ theme }) => ({
   width: 'min(96vw, 500px)',
   maxHeight: 'min(96vh, 760px)',
   color: theme.palette.text.primary,
+  overflowY: 'auto',
 }));
 
 export const DialogCloseIconButton = styled(IconButton)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(1.5),
   right: theme.spacing(2),
-  backgroundColor: theme.palette.secondary.main,
   width: '36px',
   height: '36px',
 }));

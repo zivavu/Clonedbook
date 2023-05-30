@@ -23,7 +23,7 @@ export default function PicturesDisplay({
     src: picture,
   }));
 
-  const pictureBorder = `1px solid ${theme.palette.secondary.light}`;
+  const pictureBorder = `1px solid ${theme.palette.background.paper}`;
 
   return (
     <StyledRoot sx={sx} {...rootProps}>
@@ -43,14 +43,14 @@ export default function PicturesDisplay({
               size='medium'
               quality={70}
               postId={postId}
-              sx={{ borderRight: `1px solid ${theme.palette.secondary.light}` }}
+              sx={{ borderRight: `1px solid ${theme.palette.background.paper}` }}
             />
             <Picture
               src={picturesToDisplay[1].src}
               size='medium'
               quality={70}
               postId={postId}
-              sx={{ borderLeft: `1px solid ${theme.palette.secondary.light}` }}
+              sx={{ borderLeft: `1px solid ${theme.palette.background.paper}` }}
             />
           </Stack>
         </StyledPicturesContainer>

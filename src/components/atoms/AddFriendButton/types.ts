@@ -1,5 +1,5 @@
 import { ButtonBaseProps } from '@mui/material';
 
-export interface FriendsButtonProps extends ButtonBaseProps {
+export interface AddFriendButtonProps extends ButtonBaseProps {
   friendId: string;
 }

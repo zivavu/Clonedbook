@@ -1,24 +1,29 @@
-import { darken, useTheme } from '@mui/material';
+import { SxProps, darken, useTheme } from '@mui/material';
 
 import { StyledButtonIcon, StyledButtonText, StyledRoot } from './styles';
 
 import useGetFriendshipStatus from '@/hooks/useGetFriendshipStatus';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FriendsButtonProps } from './types';
+import { AddFriendButtonProps } from './types';
 
-export default function AddFriendButton({ friendId, sx, ...rootProps }: FriendsButtonProps) {
+export default function AddFriendButton({ friendId, sx, ...rootProps }: AddFriendButtonProps) {
   const theme = useTheme();
   const userStatus = useGetFriendshipStatus(friendId);
+
   const buttonColor =
     userStatus === 'accepted' ? theme.palette.secondary.dark : theme.palette.primary.main;
   const textColor = theme.palette.getContrastText(buttonColor);
-  const buttonSx = {
+
+  const buttonSx: SxProps = {
     backgroundColor: buttonColor,
     color: textColor,
     '&:hover': {
       backgroundColor: darken(buttonColor, 0.1),
     },
   };
+  const iconColor =
+    userStatus === 'accepted' ? theme.palette.secondary.contrastText : theme.palette.common.white;
+
   let icon: IconProp;
   let buttonText;
   switch (userStatus) {
@@ -26,9 +31,13 @@ export default function AddFriendButton({ friendId, sx, ...rootProps }: FriendsB
       icon = 'user-check';
       buttonText = 'Friends';
       break;
-    case 'pending':
+    case 'req_sent':
       icon = 'user-xmark';
       buttonText = 'Cancel Request';
+      break;
+    case 'req_received':
+      icon = 'user-plus';
+      buttonText = 'Confirm';
       break;
     default:
       icon = 'user-plus';
@@ -38,7 +47,7 @@ export default function AddFriendButton({ friendId, sx, ...rootProps }: FriendsB
 
   return (
     <StyledRoot focusRipple sx={{ ...sx, ...buttonSx }} {...rootProps}>
-      <StyledButtonIcon icon={icon} />
+      <StyledButtonIcon icon={icon} color={iconColor} />
       <StyledButtonText>{buttonText}</StyledButtonText>
     </StyledRoot>
   );

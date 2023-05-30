@@ -1,7 +1,7 @@
 import { Box, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.light,
+  backgroundColor: theme.palette.background.paper,
   zIndex: theme.zIndex.appBar + 1,
   top: 0,
   width: '100vw',

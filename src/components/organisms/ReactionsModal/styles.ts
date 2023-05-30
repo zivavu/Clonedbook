@@ -11,7 +11,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   height: 'min(85vh, 450px)',
   width: 'min(90vw, 550px)',
   color: theme.palette.text.primary,
-  backgroundColor: theme.palette.secondary.light,
+  backgroundColor: theme.palette.background.paper,
   borderRadius: theme.spacing(1),
   padding: theme.spacing(0.5, 2),
   paddingRight: 0,

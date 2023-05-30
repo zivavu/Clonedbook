@@ -25,7 +25,7 @@ export default function ReactionIcon({
   ...rootProps
 }: ReactionIconProps) {
   const theme = useTheme();
-  const imageBorder = showBorder ? `2px solid ${theme.palette.secondary.light}` : 'none';
+  const imageBorder = showBorder ? `2px solid ${theme.palette.background.paper}` : 'none';
 
   switch (type) {
     case 'like':

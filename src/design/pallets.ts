@@ -31,6 +31,7 @@ export const lightPalette: PaletteOptions = {
   },
   background: {
     default: '#f0f2f5',
+    paper: '#fff',
   },
   text: {
     primary: '#000',
@@ -51,9 +52,9 @@ export const darkPalette: PaletteOptions = {
     light: '#263951',
   },
   secondary: {
-    light: '#242526',
-    main: '#18191a',
-    dark: '#18191a',
+    light: '#3a3b3c',
+    main: '#3a3b3c',
+    dark: '#3a3b3c',
   },
   grey: {
     '100': '#f7f8fa',
@@ -75,6 +76,7 @@ export const darkPalette: PaletteOptions = {
   },
   background: {
     default: '#18191a',
+    paper: '#242526',
   },
   text: {
     primary: '#e4e6eb',
@@ -82,7 +84,7 @@ export const darkPalette: PaletteOptions = {
     disabled: '#a6a9ad',
   },
   info: {
-    main: '#1b74e4',
+    main: '#4093ff',
   },
 
   divider: '#3e4042',

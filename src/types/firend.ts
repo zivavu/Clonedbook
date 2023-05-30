@@ -9,7 +9,7 @@ export interface IFriend {
   acceptedAt: ITimestamp;
 }
 
-export type TFriendStatus = 'pending' | 'accepted';
+export type TFriendStatus = 'accepted' | 'req_sent' | 'req_received';
 
 export interface IFriendWithBasicInfo extends IFriend {
   basicInfo: IUserBasicInfo;

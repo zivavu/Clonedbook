@@ -38,12 +38,14 @@ export default function LoggedUserPopover({
   return (
     <StyledRoot
       open={open}
+      disableScrollLock
       anchorEl={anchorEl}
       onClose={onClose}
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'left',
+        horizontal: 'right',
       }}
+      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       sx={sx}
       {...rootProps}>
       <StyledContentWrapper>

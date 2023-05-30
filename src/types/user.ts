@@ -7,7 +7,7 @@ export interface IUser extends IUserBasicInfo {
   backgroundPictureId?: string;
   profilePictureId?: string;
   isDummy?: boolean;
-  groups: Object;
+  groups: {};
   chatReferences: IChatReference[];
   friends: IFriendsMap;
   contact: IContactInfo;

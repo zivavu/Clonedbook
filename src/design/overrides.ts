@@ -53,7 +53,7 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
       styleOverrides: {
         root: {
           '& .MuiBackdrop-root': {
-            backgroundColor: palette.secondary.light,
+            backgroundColor: palette.background.paper,
             opacity: `0.65 !important`,
           },
         },

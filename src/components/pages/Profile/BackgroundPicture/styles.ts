@@ -5,7 +5,7 @@ export const StyledBacgroundPictureContainer = styled(Box)(({ theme }) => ({
   margin: '0 auto',
   height: '462px',
   maxWidth: '1250px',
-  backgroundColor: theme.palette.secondary.light,
+  backgroundColor: theme.palette.background.paper,
   borderBottomLeftRadius: theme.spacing(1),
   borderBottomRightRadius: theme.spacing(1),
   overflow: 'hidden',

@@ -82,7 +82,7 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
               displayCount={true}
               userReaction={userReaction}
               sx={{
-                backgroundColor: theme.palette.secondary.light,
+                backgroundColor: theme.palette.background.paper,
                 boxShadow: theme.shadows[7],
                 borderRadius: '10px',
                 zIndex: 1,

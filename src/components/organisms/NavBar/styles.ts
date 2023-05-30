@@ -1,6 +1,7 @@
 import { Box, Stack, styled } from '@mui/material';
 
 export const StyledContentContainer = styled(Stack)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
   color: theme.palette.background.default,
   height: '100%',
   padding: theme.spacing(0, 1.5),

@@ -14,7 +14,6 @@ export const StyledContentWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   height: '48px',
-  backgroundColor: theme.palette.secondary.light,
   border: `1px solid ${theme.palette.secondary.main}`,
   borderRadius: '36px',
   animation: `${slidein} 0.15s ease-out`,

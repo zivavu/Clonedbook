@@ -13,7 +13,6 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
 
 export const StyledActionButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.secondary,
-  backgroundColor: theme.palette.secondary.light,
   width: '100%',
   borderRadius: '4px',
   margin: theme.spacing(0.5, 0),

@@ -21,7 +21,7 @@ export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
 
   return isUserLoading || isError || !profileData ? null : (
     <StyledRoot sx={sx} {...rootProps}>
-      <Box bgcolor={theme.palette.secondary.light} boxShadow={theme.shadows[1]}>
+      <Box bgcolor={theme.palette.background.paper} boxShadow={theme.shadows[1]}>
         <BackgroundPicture userData={profileData} picturesMap={picturesMap} />
         <Container>
           <UserInfoSection userData={profileData} picturesMap={picturesMap} />

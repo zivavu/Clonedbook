@@ -27,10 +27,19 @@ export default function UserAvatar({
 
   const shadow = showBorder ? `0px 0px 0px 2px ${theme.palette.secondary.main}` : 'none';
   return (
-    <Box sx={{ ...containerSx, ...sx }} {...rootProps}>
+    <Box
+      sx={{
+        ...containerSx,
+        ...sx,
+      }}
+      {...rootProps}>
       {useLink && userId ? (
         <ButtonBase
-          sx={{ boxShadow: shadow, ...containerSx, ...sx }}
+          sx={{
+            backgroundColor: theme.palette.background.paper,
+            boxShadow: shadow,
+            ...containerSx,
+          }}
           LinkComponent={Link}
           focusRipple
           href={`/profile/${userId}`}>

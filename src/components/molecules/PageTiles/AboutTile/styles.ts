@@ -3,7 +3,7 @@ import { ListItemButton, Stack, Typography, styled } from '@mui/material';
 export const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
   margin: theme.spacing(1, 0),
   '&.Mui-selected .MuiTypography-root': {
-    color: theme.palette.primary.main,
+    color: theme.palette.info.main,
   },
 }));
 

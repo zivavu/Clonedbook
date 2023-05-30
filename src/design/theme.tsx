@@ -2,7 +2,7 @@ import { Palette, createTheme } from '@mui/material/styles';
 import { Source_Sans_3 } from 'next/font/google';
 import { getCustomShadows } from './customShadows';
 import { getCompoentsOverrides } from './overrides';
-import { darkPalette, lightPalette } from './palletes';
+import { darkPalette, lightPalette } from './pallets';
 import { IReactionTypes } from './types';
 
 declare module '@mui/material/styles/createPalette' {

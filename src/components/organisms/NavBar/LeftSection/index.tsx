@@ -23,11 +23,16 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
             fontSize: '1rem',
             borderRadius: '50px',
             width: '240px',
-            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.text.secondary,
+            fontWeight: 350,
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? theme.palette.secondary.main
+                : theme.palette.secondary.light,
           },
           startAdornment: (
             <InputAdornment position='start'>
-              <Icon icon='search' />
+              <Icon icon='search' fontSize={16} color={theme.palette.text.secondary} />
             </InputAdornment>
           ),
         }}></TextField>

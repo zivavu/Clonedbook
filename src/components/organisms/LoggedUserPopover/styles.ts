@@ -11,7 +11,7 @@ export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
   zIndex: theme.zIndex.modal + 10,
   position: 'relative',
   width: 'min(360px, 92vw)',
-  backgroundColor: theme.palette.secondary.light,
+  backgroundColor: theme.palette.background.paper,
   borderRadius: theme.spacing(1),
   boxShadow: theme.shadows[19],
 }));
@@ -34,7 +34,7 @@ export const StyledListButton = styled(ListItemButton)(({ theme }) => ({
 }));
 
 export const StyledIconContainer = styled(Stack)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.dark,
+  backgroundColor: theme.palette.secondary.main,
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: '50%',

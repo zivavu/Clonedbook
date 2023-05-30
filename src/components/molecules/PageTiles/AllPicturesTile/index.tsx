@@ -49,7 +49,7 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
                 sx={{
                   maxWidth: '20%',
                   flex: `1 0 20%`,
-                  border: `4px solid ${theme.palette.secondary.light}`,
+                  border: `4px solid ${theme.palette.background.paper}`,
                 }}>
                 <PictureButton
                   key={picture.id}

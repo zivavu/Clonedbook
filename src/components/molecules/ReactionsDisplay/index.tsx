@@ -4,10 +4,10 @@ import { StyledRoot } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import useDeserializeReactions from '@/hooks/useDeserializeReactions';
+import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useState } from 'react';
 import ReactionsModal from '../../organisms/ReactionsModal';
 import { ReactionsDisplayProps } from './types';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 
 export default function ReactionsDisplay({
   reactions,

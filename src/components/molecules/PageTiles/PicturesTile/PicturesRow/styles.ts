@@ -13,5 +13,5 @@ export const StyledImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
   width: '33.33%',
   aspectRatio: '1/1',
-  border: `2px solid ${theme.palette.secondary.light}`,
+  border: `2px solid ${theme.palette.background.paper}`,
 }));

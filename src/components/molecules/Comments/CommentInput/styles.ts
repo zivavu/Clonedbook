@@ -4,7 +4,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'sticky',
   width: `calc(100% + ${theme.spacing(2)})`,
   color: theme.palette.text.primary,
-  backgroundColor: theme.palette.secondary.light,
+  backgroundColor: theme.palette.background.paper,
   zIndex: 5,
 }));
 

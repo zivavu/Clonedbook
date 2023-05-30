@@ -1,4 +1,4 @@
-import { Box, ButtonBase, IconButton, styled } from '@mui/material';
+import { Box, ButtonBase, IconButton, darken, lighten, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -22,14 +22,17 @@ export const StyledPhotoAddButton = styled(ButtonBase)(({ theme }) => ({
   width: '100%',
   maxHeight: '100%',
   minHeight: '240px',
-  backgroundColor: theme.palette.grey[100],
+  backgroundColor: theme.palette.secondary.main,
   borderRadius: '6px',
   pointerEvents: 'all',
   position: 'relative',
   display: 'flex',
 
   '&:hover': {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.secondary.main, 0.05)
+        : lighten(theme.palette.secondary.main, 0.2),
   },
   cursor: 'pointer',
 }));

@@ -2,12 +2,14 @@ import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import LoggedUserPopover from '@/components/molecules/LoggedUserPopover';
+import LoggedUserPopover from '@/components/organisms/LoggedUserPopover';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useTheme } from '@mui/material';
 import { MouseEvent, useRef, useState } from 'react';
 import { RightSectionProps, TPopper } from './types';
 
 export default function RightSection({ sx, classes, ...rootProps }: RightSectionProps) {
+  const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
   const [currentPopper, setCurrentPopper] = useState<TPopper>('none');
   const accountButtonAnchorElRef = useRef<HTMLButtonElement>(null);
@@ -20,13 +22,13 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
         value={'chats' as TPopper}
         selected={currentPopper === 'chats'}
         onClick={handlePopoverChange}>
-        <Icon icon={['fab', 'facebook-messenger']} />
+        <Icon icon={['fab', 'facebook-messenger']} color={theme.palette.text.primary} />
       </StyledToggleButton>
       <StyledToggleButton
         value={'notifications' as TPopper}
         selected={currentPopper === 'notifications'}
         onClick={handlePopoverChange}>
-        <Icon icon='bell' />
+        <Icon icon='bell' color={theme.palette.text.primary} />
       </StyledToggleButton>
       <StyledToggleButton
         value={'account' as TPopper}

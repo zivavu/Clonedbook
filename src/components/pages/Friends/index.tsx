@@ -15,9 +15,14 @@ import { TFriendsTabs } from './types';
 export default function Friends({ sx, ...rootProps }: StackProps) {
   const theme = useTheme();
   const router = useRouter();
-  const initialTab = router.query.tab as TFriendsTabs;
-  const [currentTab, setCurrentTab] = useState<TFriendsTabs>(initialTab || 'home');
+  const [currentTab, setCurrentTab] = useState<TFriendsTabs>('home');
   const [shownProfile, setShownProfile] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!router.query.tab) return;
+    setCurrentTab((router.query.tab as TFriendsTabs) || 'home');
+  }, [router.query.tab]);
+
   useEffect(() => {
     router.push(`/friends/?tab=${currentTab}`, undefined, { shallow: true });
     setShownProfile(null);
@@ -47,7 +52,9 @@ export default function Friends({ sx, ...rootProps }: StackProps) {
       </Stack>
       {currentTab === 'home' && <HomeTab />}
       {currentTab !== 'home' && !shownProfile && <FriendNotSelectedPlaceholder />}
-      {currentTab !== 'home' && shownProfile && <Profile userId={shownProfile} width='100%' />}
+      {currentTab !== 'home' && shownProfile && (
+        <Profile userId={shownProfile} width='100%' useRouting={false} />
+      )}
     </Stack>
   );
 }

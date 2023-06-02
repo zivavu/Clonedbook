@@ -3,7 +3,8 @@ import { StyledRoot } from './styles';
 import { useFetchAllUserData } from '@/hooks/useFetchAllUserData';
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
 import { Box, Container, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import BackgroundPicture from './BackgroundPicture';
 import ProfileTabToggleGroup from './ProfileTabToggleGroup';
 import AboutTab from './Tabs/AboutTab';
@@ -13,11 +14,22 @@ import PostsTab from './Tabs/PostsTab';
 import UserInfoSection from './UserInfoSection';
 import { ProfileProps, TProfileTabs } from './types';
 
-export default function Profile({ userId, sx, ...rootProps }: ProfileProps) {
+export default function Profile({ userId, useRouting = true, sx, ...rootProps }: ProfileProps) {
   const theme = useTheme();
+  const router = useRouter();
   const { userData: profileData, isLoading: isUserLoading, isError } = useFetchAllUserData(userId);
   const { picturesMap } = useFetchUsersPictures(userId);
-  const [selectedTab, setSelectedTab] = useState<TProfileTabs>('posts');
+  const [selectedTab, setSelectedTab] = useState<TProfileTabs>(null);
+
+  useEffect(() => {
+    setSelectedTab((router.query.tab as TProfileTabs) || 'posts');
+  }, [router.query.tab]);
+
+  useEffect(() => {
+    if (useRouting && userId && selectedTab) {
+      router.push(`/profile/${userId}/?tab=${selectedTab}`, undefined, { shallow: true });
+    }
+  }, [selectedTab]);
 
   return isUserLoading || isError || !profileData ? null : (
     <StyledRoot sx={sx} {...rootProps}>

@@ -35,6 +35,7 @@ export default function FriendListItem({
                 key={friend.id}
                 userId={friend.id}
                 size={16}
+                useLink={false}
                 showBorder={true}
                 sx={{
                   zIndex: 10 - i,

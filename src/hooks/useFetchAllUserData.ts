@@ -9,6 +9,7 @@ export function useFetchAllUserData(userId: string) {
   const [userData, setUserData] = useState<IUser>();
   useEffect(() => {
     const getData = async () => {
+      if (!userId) return;
       try {
         setIsLoading(true);
         const allUserData = await getDoc(doc(db, 'users', userId));

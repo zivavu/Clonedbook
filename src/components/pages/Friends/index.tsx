@@ -1,8 +1,7 @@
 import { Stack, StackProps, useTheme } from '@mui/material';
 
-import { StyledRoot } from './styles';
-
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Profile from '../Profile';
 import AllFriendsList from './FriendsLists/AllFriendsList';
@@ -15,18 +14,22 @@ import { TFriendsTabs } from './types';
 
 export default function Friends({ sx, ...rootProps }: StackProps) {
   const theme = useTheme();
-  const [currentTab, setCurrentTab] = useState<TFriendsTabs>('home');
+  const router = useRouter();
+  const initialTab = router.query.tab as TFriendsTabs;
+  const [currentTab, setCurrentTab] = useState<TFriendsTabs>(initialTab || 'home');
   const [shownProfile, setShownProfile] = useState<string | null>(null);
-
   useEffect(() => {
+    router.push(`/friends/?tab=${currentTab}`, undefined, { shallow: true });
     setShownProfile(null);
   }, [currentTab]);
 
   return (
-    <StyledRoot sx={sx} {...rootProps} direction='row'>
+    <Stack sx={sx} {...rootProps} direction='row' position='relative'>
       <Stack
         minWidth='360px'
         p={theme.spacing(2, 1)}
+        position='sticky'
+        top={NAVBAR_HEIGHT}
         height={`calc(100vh - ${NAVBAR_HEIGHT})`}
         bgcolor={theme.palette.background.paper}>
         {currentTab === 'home' && (
@@ -45,6 +48,6 @@ export default function Friends({ sx, ...rootProps }: StackProps) {
       {currentTab === 'home' && <HomeTab />}
       {currentTab !== 'home' && !shownProfile && <FriendNotSelectedPlaceholder />}
       {currentTab !== 'home' && shownProfile && <Profile userId={shownProfile} width='100%' />}
-    </StyledRoot>
+    </Stack>
   );
 }

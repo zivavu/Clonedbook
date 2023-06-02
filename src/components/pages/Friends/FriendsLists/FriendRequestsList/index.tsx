@@ -1,5 +1,3 @@
-import { useTheme } from '@mui/material';
-
 import useGetFriendRequests from '@/hooks/useGetUsersFriendRequests';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
@@ -12,7 +10,6 @@ export default function FriendRequestsList({
   sx,
   ...rootProps
 }: FriendListProps) {
-  const theme = useTheme();
   const friendRequests = useGetFriendRequests();
   return (
     <StyledRoot sx={sx} {...rootProps}>

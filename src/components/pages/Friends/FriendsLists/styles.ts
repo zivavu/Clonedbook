@@ -9,4 +9,6 @@ export const StyledRoot = styled(Stack)(({ theme }) => ({
 export const StyledFriendsList = styled(ScrollableStack)(({ theme }) => ({
   maxHeight: `calc(100vh - ${NAVBAR_HEIGHT} - ${theme.spacing(10)})`,
   paddingRight: theme.spacing(1),
+  paddingBottom: theme.spacing(1),
+  overflowY: 'auto',
 }));

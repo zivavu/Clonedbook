@@ -22,7 +22,9 @@ export default function Profile({ userId, useRouting = true, sx, ...rootProps }:
   const [selectedTab, setSelectedTab] = useState<TProfileTabs>(null);
 
   useEffect(() => {
-    setSelectedTab((router.query.tab as TProfileTabs) || 'posts');
+    if (useRouting) {
+      setSelectedTab((router.query.tab as TProfileTabs) || 'posts');
+    }
   }, [router.query.tab]);
 
   useEffect(() => {

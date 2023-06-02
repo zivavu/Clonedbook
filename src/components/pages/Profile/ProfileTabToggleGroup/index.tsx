@@ -23,6 +23,7 @@ export default function ProfileTabToggleGroup({
       <ToggleButtonGroup exclusive value={selectedTab}>
         {tabs.map((tab) => {
           const isDistabled = disabledTabs.includes(tab);
+          if (!tab) return;
           return (
             <StyledToggleButton
               key={tab}

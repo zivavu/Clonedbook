@@ -51,7 +51,7 @@ export default function FullPageBackgroundPicturesView({
       />
       <ElementInfo
         userReaction={userReaction}
-        type='accountPicture'
+        type='backgroundPicture'
         setUserReaction={setUserReaction}
         element={currentPicture}></ElementInfo>
     </FullPagePortal>

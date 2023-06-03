@@ -1,6 +1,7 @@
 import { TElementTypes } from '@/types/misc';
 import { TReactionType } from '@/types/reaction';
-import { userPictureReact } from './userPictureReact';
+import { userBackroundPictureReact } from './userBackgroundPictureReact';
+import { userAccountPictureReact } from './userPictureReact';
 import { userPostReact } from './userPostReact';
 
 export interface IUpdateElementReaction {
@@ -22,6 +23,9 @@ export default function updateElementReaction({
     userPostReact(elementId, loggedUserId, reaction);
   }
   if (elementType === 'accountPicture') {
-    userPictureReact({ elementId, loggedUserId, ownerId, reaction, elementType });
+    userAccountPictureReact({ elementId, loggedUserId, ownerId, reaction, elementType });
+  }
+  if (elementType === 'backgroundPicture') {
+    userBackroundPictureReact({ elementId, loggedUserId, ownerId, reaction, elementType });
   }
 }

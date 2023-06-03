@@ -58,6 +58,7 @@ export default function ReactionsDisplay({
             borderRadius: theme.spacing(3),
             padding: displayNames ? theme.spacing(1.7) : 0,
             position: 'absolute',
+            height: '100%',
             left: '-2%',
             width: '104%',
             zIndex: 4,

@@ -5,13 +5,13 @@ export const StyledPictureContainer = styled(Box)(({ theme }) => ({
   flex: `1 0 20%`,
   border: `4px solid ${theme.palette.background.paper}`,
 
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('md').replace('@media', '@container')]: {
     minWidth: '33.33%',
   },
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('sm').replace('@media', '@container')]: {
     minWidth: '50%',
   },
-  [theme.breakpoints.down('xs')]: {
+  [theme.breakpoints.down('xs').replace('@media', '@container')]: {
     minWidth: '100%',
   },
 }));

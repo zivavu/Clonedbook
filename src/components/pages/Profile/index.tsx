@@ -1,4 +1,4 @@
-import { StyledRoot } from './styles';
+import { StyledContentWrapper, StyledRoot } from './styles';
 
 import { useFetchAllUserData } from '@/hooks/useFetchAllUserData';
 import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
@@ -14,21 +14,21 @@ import PostsTab from './Tabs/PostsTab';
 import UserInfoSection from './UserInfoSection';
 import { ProfileProps, TProfileTabs } from './types';
 
-export default function Profile({ userId, useRouting = true, sx, ...rootProps }: ProfileProps) {
+export default function Profile({ userId, useTabsRouting = true, sx, ...rootProps }: ProfileProps) {
   const theme = useTheme();
   const router = useRouter();
   const { userData: profileData, isLoading: isUserLoading, isError } = useFetchAllUserData(userId);
   const { picturesMap } = useFetchUsersPictures(userId);
-  const [selectedTab, setSelectedTab] = useState<TProfileTabs>(null);
+  const [selectedTab, setSelectedTab] = useState<TProfileTabs>(useTabsRouting ? null : 'posts');
 
   useEffect(() => {
-    if (useRouting) {
+    if (useTabsRouting) {
       setSelectedTab((router.query.tab as TProfileTabs) || 'posts');
     }
   }, [router.query.tab]);
 
   useEffect(() => {
-    if (useRouting && userId && selectedTab) {
+    if (useTabsRouting && userId && selectedTab) {
       router.push(`/profile/${userId}/?tab=${selectedTab}`, undefined, { shallow: true });
     }
   }, [selectedTab]);
@@ -42,14 +42,14 @@ export default function Profile({ userId, useRouting = true, sx, ...rootProps }:
           <ProfileTabToggleGroup selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </Container>
       </Box>
-      <Container maxWidth='lg' sx={{ mt: 2, pb: 4, minHeight: '70vh', paddingX: theme.spacing(1) }}>
+      <StyledContentWrapper>
         {selectedTab === 'posts' && <PostsTab userId={userId} profileData={profileData} />}
         {selectedTab === 'about' && (
           <AboutTab profileData={profileData} setSelectedTab={setSelectedTab} />
         )}
         {selectedTab === 'friends' && <FriendsTab profileData={profileData} />}
         {selectedTab === 'photos' && <PhotosTab profileData={profileData} />}
-      </Container>
+      </StyledContentWrapper>
     </StyledRoot>
   );
 }

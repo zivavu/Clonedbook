@@ -16,7 +16,7 @@ export default function FullPagePortal({
   const theme = useTheme();
   return (
     <>
-      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
+      <GlobalStyles styles={{ body: { overflowY: 'hidden !important' } }} />
       <Portal>
         <StyledRoot {...rootProps} sx={sx}>
           <Box position='relative'>

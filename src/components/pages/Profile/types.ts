@@ -1,8 +1,8 @@
-import { BoxProps } from '@mui/material';
+import { StackProps } from '@mui/material';
 
-export interface ProfileProps extends BoxProps {
+export interface ProfileProps extends StackProps {
   userId: string;
-  useRouting?: boolean;
+  useTabsRouting?: boolean;
 }
 
 export type TProfileTabs = 'posts' | 'about' | 'friends' | 'photos' | 'likes' | 'music' | null;

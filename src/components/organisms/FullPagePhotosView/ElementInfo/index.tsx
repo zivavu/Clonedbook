@@ -27,7 +27,16 @@ export default function ElementInfo({
   const owner = useGetUsersPublicData(element.ownerId);
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <Stack direction='row' width='100%' height={NAVBAR_HEIGHT} justifyContent='flex-end'>
+      <Stack
+        direction='row'
+        width='100%'
+        height={NAVBAR_HEIGHT}
+        justifyContent='flex-end'
+        sx={{
+          [theme.breakpoints.down('lg')]: {
+            display: 'none',
+          },
+        }}>
         <RightSection mr={theme.spacing(0.5)} />
       </Stack>
       <HorizontalContentDevider />

@@ -10,6 +10,7 @@ export default function FriendNotSelectedPlaceholder({ sx, ...rootProps }: Stack
       <Stack
         sx={{
           position: 'absolute',
+          width: '90%',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
@@ -21,7 +22,11 @@ export default function FriendNotSelectedPlaceholder({ sx, ...rootProps }: Stack
           height={120}
           alt='SelectProfileImage'
         />
-        <Typography variant='h3' fontWeight={600} color={theme.palette.text.secondary}>
+        <Typography
+          variant='h3'
+          textAlign='center'
+          fontWeight={600}
+          color={theme.palette.text.secondary}>
           Select people&apos;s names to preview their profile.
         </Typography>
       </Stack>

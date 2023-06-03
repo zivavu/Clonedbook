@@ -7,10 +7,11 @@ export default function ProfilePage() {
   const router = useRouter();
   const idParam = router.query.id as string;
   const user = useGetUsersPublicData(idParam);
+  const pageTitle =
+    user?.firstName && user.lastName && `${user?.firstName} ${user?.lastName} | Clonedbook`;
+
   return (
-    <Page
-      title={`${user?.firstName} ${user?.lastName} | Clonedbook`}
-      description={`Profile page of ${user?.firstName} ${user?.lastName}`}>
+    <Page title={pageTitle} description={`Profile page of ${user?.firstName} ${user?.lastName}`}>
       <Pages.Profile userId={idParam} />
     </Page>
   );

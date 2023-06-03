@@ -1,4 +1,4 @@
-import { Stack, StackProps, useTheme } from '@mui/material';
+import { Box, Stack, StackProps, useTheme } from '@mui/material';
 
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import { useRouter } from 'next/router';
@@ -29,31 +29,38 @@ export default function Friends({ sx, ...rootProps }: StackProps) {
   }, [currentTab]);
 
   return (
-    <Stack sx={sx} {...rootProps} direction='row' position='relative'>
-      <Stack
-        minWidth='360px'
-        p={theme.spacing(2, 1)}
-        position='sticky'
-        top={NAVBAR_HEIGHT}
-        height={`calc(100vh - ${NAVBAR_HEIGHT})`}
-        bgcolor={theme.palette.background.paper}>
-        {currentTab === 'home' && (
-          <TabsList currentTab={currentTab} setCurrentTab={setCurrentTab} />
-        )}
-        {currentTab === 'recieved_requests' && (
-          <FriendRequestsList setCurrentTab={setCurrentTab} setShownProfile={setShownProfile} />
-        )}
-        {currentTab === 'suggestions' && (
-          <FriendSuggestionsList setCurrentTab={setCurrentTab} setShownProfile={setShownProfile} />
-        )}
-        {currentTab === 'all_friends' && (
-          <AllFriendsList setCurrentTab={setCurrentTab} setShownProfile={setShownProfile} />
-        )}
-      </Stack>
+    <Stack sx={sx} {...rootProps} direction='row' position='relative' maxWidth='100vw'>
+      <Box>
+        <Stack
+          minWidth='360px'
+          p={theme.spacing(2, 1)}
+          position='sticky'
+          top={NAVBAR_HEIGHT}
+          height={`calc(100vh - ${NAVBAR_HEIGHT})`}
+          bgcolor={theme.palette.background.paper}>
+          {currentTab === 'home' && (
+            <TabsList currentTab={currentTab} setCurrentTab={setCurrentTab} />
+          )}
+          {currentTab === 'recieved_requests' && (
+            <FriendRequestsList setCurrentTab={setCurrentTab} setShownProfile={setShownProfile} />
+          )}
+          {currentTab === 'suggestions' && (
+            <FriendSuggestionsList
+              setCurrentTab={setCurrentTab}
+              setShownProfile={setShownProfile}
+            />
+          )}
+          {currentTab === 'all_friends' && (
+            <AllFriendsList setCurrentTab={setCurrentTab} setShownProfile={setShownProfile} />
+          )}
+        </Stack>
+      </Box>
       {currentTab === 'home' && <HomeTab />}
       {currentTab !== 'home' && !shownProfile && <FriendNotSelectedPlaceholder />}
       {currentTab !== 'home' && shownProfile && (
-        <Profile userId={shownProfile} width='100%' useRouting={false} />
+        <Box width='100%' height='100%' position='relative'>
+          <Profile userId={shownProfile} useTabsRouting={false} />
+        </Box>
       )}
     </Stack>
   );

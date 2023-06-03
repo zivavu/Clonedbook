@@ -25,6 +25,7 @@ export const SeeAllButton = styled(ButtonBase)(({ theme }) => ({
   '&:hover': {
     backgroundColor: darken(theme.palette.secondary.main, 0.1),
   },
+  containerType: 'inline-size',
 }));
 
 export const StyledFriendsSectionStack = styled(Stack)(({ theme }) => ({
@@ -33,8 +34,9 @@ export const StyledFriendsSectionStack = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   flexWrap: 'wrap',
   justifyContent: 'space-between',
+  position: 'relative',
 
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('sm').replace('@media', '@container')]: {
     padding: theme.spacing(2, 0),
   },
 }));

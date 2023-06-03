@@ -1,12 +1,11 @@
-import { Box, styled } from '@mui/material';
+import { Stack, styled } from '@mui/material';
 
-export const StyledRoot = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  zIndex: theme.zIndex.appBar + 1,
-  top: 0,
+export const StyledRoot = styled(Stack)(({ theme }) => ({
   width: '100vw',
   height: '100vh',
   position: 'fixed',
-  display: 'flex',
-  justifyContent: 'space-between',
+  top: 0,
+  flexDirection: 'row',
+  backgroundColor: theme.palette.background.paper,
+  zIndex: theme.zIndex.appBar + 1,
 }));

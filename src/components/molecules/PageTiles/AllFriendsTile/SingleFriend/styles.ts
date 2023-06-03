@@ -6,7 +6,7 @@ export const StyledRoot = styled(Stack)(({ theme }) => ({
   width: '48%',
   marginTop: theme.spacing(1.5),
 
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('md').replace('@media', '@container')]: {
     width: '100%',
     height: '95px',
     marginTop: theme.spacing(2),

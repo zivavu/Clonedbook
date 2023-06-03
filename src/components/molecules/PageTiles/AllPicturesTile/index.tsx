@@ -43,7 +43,7 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
         {isLoading ? (
           <LoadingPlaceholder />
         ) : (
-          <Stack direction='row' flexWrap='wrap' justifyContent='flex-start'>
+          <Stack direction='row' flexWrap='wrap' justifyContent='flex-start' sx={{}}>
             {pictures.map((picture) => (
               <StyledPictureContainer key={picture.id}>
                 <PictureButton

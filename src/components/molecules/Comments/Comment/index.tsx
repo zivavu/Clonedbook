@@ -4,7 +4,7 @@ import { StyledRoot, StyledTextContent } from './styles';
 
 import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
-import { userCommentReact } from '@/common/updateData/reactions/userCommentReact';
+import { updateCommentReaction } from '@/common/updateData/reactions/updateCommentReaction';
 import InteractButton from '@/components/atoms/InteractButton';
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
@@ -49,9 +49,10 @@ export default function Comment({ element, comment, elementType, sx, ...rootProp
 
   function handleUserReaction(reaction: TLocalUserReaction) {
     if (!user || !element) return;
-    userCommentReact({
+    updateCommentReaction({
       commentId: comment.id,
       elementId: element.id,
+      elementOwnerId: element.ownerId,
       loggedUserId: user.id,
       reaction: reaction,
       elementType: elementType,

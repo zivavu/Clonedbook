@@ -10,7 +10,7 @@ export default function RecentlyAddedSection({ profileId, limit, sx, ...rootProp
   const months = 1;
   const recentLimit = 60 * 60 * 24 * 30 * months;
   const friends = Object.entries(publicFriends || {})
-    .sort(([idA, timestampA], [idB, timestampB]) => timestampB.seconds - timestampA.seconds)
+    .sort(([, timestampA], [, timestampB]) => timestampB.seconds - timestampA.seconds)
     .slice(0, limit)
     .map(([id, timestamp]) => {
       return {

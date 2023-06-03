@@ -16,11 +16,7 @@ export default function AllFriendsSidebarList({
   const allFriends = getAcceptedFriends(loggedUser);
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <ListHeadingSection
-        heading='All Friends'
-        setCurrentTab={setCurrentTab}
-        setIsMobileDrawerOpen={setIsMobileDrawerOpen}
-      />
+      <ListHeadingSection heading='All Friends' setCurrentTab={setCurrentTab} />
       <StyledFriendsList>
         {allFriends.map((user) => (
           <FriendListItem

@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import { StyledToggleButton } from '@/components/organisms/ReactionsModal/styles';
 import SelectedButtonUnderline from '../SelectedButtonUnderline';
@@ -10,7 +10,6 @@ export default function TabToggleButton({
   sx,
   ...rootProps
 }: TabToggleButtonProps) {
-  const theme = useTheme();
   return (
     <StyledToggleButton sx={sx} {...rootProps} value={value}>
       <Typography variant='subtitle1' fontWeight='400'>

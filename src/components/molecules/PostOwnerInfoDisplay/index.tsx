@@ -2,9 +2,9 @@ import { Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import getShortDate from '@/utils/dateManagment/getShortDate';
 import { PostOwnerInfoDisplayProps } from './types';
 
 export default function PostOwnerInfoDisplay({

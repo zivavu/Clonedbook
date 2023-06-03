@@ -7,7 +7,7 @@ import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useState } from 'react';
 import { CommentInputProps } from './types';
 
-export default function CommentInput({ sx, mode, ...rootProps }: CommentInputProps) {
+export default function CommentInput({ sx, displayMode: mode, ...rootProps }: CommentInputProps) {
   const { data: user } = useFetchLoggedUserQuery({});
   const theme = useTheme();
   const [commentText, setCommentText] = useState<string>('');

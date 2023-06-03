@@ -2,6 +2,8 @@ import { Box, ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from './styles';
 
+import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
+import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import AddFriendButton from '@/components/atoms/AddFriendButton';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
@@ -9,8 +11,6 @@ import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoadin
 import MessageButton from '@/components/atoms/MessageButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
-import useGetMutalFriends from '@/hooks/useGetMutalFriends';
-import getAcceptedFriends from '@/utils/getAcceptedFriends';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
 

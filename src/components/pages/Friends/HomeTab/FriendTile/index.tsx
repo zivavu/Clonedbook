@@ -1,11 +1,11 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 
+import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import AddFriendButton from '@/components/atoms/AddFriendButton';
 import FriendPicture from '@/components/atoms/FriendPicture';
 import RemoveFriendButton from '@/components/atoms/RemoveFriendButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import useGetMutalFriends from '@/hooks/useGetMutalFriends';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { StyledRoot } from './styles';
 import { FriendTileProps } from './types';
 

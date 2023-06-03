@@ -2,9 +2,9 @@ import { Typography, useTheme } from '@mui/material';
 
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
+import updateElementReaction from '@/common/updateData/reactions/updateElementReaction';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
-import updateElementReaction from '@/utils/updateElementReaction';
 import { useRef, useState } from 'react';
 import ReactionsPopper from './ReactionsPopper';
 import { ActionButtonsProps } from './types';

@@ -1,11 +1,11 @@
 import { Box, Modal, Stack, ToggleButtonGroup, Typography, useTheme } from '@mui/material';
 import { StyledRoot, StyledToggleButton, StyledUsersContainer } from './styles';
 
+import useDeserializeReactions from '@/common/misc/userDataManagment/useDeserializeReactions';
 import Link from '@/components/atoms/Link';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { SelectButtonUnderline } from '@/components/atoms/SelectedButtonUnderline/styles';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import useDeserializeReactions from '@/hooks/useDeserializeReactions';
 import { TReactionType } from '@/types/reaction';
 import { useState } from 'react';
 import { ReactionsModalProps } from './types';

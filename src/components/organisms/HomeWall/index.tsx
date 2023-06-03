@@ -1,7 +1,7 @@
 import { StyledRoot } from './styles';
 
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
-import usePostsInfiniteScrolling from '@/hooks/usePostsInfiniteScrolling';
+import usePostsInfiniteScrolling from '@/common/misc/usePostsInfiniteScrolling';
 import PostsFeed from '../PostsFeed';
 import { HomeWallProps } from './types';
 

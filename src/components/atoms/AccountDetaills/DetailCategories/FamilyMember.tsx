@@ -1,4 +1,4 @@
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import FamilyAccountDetail from '../AccountDetailItems/FamillyAccountDetail';
 import { FamilyMemberProps } from '../types';
 

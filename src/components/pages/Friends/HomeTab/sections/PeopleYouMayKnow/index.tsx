@@ -1,6 +1,6 @@
 import { Box, BoxProps, Typography } from '@mui/material';
 
-import useGetFriendSueggestions from '@/hooks/useGetFriendSueggestions';
+import useGetFriendSueggestions from '@/common/friendsManage/useGetFriendSueggestions';
 import { StyledFriendTilesWrapper } from '../../../styles';
 import FriendTile from '../../FriendTile';
 

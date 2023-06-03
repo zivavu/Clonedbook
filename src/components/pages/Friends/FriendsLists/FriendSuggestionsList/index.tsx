@@ -1,4 +1,4 @@
-import useGetFriendSueggestions from '@/hooks/useGetFriendSueggestions';
+import useGetFriendSueggestions from '@/common/friendsManage/useGetFriendSueggestions';
 import { useTheme } from '@mui/material';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';

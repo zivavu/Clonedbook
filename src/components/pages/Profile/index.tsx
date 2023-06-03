@@ -1,7 +1,7 @@
 import { StyledContentWrapper, StyledRoot } from './styles';
 
-import { useFetchAllUserData } from '@/hooks/useFetchAllUserData';
-import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
+import { useFetchAllUserData } from '@/common/fetchData/useFetchAllUserData';
+import useFetchUsersPictures from '@/common/fetchData/useFetchUsersPictures';
 import { Box, Container, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

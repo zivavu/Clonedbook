@@ -1,4 +1,4 @@
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import { ButtonBase } from '@mui/material';
 import Link from 'next/link';
 import ImageWithGradientLoading from '../ImageWithGradientLoading';

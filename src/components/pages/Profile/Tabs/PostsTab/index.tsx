@@ -1,5 +1,6 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 
+import useFetchUsersPosts from '@/common/fetchData/useFetchUsersPosts';
 import { InvisibleScrollableStack } from '@/components/atoms/Scrollables/ScrollableStack';
 import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';
@@ -7,7 +8,6 @@ import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import PostsFeed from '@/components/organisms/PostsFeed';
-import useFetchUsersPosts from '@/hooks/useFetchUsersPosts';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { PostsTabProps } from './types';
 

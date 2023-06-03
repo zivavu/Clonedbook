@@ -1,4 +1,4 @@
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import TextAccountDetail from '../AccountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 

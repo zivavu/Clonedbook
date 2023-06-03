@@ -1,4 +1,4 @@
-import useGetFriendRequests from '@/hooks/useGetUsersFriendRequests';
+import useGetFriendRequests from '@/common/friendsManage/useGetUsersFriendRequests';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
 import { StyledFriendsList, StyledRoot } from '../styles';

@@ -2,11 +2,11 @@ import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import AddFriendButton from '@/components/atoms/AddFriendButton';
 import RemoveFriendButton from '@/components/atoms/RemoveFriendButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import MutalFriendsDisplay from '@/components/molecules/MutalFriendsDisplay';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { FriendListItemProps } from './types';
 
 export default function FriendListItem({

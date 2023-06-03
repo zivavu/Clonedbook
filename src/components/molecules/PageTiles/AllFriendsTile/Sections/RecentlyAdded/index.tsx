@@ -1,4 +1,4 @@
-import useGetUsersPublicFriends from '@/hooks/useGetUsersPublicFriends';
+import useGetUsersPublicFriends from '@/common/misc/userDataManagment/useGetUsersPublicFriends';
 import { IPublicFriend } from '@/types/firend';
 import SingleFriend from '../../SingleFriend';
 import { StyledFriendsSectionStack } from '../../styles';

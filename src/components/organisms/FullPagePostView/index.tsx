@@ -2,16 +2,16 @@ import { Modal, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledPostContentWrapper, StyledRoot } from './styles';
 
+import useFetchPostData from '@/common/fetchData/useFetchPostData';
+import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
-import useFetchPostData from '@/hooks/useFetchPostData';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
-import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
 import { useEffect, useState } from 'react';
 import { FullPagePostViewProps } from './types';
 
@@ -63,6 +63,7 @@ export default function FullPagePostView({
             />
             <Comments
               comments={post.comments}
+              elementType='post'
               post={post}
               sx={{ height: '100%' }}
               maxComments='all'

@@ -12,7 +12,8 @@ export default function Comments({
   maxComments,
   post,
   onlyUniqueUsers = false,
-  mode = 'post',
+  elementType,
+  displayMode = 'post',
   sx,
   ...rootProps
 }: CommentsProps) {
@@ -37,11 +38,16 @@ export default function Comments({
         {!!comments && (
           <Stack>
             {commentsToRender.slice(0, commentsCutIndex).map((comment) => (
-              <Comment key={comment.id} comment={comment} post={post} />
+              <Comment
+                key={comment.id}
+                elementType={elementType}
+                comment={comment}
+                element={post}
+              />
             ))}
           </Stack>
         )}
-        <CommentInput mode={mode} />
+        <CommentInput displayMode={displayMode} />
       </Box>
     </StyledRoot>
   );

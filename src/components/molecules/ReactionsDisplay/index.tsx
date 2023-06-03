@@ -2,8 +2,8 @@ import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import useDeserializeReactions from '@/common/misc/userDataManagment/useDeserializeReactions';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import useDeserializeReactions from '@/hooks/useDeserializeReactions';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useState } from 'react';
 import ReactionsModal from '../../organisms/ReactionsModal';

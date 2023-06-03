@@ -1,4 +1,4 @@
-import useGetMutalFriends from '@/hooks/useGetMutalFriends';
+import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import SingleFriend from '../../SingleFriend';
 import { StyledFriendsSectionStack } from '../../styles';
 import { SectionProps } from '../../types';

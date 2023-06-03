@@ -1,8 +1,8 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 
+import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import useGetMutalFriends from '@/hooks/useGetMutalFriends';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { MutalFriendsDisplayProps } from './types';
 
 export default function MutalFriendsDisplay({

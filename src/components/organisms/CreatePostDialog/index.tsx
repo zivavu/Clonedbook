@@ -7,13 +7,13 @@ import {
   StyledRoot,
 } from './styles';
 
+import { optimizePhotos } from '@/common/misc/optimizePhotos';
+import { separateUserBasicInfo } from '@/common/misc/userDataManagment/separateUserBasicInfo';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
 import { db, storage } from '@/config/firebase.config';
 import { IPost } from '@/types/post';
 import { IUserBasicInfo } from '@/types/user';
-import { optimizePhotos } from '@/utils/optimizePhotos';
-import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
 import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';

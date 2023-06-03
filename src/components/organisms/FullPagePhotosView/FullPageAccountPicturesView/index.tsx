@@ -1,4 +1,4 @@
-import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
+import useFetchUsersPictures from '@/common/fetchData/useFetchUsersPictures';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useEffect, useState } from 'react';

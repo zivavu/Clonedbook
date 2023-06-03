@@ -2,14 +2,14 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
+import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
-import getEntriesLength from '@/utils/objectManagment/getEntriesLength';
-import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
 import { NAVBAR_HEIGHT } from '../../NavBar';
 import RightSection from '../../NavBar/RightSection';
 import { ElementInfoProps } from './types';
@@ -79,7 +79,13 @@ export default function ElementInfo({
         elementType={type}
         my={theme.spacing(1)}
       />
-      <Comments post={element} comments={element.comments} maxComments='all' mode='picture' />
+      <Comments
+        post={element}
+        elementType={type}
+        comments={element.comments}
+        maxComments='all'
+        displayMode='picture'
+      />
     </StyledRoot>
   );
 }

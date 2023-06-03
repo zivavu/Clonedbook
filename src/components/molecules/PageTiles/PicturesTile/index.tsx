@@ -1,7 +1,7 @@
 import { Stack, useTheme } from '@mui/material';
 
-import useFetchUsersPictures from '@/hooks/useFetchUsersPictures';
-import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
+import useFetchUsersPictures from '@/common/fetchData/useFetchUsersPictures';
+import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import PicturesRow from './PicturesRow';
 import { PicturesTileProps } from './types';

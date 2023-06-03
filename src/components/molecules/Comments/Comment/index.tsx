@@ -2,22 +2,21 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot, StyledTextContent } from './styles';
 
+import getShortDate from '@/common/misc/dateManagment/getShortDate';
+import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
+import { userCommentReact } from '@/common/updateData/reactions/userCommentReact';
 import InteractButton from '@/components/atoms/InteractButton';
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import { TLocalUserReaction } from '@/types/reaction';
-import getShortDate from '@/utils/dateManagment/getShortDate';
-import isObjectEmpty from '@/utils/objectManagment/isObjectEmpty';
-import { separateUserBasicInfo } from '@/utils/separateUserBasicInfo';
-import { userCommentReact } from '@/utils/userCommentReact';
 import { useEffect, useRef, useState } from 'react';
 import ReactionsPopper from '../../ActionButtons/ReactionsPopper';
 import ReactionsDisplay from '../../ReactionsDisplay';
 import { CommentProps } from './types';
 
-export default function Comment({ post, comment, sx, ...rootProps }: CommentProps) {
+export default function Comment({ element, comment, elementType, sx, ...rootProps }: CommentProps) {
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
   const { data: allUsersBasicInfo } = useFetchUsersBasicInfoQuery({});
@@ -48,15 +47,26 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
     setMouseOverReactionElements(false);
   }
 
+  function handleUserReaction(reaction: TLocalUserReaction) {
+    if (!user || !element) return;
+    userCommentReact({
+      commentId: comment.id,
+      elementId: element.id,
+      loggedUserId: user.id,
+      reaction: reaction,
+      elementType: elementType,
+    });
+  }
+
   function handleLikeClick() {
-    if (!user || !post) return;
+    if (!user || !element) return;
     setMouseOverReactionElements(false);
     if (!userReaction) {
       setUserReaction('like');
-      userCommentReact(post, comment, separateUserBasicInfo(user), 'like');
+      handleUserReaction('like');
     } else {
       setUserReaction(null);
-      userCommentReact(post, comment, separateUserBasicInfo(user), undefined);
+      handleUserReaction(null);
     }
   }
   return (
@@ -120,8 +130,7 @@ export default function Comment({ post, comment, sx, ...rootProps }: CommentProp
       </Stack>
       <ReactionsPopper
         updateDocHandler={(type) => {
-          if (!user) return;
-          userCommentReact(post, comment, separateUserBasicInfo(user), type);
+          handleUserReaction(type);
         }}
         disablePortal={true}
         open={false}

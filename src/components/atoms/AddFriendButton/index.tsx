@@ -2,7 +2,7 @@ import { SxProps, darken, useTheme } from '@mui/material';
 
 import { StyledButtonIcon, StyledButtonText, StyledRoot } from './styles';
 
-import useGetFriendshipStatus from '@/hooks/useGetFriendshipStatus';
+import useGetFriendshipStatus from '@/common/friendsManage/useGetFriendshipStatus';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { AddFriendButtonProps } from './types';
 

@@ -8,7 +8,6 @@ export async function userBackroundPictureReact({
   loggedUserId,
   reaction,
 }: IUpdateElementReaction) {
-  console.log(elementId, ownerId, loggedUserId, reaction);
   try {
     const docRef = doc(db, `users/${ownerId}/pictures/pictures`);
     if (reaction) {

@@ -1,4 +1,4 @@
-import useFetchPostData from '@/hooks/useFetchPostData';
+import useFetchPostData from '@/common/fetchData/useFetchPostData';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useEffect, useState } from 'react';

@@ -2,10 +2,10 @@ import { Box, Link, Stack, Typography, useMediaQuery, useTheme } from '@mui/mate
 
 import { StyledRoot } from './styles';
 
+import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import AddFriendButton from '@/components/atoms/AddFriendButton';
 import FriendPicture from '@/components/atoms/FriendPicture';
-import useGetMutalFriends from '@/hooks/useGetMutalFriends';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { SingleFriendProps } from './types';
 
 export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFriendProps) {

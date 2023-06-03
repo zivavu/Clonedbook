@@ -1,6 +1,6 @@
 import { Box, ButtonBase, CSSObject, useTheme } from '@mui/material';
 
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserAvatarProps, UserImageProps } from './types';

@@ -1,5 +1,5 @@
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import * as Pages from '@/components/pages';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import Page from '@/templates/Page';
 import { useRouter } from 'next/router';
 

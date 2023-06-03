@@ -1,9 +1,9 @@
 import { StyledRoot } from './styles';
 
+import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import FriendPicture from '@/components/atoms/FriendPicture';
 import Link from '@/components/atoms/Link';
-import useGetMutalFriends from '@/hooks/useGetMutalFriends';
-import useGetUsersPublicData from '@/hooks/useGetUsersPublicData';
 import { Box, Typography, useTheme } from '@mui/material';
 import { FriendProps } from './types';
 

@@ -20,6 +20,7 @@ export default function UserAvatar({
     minWidth: px,
     minHeight: px,
     maxWidth: px,
+    maxHeight: px,
     aspectRatio: '1/1',
     borderRadius: '50%',
     position: 'relative',

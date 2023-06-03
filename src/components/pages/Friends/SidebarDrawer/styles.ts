@@ -19,7 +19,6 @@ export const StyledDrawerPuller = styled(Box)(({ theme }) => ({
   borderRadius: '0 70px 70px 0',
   visibility: 'visible',
   opacity: 0.8,
-  pointerEvents: 'none',
 }));
 
 export const StyledDrawerCloseIcon = styled(IconButton)(({ theme }) => ({
@@ -28,4 +27,5 @@ export const StyledDrawerCloseIcon = styled(IconButton)(({ theme }) => ({
   right: theme.spacing(0.5),
   width: '40px',
   height: '40px',
+  zIndex: 4,
 }));

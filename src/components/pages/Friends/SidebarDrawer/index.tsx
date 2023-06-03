@@ -11,7 +11,8 @@ export default function SidebarDrawer({ sx, children, ...rootProps }: SidebarDra
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   const theme = useTheme();
-  const drawerWidth = useMediaQuery(theme.breakpoints.down('md')) ? `290px` : `320px`;
+  const drawerWidth = useMediaQuery(theme.breakpoints.down('md')) ? `280px` : `350px`;
+
   return (
     <>
       <Drawer
@@ -24,6 +25,7 @@ export default function SidebarDrawer({ sx, children, ...rootProps }: SidebarDra
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             padding: theme.spacing(2, 1),
+            paddingRight: theme.spacing(0),
             top: NAVBAR_HEIGHT,
           },
 
@@ -42,7 +44,8 @@ export default function SidebarDrawer({ sx, children, ...rootProps }: SidebarDra
         anchor='left'
         onOpen={() => setIsMobileDrawerOpen(true)}
         onClose={() => setIsMobileDrawerOpen(false)}
-        swipeAreaWidth={isMobileDrawerOpen ? 1 : 0 * drawerBleeding * 4}
+        swipeAreaWidth={(useMediaQuery(theme.breakpoints.down('md')) ? 1 : 0) * drawerBleeding * 4}
+        SwipeAreaProps={{ sx: { top: NAVBAR_HEIGHT } }}
         disableSwipeToOpen={false}
         allowSwipeInChildren={true}
         ModalProps={{
@@ -51,9 +54,11 @@ export default function SidebarDrawer({ sx, children, ...rootProps }: SidebarDra
         sx={{
           width: drawerWidth,
           height: '100%',
+          display: 'flex',
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             padding: theme.spacing(2, 1),
+            paddingRight: theme.spacing(0),
             overflow: 'visible',
           },
 
@@ -68,8 +73,9 @@ export default function SidebarDrawer({ sx, children, ...rootProps }: SidebarDra
           }}>
           <Icon icon='xmark' />
         </StyledDrawerCloseIcon>
-        {children}
-        <StyledDrawerPuller>
+        <StyledDrawerPuller
+          onMouseDown={() => setIsMobileDrawerOpen((prev) => !prev)}
+          sx={{ pointerEvents: isMobileDrawerOpen ? 'none' : 'all' }}>
           <Icon
             icon='angle-left'
             fontSize={25}
@@ -79,6 +85,7 @@ export default function SidebarDrawer({ sx, children, ...rootProps }: SidebarDra
             }}
           />
         </StyledDrawerPuller>
+        {children}
       </SwipeableDrawer>
     </>
   );

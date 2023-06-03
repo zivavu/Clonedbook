@@ -10,7 +10,7 @@ import { HomeTabProps } from './types';
 export default function HomeTab({ sx, ...rootProps }: HomeTabProps) {
   const theme = useTheme();
   return (
-    <StyledRoot sx={sx} {...rootProps} p={4} spacing={4}>
+    <StyledRoot sx={sx} {...rootProps} spacing={4}>
       <FriendRequests />
       <Box position='relative'>
         <HorizontalContentDevider bottom={theme.spacing(1.5)} />

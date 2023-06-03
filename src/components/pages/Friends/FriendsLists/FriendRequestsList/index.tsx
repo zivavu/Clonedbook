@@ -2,14 +2,14 @@ import useGetFriendRequests from '@/hooks/useGetUsersFriendRequests';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
 import { StyledFriendsList, StyledRoot } from '../styles';
-import { FriendListProps } from '../types';
+import { FriendSidebarListProps } from '../types';
 
-export default function FriendRequestsList({
+export default function FriendRequestsSidebarList({
   setCurrentTab,
   setShownProfile,
   sx,
   ...rootProps
-}: FriendListProps) {
+}: FriendSidebarListProps) {
   const friendRequests = useGetFriendRequests();
   return (
     <StyledRoot sx={sx} {...rootProps}>

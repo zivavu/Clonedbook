@@ -1,4 +1,4 @@
-import { Box, ListItemButton, Stack, styled } from '@mui/material';
+import { ListItemButton, Stack, styled } from '@mui/material';
 
 export const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
   height: '50px',

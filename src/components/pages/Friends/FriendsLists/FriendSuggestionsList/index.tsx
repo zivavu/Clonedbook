@@ -3,14 +3,14 @@ import { useTheme } from '@mui/material';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
 import { StyledFriendsList, StyledRoot } from '../styles';
-import { FriendListProps } from '../types';
+import { FriendSidebarListProps } from '../types';
 
-export default function FriendSuggestionsList({
+export default function FriendSuggestionsSidebarList({
   setCurrentTab,
   setShownProfile,
   sx,
   ...rootProps
-}: FriendListProps) {
+}: FriendSidebarListProps) {
   const theme = useTheme();
   const friendSuggestions = useGetFriendSueggestions();
   if (!friendSuggestions) return null;

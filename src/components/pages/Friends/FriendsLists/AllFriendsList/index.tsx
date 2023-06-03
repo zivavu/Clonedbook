@@ -3,20 +3,24 @@ import getAcceptedFriends from '@/utils/getAcceptedFriends';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
 import { StyledFriendsList, StyledRoot } from '../styles';
-import { FriendListProps } from '../types';
+import { FriendSidebarListProps } from '../types';
 
-export default function AllFriendsList({
+export default function AllFriendsSidebarList({
   setCurrentTab,
   setShownProfile,
   sx,
   ...rootProps
-}: FriendListProps) {
+}: FriendSidebarListProps) {
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   if (!loggedUser) return null;
   const allFriends = getAcceptedFriends(loggedUser);
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <ListHeadingSection heading='All Friends' setCurrentTab={setCurrentTab} />
+      <ListHeadingSection
+        heading='All Friends'
+        setCurrentTab={setCurrentTab}
+        setIsMobileDrawerOpen={setIsMobileDrawerOpen}
+      />
       <StyledFriendsList>
         {allFriends.map((user) => (
           <FriendListItem

@@ -4,12 +4,13 @@ import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Profile from '../Profile';
-import AllFriendsList from './FriendsLists/AllFriendsList';
-import FriendRequestsList from './FriendsLists/FriendRequestsList';
-import FriendSuggestionsList from './FriendsLists/FriendSuggestionsList';
+import AllFriendsSidebarList from './FriendsLists/AllFriendsList';
+import FriendRequestsSidebarList from './FriendsLists/FriendRequestsList';
+import FriendSuggestionsSidebarList from './FriendsLists/FriendSuggestionsList';
 import FriendNotSelectedPlaceholder from './FriendsLists/components/FriendNotSelectedPlaceholder';
 import HomeTab from './HomeTab';
-import TabsList from './TabsList';
+import SidebarDrawer from './SidebarDrawer';
+import TabSelectList from './TabsSidebar';
 import { TFriendsTabs } from './types';
 
 export default function Friends({ sx, ...rootProps }: StackProps) {
@@ -29,33 +30,37 @@ export default function Friends({ sx, ...rootProps }: StackProps) {
   }, [currentTab]);
 
   return (
-    <Stack sx={sx} {...rootProps} direction='row' position='relative' maxWidth='100vw'>
-      <Box>
-        <Stack
-          minWidth='360px'
-          p={theme.spacing(2, 1)}
-          position='sticky'
-          top={NAVBAR_HEIGHT}
-          height={`calc(100vh - ${NAVBAR_HEIGHT})`}
-          bgcolor={theme.palette.background.paper}>
-          {currentTab === 'home' && (
-            <TabsList currentTab={currentTab} setCurrentTab={setCurrentTab} />
-          )}
-          {currentTab === 'recieved_requests' && (
-            <FriendRequestsList setCurrentTab={setCurrentTab} setShownProfile={setShownProfile} />
-          )}
-          {currentTab === 'suggestions' && (
-            <FriendSuggestionsList
-              setCurrentTab={setCurrentTab}
-              setShownProfile={setShownProfile}
-            />
-          )}
-          {currentTab === 'all_friends' && (
-            <AllFriendsList setCurrentTab={setCurrentTab} setShownProfile={setShownProfile} />
-          )}
-        </Stack>
-      </Box>
+    <Stack
+      sx={sx}
+      {...rootProps}
+      direction='row'
+      position='relative'
+      maxWidth='100vw'
+      minHeight={`calc(100vh - ${NAVBAR_HEIGHT})`}>
+      <SidebarDrawer>
+        {currentTab === 'home' && (
+          <TabSelectList currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        )}
+
+        {currentTab === 'recieved_requests' && (
+          <FriendRequestsSidebarList
+            setCurrentTab={setCurrentTab}
+            setShownProfile={setShownProfile}
+          />
+        )}
+        {currentTab === 'suggestions' && (
+          <FriendSuggestionsSidebarList
+            setCurrentTab={setCurrentTab}
+            setShownProfile={setShownProfile}
+          />
+        )}
+        {currentTab === 'all_friends' && (
+          <AllFriendsSidebarList setCurrentTab={setCurrentTab} setShownProfile={setShownProfile} />
+        )}
+      </SidebarDrawer>
+
       {currentTab === 'home' && <HomeTab />}
+
       {currentTab !== 'home' && !shownProfile && <FriendNotSelectedPlaceholder />}
       {currentTab !== 'home' && shownProfile && (
         <Box width='100%' height='100%' position='relative'>

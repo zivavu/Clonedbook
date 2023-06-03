@@ -1,7 +1,7 @@
 import { Box, BoxProps, Typography } from '@mui/material';
 
 import useGetFriendRequests from '@/hooks/useGetUsersFriendRequests';
-import { StyledFriendsWrapper } from '../../../styles';
+import { StyledFriendTilesWrapper } from '../../../styles';
 import FriendTile from '../../FriendTile';
 
 export default function FriendRequests({ sx, ...rootProps }: BoxProps) {
@@ -11,11 +11,11 @@ export default function FriendRequests({ sx, ...rootProps }: BoxProps) {
       <Typography textTransform='capitalize' variant='h4' fontWeight={650}>
         friend requests
       </Typography>
-      <StyledFriendsWrapper>
+      <StyledFriendTilesWrapper>
         {friendRequests.map(([userId]) => (
           <FriendTile key={userId} userId={userId} />
         ))}
-      </StyledFriendsWrapper>
+      </StyledFriendTilesWrapper>
     </Box>
   );
 }

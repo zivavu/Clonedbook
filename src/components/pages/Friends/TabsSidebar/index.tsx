@@ -1,14 +1,19 @@
-import { List, Typography, useTheme } from '@mui/material';
+import { Box, List, Typography, useTheme } from '@mui/material';
 
 import { StyledIconContainer, StyledListItemButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
-import { TabsListProps } from './types';
+import { TabSelectListProps } from './types';
 
-export default function TabsList({ currentTab, setCurrentTab, sx, ...rootProps }: TabsListProps) {
+export default function TabSelectList({
+  currentTab,
+  setCurrentTab,
+  sx,
+  ...rootProps
+}: TabSelectListProps) {
   const theme = useTheme();
   return (
-    <>
+    <Box sx={sx} {...rootProps}>
       <Typography variant='h3' fontWeight={700} ml={1} mb={0.5}>
         Friends
       </Typography>
@@ -52,6 +57,6 @@ export default function TabsList({ currentTab, setCurrentTab, sx, ...rootProps }
           <Icon icon='angle-right' fontSize={20} style={{ marginLeft: 'auto' }} />
         </StyledListItemButton>
       </List>
-    </>
+    </Box>
   );
 }

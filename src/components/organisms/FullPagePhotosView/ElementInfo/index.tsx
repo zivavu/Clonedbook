@@ -9,7 +9,7 @@ import HorizontalContentDevider from '@/components/atoms/ContentDeviders/Horizon
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
-import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
+import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
 import { NAVBAR_HEIGHT } from '../../NavBar';
 import RightSection from '../../NavBar/RightSection';
 import { ElementInfoProps } from './types';
@@ -17,8 +17,6 @@ import { ElementInfoProps } from './types';
 export default function ElementInfo({
   element,
   type,
-  userReaction,
-  setUserReaction,
   refetchElement,
   sx,
   ...rootProps
@@ -52,12 +50,7 @@ export default function ElementInfo({
       </Box>
       <Stack width='100%' direction='row' justifyContent='space-between'>
         {!isObjectEmpty(element.reactions) && (
-          <ReactionsDisplay
-            userReaction={userReaction}
-            reactions={element.reactions}
-            displayCount
-            displayNames={false}
-          />
+          <ReactionsDisplayBox reactions={element.reactions} displayCount displayNames={false} />
         )}
         <Box display='flex'>
           <Typography pr={theme.spacing(1)} variant='subtitle2' sx={{ color: 'text.secondary' }}>
@@ -73,11 +66,9 @@ export default function ElementInfo({
         </Box>
       </Stack>
       <ActionButtons
-        userReaction={userReaction}
-        setUserReaction={setUserReaction}
-        ownerId={element.ownerId}
-        elementId={element.id}
+        element={element}
         elementType={type}
+        refetchElement={refetchElement}
         my={theme.spacing(1)}
       />
       <Comments

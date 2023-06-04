@@ -8,24 +8,17 @@ import InteractButton from '@/components/atoms/InteractButton';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
-import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
+import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
-import { TLocalUserReaction } from '@/types/reaction';
 import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPostProps) {
-  const { data: user } = useFetchLoggedUserQuery({});
   const { id: postId, comments, pictures: postPictures, text: postText, reactions } = post;
   const owner = useGetUsersPublicData(post.ownerId);
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
-
-  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    reactions[user?.id || ''] || undefined,
-  );
 
   const displayReactorNames = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -69,9 +62,8 @@ export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPo
 
         <StyledContentWrapper>
           <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
-            <ReactionsDisplay
+            <ReactionsDisplayBox
               reactions={reactions}
-              userReaction={userReaction}
               displayNames={displayReactorNames}
               displayCount={!displayReactorNames}
               sx={{ pr: theme.spacing(0.25), maxWidth: '75%' }}
@@ -91,13 +83,7 @@ export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPo
             </InteractButton>
           </Stack>
 
-          <ActionButtons
-            elementId={post.id}
-            elementType='post'
-            ownerId={post.ownerId}
-            userReaction={userReaction}
-            setUserReaction={setUserReaction}
-          />
+          <ActionButtons element={post} refetchElement={refetchPost} elementType='post' />
         </StyledContentWrapper>
         <StyledContentWrapper>
           {isMoreComments && (

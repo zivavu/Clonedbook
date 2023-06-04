@@ -1,9 +1,8 @@
-import { IReactionsMap, TLocalUserReaction } from '@/types/reaction';
+import { IReactionsMap } from '@/types/reaction';
 import { BoxProps } from '@mui/material';
 
 export interface ReactionsDisplayProps extends BoxProps {
-  reactions: IReactionsMap | undefined;
-  userReaction: TLocalUserReaction;
+  reactions: IReactionsMap;
   displayNames?: boolean;
   displayCount?: boolean;
   emotesCount?: number;

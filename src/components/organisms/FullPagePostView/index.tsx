@@ -9,10 +9,7 @@ import HorizontalContentDevider from '@/components/atoms/ContentDeviders/Horizon
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
-import ReactionsDisplay from '@/components/molecules/ReactionsDisplay';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
-import { TLocalUserReaction } from '@/types/reaction';
-import { useEffect, useState } from 'react';
+import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
 import { FullPagePostViewProps } from './types';
 
 export default function FullPagePostView({
@@ -22,55 +19,46 @@ export default function FullPagePostView({
   ...rootProps
 }: FullPagePostViewProps) {
   const theme = useTheme();
-  const { postData: post, isError, isLoading } = useFetchSinglePostData(postId);
-  const { data: user } = useFetchLoggedUserQuery({});
+  const { postData: post, refetchPost } = useFetchSinglePostData(postId);
   const owner = useGetUsersPublicData(post?.ownerId || '');
-  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    post?.reactions[user?.id || ''] || undefined,
-  );
 
-  useEffect(() => {
-    setUserReaction(post?.reactions[user?.id || ''] || undefined);
-  }, [post, user?.id]);
-  return isLoading || isError || !post ? null : (
-    <>
-      <Modal open onClose={() => setOpen(false)}>
-        <StyledRoot sx={sx} {...rootProps}>
-          <Stack p={theme.spacing(1.5, 0)} position='relative'>
-            <Typography textAlign='center' variant='h4' fontWeight='600'>
-              {owner?.firstName || ''}&apos;s Post
+  if (!post) return null;
+  return (
+    <Modal open onClose={() => setOpen(false)}>
+      <StyledRoot sx={sx} {...rootProps}>
+        <Stack p={theme.spacing(1.5, 0)} position='relative'>
+          <Typography textAlign='center' variant='h4' fontWeight='600'>
+            {owner?.firstName || ''}&apos;s Post
+          </Typography>
+          <HorizontalContentDevider sx={{ bottom: 0 }} />
+        </Stack>
+        <StyledPostContentWrapper spacing={1}>
+          <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />
+          <Typography variant='body1'>{post.text}</Typography>
+          <Stack direction='row' alignItems='center'>
+            <ReactionsDisplayBox reactions={post.reactions} />
+            <Typography ml='auto' color={theme.palette.text.secondary} variant='body1'>
+              {getEntriesLength(post.comments) > 1
+                ? `${getEntriesLength(post.comments)} comments`
+                : `1 comment`}
             </Typography>
-            <HorizontalContentDevider sx={{ bottom: 0 }} />
           </Stack>
-          <StyledPostContentWrapper spacing={1}>
-            <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />
-            <Typography variant='body1'>{post.text}</Typography>
-            <Stack direction='row' alignItems='center'>
-              <ReactionsDisplay userReaction={userReaction} reactions={post.reactions} />
-              <Typography ml='auto' color={theme.palette.text.secondary} variant='body1'>
-                {getEntriesLength(post.comments) > 1
-                  ? `${getEntriesLength(post.comments)} comments`
-                  : `1 comment`}
-              </Typography>
-            </Stack>
-            <ActionButtons
-              elementType='post'
-              elementId={post.id}
-              ownerId={post.ownerId}
-              userReaction={userReaction}
-              setUserReaction={setUserReaction}
-              sx={{ borderBottom: 'none' }}
-            />
-            <Comments
-              comments={post.comments}
-              elementType='post'
-              element={post}
-              sx={{ height: '100%' }}
-              maxComments='all'
-            />
-          </StyledPostContentWrapper>
-        </StyledRoot>
-      </Modal>
-    </>
+          <ActionButtons
+            element={post}
+            elementType='post'
+            refetchElement={refetchPost}
+            sx={{ borderBottom: 'none' }}
+          />
+          <Comments
+            comments={post.comments}
+            elementType='post'
+            refetchElement={refetchPost}
+            element={post}
+            sx={{ height: '100%' }}
+            maxComments='all'
+          />
+        </StyledPostContentWrapper>
+      </StyledRoot>
+    </Modal>
   );
 }

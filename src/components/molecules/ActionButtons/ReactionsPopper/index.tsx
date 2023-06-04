@@ -15,7 +15,6 @@ export default function ReactionsPopper({
   open = false,
   mouseOver,
   setMouseOver,
-  setUserReaction,
   sx,
   ...rootProps
 }: ReactionsPopperProps) {
@@ -62,7 +61,6 @@ export default function ReactionsPopper({
 
   function handleReaction(type: TReactionType) {
     if (!user) return;
-    setUserReaction(type);
     updateDocHandler(type);
     setIsOpen(false);
   }

@@ -8,7 +8,7 @@ export interface CommentsProps extends BoxProps {
   comments: ICommentMap | undefined;
   elementType: TElementType;
   element: IPost | IAccountPicture;
-  refetchElement?: () => void;
+  refetchElement: () => void;
   maxComments?: number | 'all';
   onlyUniqueUsers?: boolean;
   displayMode?: TDisplayMode;

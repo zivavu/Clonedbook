@@ -1,6 +1,4 @@
 import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
-import { TLocalUserReaction } from '@/types/reaction';
 import { useEffect, useState } from 'react';
 import ElementInfo from '../ElementInfo';
 import FullPagePortal from '../FullPagePortal';
@@ -14,7 +12,6 @@ export default function FullPageAccountPicturesView({
   setOpen,
   ...rootProps
 }: FullPageAccountPicturesViewProps) {
-  const { data: loggedUser } = useFetchLoggedUserQuery({});
   const { isError, isLoading, picturesMap, refetchPictures } = useFetchUsersPictures(ownerId);
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
@@ -33,15 +30,7 @@ export default function FullPageAccountPicturesView({
   const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(initialPhotoIndex);
   const currentPicture = pictures[currentPictureIndex];
 
-  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    currentPicture?.reactions[loggedUser?.id || ''] || undefined,
-  );
-
-  useEffect(() => {
-    setUserReaction(currentPicture?.reactions[loggedUser?.id || ''] || undefined);
-  }, [currentPicture, loggedUser?.id]);
-
-  if (isError || isLoading || !pictures || !currentPicture) return null;
+  if (!pictures || !currentPicture) return null;
   return (
     <FullPagePortal setOpen={setOpen} sx={sx} {...rootProps}>
       <PhotosCarousel
@@ -50,9 +39,7 @@ export default function FullPageAccountPicturesView({
         setCurrentPictureIndex={setCurrentPictureIndex}
       />
       <ElementInfo
-        userReaction={userReaction}
         type='accountPicture'
-        setUserReaction={setUserReaction}
         element={currentPicture}
         refetchElement={refetchPictures}
       />

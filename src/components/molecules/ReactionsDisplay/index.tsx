@@ -9,9 +9,8 @@ import { useState } from 'react';
 import ReactionsModal from '../../organisms/ReactionsModal';
 import { ReactionsDisplayProps } from './types';
 
-export default function ReactionsDisplay({
+export default function ReactionsDisplayBox({
   reactions,
-  userReaction,
   sx,
   emotesCount = 3,
   displayNames = true,
@@ -24,14 +23,7 @@ export default function ReactionsDisplay({
   const userId = user?.id || '';
   const [showModal, setShowModal] = useState(false);
 
-  if (userReaction) {
-    reactions = { ...reactions, [userId]: userReaction };
-  }
-  if (userReaction === null && reactions) {
-    // eslint-disable-next-line no-unused-vars
-    const { [userId]: type, ...otherReactions } = reactions;
-    reactions = otherReactions;
-  }
+  const userReaction = reactions?.[userId];
 
   const { isLoading, reactingUsers, largestByType, reactionsCount, usedReactions } =
     useDeserializeReactions(reactions || {});

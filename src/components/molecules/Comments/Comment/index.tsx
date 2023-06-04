@@ -13,10 +13,17 @@ import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI'
 import { TLocalUserReaction } from '@/types/reaction';
 import { useEffect, useRef, useState } from 'react';
 import ReactionsPopper from '../../ActionButtons/ReactionsPopper';
-import ReactionsDisplay from '../../ReactionsDisplay';
+import ReactionsDisplayBox from '../../ReactionsDisplay';
 import { CommentProps } from './types';
 
-export default function Comment({ element, comment, elementType, sx, ...rootProps }: CommentProps) {
+export default function Comment({
+  element,
+  comment,
+  elementType,
+  refetchElement,
+  sx,
+  ...rootProps
+}: CommentProps) {
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
   const { data: allUsersBasicInfo } = useFetchUsersBasicInfoQuery({});
@@ -47,9 +54,9 @@ export default function Comment({ element, comment, elementType, sx, ...rootProp
     setMouseOverReactionElements(false);
   }
 
-  function handleUpdateCommentReaction(reaction: TLocalUserReaction) {
+  async function handleUpdateCommentReaction(reaction: TLocalUserReaction) {
     if (!user || !element) return;
-    updateCommentReaction({
+    await updateCommentReaction({
       commentId: comment.id,
       elementId: element.id,
       elementOwnerId: element.ownerId,
@@ -57,16 +64,15 @@ export default function Comment({ element, comment, elementType, sx, ...rootProp
       reaction: reaction,
       elementType: elementType,
     });
+    refetchElement();
   }
 
   function handleLikeClick() {
     if (!user || !element) return;
     setMouseOverReactionElements(false);
     if (!userReaction) {
-      setUserReaction('like');
       handleUpdateCommentReaction('like');
     } else {
-      setUserReaction(null);
       handleUpdateCommentReaction(null);
     }
   }
@@ -85,13 +91,12 @@ export default function Comment({ element, comment, elementType, sx, ...rootProp
               <Typography variant='body1'>{comment.commentText}</Typography>
             </>
           )}
-          {(!isObjectEmpty(comment?.reactions) || userReaction) && (
-            <ReactionsDisplay
+          {comment.reactions && !isObjectEmpty(comment?.reactions) && (
+            <ReactionsDisplayBox
               reactions={comment.reactions}
               emotesCount={2}
               displayNames={false}
               displayCount={true}
-              userReaction={userReaction}
               sx={{
                 backgroundColor: theme.palette.background.paper,
                 boxShadow: theme.shadows[7],
@@ -141,7 +146,6 @@ export default function Comment({ element, comment, elementType, sx, ...rootProp
         setAnchorEl={setAnchorEl}
         mouseOver={mouseOverReactionElements}
         setMouseOver={setMouseOverReactionElements}
-        setUserReaction={setUserReaction}
       />
     </StyledRoot>
   );

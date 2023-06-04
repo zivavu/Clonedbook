@@ -42,6 +42,7 @@ export default function Comments({
             {commentsToRender.slice(0, commentsCutIndex).map((comment) => (
               <Comment
                 key={comment.id}
+                refetchElement={refetchElement}
                 elementType={elementType}
                 comment={comment}
                 element={element}

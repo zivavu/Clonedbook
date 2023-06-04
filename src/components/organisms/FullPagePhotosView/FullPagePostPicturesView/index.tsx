@@ -1,7 +1,5 @@
 import useFetchSinglePostData from '@/common/readData/useFetchPostData';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
-import { TLocalUserReaction } from '@/types/reaction';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ElementInfo from '../ElementInfo';
 import FullPagePortal from '../FullPagePortal';
 import PhotosCarousel from '../PhotosCarousel';
@@ -14,32 +12,21 @@ export default function FullPagePostPicturesView({
   setOpen,
   ...rootProps
 }: FullPagePostPicturesViewProps) {
-  const { isError, isLoading, postData: post } = useFetchSinglePostData(postId);
-  const { data: user } = useFetchLoggedUserQuery({});
-  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    post?.reactions[user?.id || ''] || undefined,
-  );
+  const { postData: post, refetchPost } = useFetchSinglePostData(postId);
+
   const [currentPictureIndex, setCurrentPictureIndex] = useState(
     post?.pictures?.indexOf(initialPhoto) || 0,
   );
 
-  useEffect(() => {
-    setUserReaction(post?.reactions[user?.id || ''] || undefined);
-    setCurrentPictureIndex(post?.pictures?.indexOf(initialPhoto) || 0);
-  }, [post, user?.id, initialPhoto]);
-
-  return isLoading || isError || !post || !post.pictures ? null : (
+  if (!post || !post.pictures) return null;
+  return (
     <FullPagePortal setOpen={setOpen} sx={sx} {...rootProps}>
       <PhotosCarousel
         picturesUrls={post.pictures}
         currentPictureIndex={currentPictureIndex}
         setCurrentPictureIndex={setCurrentPictureIndex}
       />
-      <ElementInfo
-        userReaction={userReaction}
-        type='post'
-        setUserReaction={setUserReaction}
-        element={post}></ElementInfo>
+      <ElementInfo type='post' refetchElement={refetchPost} element={post} />
     </FullPagePortal>
   );
 }

@@ -7,20 +7,22 @@ export default function useFetchSinglePostData(postId: string) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [postData, setPostData] = useState<IPost>();
+
+  async function fetchPostData() {
+    try {
+      setIsLoading(true);
+      const postData = await getDoc(doc(db, 'posts', postId));
+      setPostData(postData.data() as IPost);
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        setIsLoading(true);
-        const postData = await getDoc(doc(db, 'posts', postId));
-        setPostData(postData.data() as IPost);
-      } catch {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getData();
+    fetchPostData();
   }, [postId]);
 
-  return { isLoading, isError, postData };
+  return { isLoading, isError, postData, refetchPost: fetchPostData };
 }

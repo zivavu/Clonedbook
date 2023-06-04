@@ -6,6 +6,7 @@ import { BoxProps } from '@mui/material';
 
 export interface CommentProps extends BoxProps {
   comment: IComment;
+  refetchElement: () => void;
   element: IPost | IAccountPicture;
   elementType: TElementType;
 }

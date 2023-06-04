@@ -11,10 +11,8 @@ import ReactionsPopper from './ReactionsPopper';
 import { ActionButtonsProps } from './types';
 
 export default function ActionButtons({
-  elementId,
-  ownerId,
-  userReaction,
-  setUserReaction,
+  element,
+  refetchElement,
   elementType,
   sx,
   ...rootProps
@@ -25,6 +23,8 @@ export default function ActionButtons({
   const [mouseOverReactionElements, setMouseOverReactionElements] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
 
+  const userReaction = element.reactions && element.reactions[loggedUser?.id || ''];
+
   function handleMouseOver() {
     setAnchorEl(likeButtonRef.current);
     setMouseOverReactionElements(true);
@@ -33,26 +33,25 @@ export default function ActionButtons({
     setMouseOverReactionElements(false);
   }
 
-  function handleUpdateElementReaction(reaction: TLocalUserReaction) {
+  async function handleUpdateElementReaction(reaction: TLocalUserReaction) {
     if (!loggedUser) return;
     const loggedUserId = loggedUser.id;
-    updateElementReaction({
-      elementId,
+    await updateElementReaction({
+      elementId: element.id,
       loggedUserId,
-      elementOwnerId: ownerId,
+      elementOwnerId: element.ownerId,
       elementType,
       reaction,
     });
+    refetchElement();
   }
 
-  function handleReactionClick() {
+  function handleLikeButtonClick() {
     if (!loggedUser) return;
     setMouseOverReactionElements(false);
     if (!userReaction) {
-      setUserReaction('like');
       handleUpdateElementReaction('like');
     } else {
-      setUserReaction(null);
       handleUpdateElementReaction(null);
     }
   }
@@ -68,7 +67,6 @@ export default function ActionButtons({
         placement='top-start'
         mouseOver={mouseOverReactionElements}
         setMouseOver={setMouseOverReactionElements}
-        setUserReaction={setUserReaction}
         open={false}
       />
       <StyledActionButton
@@ -77,7 +75,7 @@ export default function ActionButtons({
         ref={likeButtonRef}
         onMouseEnter={handleMouseOver}
         onMouseLeave={handleMouseOut}
-        onClick={handleReactionClick}>
+        onClick={handleLikeButtonClick}>
         {userReaction ? (
           <ReactionIcon
             type={userReaction}

@@ -19,9 +19,9 @@ export default function ActionButtons({
 }: ActionButtonsProps) {
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const theme = useTheme();
+
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
-
   const userReaction = element.reactions && element.reactions[loggedUser?.id || ''];
 
   function handleMouseOver() {

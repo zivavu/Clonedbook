@@ -3,7 +3,7 @@ import { Modal, Stack, Typography, useTheme } from '@mui/material';
 import { StyledPostContentWrapper, StyledRoot } from './styles';
 
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import useFetchSinglePostData from '@/common/readData/useFetchPostData';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
@@ -20,7 +20,7 @@ export default function FullPagePostView({
 }: FullPagePostViewProps) {
   const theme = useTheme();
   const { postData: post, refetchPost } = useFetchSinglePostData(postId);
-  const owner = useGetUsersPublicData(post?.ownerId || '');
+  const owner = useGetUserPublicData(post?.ownerId || '');
 
   if (!post) return null;
   return (

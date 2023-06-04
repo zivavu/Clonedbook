@@ -4,7 +4,7 @@ import { StyledRoot } from './styles';
 
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
@@ -23,7 +23,7 @@ export default function ElementInfo({
 }: ElementInfoProps) {
   const theme = useTheme();
   const commentsLength = getEntriesLength(element.comments);
-  const owner = useGetUsersPublicData(element.ownerId);
+  const owner = useGetUserPublicData(element.ownerId);
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack

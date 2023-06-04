@@ -3,14 +3,14 @@ import { Box, Link, Stack, Typography, useMediaQuery, useTheme } from '@mui/mate
 import { StyledRoot } from './styles';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import AddFriendButton from '@/components/atoms/AddFriendButton';
 import FriendPicture from '@/components/atoms/FriendPicture';
 import { SingleFriendProps } from './types';
 
 export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFriendProps) {
   const theme = useTheme();
-  const friend = useGetUsersPublicData(friendId);
+  const friend = useGetUserPublicData(friendId);
   const mutalFrineds = useGetMutalFriends(friendId);
   const smallScreen = useMediaQuery(theme.breakpoints.down('xs'));
   if (!friend) return null;

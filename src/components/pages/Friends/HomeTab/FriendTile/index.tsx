@@ -1,7 +1,7 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import AddFriendButton from '@/components/atoms/AddFriendButton';
 import FriendPicture from '@/components/atoms/FriendPicture';
 import RemoveFriendButton from '@/components/atoms/RemoveFriendButton';
@@ -11,7 +11,7 @@ import { FriendTileProps } from './types';
 
 export default function FriendTile({ userId, sx, ...rootProps }: FriendTileProps) {
   const theme = useTheme();
-  const user = useGetUsersPublicData(userId);
+  const user = useGetUserPublicData(userId);
   const mutalFriends = useGetMutalFriends(userId);
   if (!user) return null;
   return (

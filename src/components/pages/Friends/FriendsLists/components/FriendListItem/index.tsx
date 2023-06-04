@@ -2,7 +2,7 @@ import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import AddFriendButton from '@/components/atoms/AddFriendButton';
 import RemoveFriendButton from '@/components/atoms/RemoveFriendButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
@@ -17,7 +17,7 @@ export default function FriendListItem({
   ...rootProps
 }: FriendListItemProps) {
   const theme = useTheme();
-  const friendData = useGetUsersPublicData(userId);
+  const friendData = useGetUserPublicData(userId);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   if (!friendData) return null;
   const { firstName, lastName } = friendData;

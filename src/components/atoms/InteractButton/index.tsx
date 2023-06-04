@@ -7,7 +7,9 @@ import { InteractButtonProps } from './types';
 
 export default function InteractButton({
   children,
-  onClickHandler,
+  onClick,
+  onMouseOver,
+  onMouseOut,
   buttonRef,
   sx,
   ...rootProps
@@ -18,7 +20,9 @@ export default function InteractButton({
       disableTouchRipple
       focusRipple
       ref={buttonRef}
-      onClick={onClickHandler}
+      onClick={onClick}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
       sx={{
         padding: theme.spacing(0.2),
         color: theme.palette.text.secondary,

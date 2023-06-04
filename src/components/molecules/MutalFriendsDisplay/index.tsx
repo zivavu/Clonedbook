@@ -1,7 +1,7 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { MutalFriendsDisplayProps } from './types';
 
@@ -12,7 +12,7 @@ export default function MutalFriendsDisplay({
   ...rootProps
 }: MutalFriendsDisplayProps) {
   const theme = useTheme();
-  const friendData = useGetUsersPublicData(userId);
+  const friendData = useGetUserPublicData(userId);
   const mutalFriends = useGetMutalFriends(userId);
   return (
     <Box sx={sx} {...rootProps}>

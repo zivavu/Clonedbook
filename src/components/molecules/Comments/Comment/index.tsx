@@ -4,14 +4,14 @@ import { StyledRoot, StyledTextContent } from './styles';
 
 import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import { updateCommentReaction } from '@/common/updateData/reactions/updateCommentReaction';
 import InteractButton from '@/components/atoms/InteractButton';
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
-import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import { TLocalUserReaction } from '@/types/reaction';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import ReactionsPopper from '../../ActionButtons/ReactionsPopper';
 import ReactionsDisplayBox from '../../ReactionsDisplay';
 import { CommentProps } from './types';
@@ -25,42 +25,39 @@ export default function Comment({
   ...rootProps
 }: CommentProps) {
   const theme = useTheme();
-  const { data: user } = useFetchLoggedUserQuery({});
-  const { data: allUsersBasicInfo } = useFetchUsersBasicInfoQuery({});
-  const [ownerData, setOwnerData] = useState(
-    (allUsersBasicInfo && allUsersBasicInfo[comment.ownerId]) || null,
-  );
+  const { data: loggedUser } = useFetchLoggedUserQuery({});
+  const ownerData = useGetUserPublicData(comment.ownerId);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [mouseOverReactionElements, setMouseOverReactionElements] = useState(false);
+  const [isPopperOpen, setIsPopperOpen] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
-    (comment.reactions && comment.reactions[user?.id || '']) || undefined,
-  );
-
-  useEffect(() => {
-    if (!allUsersBasicInfo) return;
-    setOwnerData(allUsersBasicInfo[comment.ownerId]);
-  }, [allUsersBasicInfo, comment.ownerId]);
-
-  const shouldDisplayOnRightSite = comment.commentText.length < 25;
-
-  function handleMouseEnter() {
-    setAnchorEl(likeButtonRef.current);
-    setMouseOverReactionElements(true);
+  function handleMouseOver() {
+    setIsPopperOpen(true);
   }
-  function handleMouseLeave() {
-    setMouseOverReactionElements(false);
+  function handleMouseOut() {
+    setIsPopperOpen(false);
+  }
+
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function startPressTimer() {
+    timerRef.current = setTimeout(() => {
+      setIsPopperOpen(true);
+    }, 400);
+  }
+  function stopPressTimer() {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
   }
 
   async function handleUpdateCommentReaction(reaction: TLocalUserReaction) {
-    if (!user || !element) return;
+    if (!loggedUser || !element) return;
     await updateCommentReaction({
       commentId: comment.id,
       elementId: element.id,
       elementOwnerId: element.ownerId,
-      loggedUserId: user.id,
+      loggedUserId: loggedUser.id,
       reaction: reaction,
       elementType: elementType,
     });
@@ -68,14 +65,18 @@ export default function Comment({
   }
 
   function handleLikeClick() {
-    if (!user || !element) return;
-    setMouseOverReactionElements(false);
+    if (!loggedUser || !element) return;
+    setIsPopperOpen(false);
     if (!userReaction) {
       handleUpdateCommentReaction('like');
     } else {
       handleUpdateCommentReaction(null);
     }
   }
+
+  const userReaction = comment.reactions && comment.reactions[loggedUser?.id || ''];
+  const shouldDisplayOnRightSite = comment.commentText.length < 25;
+
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Box display='flex' alignItems='center'>
@@ -114,9 +115,11 @@ export default function Comment({
       <Stack ml={theme.spacing(6)} direction='row' alignItems='center' spacing={1}>
         <InteractButton
           buttonRef={likeButtonRef}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClickHandler={handleLikeClick}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
+          onClick={handleLikeClick}
+          onTouchStart={() => startPressTimer()}
+          onTouchEnd={() => stopPressTimer()}
           sx={{
             textTransform: 'capitalize',
             color: theme.palette.common.reactionTypes[userReaction || 'default'],
@@ -139,13 +142,13 @@ export default function Comment({
           handleUpdateCommentReaction(type);
         }}
         disablePortal={true}
-        open={false}
+        open={isPopperOpen}
+        setOpen={setIsPopperOpen}
         placement='top-start'
         modifiers={[{ name: 'offset', options: { offset: [-30, 0] } }]}
-        anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
-        mouseOver={mouseOverReactionElements}
-        setMouseOver={setMouseOverReactionElements}
+        anchorEl={likeButtonRef.current}
+        handleMouseOver={handleMouseOver}
+        handleMouseOut={handleMouseOut}
       />
     </StyledRoot>
   );

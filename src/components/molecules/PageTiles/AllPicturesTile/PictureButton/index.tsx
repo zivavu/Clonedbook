@@ -1,11 +1,11 @@
 import { StyledRoot } from './styles';
 
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import { PictureButtonProps } from './types';
 
 export default function PictureButton({ picture, onClick, sx, ...rootProps }: PictureButtonProps) {
-  const owner = useGetUsersPublicData(picture.ownerId);
+  const owner = useGetUserPublicData(picture.ownerId);
   return (
     <StyledRoot sx={sx} {...rootProps} key={picture.id} focusRipple onClick={onClick}>
       <ImageWithGradientLoading

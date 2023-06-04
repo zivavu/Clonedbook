@@ -1,4 +1,4 @@
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import { ButtonBase } from '@mui/material';
 import Link from 'next/link';
 import ImageWithGradientLoading from '../ImageWithGradientLoading';
@@ -6,7 +6,7 @@ import { StyledRoot } from './styles';
 import { FriendPictureProps } from './types';
 
 export default function FriendPicture({ friendId, sx, ...rootProps }: FriendPictureProps) {
-  const friend = useGetUsersPublicData(friendId);
+  const friend = useGetUserPublicData(friendId);
   if (!friend) return null;
   return (
     <StyledRoot sx={sx} {...rootProps}>

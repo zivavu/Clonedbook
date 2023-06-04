@@ -1,7 +1,7 @@
 import { StyledRoot } from './styles';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import FriendPicture from '@/components/atoms/FriendPicture';
 import Link from '@/components/atoms/Link';
 import { Box, Typography, useTheme } from '@mui/material';
@@ -9,7 +9,7 @@ import { FriendProps } from './types';
 
 export default function Friend({ friendId, sx, ...rootProps }: FriendProps) {
   const theme = useTheme();
-  const friend = useGetUsersPublicData(friendId);
+  const friend = useGetUserPublicData(friendId);
   const mutalFriends = useGetMutalFriends(friendId);
   if (!friend) return null;
   return (

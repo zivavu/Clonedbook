@@ -1,7 +1,7 @@
 import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import { IUserBasicInfo } from '@/types/user';
 
-export default function useGetUsersPublicData(userId: string | '' | undefined) {
+export default function useGetUserPublicData(userId: string | '' | undefined) {
   const { data: userData } = useFetchUsersBasicInfoQuery({});
   if (!userId) return null;
   const user: IUserBasicInfo | null =

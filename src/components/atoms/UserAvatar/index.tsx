@@ -1,6 +1,6 @@
 import { Box, ButtonBase, CSSObject, useTheme } from '@mui/material';
 
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserAvatarProps, UserImageProps } from './types';
@@ -14,7 +14,7 @@ export default function UserAvatar({
   ...rootProps
 }: UserAvatarProps) {
   const theme = useTheme();
-  const user = useGetUsersPublicData(userId);
+  const user = useGetUserPublicData(userId);
   const px = `${size}px`;
   const containerSx: CSSObject = {
     minWidth: px,

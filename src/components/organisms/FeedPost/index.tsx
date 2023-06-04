@@ -3,7 +3,7 @@ import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { StyledContentWrapper, StyledRoot } from './styles';
 
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
-import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import InteractButton from '@/components/atoms/InteractButton';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
@@ -16,7 +16,7 @@ import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPostProps) {
   const { id: postId, comments, pictures: postPictures, text: postText, reactions } = post;
-  const owner = useGetUsersPublicData(post.ownerId);
+  const owner = useGetUserPublicData(post.ownerId);
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 

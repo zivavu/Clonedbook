@@ -6,7 +6,7 @@ import useDeserializeReactions from '@/common/misc/userDataManagment/useDeserial
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useState } from 'react';
-import ReactionsModal from '../../organisms/ReactionsModal';
+import ReactionsModal from '../../organisms/AllReactionsModal';
 import { ReactionsDisplayProps } from './types';
 
 export default function ReactionsDisplayBox({

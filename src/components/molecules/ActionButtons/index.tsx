@@ -120,8 +120,8 @@ export default function ActionButtons({
         </Typography>
       </StyledActionButton>
 
-      <StyledActionButton focusRipple value='share'>
-        <StyledActionIcon icon={['far', 'share-square']} />
+      <StyledActionButton focusRipple value='share' disabled>
+        <StyledActionIcon icon={['far', 'share-square']} color={theme.palette.text.disabled} />
         <Typography variant='subtitle2' fontWeight='400'>
           Share
         </Typography>

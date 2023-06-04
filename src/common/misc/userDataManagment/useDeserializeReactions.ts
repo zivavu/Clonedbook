@@ -11,7 +11,7 @@ import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI'
 import { IReactionWithBasicInfo, IReactionsMap, TReactionType } from '@/types/reaction';
 import { IUserBasicInfo } from '@/types/user';
 
-type TReactionsByTypes = {
+export type TReactionsByTypes = {
   //eslint-disable-next-line no-unused-vars
   [key in TReactionType]: { count: number; icon: string };
 };

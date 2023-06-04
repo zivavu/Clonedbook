@@ -2,20 +2,19 @@ import { Box, Modal, Stack, ToggleButtonGroup, Typography, useTheme } from '@mui
 import { StyledRoot, StyledToggleButton, StyledUsersContainer } from './styles';
 
 import useDeserializeReactions from '@/common/misc/userDataManagment/useDeserializeReactions';
-import Link from '@/components/atoms/Link';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { SelectButtonUnderline } from '@/components/atoms/SelectedButtonUnderline/styles';
-import UserAvatar from '@/components/atoms/UserAvatar';
 import { TReactionType } from '@/types/reaction';
 import { useState } from 'react';
-import { ReactionsModalProps } from './types';
+import SingleUser from './SingleUser';
+import { AllReactionsModalProps } from './types';
 
-export default function ReactionsPortal({
+export default function AllReactionsModal({
   reactions,
   setShowModal,
   sx,
   ...rootProps
-}: ReactionsModalProps) {
+}: AllReactionsModalProps) {
   const theme = useTheme();
   const { isLoading, reactingUsers, reactionsByTypes, largestByType } =
     useDeserializeReactions(reactions);
@@ -60,26 +59,14 @@ export default function ReactionsPortal({
             </ToggleButtonGroup>
           </Box>
           {!isLoading && (
-            <StyledUsersContainer spacing={1}>
-              {reactionsToShow?.map((reaction) => {
-                const { firstName, lastName, id: profileId } = reaction.info;
-                return (
-                  <Stack key={profileId} direction='row' alignItems='center'>
-                    <Box position='relative'>
-                      <UserAvatar userId={profileId} mr={theme.spacing(1)} size={40} />
-                      <ReactionIcon
-                        src={reactionsByTypes[reaction.type].icon}
-                        sx={{ position: 'absolute', bottom: '-4px', right: '10px' }}
-                        showBorder={false}
-                        size={16}
-                      />
-                    </Box>
-                    <Link href={`/profile/${profileId}`}>
-                      {firstName} {lastName}
-                    </Link>
-                  </Stack>
-                );
-              })}
+            <StyledUsersContainer spacing={2}>
+              {reactionsToShow?.map((reaction) => (
+                <SingleUser
+                  key={reaction.userId}
+                  reaction={reaction}
+                  reactionsByTypes={reactionsByTypes}
+                />
+              ))}
             </StyledUsersContainer>
           )}
         </StyledRoot>

@@ -29,7 +29,7 @@ export default function Profile({ userId, useTabsRouting = true, sx, ...rootProp
 
   useEffect(() => {
     if (useTabsRouting && userId && selectedTab) {
-      router.push(`/profile/${userId}/?tab=${selectedTab}`, undefined, { shallow: true });
+      router.replace(`/profile/${userId}/?tab=${selectedTab}`, undefined, { shallow: true });
     }
   }, [selectedTab]);
 

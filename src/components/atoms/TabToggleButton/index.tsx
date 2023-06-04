@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 
-import { StyledToggleButton } from '@/components/organisms/ReactionsModal/styles';
+import { StyledToggleButton } from '@/components/organisms/AllReactionsModal/styles';
 import SelectedButtonUnderline from '../SelectedButtonUnderline';
 import { TabToggleButtonProps } from './types';
 

@@ -28,6 +28,7 @@ export default function ReactionsDisplay({
     reactions = { ...reactions, [userId]: userReaction };
   }
   if (userReaction === null && reactions) {
+    // eslint-disable-next-line no-unused-vars
     const { [userId]: type, ...otherReactions } = reactions;
     reactions = otherReactions;
   }

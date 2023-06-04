@@ -20,7 +20,7 @@ export default function FriendListItem({
   const friendData = useGetUsersPublicData(userId);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   if (!friendData) return null;
-  const { firstName, lastName, id } = friendData;
+  const { firstName, lastName } = friendData;
   return (
     <StyledRoot sx={sx} {...rootProps} onClick={() => setShownProfile(userId)}>
       <UserAvatar userId={userId} useLink={false} size={isMobile ? 40 : 60} mr={1} />

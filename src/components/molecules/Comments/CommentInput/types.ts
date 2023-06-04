@@ -8,5 +8,5 @@ export interface CommentInputProps extends BoxProps {
   displayMode: TDisplayMode;
   element: IPost | IAccountPicture;
   parentElementType: TElementType;
-  refetchElement?: () => Promise<void>;
+  refetchElement?: () => void;
 }

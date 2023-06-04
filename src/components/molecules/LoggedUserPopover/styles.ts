@@ -1,7 +1,7 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import { ButtonBase, ListItemButton, Popover, Stack, styled } from '@mui/material';
 
-export const StyledRoot = styled(Popover)(({ theme }) => ({
+export const StyledRoot = styled(Popover)(({}) => ({
   '& .MuiBackdrop-root': {
     opacity: `0 !important`,
   },

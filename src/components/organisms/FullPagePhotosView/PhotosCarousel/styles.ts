@@ -12,6 +12,27 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
       opacity: '0.55',
     },
   },
+
+  [theme.breakpoints.down('lg')]: {
+    minHeight: 'min(70vh, 600px)',
+  },
+}));
+
+export const StyledPhotosWrapper = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  padding: theme.spacing(0, 16),
+
+  [theme.breakpoints.down('lg')]: {
+    padding: theme.spacing(0, 10),
+  },
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(0, 5),
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(8, 0),
+  },
 }));
 
 export const StyledSwitchAreaButton = styled(ButtonBase)(({ theme }) => ({

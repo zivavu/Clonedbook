@@ -6,4 +6,5 @@ export interface PhotosCarouselProps extends BoxProps {
   picturesUrls: IPost['pictures'];
   currentPictureIndex: number;
   setCurrentPictureIndex: Dispatch<SetStateAction<number>>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }

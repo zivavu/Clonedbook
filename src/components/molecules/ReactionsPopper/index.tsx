@@ -48,7 +48,7 @@ export default function ReactionsPopper({
               {reactionTypes.map((reactionType, i) => {
                 const slidein = keyframes`
               from {
-                transform: translateX(${i * 30 - 60}px) scale(0.7);
+                transform: translateX(${i * 25 - 50}px) scale(0.7);
               }
               to {
                 transform: translateX(0px) scale(1);

@@ -1,7 +1,7 @@
 import { StyledBacgroundPictureContainer, StyledPictureGradient } from './styles';
 
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
-import FullPageBackgroundPicturesView from '@/components/organisms/FullPagePhotosView/FullPageBackgroundPicturesView';
+import FullPageBackgroundPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageBackgroundPicturesView';
 import { ButtonBase } from '@mui/material';
 import { useState } from 'react';
 import { BackgroundPictureProps } from './types';

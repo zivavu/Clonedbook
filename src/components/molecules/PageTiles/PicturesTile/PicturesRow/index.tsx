@@ -1,7 +1,7 @@
 import { StyledImageButton, StyledImagesRow } from './styles';
 
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
-import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
+import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { PicturesRowProps } from './types';

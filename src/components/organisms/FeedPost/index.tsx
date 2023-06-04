@@ -1,32 +1,28 @@
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 import { StyledContentWrapper, StyledRoot } from './styles';
 
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import InteractButton from '@/components/atoms/InteractButton';
-import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
-import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
 import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
+import PostActions from './PostActions';
 import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPostProps) {
-  const { id: postId, comments, pictures: postPictures, text: postText, reactions } = post;
+  const { id: postId, comments, pictures: postPictures, text: postText } = post;
   const owner = useGetUserPublicData(post.ownerId);
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
-
-  const displayReactorNames = useMediaQuery(theme.breakpoints.up('sm'));
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
   const hasText = !!postText ? true : false;
   const isTextLong = (postText && postText.length > 130) || hasPictures ? true : false;
 
-  const commentsLength = getEntriesLength(comments);
   const commentsSlice = Object.values(comments).slice(0, 2);
   const exampleCommentsLength =
     commentsSlice[0]?.commentText?.length + (commentsSlice[1]?.commentText?.length || 0);
@@ -36,6 +32,7 @@ export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPo
   function handleShowMoreComments() {
     setIsFullViewOpen(true);
   }
+
   return (
     <>
       {isFullViewOpen && <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} />}
@@ -60,31 +57,12 @@ export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPo
           </Box>
         )}
 
-        <StyledContentWrapper>
-          <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
-            <ReactionsDisplayBox
-              reactions={reactions}
-              displayNames={displayReactorNames}
-              displayCount={!displayReactorNames}
-              sx={{ pr: theme.spacing(0.25), maxWidth: '75%' }}
-            />
-            <InteractButton
-              sx={{ ml: 'auto' }}
-              onClick={() => {
-                handleShowMoreComments();
-              }}>
-              <Typography variant='subtitle2' color={theme.palette.text.secondary}>
-                {commentsLength === 0
-                  ? ''
-                  : commentsLength > 1
-                  ? `${commentsLength} comments`
-                  : `${commentsLength} comment`}
-              </Typography>
-            </InteractButton>
-          </Stack>
+        <PostActions
+          post={post}
+          refetchPost={refetchPost}
+          handleShowMoreComments={handleShowMoreComments}
+        />
 
-          <ActionButtons element={post} refetchElement={refetchPost} elementType='post' />
-        </StyledContentWrapper>
         <StyledContentWrapper>
           {isMoreComments && (
             <InteractButton sx={{ mb: theme.spacing(1) }} onClick={() => handleShowMoreComments()}>

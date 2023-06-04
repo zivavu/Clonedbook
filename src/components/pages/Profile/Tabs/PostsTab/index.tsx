@@ -16,7 +16,7 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
     type: 'profileFeed',
     wallOwnerId: userId,
   });
-  const loggedUser = useFetchLoggedUserQuery({});
+  const { data: loggedUser } = useFetchLoggedUserQuery({});
   const theme = useTheme();
   const mainDirection = useMediaQuery(theme.breakpoints.down('md')) ? 'column' : 'row';
   return (
@@ -40,13 +40,14 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
           </InvisibleScrollableStack>
         )}
         <Stack width={mainDirection === 'column' ? '100%' : '55%'} spacing={2}>
-          {!!loggedUser && <WriteSomethingTile />}
+          {loggedUser?.id === profileData.id && <WriteSomethingTile />}
           {posts && (
             <PostsFeed
               posts={posts}
               isLoading={isLoading}
               isError={isError}
-              refetchPost={refetchPost}></PostsFeed>
+              refetchPost={refetchPost}
+            />
           )}
         </Stack>
       </Stack>

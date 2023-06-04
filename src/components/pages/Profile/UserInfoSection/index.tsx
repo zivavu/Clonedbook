@@ -10,7 +10,7 @@ import Icon from '@/components/atoms/Icon/Icon';
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import MessageButton from '@/components/atoms/MessageButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
+import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
 

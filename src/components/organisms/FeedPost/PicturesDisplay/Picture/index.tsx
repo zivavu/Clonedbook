@@ -2,7 +2,7 @@ import { ButtonBase, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import FullPagePostPicturesView from '@/components/organisms/FullPagePhotosView/FullPagePostPicturesView';
+import FullPagePostPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPagePostPicturesView';
 import Image from 'next/image';
 import { useState } from 'react';
 import { PictureProps } from './types';
@@ -61,11 +61,7 @@ export default function Picture({
   return (
     <>
       {isFullViewOpen && (
-        <FullPagePostPicturesView
-          postId={postId}
-          initialPhoto={photoSrc}
-          setOpen={setIsFullViewOpen}
-        />
+        <FullPagePostPicturesView postId={postId} initialPhoto={src} setOpen={setIsFullViewOpen} />
       )}
       <StyledRoot sx={sx} {...rootProps}>
         <ButtonBase

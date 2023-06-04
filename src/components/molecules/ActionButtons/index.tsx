@@ -7,7 +7,7 @@ import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useRef, useState } from 'react';
-import ReactionsPopper from './ReactionsPopper';
+import ReactionsPopper from '../ReactionsPopper';
 import { ActionButtonsProps } from './types';
 
 export default function ActionButtons({

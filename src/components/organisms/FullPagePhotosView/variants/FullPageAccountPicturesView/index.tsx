@@ -1,20 +1,20 @@
 import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
 import { useEffect, useState } from 'react';
-import ElementInfo from '../ElementInfo';
-import FullPagePortal from '../FullPagePortal';
-import PhotosCarousel from '../PhotosCarousel';
-import { FullPageBackgroundPicturesViewProps } from './types';
+import ElementInfo from '../../ElementInfo';
+import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';
+import PhotosCarousel from '../../PhotosCarousel';
+import { FullPageAccountPicturesViewProps } from './types';
 
-export default function FullPageBackgroundPicturesView({
+export default function FullPageAccountPicturesView({
   sx,
   initialPhoto,
   ownerId,
   setOpen,
   ...rootProps
-}: FullPageBackgroundPicturesViewProps) {
-  const { isError, isLoading, picturesMap, refetchPictures } = useFetchUsersPictures(ownerId);
+}: FullPageAccountPicturesViewProps) {
+  const { picturesMap, refetchPictures } = useFetchUsersPictures(ownerId);
   const pictures = picturesMap
-    ? Object.values(picturesMap.background)
+    ? Object.values(picturesMap.account)
         .filter((picture) => !!picture.createdAt)
         .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
     : [];
@@ -32,17 +32,18 @@ export default function FullPageBackgroundPicturesView({
 
   if (!pictures || !currentPicture) return null;
   return (
-    <FullPagePortal setOpen={setOpen} sx={sx} {...rootProps}>
+    <FullPagePhotosWrapper setOpen={setOpen} sx={sx} {...rootProps}>
       <PhotosCarousel
         picturesUrls={pictures.map((picture) => picture.url)}
         currentPictureIndex={currentPictureIndex}
         setCurrentPictureIndex={setCurrentPictureIndex}
+        setOpen={setOpen}
       />
       <ElementInfo
-        type='backgroundPicture'
+        type='accountPicture'
         element={currentPicture}
         refetchElement={refetchPictures}
       />
-    </FullPagePortal>
+    </FullPagePhotosWrapper>
   );
 }

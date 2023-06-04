@@ -12,8 +12,8 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useRef, useState } from 'react';
-import ReactionsPopper from '../../ActionButtons/ReactionsPopper';
 import ReactionsDisplayBox from '../../ReactionsDisplay';
+import ReactionsPopper from '../../ReactionsPopper';
 import { CommentProps } from './types';
 
 export default function Comment({

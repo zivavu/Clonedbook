@@ -1,6 +1,6 @@
 import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
 import LoadingPlaceholder from '@/components/atoms/LoadingPlaceholder';
-import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
+import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { IAccountPicture } from '@/types/picture';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';

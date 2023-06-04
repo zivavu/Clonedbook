@@ -1,8 +1,8 @@
 import useFetchSinglePostData from '@/common/readData/useFetchPostData';
 import { useState } from 'react';
-import ElementInfo from '../ElementInfo';
-import FullPagePortal from '../FullPagePortal';
-import PhotosCarousel from '../PhotosCarousel';
+import ElementInfo from '../../ElementInfo';
+import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';
+import PhotosCarousel from '../../PhotosCarousel';
 import { FullPagePostPicturesViewProps } from './types';
 
 export default function FullPagePostPicturesView({
@@ -20,13 +20,14 @@ export default function FullPagePostPicturesView({
 
   if (!post || !post.pictures) return null;
   return (
-    <FullPagePortal setOpen={setOpen} sx={sx} {...rootProps}>
+    <FullPagePhotosWrapper setOpen={setOpen} sx={sx} {...rootProps}>
       <PhotosCarousel
         picturesUrls={post.pictures}
         currentPictureIndex={currentPictureIndex}
         setCurrentPictureIndex={setCurrentPictureIndex}
+        setOpen={setOpen}
       />
       <ElementInfo type='post' refetchElement={refetchPost} element={post} />
-    </FullPagePortal>
+    </FullPagePhotosWrapper>
   );
 }

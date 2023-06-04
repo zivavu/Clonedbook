@@ -1,6 +1,11 @@
 import { Box, useTheme } from '@mui/material';
 
-import { StyledButtonIcon, StyledRoot, StyledSwitchAreaButton } from './styles';
+import {
+  StyledButtonIcon,
+  StyledPhotosWrapper,
+  StyledRoot,
+  StyledSwitchAreaButton,
+} from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 
@@ -11,6 +16,7 @@ export default function PhotosCarousel({
   picturesUrls,
   currentPictureIndex,
   setCurrentPictureIndex,
+  setOpen,
   sx,
   ...rootProps
 }: PhotosCarouselProps) {
@@ -50,18 +56,22 @@ export default function PhotosCarousel({
   return (
     <>
       <StyledRoot {...rootProps} sx={sx}>
-        <Image
-          src={currentPictureUrl || ''}
-          fill
-          sizes={imageSizes}
-          quality={100}
-          style={{ objectFit: 'contain', padding: theme.spacing(0, 16) }}
-          alt='Full Size Photo'
-          unoptimized
-        />
+        <StyledPhotosWrapper>
+          <Box position='relative' width='100%' height='100%' onClick={() => setOpen(false)}>
+            <Image
+              src={currentPictureUrl || ''}
+              fill
+              sizes={imageSizes}
+              quality={100}
+              style={{ objectFit: 'contain' }}
+              alt='Full Size Photo'
+              unoptimized
+            />
+          </Box>
+        </StyledPhotosWrapper>
 
         {isMoreThenOnePicture && (
-          <Box>
+          <>
             <StyledSwitchAreaButton
               onClick={() => handleSwitchPicture('left')}
               focusRipple
@@ -75,7 +85,7 @@ export default function PhotosCarousel({
                 <Icon icon='angle-right' fontSize='25px' />
               </StyledButtonIcon>
             </StyledSwitchAreaButton>
-          </Box>
+          </>
         )}
       </StyledRoot>
     </>

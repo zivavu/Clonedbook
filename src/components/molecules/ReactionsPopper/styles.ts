@@ -9,6 +9,7 @@ export const StyledPopperBody = styled(Box)(({ theme }) => ({
   position: 'relative',
   backgroundColor: theme.palette.background.paper,
   borderRadius: '36px',
+  padding: theme.spacing(0, 0.5),
   border: `1px solid ${theme.palette.secondary.main}`,
 }));
 

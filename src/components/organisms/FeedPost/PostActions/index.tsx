@@ -1,4 +1,4 @@
-import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import InteractButton from '@/components/atoms/InteractButton';
@@ -15,7 +15,6 @@ export default function PostActions({
   ...rootProps
 }: PostActionsProps) {
   const theme = useTheme();
-  const displayReactorNames = useMediaQuery(theme.breakpoints.up('sm'));
   const commentsLength = getEntriesLength(post.comments);
 
   return (
@@ -23,8 +22,6 @@ export default function PostActions({
       <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
         <ReactionsDisplayBox
           reactions={post.reactions}
-          displayNames={displayReactorNames}
-          displayCount={!displayReactorNames}
           sx={{ pr: theme.spacing(0.25), maxWidth: '75%' }}
         />
         <InteractButton

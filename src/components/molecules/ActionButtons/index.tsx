@@ -20,21 +20,20 @@ export default function ActionButtons({
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const theme = useTheme();
 
-  const [isPopperOpen, setIsPopperOpen] = useState(false);
+  const [isReactionsPopperOpen, setIsReactionPopperOpen] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
   const userReaction = element.reactions && element.reactions[loggedUser?.id || ''];
 
   function handleMouseOver() {
-    setIsPopperOpen(true);
+    setIsReactionPopperOpen(true);
   }
   function handleMouseOut() {
-    setIsPopperOpen(false);
+    setIsReactionPopperOpen(false);
   }
-
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   function startPressTimer() {
     timerRef.current = setTimeout(() => {
-      setIsPopperOpen(true);
+      setIsReactionPopperOpen(true);
     }, 400);
   }
   function stopPressTimer() {
@@ -59,7 +58,7 @@ export default function ActionButtons({
 
   function handleLikeButtonClick() {
     if (!loggedUser) return;
-    setIsPopperOpen(false);
+    setIsReactionPopperOpen(false);
     if (!userReaction) {
       handleUpdateElementReaction('like');
     } else {
@@ -77,8 +76,8 @@ export default function ActionButtons({
         }}
         handleMouseOver={handleMouseOver}
         handleMouseOut={handleMouseOut}
-        open={isPopperOpen}
-        setOpen={setIsPopperOpen}
+        open={isReactionsPopperOpen}
+        setOpen={setIsReactionPopperOpen}
       />
 
       <StyledActionButton

@@ -27,6 +27,7 @@ import { CreatePostDialogProps, CreatePostError } from './types';
 export default function CreatePostDialog({
   user,
   setIsOpen,
+  refetchPostById,
   sx,
   ...rootProps
 }: CreatePostDialogProps) {
@@ -84,9 +85,11 @@ export default function CreatePostDialog({
         reactions: {},
         shareCount: 0,
       };
-
       const postDocRef = doc(db, 'posts', postId);
+
       await setDoc(postDocRef, post);
+
+      await refetchPostById(postId);
     } catch (err) {
       try {
         const picturesRefs = picturesIds.map((id) => ref(storage, `posts/${postId}/${id}`));
@@ -103,10 +106,7 @@ export default function CreatePostDialog({
         ...prev,
       ]);
     } finally {
-      if (!errors[0]) setErrors([{ content: 'Post created successfully', sevariety: 'success' }]);
-      setTimeout(() => {
-        setIsOpen(false);
-      }, 1500);
+      setIsOpen(false);
       setIsLoading(false);
     }
   }

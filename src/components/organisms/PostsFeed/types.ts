@@ -6,5 +6,5 @@ export interface PostsFeedProps extends StackProps {
   isLoading: boolean;
   isError: boolean;
   //eslint-disable-next-line no-unused-vars
-  refetchPost: (id: string) => Promise<void>;
+  refetchPostById: (id: string) => Promise<void>;
 }

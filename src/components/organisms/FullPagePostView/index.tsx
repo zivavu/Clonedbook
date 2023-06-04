@@ -1,11 +1,12 @@
 import { Modal, Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledPostContentWrapper, StyledRoot } from './styles';
+import { StyledCloseIconButton, StyledPostContentWrapper, StyledRoot } from './styles';
 
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import useFetchSinglePostData from '@/common/readData/useFetchPostData';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
+import Icon from '@/components/atoms/Icon/Icon';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
@@ -27,6 +28,9 @@ export default function FullPagePostView({
     <Modal open onClose={() => setOpen(false)}>
       <StyledRoot sx={sx} {...rootProps}>
         <Stack p={theme.spacing(1.5, 0)} position='relative'>
+          <StyledCloseIconButton onClick={() => setOpen(false)}>
+            <Icon icon='xmark' />
+          </StyledCloseIconButton>
           <Typography textAlign='center' variant='h4' fontWeight='600'>
             {owner?.firstName || ''}&apos;s Post
           </Typography>

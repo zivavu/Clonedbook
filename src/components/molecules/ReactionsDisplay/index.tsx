@@ -1,4 +1,4 @@
-import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
+import { Box, ButtonBase, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -21,23 +21,29 @@ export default function ReactionsDisplayBox({
   const theme = useTheme();
   const { data: user } = useFetchLoggedUserQuery({});
   const userId = user?.id || '';
+
   const [showModal, setShowModal] = useState(false);
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
 
   const userReaction = reactions?.[userId];
 
   const { isLoading, reactingUsers, largestByType, reactionsCount, usedReactions } =
     useDeserializeReactions(reactions || {});
 
-  const otherUsersCount = reactionsCount;
+  const reactorsToDisplay = reactingUsers.slice(0, 1);
   emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
-  const reactorsToDisplay = reactingUsers.slice(0, 2);
   displayCount = displayCount && reactionsCount > 0;
 
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
+  const useCompact = useMediaQuery(theme.breakpoints.down('xs'));
+  if (useCompact) {
+    displayCount = true;
+    displayNames = false;
+  }
 
-  return isLoading || !reactions ? null : (
+  if (isLoading || !reactions) return null;
+  return (
     <>
       {showModal && <ReactionsModal setShowModal={setShowModal} reactions={reactions} />}
       <StyledRoot {...rootProps} sx={sx}>
@@ -78,7 +84,7 @@ export default function ReactionsDisplayBox({
             <>
               {userReaction ? (
                 <Typography variant='subtitle2'>
-                  You {reactionsCount > 1 ? `and ${otherUsersCount} others` : ''}
+                  You {reactionsCount > 1 ? `and ${reactionsCount} others` : ''}
                 </Typography>
               ) : (
                 reactorsToDisplay.map((reactor, i) => {
@@ -92,8 +98,8 @@ export default function ReactionsDisplayBox({
                         <>
                           <Typography variant='subtitle2'>
                             {userText}&nbsp;
-                            {otherUsersCount === 1 ? `and 1 other` : ''}
-                            {otherUsersCount > 1 ? `and ${otherUsersCount} others` : ''}
+                            {reactionsCount === 1 ? `and 1 other` : ''}
+                            {reactionsCount > 1 ? `and ${reactionsCount} others` : ''}
                           </Typography>
                         </>
                       )}

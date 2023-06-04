@@ -12,7 +12,7 @@ import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { PostsTabProps } from './types';
 
 export default function PostsTab({ userId, profileData, sx, ...rootProps }: PostsTabProps) {
-  const { posts, isError, isLoading, refetchPost } = usePostsInfiniteScrolling({
+  const { posts, isError, isLoading, refetchPostById } = usePostsInfiniteScrolling({
     type: 'profileFeed',
     wallOwnerId: userId,
   });
@@ -40,13 +40,15 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
           </InvisibleScrollableStack>
         )}
         <Stack width={mainDirection === 'column' ? '100%' : '55%'} spacing={2}>
-          {loggedUser?.id === profileData.id && <WriteSomethingTile />}
+          {loggedUser?.id === profileData.id && (
+            <WriteSomethingTile refetchPostById={refetchPostById} />
+          )}
           {posts && (
             <PostsFeed
               posts={posts}
               isLoading={isLoading}
               isError={isError}
-              refetchPost={refetchPost}
+              refetchPostById={refetchPostById}
             />
           )}
         </Stack>

@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 export interface CreatePostDialogProps extends BoxProps {
   user: IUser;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  refetchPostById: (id: string) => Promise<void>;
 }
 
 export interface CreatePostError {

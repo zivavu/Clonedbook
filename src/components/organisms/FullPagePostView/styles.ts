@@ -1,5 +1,5 @@
 import ScrollableStack from '@/components/atoms/Scrollables/ScrollableStack';
-import { Box, styled } from '@mui/material';
+import { Box, IconButton, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -8,13 +8,23 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   left: '50%',
   top: '50%',
   transform: 'translate(-50%, -50%)',
-  height: '93vh',
-  width: 'min(90vw, 710px)',
+  height: '90vh',
+  width: 'min(98vw, 710px)',
   color: theme.palette.text.primary,
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.spacing(1),
   boxShadow: theme.shadows[20],
   overflow: 'hidden',
+}));
+
+export const StyledCloseIconButton = styled(IconButton)(({ theme }) => ({
+  position: 'absolute',
+  top: theme.spacing(1),
+  right: theme.spacing(1),
+  width: '35px',
+  height: '35px',
+  zIndex: 1,
+  backgroundColor: theme.palette.background.default,
 }));
 
 export const StyledPostContentWrapper = styled(ScrollableStack)(({ theme }) => ({

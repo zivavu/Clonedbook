@@ -80,18 +80,22 @@ export default function usePostsInfiniteScrolling({
     }
   }
 
-  async function refetchPost(id: string) {
+  async function refetchPostById(id: string) {
     const postRef = doc(db, 'posts', id);
     const postSnap = await getDoc(postRef);
     if (postSnap.exists()) {
       const refetchedPost = postSnap.data() as IPost;
-      const newPosts = posts.map((post) => {
-        if (post.id === id) {
-          return refetchedPost;
-        }
-        return post;
-      });
-      setPosts(newPosts);
+      if (posts.some((post) => post.id === id)) {
+        const newPosts = posts.map((post) => {
+          if (post.id === id) {
+            return refetchedPost;
+          }
+          return post;
+        });
+        setPosts(newPosts);
+      } else {
+        setPosts((currentPosts) => [refetchedPost, ...currentPosts]);
+      }
     }
   }
 
@@ -129,5 +133,5 @@ export default function usePostsInfiniteScrolling({
     canLoadMore.current = true;
   }, [posts.length]);
 
-  return { posts, isLoading, isError, refetchPost };
+  return { posts, isLoading, isError, refetchPostById };
 }

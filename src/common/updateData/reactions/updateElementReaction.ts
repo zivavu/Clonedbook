@@ -11,7 +11,7 @@ export interface IUpdateElementReaction {
   reaction: TLocalUserReaction;
 }
 
-export default function updateElementReaction({
+export default async function updateElementReaction({
   elementType,
   loggedUserId,
   elementOwnerId,

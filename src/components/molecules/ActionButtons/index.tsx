@@ -19,18 +19,29 @@ export default function ActionButtons({
 }: ActionButtonsProps) {
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const theme = useTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [mouseOverReactionElements, setMouseOverReactionElements] = useState(false);
+  const [isPopperOpen, setIsPopperOpen] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
 
   const userReaction = element.reactions && element.reactions[loggedUser?.id || ''];
 
   function handleMouseOver() {
-    setAnchorEl(likeButtonRef.current);
-    setMouseOverReactionElements(true);
+    setIsPopperOpen(true);
   }
   function handleMouseOut() {
-    setMouseOverReactionElements(false);
+    setIsPopperOpen(false);
+  }
+
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function startPressTimer() {
+    timerRef.current = setTimeout(() => {
+      setIsPopperOpen(true);
+    }, 400);
+  }
+  function stopPressTimer() {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
   }
 
   async function handleUpdateElementReaction(reaction: TLocalUserReaction) {
@@ -48,7 +59,7 @@ export default function ActionButtons({
 
   function handleLikeButtonClick() {
     if (!loggedUser) return;
-    setMouseOverReactionElements(false);
+    setIsPopperOpen(false);
     if (!userReaction) {
       handleUpdateElementReaction('like');
     } else {
@@ -59,22 +70,25 @@ export default function ActionButtons({
   return (
     <StyledRoot {...rootProps} sx={sx}>
       <ReactionsPopper
-        anchorEl={anchorEl}
+        anchorEl={likeButtonRef.current}
+        placement={elementType === 'post' ? 'top-start' : 'top'}
         updateDocHandler={(reaction) => {
           handleUpdateElementReaction(reaction);
         }}
-        setAnchorEl={setAnchorEl}
-        placement='top-start'
-        mouseOver={mouseOverReactionElements}
-        setMouseOver={setMouseOverReactionElements}
-        open={false}
+        handleMouseOver={handleMouseOver}
+        handleMouseOut={handleMouseOut}
+        open={isPopperOpen}
+        setOpen={setIsPopperOpen}
       />
+
       <StyledActionButton
         focusRipple
         value='like'
         ref={likeButtonRef}
         onMouseEnter={handleMouseOver}
         onMouseLeave={handleMouseOut}
+        onTouchStart={() => startPressTimer()}
+        onTouchEnd={() => stopPressTimer()}
         onClick={handleLikeButtonClick}>
         {userReaction ? (
           <ReactionIcon
@@ -87,6 +101,7 @@ export default function ActionButtons({
         ) : (
           <StyledActionIcon icon={['far', 'thumbs-up']} />
         )}
+
         <Typography
           variant='subtitle2'
           fontWeight='400'

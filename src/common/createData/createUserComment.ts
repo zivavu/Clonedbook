@@ -12,7 +12,7 @@ export interface ICreateCommentParams {
   loggedUserId: string;
 }
 
-export interface ICreateCommentCreate {
+export interface ICommentCreateByElementType {
   comment: IComment;
   elementId: string;
   elementOwnerId: string;
@@ -39,8 +39,10 @@ export async function createUserComment({
       postCommentCreate({ elementId, comment });
     }
     if (elementType === 'accountPicture') {
+      accountPictureCommentCreate({ elementId, comment, elementOwnerId });
     }
     if (elementType === 'backgroundPicture') {
+      backgroundPictureCommentCreate({ elementId, comment, elementOwnerId });
     }
   } catch (err) {
     console.log(err);
@@ -50,8 +52,28 @@ export async function createUserComment({
 async function postCommentCreate({
   elementId,
   comment,
-}: Omit<ICreateCommentCreate, 'elementOwnerId'>) {
+}: Omit<ICommentCreateByElementType, 'elementOwnerId'>) {
   const postsDocRef = doc(db, 'posts', elementId);
   const commentPath = `comments.${comment.id}`;
   await updateDoc(postsDocRef, commentPath, comment);
+}
+
+async function accountPictureCommentCreate({
+  elementId,
+  comment,
+  elementOwnerId,
+}: ICommentCreateByElementType) {
+  const accPictureDocRef = doc(db, `users/${elementOwnerId}/pictures/pictures`);
+  const commentPath = `account.${elementId}.comments.${comment.id}`;
+  await updateDoc(accPictureDocRef, commentPath, comment);
+}
+
+async function backgroundPictureCommentCreate({
+  elementId,
+  comment,
+  elementOwnerId,
+}: ICommentCreateByElementType) {
+  const bgPictureDocRef = doc(db, `users/${elementOwnerId}/pictures/pictures`);
+  const commentPath = `background.${elementId}.comments.${comment.id}`;
+  await updateDoc(bgPictureDocRef, commentPath, comment);
 }

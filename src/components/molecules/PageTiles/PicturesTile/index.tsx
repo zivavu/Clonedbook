@@ -9,7 +9,6 @@ import { PicturesTileProps } from './types';
 export default function PicturesTile({ user: owner, sx, ...rootProps }: PicturesTileProps) {
   const theme = useTheme();
   const { isError, isLoading, picturesMap } = useFetchUsersPictures(owner.id);
-  console.log(picturesMap);
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
         .filter((picture) => !!picture.createdAt)

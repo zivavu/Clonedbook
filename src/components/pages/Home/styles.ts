@@ -1,7 +1,6 @@
 import { Box, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
-  position: 'relative',
   display: 'flex',
   flexDirection: 'row',
   color: theme.palette.text.primary,

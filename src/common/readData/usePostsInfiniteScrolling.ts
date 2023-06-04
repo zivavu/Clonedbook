@@ -12,15 +12,19 @@ import {
   orderBy,
   query,
   startAfter,
+  where,
 } from 'firebase/firestore';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface IUsePostFeedInfiniteScrolling {
   type: 'homeWall' | 'profileFeed';
-  id?: string;
+  wallOwnerId?: string;
 }
 
-export default function usePostsInfiniteScrolling({ type, id }: IUsePostFeedInfiniteScrolling) {
+export default function usePostsInfiniteScrolling({
+  type,
+  wallOwnerId,
+}: IUsePostFeedInfiniteScrolling) {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -28,7 +32,34 @@ export default function usePostsInfiniteScrolling({ type, id }: IUsePostFeedInfi
   const scrollElementRef = useRef<HTMLHtmlElement | null>(null);
   const canLoadMore = useRef(true);
   const collectionRef = collection(db, 'posts');
-  const initialQuery = query(collectionRef, orderBy('createdAt', 'desc'), limit(5));
+
+  function getInitialQuery() {
+    switch (type) {
+      case 'homeWall':
+        return query(collectionRef, orderBy('createdAt', 'desc'), limit(5));
+      case 'profileFeed':
+        return query(
+          collectionRef,
+          where('ownerId', '==', wallOwnerId),
+          orderBy('createdAt', 'desc'),
+          limit(5),
+        );
+    }
+  }
+  function getNextQuery() {
+    switch (type) {
+      case 'homeWall':
+        return query(collectionRef, orderBy('createdAt', 'desc'), limit(10), startAfter(lastDoc));
+      case 'profileFeed':
+        return query(
+          collection(db, 'posts'),
+          where('ownerId', '==', wallOwnerId),
+          orderBy('createdAt', 'desc'),
+          startAfter(lastDoc),
+          limit(5),
+        );
+    }
+  }
 
   async function fetchPosts(querySnapshot: Query<DocumentData>) {
     try {
@@ -39,9 +70,10 @@ export default function usePostsInfiniteScrolling({ type, id }: IUsePostFeedInfi
         return;
       }
       setLastDoc(res.docs[res.docs.length - 1]);
-      const postsData = res.docs.map((doc) => doc.data()) as IPost[];
-      setPosts((currentPosts) => currentPosts.concat(postsData));
-    } catch {
+      const newPosts = res.docs.map((doc) => doc.data()) as IPost[];
+      setPosts((currentPosts) => currentPosts.concat(newPosts));
+    } catch (err) {
+      console.log(err);
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -71,13 +103,7 @@ export default function usePostsInfiniteScrolling({ type, id }: IUsePostFeedInfi
     if (scrollTop > scrollMax - 1200) {
       if (!isLoading && !isError && canLoadMore.current && lastDoc) {
         canLoadMore.current = false;
-        const nextQuery = query(
-          collectionRef,
-          orderBy('createdAt', 'desc'),
-          limit(10),
-          startAfter(lastDoc),
-        );
-        fetchPosts(nextQuery);
+        fetchPosts(getNextQuery());
       }
     }
   }, [posts.length, scrollElementRef]);
@@ -88,7 +114,7 @@ export default function usePostsInfiniteScrolling({ type, id }: IUsePostFeedInfi
 
   useEffect(() => {
     if (posts[0] || isLoading || isError) return;
-    fetchPosts(initialQuery);
+    fetchPosts(getInitialQuery());
   }, []);
 
   useEffect(() => {

@@ -19,6 +19,7 @@ export default function ElementInfo({
   type,
   userReaction,
   setUserReaction,
+  refetchElement,
   sx,
   ...rootProps
 }: ElementInfoProps) {
@@ -85,6 +86,7 @@ export default function ElementInfo({
         comments={element.comments}
         maxComments='all'
         displayMode='picture'
+        refetchElement={refetchElement}
       />
     </StyledRoot>
   );

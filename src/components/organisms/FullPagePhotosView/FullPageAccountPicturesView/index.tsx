@@ -15,7 +15,7 @@ export default function FullPageAccountPicturesView({
   ...rootProps
 }: FullPageAccountPicturesViewProps) {
   const { data: loggedUser } = useFetchLoggedUserQuery({});
-  const { isError, isLoading, picturesMap } = useFetchUsersPictures(ownerId);
+  const { isError, isLoading, picturesMap, refetchPictures } = useFetchUsersPictures(ownerId);
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
         .filter((picture) => !!picture.createdAt)
@@ -53,7 +53,9 @@ export default function FullPageAccountPicturesView({
         userReaction={userReaction}
         type='accountPicture'
         setUserReaction={setUserReaction}
-        element={currentPicture}></ElementInfo>
+        element={currentPicture}
+        refetchElement={refetchPictures}
+      />
     </FullPagePortal>
   );
 }

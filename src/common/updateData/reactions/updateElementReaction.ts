@@ -33,6 +33,20 @@ export default function updateElementReaction({
   }
 }
 
+async function postReact({
+  elementId,
+  loggedUserId,
+  reaction,
+}: Omit<IUpdateElementReaction, 'elementType' | 'elementOwnerId'>) {
+  const postsDocRef = doc(db, 'posts', elementId);
+  const reactionPath = `reactions.${loggedUserId}`;
+  if (reaction) {
+    await updateDoc(postsDocRef, reactionPath, reaction);
+  } else {
+    await updateDoc(postsDocRef, reactionPath, deleteField());
+  }
+}
+
 async function backroundPictureReact({
   elementId,
   elementOwnerId,
@@ -60,19 +74,5 @@ async function accountPictureReact({
     await updateDoc(docRef, reactionPath, reaction);
   } else {
     await updateDoc(docRef, reactionPath, deleteField());
-  }
-}
-
-async function postReact({
-  elementId,
-  loggedUserId,
-  reaction,
-}: Omit<IUpdateElementReaction, 'elementType' | 'elementOwnerId'>) {
-  const postsDocRef = doc(db, 'posts', elementId);
-  const reactionPath = `reactions.${loggedUserId}`;
-  if (reaction) {
-    await updateDoc(postsDocRef, reactionPath, reaction);
-  } else {
-    await updateDoc(postsDocRef, reactionPath, deleteField());
   }
 }

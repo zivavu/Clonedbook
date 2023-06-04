@@ -1,6 +1,6 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 
-import useFetchUsersPosts from '@/common/readData/useFetchUsersPosts';
+import usePostsInfiniteScrolling from '@/common/readData/usePostsInfiniteScrolling';
 import { InvisibleScrollableStack } from '@/components/atoms/Scrollables/ScrollableStack';
 import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';
@@ -12,7 +12,10 @@ import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { PostsTabProps } from './types';
 
 export default function PostsTab({ userId, profileData, sx, ...rootProps }: PostsTabProps) {
-  const { posts, isLoading: arePostsLoading, isError: isPostsError } = useFetchUsersPosts(userId);
+  const { posts, isError, isLoading, refetchPost } = usePostsInfiniteScrolling({
+    type: 'profileFeed',
+    wallOwnerId: userId,
+  });
   const loggedUser = useFetchLoggedUserQuery({});
   const theme = useTheme();
   const mainDirection = useMediaQuery(theme.breakpoints.down('md')) ? 'column' : 'row';
@@ -38,9 +41,13 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
         )}
         <Stack width={mainDirection === 'column' ? '100%' : '55%'} spacing={2}>
           {!!loggedUser && <WriteSomethingTile />}
-          {!arePostsLoading && !isPostsError && posts && posts.length > 0 ? (
-            <PostsFeed posts={posts} isLoading={arePostsLoading} isError={isPostsError}></PostsFeed>
-          ) : null}
+          {posts && (
+            <PostsFeed
+              posts={posts}
+              isLoading={isLoading}
+              isError={isError}
+              refetchPost={refetchPost}></PostsFeed>
+          )}
         </Stack>
       </Stack>
     </>

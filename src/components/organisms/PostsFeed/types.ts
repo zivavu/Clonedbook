@@ -1,7 +1,7 @@
 import { IPost } from '@/types/post';
-import { BoxProps } from '@mui/material';
+import { BoxProps, StackProps } from '@mui/material';
 
-export interface PostsFeedProps extends BoxProps {
+export interface PostsFeedProps extends StackProps {
   posts: IPost[];
   isLoading: boolean;
   isError: boolean;

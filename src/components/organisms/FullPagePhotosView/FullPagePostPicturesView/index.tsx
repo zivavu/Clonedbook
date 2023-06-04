@@ -1,4 +1,4 @@
-import useFetchPostData from '@/common/readData/useFetchPostData';
+import useFetchSinglePostData from '@/common/readData/useFetchPostData';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ export default function FullPagePostPicturesView({
   setOpen,
   ...rootProps
 }: FullPagePostPicturesViewProps) {
-  const { isError, isLoading, postData: post } = useFetchPostData(postId);
+  const { isError, isLoading, postData: post } = useFetchSinglePostData(postId);
   const { data: user } = useFetchLoggedUserQuery({});
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(
     post?.reactions[user?.id || ''] || undefined,

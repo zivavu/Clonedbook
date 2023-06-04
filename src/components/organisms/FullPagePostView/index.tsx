@@ -4,7 +4,7 @@ import { StyledPostContentWrapper, StyledRoot } from './styles';
 
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import useFetchPostData from '@/common/readData/useFetchPostData';
+import useFetchSinglePostData from '@/common/readData/useFetchPostData';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
@@ -22,7 +22,7 @@ export default function FullPagePostView({
   ...rootProps
 }: FullPagePostViewProps) {
   const theme = useTheme();
-  const { postData: post, isError, isLoading } = useFetchPostData(postId);
+  const { postData: post, isError, isLoading } = useFetchSinglePostData(postId);
   const { data: user } = useFetchLoggedUserQuery({});
   const owner = useGetUsersPublicData(post?.ownerId || '');
   const [userReaction, setUserReaction] = useState<TLocalUserReaction>(

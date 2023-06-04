@@ -15,7 +15,7 @@ export default function FullPageBackgroundPicturesView({
   ...rootProps
 }: FullPageBackgroundPicturesViewProps) {
   const { data: loggedUser } = useFetchLoggedUserQuery({});
-  const { isError, isLoading, picturesMap } = useFetchUsersPictures(ownerId);
+  const { isError, isLoading, picturesMap, refetchPictures } = useFetchUsersPictures(ownerId);
   const pictures = picturesMap
     ? Object.values(picturesMap.background)
         .filter((picture) => !!picture.createdAt)
@@ -53,7 +53,9 @@ export default function FullPageBackgroundPicturesView({
         userReaction={userReaction}
         type='backgroundPicture'
         setUserReaction={setUserReaction}
-        element={currentPicture}></ElementInfo>
+        element={currentPicture}
+        refetchElement={refetchPictures}
+      />
     </FullPagePortal>
   );
 }

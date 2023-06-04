@@ -2,7 +2,7 @@ import { SxProps, Theme, useTheme } from '@mui/material';
 
 import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
 
-import { createUserComment } from '@/common/createDatas/comments/createNewComment';
+import { createUserComment } from '@/common/createData/createUserComment';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useForm } from 'react-hook-form';
@@ -19,8 +19,7 @@ export default function CommentInput({
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const theme = useTheme();
 
-  const { register, handleSubmit } = useForm();
-
+  const { register, handleSubmit, reset } = useForm();
   const onSubmit = handleSubmit(async (data) => {
     if (!loggedUser) return;
     await createUserComment({
@@ -30,6 +29,7 @@ export default function CommentInput({
       elementType: parentElementType,
       loggedUserId: loggedUser.id,
     });
+    reset();
     if (refetchElement) refetchElement();
   });
 

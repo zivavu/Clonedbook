@@ -7,19 +7,25 @@ export default function useFetchUsersPictures(id: string) {
   const [picturesMap, setPicturesMap] = useState<IPicturesMap>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
+
+  function refetchPictures() {
+    fetchPictures();
+  }
+
+  async function fetchPictures() {
+    const picturesRef = doc(db, `users/${id}/pictures/pictures`);
+    const picturesSnapshot = await getDoc(picturesRef);
+    const picturesData = picturesSnapshot.data() as IPicturesMap;
+    if (!picturesSnapshot.exists || !picturesData) {
+      setIsError(true);
+      return;
+    }
+    setPicturesMap(picturesData);
+  }
+
   useEffect(() => {
     try {
-      const getPictures = async () => {
-        const picturesRef = doc(db, `users/${id}/pictures/pictures`);
-        const picturesSnapshot = await getDoc(picturesRef);
-        const picturesData = picturesSnapshot.data() as IPicturesMap;
-        if (!picturesSnapshot.exists || !picturesData) {
-          setIsError(true);
-          return;
-        }
-        setPicturesMap(picturesData);
-      };
-      getPictures();
+      fetchPictures();
     } catch {
       setIsError(true);
     } finally {
@@ -27,5 +33,5 @@ export default function useFetchUsersPictures(id: string) {
     }
   }, [id]);
 
-  return { picturesMap, isLoading, isError };
+  return { picturesMap, isLoading, isError, refetchPictures };
 }

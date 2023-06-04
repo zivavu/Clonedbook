@@ -8,4 +8,5 @@ export interface ElementInfoProps extends BoxProps {
   userReaction: TLocalUserReaction;
   setUserReaction: Dispatch<SetStateAction<TLocalUserReaction>>;
   type: TElementType;
+  refetchElement?: () => void;
 }

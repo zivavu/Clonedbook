@@ -1,4 +1,4 @@
-import useFetchUsersPictures from '@/common/fetchData/useFetchUsersPictures';
+import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useEffect, useState } from 'react';
@@ -17,9 +17,9 @@ export default function FullPageBackgroundPicturesView({
   const { data: loggedUser } = useFetchLoggedUserQuery({});
   const { isError, isLoading, picturesMap } = useFetchUsersPictures(ownerId);
   const pictures = picturesMap
-    ? Object.values(picturesMap.background).sort(
-        (a, b) => b.createdAt.seconds - a.createdAt.seconds,
-      )
+    ? Object.values(picturesMap.background)
+        .filter((picture) => !!picture.createdAt)
+        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
     : [];
 
   const initialPhotoIndex: number =

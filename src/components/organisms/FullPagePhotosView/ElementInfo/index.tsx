@@ -80,7 +80,7 @@ export default function ElementInfo({
         my={theme.spacing(1)}
       />
       <Comments
-        post={element}
+        element={element}
         elementType={type}
         comments={element.comments}
         maxComments='all'

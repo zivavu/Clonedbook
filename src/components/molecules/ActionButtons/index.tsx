@@ -5,6 +5,7 @@ import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 import updateElementReaction from '@/common/updateData/reactions/updateElementReaction';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { TLocalUserReaction } from '@/types/reaction';
 import { useRef, useState } from 'react';
 import ReactionsPopper from './ReactionsPopper';
 import { ActionButtonsProps } from './types';
@@ -32,22 +33,27 @@ export default function ActionButtons({
     setMouseOverReactionElements(false);
   }
 
+  function handleUpdateElementReaction(reaction: TLocalUserReaction) {
+    if (!loggedUser) return;
+    const loggedUserId = loggedUser.id;
+    updateElementReaction({
+      elementId,
+      loggedUserId,
+      elementOwnerId: ownerId,
+      elementType,
+      reaction,
+    });
+  }
+
   function handleReactionClick() {
     if (!loggedUser) return;
     setMouseOverReactionElements(false);
-    const loggedUserId = loggedUser.id;
     if (!userReaction) {
       setUserReaction('like');
-      updateElementReaction({ elementId, loggedUserId, ownerId, elementType, reaction: 'like' });
+      handleUpdateElementReaction('like');
     } else {
       setUserReaction(null);
-      updateElementReaction({
-        elementId,
-        loggedUserId,
-        ownerId,
-        elementType,
-        reaction: null,
-      });
+      handleUpdateElementReaction(null);
     }
   }
 
@@ -56,15 +62,7 @@ export default function ActionButtons({
       <ReactionsPopper
         anchorEl={anchorEl}
         updateDocHandler={(reaction) => {
-          if (!loggedUser) return;
-          const loggedUserId = loggedUser.id;
-          updateElementReaction({
-            elementId,
-            loggedUserId,
-            ownerId,
-            elementType,
-            reaction,
-          });
+          handleUpdateElementReaction(reaction);
         }}
         setAnchorEl={setAnchorEl}
         placement='top-start'

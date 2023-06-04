@@ -2,18 +2,39 @@ import { SxProps, Theme, useTheme } from '@mui/material';
 
 import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
 
+import { createUserComment } from '@/common/createDatas/comments/createNewComment';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { CommentInputProps } from './types';
 
-export default function CommentInput({ sx, displayMode: mode, ...rootProps }: CommentInputProps) {
-  const { data: user } = useFetchLoggedUserQuery({});
+export default function CommentInput({
+  sx,
+  element,
+  refetchElement,
+  parentElementType,
+  displayMode,
+  ...rootProps
+}: CommentInputProps) {
+  const { data: loggedUser } = useFetchLoggedUserQuery({});
   const theme = useTheme();
-  const [commentText, setCommentText] = useState<string>('');
+
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = handleSubmit(async (data) => {
+    if (!loggedUser) return;
+    await createUserComment({
+      commentText: data.commentText,
+      elementId: element.id,
+      elementOwnerId: element.ownerId,
+      elementType: parentElementType,
+      loggedUserId: loggedUser.id,
+    });
+    if (refetchElement) refetchElement();
+  });
 
   let modeSx: SxProps<Theme>;
-  switch (mode) {
+  switch (displayMode) {
     case 'post':
       modeSx = { p: theme.spacing(2, 0), position: 'sticky', bottom: 0 };
       break;
@@ -26,19 +47,27 @@ export default function CommentInput({ sx, displayMode: mode, ...rootProps }: Co
     default:
       modeSx = { pb: theme.spacing(1) };
   }
+
   return (
     <StyledRoot sx={{ ...modeSx, ...sx }} {...rootProps}>
-      <StyledWrapper>
-        <UserAvatar size={30} sx={{ mr: theme.spacing(0.7) }} userId={user?.id} />
-        <StyledCommentInput
-          multiline
-          fullWidth
-          size='small'
-          onChange={(e) => setCommentText(e.target.value)}
-          placeholder='Write a comment...'>
-          {commentText}
-        </StyledCommentInput>
-      </StyledWrapper>
+      <form onSubmit={onSubmit}>
+        <StyledWrapper>
+          <UserAvatar size={30} sx={{ mr: theme.spacing(0.7) }} userId={loggedUser?.id} />
+          <StyledCommentInput
+            multiline
+            fullWidth
+            size='small'
+            {...register('commentText', { required: true, maxLength: 4000 })}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                onSubmit();
+              }
+            }}
+            placeholder='Write a comment...'
+          />
+        </StyledWrapper>
+      </form>
     </StyledRoot>
   );
 }

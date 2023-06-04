@@ -1,4 +1,4 @@
-import { TElementTypes } from '@/types/misc';
+import { TElementType } from '@/types/misc';
 import { TLocalUserReaction } from '@/types/reaction';
 import { BoxProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
@@ -8,5 +8,5 @@ export interface ActionButtonsProps extends BoxProps {
   ownerId: string;
   userReaction: TLocalUserReaction;
   setUserReaction: Dispatch<SetStateAction<TLocalUserReaction>>;
-  elementType: TElementTypes;
+  elementType: TElementType;
 }

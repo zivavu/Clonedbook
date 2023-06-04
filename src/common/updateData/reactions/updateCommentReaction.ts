@@ -14,14 +14,24 @@ export async function updateCommentReaction({
   loggedUserId,
   reaction,
 }: IUpdateCommentReaction) {
-  if (elementType === 'post') {
-    postCommentReact({ elementId, commentId, loggedUserId, reaction });
-  }
-  if (elementType === 'accountPicture') {
-    accountPictureCommentReact({ elementId, elementOwnerId, commentId, loggedUserId, reaction });
-  }
-  if (elementType === 'backgroundPicture') {
-    backgroundPictureCommentReact({ elementId, elementOwnerId, commentId, loggedUserId, reaction });
+  try {
+    if (elementType === 'post') {
+      postCommentReact({ elementId, commentId, loggedUserId, reaction });
+    }
+    if (elementType === 'accountPicture') {
+      accountPictureCommentReact({ elementId, elementOwnerId, commentId, loggedUserId, reaction });
+    }
+    if (elementType === 'backgroundPicture') {
+      backgroundPictureCommentReact({
+        elementId,
+        elementOwnerId,
+        commentId,
+        loggedUserId,
+        reaction,
+      });
+    }
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -31,16 +41,12 @@ async function postCommentReact({
   loggedUserId,
   reaction,
 }: Omit<IUpdateCommentReaction, 'elementType' | 'elementOwnerId'>) {
-  try {
-    const postsDocRef = doc(db, 'posts', elementId);
-    const commentReactionPath = `comments.${commentId}.reactions.${loggedUserId}`;
-    if (reaction) {
-      await updateDoc(postsDocRef, commentReactionPath, reaction);
-    } else {
-      await updateDoc(postsDocRef, commentReactionPath, deleteField());
-    }
-  } catch (err) {
-    console.log(err);
+  const postsDocRef = doc(db, 'posts', elementId);
+  const commentReactionPath = `comments.${commentId}.reactions.${loggedUserId}`;
+  if (reaction) {
+    await updateDoc(postsDocRef, commentReactionPath, reaction);
+  } else {
+    await updateDoc(postsDocRef, commentReactionPath, deleteField());
   }
 }
 
@@ -51,16 +57,12 @@ async function accountPictureCommentReact({
   loggedUserId,
   reaction,
 }: Omit<IUpdateCommentReaction, 'elementType'>) {
-  try {
-    const docRef = doc(db, `users/${elementOwnerId}/pictures/pictures`);
-    const commentReactionPath = `account.${elementId}.comments.${commentId}.reactions.${loggedUserId}`;
-    if (reaction) {
-      await updateDoc(docRef, commentReactionPath, reaction);
-    } else {
-      await updateDoc(docRef, commentReactionPath, deleteField());
-    }
-  } catch (err) {
-    console.log(err);
+  const docRef = doc(db, `users/${elementOwnerId}/pictures/pictures`);
+  const commentReactionPath = `account.${elementId}.comments.${commentId}.reactions.${loggedUserId}`;
+  if (reaction) {
+    await updateDoc(docRef, commentReactionPath, reaction);
+  } else {
+    await updateDoc(docRef, commentReactionPath, deleteField());
   }
 }
 
@@ -71,15 +73,11 @@ async function backgroundPictureCommentReact({
   loggedUserId,
   reaction,
 }: Omit<IUpdateCommentReaction, 'elementType'>) {
-  try {
-    const docRef = doc(db, `users/${elementOwnerId}/pictures/pictures`);
-    const commentReactionPath = `background.${elementId}.comments.${commentId}.reactions.${loggedUserId}`;
-    if (reaction) {
-      await updateDoc(docRef, commentReactionPath, reaction);
-    } else {
-      await updateDoc(docRef, commentReactionPath, deleteField());
-    }
-  } catch (err) {
-    console.log(err);
+  const docRef = doc(db, `users/${elementOwnerId}/pictures/pictures`);
+  const commentReactionPath = `background.${elementId}.comments.${commentId}.reactions.${loggedUserId}`;
+  if (reaction) {
+    await updateDoc(docRef, commentReactionPath, reaction);
+  } else {
+    await updateDoc(docRef, commentReactionPath, deleteField());
   }
 }

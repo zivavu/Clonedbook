@@ -1,7 +1,7 @@
 import { Stack, useTheme } from '@mui/material';
 
-import useFetchUsersPictures from '@/common/fetchData/useFetchUsersPictures';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
+import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import PicturesRow from './PicturesRow';
 import { PicturesTileProps } from './types';
@@ -9,8 +9,10 @@ import { PicturesTileProps } from './types';
 export default function PicturesTile({ user: owner, sx, ...rootProps }: PicturesTileProps) {
   const theme = useTheme();
   const { isError, isLoading, picturesMap } = useFetchUsersPictures(owner.id);
+  console.log(picturesMap);
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
+        .filter((picture) => !!picture.createdAt)
         .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
         .slice(0, 9)
     : [];

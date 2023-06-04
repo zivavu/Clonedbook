@@ -2,9 +2,9 @@ import { Modal, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledPostContentWrapper, StyledRoot } from './styles';
 
-import useFetchPostData from '@/common/fetchData/useFetchPostData';
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUsersPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useFetchPostData from '@/common/readData/useFetchPostData';
 import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
@@ -64,7 +64,7 @@ export default function FullPagePostView({
             <Comments
               comments={post.comments}
               elementType='post'
-              post={post}
+              element={post}
               sx={{ height: '100%' }}
               maxComments='all'
             />

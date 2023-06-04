@@ -16,7 +16,7 @@ import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import { FeedPostProps } from './types';
 
-export default function FeedPost({ post, sx, ...rootProps }: FeedPostProps) {
+export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPostProps) {
   const { data: user } = useFetchLoggedUserQuery({});
   const { id: postId, comments, pictures: postPictures, text: postText, reactions } = post;
   const owner = useGetUsersPublicData(post.ownerId);
@@ -111,8 +111,9 @@ export default function FeedPost({ post, sx, ...rootProps }: FeedPostProps) {
             comments={comments}
             onlyUniqueUsers
             elementType='post'
+            element={post}
             maxComments={maxComments}
-            post={post}
+            refetchElement={refetchPost}
             displayMode='feed'
           />
         </StyledContentWrapper>

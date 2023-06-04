@@ -1,4 +1,4 @@
-import useFetchUsersPictures from '@/common/fetchData/useFetchUsersPictures';
+import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
 import LoadingPlaceholder from '@/components/atoms/LoadingPlaceholder';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/FullPageAccountPicturesView';
 import { IAccountPicture } from '@/types/picture';
@@ -13,7 +13,9 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
   const theme = useTheme();
   const { isError, isLoading, picturesMap } = useFetchUsersPictures(profileData.id);
   const pictures = picturesMap
-    ? Object.values(picturesMap.account).sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+    ? Object.values(picturesMap.account)
+        .filter((picture) => !!picture.createdAt)
+        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
     : [];
 
   const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);

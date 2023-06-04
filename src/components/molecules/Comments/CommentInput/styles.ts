@@ -1,4 +1,4 @@
-import { Box, TextField, styled } from '@mui/material';
+import { Box, OutlinedInput, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'sticky',
@@ -15,15 +15,13 @@ export const StyledWrapper = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-export const StyledCommentInput = styled(TextField)(({ theme }) => ({
-  '& .MuiInputBase-root': {
-    padding: theme.spacing(1, 1.5),
-    color: theme.palette.text.primary,
-    fontSize: '1rem',
-    backgroundColor: theme.palette.secondary.main,
+export const StyledCommentInput = styled(OutlinedInput)(({ theme }) => ({
+  padding: theme.spacing(1, 1.5),
+  color: theme.palette.text.primary,
+  fontSize: '1rem',
+  backgroundColor: theme.palette.secondary.main,
 
-    '& .MuiOutlinedInput-input::placeholder': {
-      opacity: '0.7',
-    },
+  '& .MuiOutlinedInput-input::placeholder': {
+    opacity: '0.7',
   },
 }));

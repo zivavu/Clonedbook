@@ -47,7 +47,7 @@ export default function Comment({ element, comment, elementType, sx, ...rootProp
     setMouseOverReactionElements(false);
   }
 
-  function handleUserReaction(reaction: TLocalUserReaction) {
+  function handleUpdateCommentReaction(reaction: TLocalUserReaction) {
     if (!user || !element) return;
     updateCommentReaction({
       commentId: comment.id,
@@ -64,10 +64,10 @@ export default function Comment({ element, comment, elementType, sx, ...rootProp
     setMouseOverReactionElements(false);
     if (!userReaction) {
       setUserReaction('like');
-      handleUserReaction('like');
+      handleUpdateCommentReaction('like');
     } else {
       setUserReaction(null);
-      handleUserReaction(null);
+      handleUpdateCommentReaction(null);
     }
   }
   return (
@@ -131,7 +131,7 @@ export default function Comment({ element, comment, elementType, sx, ...rootProp
       </Stack>
       <ReactionsPopper
         updateDocHandler={(type) => {
-          handleUserReaction(type);
+          handleUpdateCommentReaction(type);
         }}
         disablePortal={true}
         open={false}

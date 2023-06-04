@@ -5,7 +5,7 @@ import { IReactionsMap } from './reaction';
 import { ITimestamp } from './timestamp';
 
 export type TPostOrPictureObj = IPost | IAccountPicture;
-export type TElementTypes = 'post' | 'accountPicture' | 'backgroundPicture';
+export type TElementType = 'post' | 'accountPicture' | 'backgroundPicture';
 
 export interface IWallElement {
   id: string;

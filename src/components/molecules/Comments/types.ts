@@ -1,13 +1,14 @@
 import { ICommentMap } from '@/types/comment';
-import { TElementTypes } from '@/types/misc';
+import { TElementType } from '@/types/misc';
 import { IAccountPicture } from '@/types/picture';
 import { IPost } from '@/types/post';
 import { BoxProps } from '@mui/material';
 
 export interface CommentsProps extends BoxProps {
   comments: ICommentMap | undefined;
-  post: IPost | IAccountPicture;
-  elementType: TElementTypes;
+  elementType: TElementType;
+  element: IPost | IAccountPicture;
+  refetchElement?: () => Promise<void>;
   maxComments?: number | 'all';
   onlyUniqueUsers?: boolean;
   displayMode?: TDisplayMode;

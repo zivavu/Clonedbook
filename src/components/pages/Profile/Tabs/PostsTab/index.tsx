@@ -1,6 +1,6 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 
-import useFetchUsersPosts from '@/common/fetchData/useFetchUsersPosts';
+import useFetchUsersPosts from '@/common/readData/useFetchUsersPosts';
 import { InvisibleScrollableStack } from '@/components/atoms/Scrollables/ScrollableStack';
 import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';

@@ -3,4 +3,5 @@ import { BoxProps } from '@mui/material';
 
 export interface FeedPostProps extends BoxProps {
   post: IPost;
+  refetchPost: () => Promise<void>;
 }

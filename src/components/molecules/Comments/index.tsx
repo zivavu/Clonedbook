@@ -10,9 +10,10 @@ import { CommentsProps } from './types';
 export default function Comments({
   comments,
   maxComments,
-  post,
-  onlyUniqueUsers = false,
+  element,
+  refetchElement,
   elementType,
+  onlyUniqueUsers = false,
   displayMode = 'post',
   sx,
   ...rootProps
@@ -20,9 +21,10 @@ export default function Comments({
   if (!comments) return null;
 
   let commentsToRender: IComment[] = [];
-  const sortedComments = Object.values(comments).sort(
-    (a, b) => b.createdAt.seconds - a.createdAt.seconds,
-  );
+  const sortedComments = Object.values(comments)
+    .filter((picture) => !!picture.createdAt)
+    .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
+
   onlyUniqueUsers
     ? sortedComments?.forEach((comment) => {
         if (!commentsToRender.find((c) => c.ownerId === comment.ownerId)) {
@@ -42,12 +44,17 @@ export default function Comments({
                 key={comment.id}
                 elementType={elementType}
                 comment={comment}
-                element={post}
+                element={element}
               />
             ))}
           </Stack>
         )}
-        <CommentInput displayMode={displayMode} />
+        <CommentInput
+          displayMode={displayMode}
+          element={element}
+          parentElementType={elementType}
+          refetchElement={refetchElement}
+        />
       </Box>
     </StyledRoot>
   );

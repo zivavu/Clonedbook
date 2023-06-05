@@ -9,9 +9,9 @@ import {
   StyledRoot,
 } from './styles';
 
+import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
-import UserAvatar from '@/components/atoms/UserAvatar';
 import { toggleTheme } from '@/redux/features/themeSlice';
 import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { RootState } from '@/redux/store';
@@ -26,10 +26,13 @@ export default function LoggedUserPopover({
   ...rootProps
 }: PopoverProps) {
   const theme = useTheme();
-  const { data: loggedUser } = useFetchLoggedUserQuery({});
+  const { data: loggedUser, refetch: refetchUser } = useFetchLoggedUserQuery({});
   const mode = useSelector((state: RootState) => state.theme.mode);
+  const switchUser = () => {
+    localStorage.removeItem('loggedUser');
+    refetchUser();
+  };
   const dispatch = useDispatch();
-
   const router = useRouter();
   const handleRedirectToProfile = () => {
     router.push(`/profile`);
@@ -67,7 +70,7 @@ export default function LoggedUserPopover({
               <Typography variant='subtitle2'>Profile</Typography>
             </StyledListButton>
 
-            <StyledListButton>
+            <StyledListButton onClick={() => switchUser()}>
               <StyledIconContainer>
                 <StyledListItemIcon icon='repeat' />
               </StyledIconContainer>

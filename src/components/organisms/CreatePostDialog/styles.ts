@@ -1,4 +1,4 @@
-import ScrollableBox from '@/components/atoms/Scrollables/ScrollableBox';
+import ScrollableBox from '@/components/atoms/scrollables/ScrollableBox';
 import { Button, IconButton, Stack, darken, lighten, styled } from '@mui/material';
 
 export const StyledRoot = styled(ScrollableBox)(({ theme }) => ({

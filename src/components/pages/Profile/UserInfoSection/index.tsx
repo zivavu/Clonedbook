@@ -4,12 +4,12 @@ import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from
 
 import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
-import AddFriendButton from '@/components/atoms/AddFriendButton';
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
-import MessageButton from '@/components/atoms/MessageButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
+import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
+import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
@@ -82,7 +82,7 @@ export default function UserInfoSection({
               spacing={1}
               mb={1}
               height={36}>
-              <AddFriendButton friendId={userData.id} />
+              <AddFriendButton friendId={userData.id} allowMenu={true} />
               <MessageButton />
               <ButtonBase
                 focusRipple

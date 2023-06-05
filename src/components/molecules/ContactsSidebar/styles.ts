@@ -1,4 +1,4 @@
-import ScrollableBox from '@/components/atoms/Scrollables/ScrollableBox';
+import ScrollableBox from '@/components/atoms/scrollables/ScrollableBox';
 import { Box, styled } from '@mui/material';
 import { NAVBAR_HEIGHT } from '../../organisms/NavBar';
 

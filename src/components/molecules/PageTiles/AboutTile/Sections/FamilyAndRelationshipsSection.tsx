@@ -1,7 +1,7 @@
 import { Box, Stack } from '@mui/material';
 
-import FamilyMember from '@/components/atoms/AccountDetaills/DetailCategories/FamilyMember';
-import Relationship from '@/components/atoms/AccountDetaills/DetailCategories/Relationship';
+import FamilyMember from '@/components/atoms/accountDetails/detailCategories/FamilyMember';
+import Relationship from '@/components/atoms/accountDetails/detailCategories/Relationship';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 export default function FamilyAndRelationshipsSection({

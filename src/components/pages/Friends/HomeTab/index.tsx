@@ -2,7 +2,7 @@ import { Box, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import FriendRequests from './sections/FriendRequests';
 import PeopleYouMayKnow from './sections/PeopleYouMayKnow';
 import { HomeTabProps } from './types';

@@ -1,9 +1,9 @@
 import { Box, Stack } from '@mui/material';
 
-import Birthdate from '@/components/atoms/AccountDetaills/DetailCategories/Birthdate';
-import Email from '@/components/atoms/AccountDetaills/DetailCategories/Email';
-import Gender from '@/components/atoms/AccountDetaills/DetailCategories/Gender';
-import Phone from '@/components/atoms/AccountDetaills/DetailCategories/Phone';
+import Birthdate from '@/components/atoms/accountDetails/detailCategories/Birthdate';
+import Email from '@/components/atoms/accountDetails/detailCategories/Email';
+import Gender from '@/components/atoms/accountDetails/detailCategories/Gender';
+import Phone from '@/components/atoms/accountDetails/detailCategories/Phone';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 

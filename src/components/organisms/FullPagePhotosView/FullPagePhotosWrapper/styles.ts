@@ -1,4 +1,4 @@
-import ScrollableStack from '@/components/atoms/Scrollables/ScrollableStack';
+import ScrollableStack from '@/components/atoms/scrollables/ScrollableStack';
 import { styled } from '@mui/material';
 
 export const StyledRoot = styled(ScrollableStack)(({ theme }) => ({

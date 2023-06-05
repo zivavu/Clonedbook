@@ -9,8 +9,8 @@ import {
 
 import { optimizePhotos } from '@/common/misc/optimizePhotos';
 import { separateUserBasicInfo } from '@/common/misc/userDataManagment/separateUserBasicInfo';
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { db, storage } from '@/config/firebase.config';
 import { IPost } from '@/types/post';
 import { IUserBasicInfo } from '@/types/user';

@@ -1,7 +1,7 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 
 import usePostsInfiniteScrolling from '@/common/readData/usePostsInfiniteScrolling';
-import { InvisibleScrollableStack } from '@/components/atoms/Scrollables/ScrollableStack';
+import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';
 import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';

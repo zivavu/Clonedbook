@@ -2,14 +2,19 @@ import { Stack, Typography, useTheme } from '@mui/material';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import AddFriendButton from '@/components/atoms/AddFriendButton';
 import FriendPicture from '@/components/atoms/FriendPicture';
-import RemoveFriendButton from '@/components/atoms/RemoveFriendButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
+import RemoveFriendButton from '@/components/atoms/friendActionButtons/RemoveFriendButton';
 import { StyledRoot } from './styles';
 import { FriendTileProps } from './types';
 
-export default function FriendTile({ userId, sx, ...rootProps }: FriendTileProps) {
+export default function FriendTile({
+  userId,
+  sx,
+  allowRemove = true,
+  ...rootProps
+}: FriendTileProps) {
   const theme = useTheme();
   const user = useGetUserPublicData(userId);
   const mutalFriends = useGetMutalFriends(userId);
@@ -50,7 +55,7 @@ export default function FriendTile({ userId, sx, ...rootProps }: FriendTileProps
             </Stack>
           )}
           <AddFriendButton friendId={userId} sx={{ height: '36px' }} showIcon={false} />
-          <RemoveFriendButton friendId={userId} sx={{ height: '36px' }} />
+          {allowRemove && <RemoveFriendButton friendId={userId} sx={{ height: '36px' }} />}
         </Stack>
       </Stack>
     </StyledRoot>

@@ -1,11 +1,11 @@
 import { Box, Stack, Typography } from '@mui/material';
 
-import BornIn from '@/components/atoms/AccountDetaills/DetailCategories/BornIn';
-import GoesTo from '@/components/atoms/AccountDetaills/DetailCategories/GoesTo';
-import LivesIn from '@/components/atoms/AccountDetaills/DetailCategories/LivesIn';
-import Relationship from '@/components/atoms/AccountDetaills/DetailCategories/Relationship';
-import WorksAt from '@/components/atoms/AccountDetaills/DetailCategories/WorksAt';
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
+import BornIn from '@/components/atoms/accountDetails/detailCategories/BornIn';
+import GoesTo from '@/components/atoms/accountDetails/detailCategories/GoesTo';
+import LivesIn from '@/components/atoms/accountDetails/detailCategories/LivesIn';
+import Relationship from '@/components/atoms/accountDetails/detailCategories/Relationship';
+import WorksAt from '@/components/atoms/accountDetails/detailCategories/WorksAt';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import { IntroTileProps } from './types';
 

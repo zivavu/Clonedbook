@@ -1,7 +1,7 @@
 import { Box, Stack } from '@mui/material';
 
-import BornIn from '@/components/atoms/AccountDetaills/DetailCategories/BornIn';
-import LivesIn from '@/components/atoms/AccountDetaills/DetailCategories/LivesIn';
+import BornIn from '@/components/atoms/accountDetails/detailCategories/BornIn';
+import LivesIn from '@/components/atoms/accountDetails/detailCategories/LivesIn';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 

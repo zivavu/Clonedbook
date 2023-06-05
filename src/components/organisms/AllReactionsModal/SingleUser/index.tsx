@@ -1,9 +1,9 @@
 import { Box, Stack, useTheme } from '@mui/material';
 
-import AddFriendButton from '@/components/atoms/AddFriendButton';
 import Link from '@/components/atoms/Link';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import MutalFriendsDisplay from '@/components/molecules/MutalFriendsDisplay';
 import { SingleUserProps } from './types';
 

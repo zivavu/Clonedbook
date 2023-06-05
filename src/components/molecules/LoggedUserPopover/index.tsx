@@ -9,8 +9,8 @@ import {
   StyledRoot,
 } from './styles';
 
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
-import { InvisibleScrollableStack } from '@/components/atoms/Scrollables/ScrollableStack';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
+import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { toggleTheme } from '@/redux/features/themeSlice';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';

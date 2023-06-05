@@ -4,8 +4,8 @@ import { StyledRoot } from './styles';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import AddFriendButton from '@/components/atoms/AddFriendButton';
 import FriendPicture from '@/components/atoms/FriendPicture';
+import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import { SingleFriendProps } from './types';
 
 export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFriendProps) {

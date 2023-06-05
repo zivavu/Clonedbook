@@ -3,8 +3,8 @@ import { ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 import { StyledButtonIcon, StyledButtonText, StyledPostTypeButton } from './styles';
 
 import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons';
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
 import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
 import { useState } from 'react';

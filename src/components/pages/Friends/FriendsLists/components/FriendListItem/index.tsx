@@ -3,9 +3,9 @@ import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import AddFriendButton from '@/components/atoms/AddFriendButton';
-import RemoveFriendButton from '@/components/atoms/RemoveFriendButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
+import RemoveFriendButton from '@/components/atoms/friendActionButtons/RemoveFriendButton';
 import MutalFriendsDisplay from '@/components/molecules/MutalFriendsDisplay';
 import { FriendListItemProps } from './types';
 

@@ -13,7 +13,7 @@ export default function PeopleYouMayKnow({ sx, ...rootProps }: BoxProps) {
       </Typography>
       <StyledFriendTilesWrapper>
         {peopleYouMayKnow?.slice(0, 15).map((userId) => (
-          <FriendTile key={userId} userId={userId} />
+          <FriendTile key={userId} userId={userId} allowRemove={false} />
         ))}
       </StyledFriendTilesWrapper>
     </Box>

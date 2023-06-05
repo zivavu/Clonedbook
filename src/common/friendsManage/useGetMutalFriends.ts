@@ -8,8 +8,10 @@ export default function useGetMutalFriends(friendId: string) {
   if (!userFriends || !loggedUser) return [];
   const loggedUserFriends = getAcceptedFriends(loggedUser) || [];
   const mutalFriends =
-    Object.values(loggedUserFriends).filter((friend) => {
-      return userFriends[friend.id];
-    }) || [];
+    Object.values(loggedUserFriends)
+      .filter((friend) => {
+        return userFriends[friend.id];
+      })
+      .sort((b, a) => b.acceptedAt.seconds - a.acceptedAt.seconds) || [];
   return mutalFriends;
 }

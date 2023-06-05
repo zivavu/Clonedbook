@@ -1,8 +1,8 @@
-import BornIn from '@/components/atoms/AccountDetaills/DetailCategories/BornIn';
-import GoesTo from '@/components/atoms/AccountDetaills/DetailCategories/GoesTo';
-import LivesIn from '@/components/atoms/AccountDetaills/DetailCategories/LivesIn';
-import Relationship from '@/components/atoms/AccountDetaills/DetailCategories/Relationship';
-import WorksAt from '@/components/atoms/AccountDetaills/DetailCategories/WorksAt';
+import BornIn from '@/components/atoms/accountDetails/detailCategories/BornIn';
+import GoesTo from '@/components/atoms/accountDetails/detailCategories/GoesTo';
+import LivesIn from '@/components/atoms/accountDetails/detailCategories/LivesIn';
+import Relationship from '@/components/atoms/accountDetails/detailCategories/Relationship';
+import WorksAt from '@/components/atoms/accountDetails/detailCategories/WorksAt';
 import { SectionRoot } from '../styles';
 import { SectionProps } from '../types';
 

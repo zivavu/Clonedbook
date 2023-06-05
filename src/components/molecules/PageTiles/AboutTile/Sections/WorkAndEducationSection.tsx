@@ -1,9 +1,9 @@
 import { Box, Stack } from '@mui/material';
 
-import College from '@/components/atoms/AccountDetaills/DetailCategories/College';
-import HighSchool from '@/components/atoms/AccountDetaills/DetailCategories/HighSchool';
-import JobTitle from '@/components/atoms/AccountDetaills/DetailCategories/JobTitle';
-import WorksAt from '@/components/atoms/AccountDetaills/DetailCategories/WorksAt';
+import College from '@/components/atoms/accountDetails/detailCategories/College';
+import HighSchool from '@/components/atoms/accountDetails/detailCategories/HighSchool';
+import JobTitle from '@/components/atoms/accountDetails/detailCategories/JobTitle';
+import WorksAt from '@/components/atoms/accountDetails/detailCategories/WorksAt';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 

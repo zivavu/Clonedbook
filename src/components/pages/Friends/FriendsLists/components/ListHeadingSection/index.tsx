@@ -2,8 +2,8 @@ import { IconButton, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { ListHeadingSectionProps } from './types';
 
 export default function ListHeadingSection({

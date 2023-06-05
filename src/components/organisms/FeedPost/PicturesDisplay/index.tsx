@@ -2,7 +2,7 @@ import { Stack, useTheme } from '@mui/material';
 
 import { StyledPicturesContainer, StyledRoot } from './styles';
 
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import ManyPicutresDisplay from './ManyPicutresDisplay';
 import Picture from './Picture';
 import { DisplayMode, PictureToDisplay, PicturesDisplayProps } from './types';

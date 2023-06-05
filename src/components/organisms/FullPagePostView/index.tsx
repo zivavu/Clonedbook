@@ -5,8 +5,8 @@ import { StyledCloseIconButton, StyledPostContentWrapper, StyledRoot } from './s
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import useFetchSinglePostData from '@/common/readData/useFetchPostData';
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
 import Icon from '@/components/atoms/Icon/Icon';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';

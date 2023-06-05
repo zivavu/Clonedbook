@@ -1,4 +1,4 @@
-import ScrollableStack from '@/components/atoms/Scrollables/ScrollableStack';
+import ScrollableStack from '@/components/atoms/scrollables/ScrollableStack';
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import { Stack, styled } from '@mui/material';
 

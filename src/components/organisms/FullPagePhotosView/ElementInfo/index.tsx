@@ -5,7 +5,7 @@ import { StyledRoot } from './styles';
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import HorizontalContentDevider from '@/components/atoms/ContentDeviders/HorizontalContentDevider';
+import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';

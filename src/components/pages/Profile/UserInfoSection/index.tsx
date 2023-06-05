@@ -11,6 +11,7 @@ import HorizontalContentDevider from '@/components/atoms/contentDeviders/Horizon
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
+import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useUserPicturesByIdQuery } from '@/redux/services/userData';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
@@ -23,6 +24,7 @@ export default function UserInfoSection({
 }: UserInfoSectionProps) {
   const theme = useTheme();
   const { data: picturesMap } = useUserPicturesByIdQuery(userData.id);
+  const { data: loggedUser } = useLoggedUserQuery({});
   const profilePictureData = picturesMap
     ? picturesMap.account[userData?.profilePictureId || '']
     : null;
@@ -60,7 +62,8 @@ export default function UserInfoSection({
                 {userData?.firstName} {userData?.lastName}
               </Typography>
               <Typography variant='subtitle1' fontWeight={600} color={theme.palette.text.secondary}>
-                {friendsCount} friends • {mutalFriends.length} mutual
+                {friendsCount} friends{' '}
+                {loggedUser?.id !== userData.id && `• ${mutalFriends.length} mutual`}
               </Typography>
               <Stack direction='row' mt={0.8} ml={1}>
                 {mutalFriends.slice(0, 8).map((friend, i) => (
@@ -89,7 +92,7 @@ export default function UserInfoSection({
                 allowMenu={true}
                 refetchOtherUser={refetchUser}
               />
-              <MessageButton />
+              <MessageButton userId={userData.id} />
               <ButtonBase
                 focusRipple
                 sx={{

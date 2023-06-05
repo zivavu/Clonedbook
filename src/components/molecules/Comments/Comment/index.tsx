@@ -61,7 +61,8 @@ export default function Comment({
       reaction: reaction,
       elementType: elementType,
     });
-    refetchElement();
+    await refetchElement();
+    setIsPopperOpen(false);
   }
 
   function handleLikeClick() {
@@ -143,7 +144,6 @@ export default function Comment({
         }}
         disablePortal={true}
         open={isPopperOpen}
-        setOpen={setIsPopperOpen}
         placement='top-start'
         modifiers={[{ name: 'offset', options: { offset: [-30, 0] } }]}
         anchorEl={likeButtonRef.current}

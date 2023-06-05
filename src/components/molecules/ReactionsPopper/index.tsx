@@ -5,13 +5,11 @@ import { StyledAnimationWrapper, StyledPopperBody, StyledReactionsPopper } from 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TReactionType } from '@/types/reaction';
-import { useRef } from 'react';
 import { ReactionsPopperProps } from './types';
 
 export default function ReactionsPopper({
   anchorEl,
   open,
-  setOpen,
   handleMouseOver,
   handleMouseOut,
   updateDocHandler,
@@ -21,14 +19,11 @@ export default function ReactionsPopper({
   const theme = useTheme();
   const { data: user } = useLoggedUserQuery({});
 
-  const popperRef = useRef<HTMLDivElement | null>(null);
-
   const reactionTypes: TReactionType[] = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
 
   function handleReaction(type: TReactionType) {
     if (!user) return;
     updateDocHandler(type);
-    setOpen(false);
   }
 
   return (
@@ -36,19 +31,18 @@ export default function ReactionsPopper({
       {...rootProps}
       anchorEl={anchorEl}
       open={open}
-      ref={popperRef}
       sx={sx}
-      transition
       onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}>
+      onMouseOut={handleMouseOut}
+      transition>
       {({ TransitionProps }) => (
-        <Fade {...TransitionProps} timeout={350}>
+        <Fade {...TransitionProps} timeout={250}>
           <StyledPopperBody>
             <StyledAnimationWrapper>
               {reactionTypes.map((reactionType, i) => {
                 const slidein = keyframes`
               from {
-                transform: translateX(${i * 25 - 50}px) scale(0.7);
+                transform: translateX(${i * 25 - 50}px) scale(0.6);
               }
               to {
                 transform: translateX(0px) scale(1);

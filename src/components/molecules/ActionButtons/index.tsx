@@ -53,7 +53,8 @@ export default function ActionButtons({
       elementType,
       reaction,
     });
-    refetchElement();
+    await refetchElement();
+    setIsReactionPopperOpen(false);
   }
 
   function handleLikeButtonClick() {
@@ -77,7 +78,6 @@ export default function ActionButtons({
         handleMouseOver={handleMouseOver}
         handleMouseOut={handleMouseOut}
         open={isReactionsPopperOpen}
-        setOpen={setIsReactionPopperOpen}
       />
 
       <StyledActionButton

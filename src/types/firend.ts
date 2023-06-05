@@ -19,10 +19,10 @@ export interface IFriendsMap {
   [key: string]: IFriend;
 }
 
+export interface IPublicFriendsMap {
+  [key: string]: ITimestamp;
+}
 export interface IPublicFriend {
   id: string;
   timestamp: ITimestamp;
-}
-export interface IPublicFriendsMap {
-  [key: string]: ITimestamp;
 }

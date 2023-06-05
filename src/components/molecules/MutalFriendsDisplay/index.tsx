@@ -7,6 +7,7 @@ import { MutalFriendsDisplayProps } from './types';
 export default function MutalFriendsDisplay({
   userId,
   avatarsToShow = 5,
+  size = 'small',
   sx,
   ...rootProps
 }: MutalFriendsDisplayProps) {
@@ -15,13 +16,13 @@ export default function MutalFriendsDisplay({
   return (
     <Box sx={sx} {...rootProps}>
       {mutalFriends.length > 0 && (
-        <Stack direction='row'>
+        <Stack direction='row' alignItems='center'>
           {avatarsToShow > 0 &&
             mutalFriends.slice(0, avatarsToShow).map((friend, i) => (
               <UserAvatar
                 key={friend.id}
                 userId={friend.id}
-                size={16}
+                size={size === 'small' ? 16 : 24}
                 useLink={false}
                 showBorder={true}
                 sx={{
@@ -34,7 +35,7 @@ export default function MutalFriendsDisplay({
               />
             ))}
           <Typography
-            variant='body2'
+            variant={size === 'small' ? 'body2' : 'body1'}
             color={theme.palette.text.secondary}
             ml={avatarsToShow > 0 ? 0.5 : 0}>
             {mutalFriends.length} {mutalFriends.length === 1 ? 'mutal friend' : 'mutal friends'}

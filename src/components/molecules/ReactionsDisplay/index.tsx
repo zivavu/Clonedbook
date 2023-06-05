@@ -29,8 +29,9 @@ export default function ReactionsDisplayBox({
 
   const userReaction = reactions?.[userId];
 
-  const { isLoading, reactingUsers, largestByType, reactionsCount, usedReactions } =
-    useDeserializeReactions(reactions || {});
+  const { reactingUsers, largestByType, reactionsCount, usedReactions } = useDeserializeReactions(
+    reactions || {},
+  );
 
   const reactorsToDisplay = reactingUsers.slice(0, 1);
   emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
@@ -84,22 +85,23 @@ export default function ReactionsDisplayBox({
             <>
               {userReaction ? (
                 <Typography variant='subtitle2'>
-                  You {reactionsCount > 1 ? `and ${reactionsCount} others` : ''}
+                  You {reactionsCount === 2 ? `and 1 other` : ''}
+                  {reactionsCount > 2 ? `and ${reactionsCount - 1} others` : ''}
                 </Typography>
               ) : (
                 reactorsToDisplay.map((reactor, i) => {
                   const isLast = reactorsToDisplay.length === i + 1;
-                  const userText = [reactor.info.firstName, reactor.info.lastName].join(' ');
+                  const userText = [reactor?.info?.firstName, reactor?.info?.lastName].join(' ');
                   return (
-                    <Box key={reactor.info.id}>
+                    <Box key={reactor?.info?.id}>
                       {!isLast ? (
                         <Typography variant='subtitle2'>{userText},&nbsp;</Typography>
                       ) : (
                         <>
                           <Typography variant='subtitle2'>
                             {userText}&nbsp;
-                            {reactionsCount === 1 ? `and 1 other` : ''}
-                            {reactionsCount > 1 ? `and ${reactionsCount} others` : ''}
+                            {reactionsCount === 2 ? `and 1 other` : ''}
+                            {reactionsCount > 2 ? `and ${reactionsCount - 1} others` : ''}
                           </Typography>
                         </>
                       )}

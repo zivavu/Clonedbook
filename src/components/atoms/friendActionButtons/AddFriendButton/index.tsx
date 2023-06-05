@@ -44,7 +44,7 @@ export default function AddFriendButton({
   async function handleUpdateFriendshipStatus(newStatus: TFriendStatus | null) {
     if (!loggedUser?.id) return;
     setIsMenuOpen(false);
-    await updateFriendshipStatus({ friend: friendId, loggedUser: loggedUser?.id, newStatus });
+    await updateFriendshipStatus({ friendId: friendId, loggedUserId: loggedUser?.id, newStatus });
     refetchLoggedUser();
     if (refetchOtherUser) refetchOtherUser();
   }
@@ -104,6 +104,7 @@ export default function AddFriendButton({
       break;
   }
 
+  if (loggedUser?.id === friendId) return null;
   return (
     <>
       <StyledRoot

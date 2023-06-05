@@ -1,27 +1,35 @@
 import { db } from '@/config/firebase.config';
 import { TFriendStatus } from '@/types/firend';
-import { deleteField, doc, updateDoc } from 'firebase/firestore';
+import { Timestamp, deleteField, doc, updateDoc } from 'firebase/firestore';
 
 interface IUpdateFriendshipStatus {
-  loggedUser: string;
-  friend: string;
+  loggedUserId: string;
+  friendId: string;
   newStatus: TFriendStatus | null;
 }
 
 export async function updateFriendshipStatus({
-  loggedUser,
-  friend,
+  loggedUserId,
+  friendId,
   newStatus,
 }: IUpdateFriendshipStatus) {
   try {
-    const loggedUserDoc = doc(db, 'users', loggedUser);
-    const friendDoc = doc(db, 'users', friend);
-    const friendPath = `friends.${friend}.status`;
-    const loggedUserPath = `friends.${loggedUser}.status`;
+    const loggedUserDoc = doc(db, 'users', loggedUserId);
+    const friendDoc = doc(db, 'users', friendId);
+    const publicFriendsDoc = doc(db, 'usersPublicData', 'usersPublicFriends');
+
+    const loggedUserPath = `friends.${loggedUserId}.status`;
+    const friendPath = `friends.${friendId}.status`;
+
+    const loggedPublicFriendsPath = `${loggedUserId}.${friendId}`;
+    const friendPublicFriendsPath = `${friendId}.${loggedUserId}`;
+
     if (newStatus === null) {
       await Promise.allSettled([
         updateDoc(loggedUserDoc, friendPath, deleteField()),
         updateDoc(friendDoc, loggedUserPath, deleteField()),
+        updateDoc(publicFriendsDoc, loggedPublicFriendsPath, deleteField()),
+        updateDoc(publicFriendsDoc, friendPublicFriendsPath, deleteField()),
       ]);
     } else {
       const flippedStatus =
@@ -33,6 +41,8 @@ export async function updateFriendshipStatus({
       await Promise.allSettled([
         await updateDoc(loggedUserDoc, friendPath, newStatus),
         await updateDoc(friendDoc, loggedUserPath, flippedStatus),
+        await updateDoc(publicFriendsDoc, loggedPublicFriendsPath, Timestamp.fromDate(new Date())),
+        await updateDoc(publicFriendsDoc, friendPublicFriendsPath, Timestamp.fromDate(new Date())),
       ]);
     }
   } catch (err) {

@@ -12,12 +12,12 @@ import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { PostsTabProps } from './types';
 
 export default function PostsTab({ userId, profileData, sx, ...rootProps }: PostsTabProps) {
+  const theme = useTheme();
   const { posts, isError, isLoading, refetchPostById } = usePostsInfiniteScrolling({
     type: 'profileFeed',
     wallOwnerId: userId,
   });
   const { data: loggedUser } = useLoggedUserQuery({});
-  const theme = useTheme();
   const mainDirection = useMediaQuery(theme.breakpoints.down('md')) ? 'column' : 'row';
   return (
     <>
@@ -36,7 +36,7 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
             top={`calc(${NAVBAR_HEIGHT})`}>
             <IntroTile user={profileData} />
             <PicturesTile user={profileData} />
-            <FriendsTile friend={profileData} friendsLimit={9} />
+            <FriendsTile user={profileData} friendsLimit={9} />
           </InvisibleScrollableStack>
         )}
         <Stack width={mainDirection === 'column' ? '100%' : '55%'} spacing={2}>

@@ -15,7 +15,11 @@ export default function RemoveFriendButton({
   async function handleRemoveFriend(e: MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
     if (!loggedUser?.id) return;
-    await updateFriendshipStatus({ friend: friendId, loggedUser: loggedUser?.id, newStatus: null });
+    await updateFriendshipStatus({
+      friendId: friendId,
+      loggedUserId: loggedUser?.id,
+      newStatus: null,
+    });
     refetch();
   }
   return (

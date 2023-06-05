@@ -8,7 +8,7 @@ import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import PostsFeed from '@/components/organisms/PostsFeed';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { PostsTabProps } from './types';
 
 export default function PostsTab({ userId, profileData, sx, ...rootProps }: PostsTabProps) {

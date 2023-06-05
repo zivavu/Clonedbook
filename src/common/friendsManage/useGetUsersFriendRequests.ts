@@ -1,4 +1,4 @@
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 
 export default function useGetFriendRequests() {
   const { data: loggedUser } = useFetchLoggedUserQuery({});

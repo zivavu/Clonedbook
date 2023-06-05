@@ -4,7 +4,7 @@ import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import updateElementReaction from '@/common/updateData/reactions/updateElementReaction';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useRef, useState } from 'react';
 import ReactionsPopper from '../ReactionsPopper';

@@ -1,7 +1,7 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import { IFriendWithBasicInfo } from '@/types/firend';
 import {

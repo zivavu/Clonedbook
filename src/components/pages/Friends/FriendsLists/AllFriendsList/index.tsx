@@ -1,5 +1,5 @@
 import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
 import { StyledFriendsList, StyledRoot } from '../styles';

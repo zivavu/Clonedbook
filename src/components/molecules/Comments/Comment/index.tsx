@@ -9,7 +9,7 @@ import { updateCommentReaction } from '@/common/updateData/reactions/updateComme
 import InteractButton from '@/components/atoms/InteractButton';
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useRef, useState } from 'react';
 import ReactionsDisplayBox from '../../ReactionsDisplay';

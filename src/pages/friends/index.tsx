@@ -1,5 +1,5 @@
 import * as Pages from '@/components/pages';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import Page from '@/templates/Page';
 
 export default function FriendsPage() {

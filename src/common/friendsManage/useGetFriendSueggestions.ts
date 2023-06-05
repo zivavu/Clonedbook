@@ -1,4 +1,4 @@
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 
 export default function useGetFriendSueggestions() {

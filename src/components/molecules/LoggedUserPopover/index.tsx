@@ -13,7 +13,7 @@ import HorizontalContentDevider from '@/components/atoms/contentDeviders/Horizon
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { toggleTheme } from '@/redux/features/themeSlice';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -71,7 +71,7 @@ export default function LoggedUserPopover({
               <StyledIconContainer>
                 <StyledListItemIcon icon='repeat' />
               </StyledIconContainer>
-              <Typography variant='subtitle2'>Change User</Typography>
+              <Typography variant='subtitle2'>Reroll user</Typography>
             </StyledListButton>
 
             <StyledListButton onClick={() => dispatch(toggleTheme())}>

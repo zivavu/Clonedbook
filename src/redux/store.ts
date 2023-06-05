@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import themeModeSlice from './features/themeSlice';
+import { loggedUser } from './services/loggedUserAPI';
 import { posts } from './services/postsAPI';
-import { user } from './services/userAPI';
 import { usersPublicData } from './services/usersBasicInfoAPI';
 import { userPublicFriends } from './services/usersPublicFriendsAPI';
 
 export const store = configureStore({
   reducer: {
-    [user.reducerPath]: user.reducer,
+    [loggedUser.reducerPath]: loggedUser.reducer,
     [posts.reducerPath]: posts.reducer,
     [usersPublicData.reducerPath]: usersPublicData.reducer,
     [userPublicFriends.reducerPath]: userPublicFriends.reducer,
@@ -16,7 +16,7 @@ export const store = configureStore({
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
-      user.middleware,
+      loggedUser.middleware,
       posts.middleware,
       usersPublicData.middleware,
       userPublicFriends.middleware,

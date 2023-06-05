@@ -19,7 +19,7 @@ import {
 
 import useGetFriendshipStatus from '@/common/friendsManage/useGetFriendshipStatus';
 import { updateFriendshipStatus } from '@/common/updateData/friends/updateFriendshipStatus';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TFriendStatus } from '@/types/firend';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { useRef, useState } from 'react';

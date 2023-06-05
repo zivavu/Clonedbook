@@ -4,7 +4,7 @@ import { StyledRoot } from './styles';
 
 import useDeserializeReactions from '@/common/misc/userDataManagment/useDeserializeReactions';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useState } from 'react';
 import ReactionsModal from '../../organisms/AllReactionsModal';
 import { ReactionsDisplayProps } from './types';

@@ -1,5 +1,5 @@
 import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import useGetUsersPublicFriends from '../misc/userDataManagment/useGetUsersPublicFriends';
 
 export default function useGetMutalFriends(friendId: string) {

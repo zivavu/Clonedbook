@@ -4,7 +4,7 @@ import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
 
 import { createUserComment } from '@/common/createData/createUserComment';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useForm } from 'react-hook-form';
 import { CommentInputProps } from './types';
 

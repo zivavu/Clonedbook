@@ -1,4 +1,4 @@
-import { useFetchLoggedUserQuery } from '@/redux/services/userAPI';
+import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TFriendStatus } from '@/types/firend';
 
 export default function useGetFriendshipStatus(userId: string) {

@@ -1,7 +1,7 @@
 import { StyledContentWrapper, StyledRoot } from './styles';
 
-import { useFetchAllUserData } from '@/common/readData/useFetchAllUserData';
-import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
+import { useFetchAllUserData } from '@/common/firebase/readData/useFetchAllUserData';
+import useFetchUsersPictures from '@/common/firebase/readData/useFetchUsersPictures';
 import { Box, Container, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -33,7 +33,8 @@ export default function Profile({ userId, useTabsRouting = true, sx, ...rootProp
     }
   }, [selectedTab]);
 
-  return isUserLoading || isError || !profileData ? null : (
+  if (!profileData) return null;
+  return (
     <StyledRoot sx={sx} {...rootProps}>
       <Box bgcolor={theme.palette.background.paper} boxShadow={theme.shadows[1]}>
         <BackgroundPicture userData={profileData} picturesMap={picturesMap} />

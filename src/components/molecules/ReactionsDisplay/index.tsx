@@ -42,7 +42,7 @@ export default function ReactionsDisplayBox({
     displayNames = false;
   }
 
-  if (isLoading || !reactions) return null;
+  if (!reactions) return null;
   return (
     <>
       {showModal && <ReactionsModal setShowModal={setShowModal} reactions={reactions} />}

@@ -1,6 +1,6 @@
 import { StyledButtonText, StyledRoot } from './styles';
 
-import { updateFriendshipStatus } from '@/common/updateData/friends/updateFriendshipStatus';
+import { updateFriendshipStatus } from '@/common/firebase/updateData/friends/updateFriendshipStatus';
 import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { MouseEvent } from 'react';
 import { RemoveFriendButtonProps } from './types';

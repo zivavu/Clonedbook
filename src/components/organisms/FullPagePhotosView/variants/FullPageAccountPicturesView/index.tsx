@@ -1,4 +1,4 @@
-import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
+import useFetchUsersPictures from '@/common/firebase/readData/useFetchUsersPictures';
 import { useEffect, useState } from 'react';
 import ElementInfo from '../../ElementInfo';
 import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';

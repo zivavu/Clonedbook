@@ -1,14 +1,14 @@
 import { Stack, useTheme } from '@mui/material';
 
+import useFetchUsersPictures from '@/common/firebase/readData/useFetchUsersPictures';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
-import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import PicturesRow from './PicturesRow';
 import { PicturesTileProps } from './types';
 
 export default function PicturesTile({ user: owner, sx, ...rootProps }: PicturesTileProps) {
   const theme = useTheme();
-  const { isError, isLoading, picturesMap } = useFetchUsersPictures(owner.id);
+  const { picturesMap } = useFetchUsersPictures(owner.id);
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
         .filter((picture) => !!picture.createdAt)
@@ -18,7 +18,7 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
 
   const rowCount = pictures.length > 6 ? 3 : pictures.length > 3 ? 2 : 1;
 
-  if (isError || isLoading || isObjectEmpty(picturesMap)) return null;
+  if (isObjectEmpty(picturesMap)) return null;
   return (
     <StyledPageTile sx={{ ...sx }} {...rootProps}>
       <StyledPageTileHeader>Photos</StyledPageTileHeader>

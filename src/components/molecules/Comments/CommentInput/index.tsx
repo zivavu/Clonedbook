@@ -2,7 +2,7 @@ import { SxProps, Theme, useTheme } from '@mui/material';
 
 import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
 
-import { createUserComment } from '@/common/createData/createUserComment';
+import { createUserComment } from '@/common/firebase/createData/createUserComment';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useForm } from 'react-hook-form';

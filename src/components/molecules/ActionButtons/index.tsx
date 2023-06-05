@@ -2,7 +2,7 @@ import { Typography, useTheme } from '@mui/material';
 
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
-import updateElementReaction from '@/common/updateData/reactions/updateElementReaction';
+import updateElementReaction from '@/common/firebase/updateData/reactions/updateElementReaction';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TLocalUserReaction } from '@/types/reaction';

@@ -2,9 +2,9 @@ import { Modal, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledCloseIconButton, StyledPostContentWrapper, StyledRoot } from './styles';
 
+import useFetchSinglePostData from '@/common/firebase/readData/useFetchPostData';
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import useFetchSinglePostData from '@/common/readData/useFetchPostData';
 import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';

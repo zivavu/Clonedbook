@@ -2,10 +2,10 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot, StyledTextContent } from './styles';
 
+import { updateCommentReaction } from '@/common/firebase/updateData/reactions/updateCommentReaction';
 import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import { updateCommentReaction } from '@/common/updateData/reactions/updateCommentReaction';
 import InteractButton from '@/components/atoms/InteractButton';
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';

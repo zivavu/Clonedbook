@@ -1,8 +1,8 @@
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 
+import { useFetchAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicData';
 import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
 import { IFriendWithBasicInfo } from '@/types/firend';
 import {
   Box,
@@ -19,7 +19,7 @@ import { StyledHeadingContainer, StyledRoot } from './styles';
 
 export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
   const { data: userData } = useFetchLoggedUserQuery({});
-  const { data: everyUserData } = useFetchUsersBasicInfoQuery({});
+  const { data: everyUserData } = useFetchAllUsersBasicInfoQuery({});
   const [friends, setFriends] = useState<IFriendWithBasicInfo[] | []>([]);
 
   useEffect(() => {

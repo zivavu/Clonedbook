@@ -7,7 +7,7 @@ import {
   SadIcon,
   WowIcon,
 } from '@/assets/reactionIcons';
-import { useFetchUsersBasicInfoQuery } from '@/redux/services/usersBasicInfoAPI';
+import { useFetchAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicData';
 import { IReactionWithBasicInfo, IReactionsMap, TReactionType } from '@/types/reaction';
 import { IUserBasicInfo } from '@/types/user';
 
@@ -17,7 +17,7 @@ export type TReactionsByTypes = {
 };
 
 export default function useDeserializeReactions(reactions: IReactionsMap) {
-  const { data, isLoading } = useFetchUsersBasicInfoQuery({});
+  const { data, isLoading } = useFetchAllUsersBasicInfoQuery({});
 
   const usersPublicData: IUserBasicInfo[] | [] = data
     ? Object.entries(data).map(([id, profileData]) => ({

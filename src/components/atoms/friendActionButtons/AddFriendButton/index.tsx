@@ -17,8 +17,8 @@ import {
   StyledRoot,
 } from './styles';
 
+import { updateFriendshipStatus } from '@/common/firebase/updateData/friends/updateFriendshipStatus';
 import useGetFriendshipStatus from '@/common/friendsManage/useGetFriendshipStatus';
-import { updateFriendshipStatus } from '@/common/updateData/friends/updateFriendshipStatus';
 import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TFriendStatus } from '@/types/firend';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';

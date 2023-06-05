@@ -1,4 +1,4 @@
-import useFetchSinglePostData from '@/common/readData/useFetchPostData';
+import useFetchSinglePostData from '@/common/firebase/readData/useFetchPostData';
 import { useState } from 'react';
 import ElementInfo from '../../ElementInfo';
 import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';

@@ -1,4 +1,4 @@
-import useFetchUsersPictures from '@/common/readData/useFetchUsersPictures';
+import useFetchUsersPictures from '@/common/firebase/readData/useFetchUsersPictures';
 import LoadingPlaceholder from '@/components/atoms/LoadingPlaceholder';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { IAccountPicture } from '@/types/picture';

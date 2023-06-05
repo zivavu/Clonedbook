@@ -4,14 +4,14 @@ import { StyledListItemAvatar, StyledListItem as StyledListItemButton, StyledRoo
 
 import { PlaceholderIcon } from '@/assets/pageIcons';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useRouter } from 'next/router';
 import { sidebarItems } from './sidebarItemsData';
 
 export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
   const router = useRouter();
   const theme = useTheme();
-  const { data: user } = useFetchLoggedUserQuery({});
+  const { data: user } = useLoggedUserQuery({});
 
   const handleRedirect = (href: string) => {
     router.push(href);

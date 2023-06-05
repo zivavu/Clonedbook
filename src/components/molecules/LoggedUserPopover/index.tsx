@@ -13,7 +13,7 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import { toggleTheme } from '@/redux/features/themeSlice';
-import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,7 +26,7 @@ export default function LoggedUserPopover({
   ...rootProps
 }: PopoverProps) {
   const theme = useTheme();
-  const { data: loggedUser, refetch: refetchUser } = useFetchLoggedUserQuery({});
+  const { data: loggedUser, refetch: refetchUser } = useLoggedUserQuery({});
   const mode = useSelector((state: RootState) => state.theme.mode);
   const switchUser = () => {
     localStorage.removeItem('loggedUser');

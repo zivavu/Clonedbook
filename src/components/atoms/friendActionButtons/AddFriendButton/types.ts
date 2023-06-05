@@ -4,4 +4,5 @@ export interface AddFriendButtonProps extends ButtonBaseProps {
   friendId: string;
   showIcon?: boolean;
   allowMenu?: boolean;
+  refetchOtherUser?: () => void;
 }

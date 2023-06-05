@@ -1,9 +1,9 @@
 import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
-import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import useGetUsersPublicFriends from '../misc/userDataManagment/useGetUsersPublicFriends';
 
 export default function useGetMutalFriends(friendId: string) {
-  const { data: loggedUser } = useFetchLoggedUserQuery({});
+  const { data: loggedUser } = useLoggedUserQuery({});
   const userFriends = useGetUsersPublicFriends(friendId);
   if (!userFriends || !loggedUser) return [];
   const loggedUserFriends = getAcceptedFriends(loggedUser) || [];

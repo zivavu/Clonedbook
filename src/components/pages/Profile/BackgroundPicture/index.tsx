@@ -2,16 +2,13 @@ import { StyledBacgroundPictureContainer, StyledPictureGradient } from './styles
 
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import FullPageBackgroundPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageBackgroundPicturesView';
+import { useUserPicturesByIdQuery } from '@/redux/services/userData';
 import { ButtonBase } from '@mui/material';
 import { useState } from 'react';
 import { BackgroundPictureProps } from './types';
 
-export default function BackgroundPicture({
-  userData,
-  picturesMap,
-  sx,
-  ...rootProps
-}: BackgroundPictureProps) {
+export default function BackgroundPicture({ userData, sx, ...rootProps }: BackgroundPictureProps) {
+  const { data: picturesMap } = useUserPicturesByIdQuery(userData.id);
   const backgroundPhotoData = picturesMap
     ? picturesMap.background[userData?.backgroundPictureId || '']
     : null;

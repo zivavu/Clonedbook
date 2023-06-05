@@ -1,7 +1,6 @@
 import { StyledContentWrapper, StyledRoot } from './styles';
 
-import { useFetchAllUserData } from '@/common/firebase/readData/useFetchAllUserData';
-import useFetchUsersPictures from '@/common/firebase/readData/useFetchUsersPictures';
+import { useUserDataByIdQuery, useUserPicturesByIdQuery } from '@/redux/services/userData';
 import { Box, Container, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -17,8 +16,8 @@ import { ProfileProps, TProfileTabs } from './types';
 export default function Profile({ userId, useTabsRouting = true, sx, ...rootProps }: ProfileProps) {
   const theme = useTheme();
   const router = useRouter();
-  const { userData: profileData, isLoading: isUserLoading, isError } = useFetchAllUserData(userId);
-  const { picturesMap } = useFetchUsersPictures(userId);
+  const { data: profileData, refetch } = useUserDataByIdQuery(userId);
+
   const [selectedTab, setSelectedTab] = useState<TProfileTabs>(useTabsRouting ? null : 'posts');
 
   useEffect(() => {
@@ -37,9 +36,9 @@ export default function Profile({ userId, useTabsRouting = true, sx, ...rootProp
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Box bgcolor={theme.palette.background.paper} boxShadow={theme.shadows[1]}>
-        <BackgroundPicture userData={profileData} picturesMap={picturesMap} />
+        <BackgroundPicture userData={profileData} />
         <Container maxWidth='lg'>
-          <UserInfoSection userData={profileData} picturesMap={picturesMap} />
+          <UserInfoSection userData={profileData} refetchUser={refetch} />
           <ProfileTabToggleGroup selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </Container>
       </Box>

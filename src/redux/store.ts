@@ -2,19 +2,22 @@ import { configureStore } from '@reduxjs/toolkit';
 import themeModeSlice from './features/themeSlice';
 import { loggedUser } from './services/loggedUserAPI';
 
-import { allUsersBasicInfo } from './services/allUsersPublicData';
+import { allUsersPublicData } from './services/allUsersPublicData';
+import { userData } from './services/userData';
 
 export const store = configureStore({
   reducer: {
     [loggedUser.reducerPath]: loggedUser.reducer,
-    [allUsersBasicInfo.reducerPath]: allUsersBasicInfo.reducer,
+    [allUsersPublicData.reducerPath]: allUsersPublicData.reducer,
+    [userData.reducerPath]: userData.reducer,
     theme: themeModeSlice,
   },
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
       loggedUser.middleware,
-      allUsersBasicInfo.middleware,
+      allUsersPublicData.middleware,
+      userData.middleware,
     ),
 });
 

@@ -1,4 +1,4 @@
-import useFetchUsersPictures from '@/common/firebase/readData/useFetchUsersPictures';
+import { useUserPicturesByIdQuery } from '@/redux/services/userData';
 import { useEffect, useState } from 'react';
 import ElementInfo from '../../ElementInfo';
 import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';
@@ -12,7 +12,8 @@ export default function FullPageAccountPicturesView({
   setOpen,
   ...rootProps
 }: FullPageAccountPicturesViewProps) {
-  const { picturesMap, refetchPictures } = useFetchUsersPictures(ownerId);
+  const { data: picturesMap, refetch: refetchPictures } = useUserPicturesByIdQuery(ownerId);
+
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
         .filter((picture) => !!picture.createdAt)

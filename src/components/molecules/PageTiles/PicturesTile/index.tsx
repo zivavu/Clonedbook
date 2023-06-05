@@ -1,14 +1,15 @@
 import { Stack, useTheme } from '@mui/material';
 
-import useFetchUsersPictures from '@/common/firebase/readData/useFetchUsersPictures';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
+import { useUserPicturesByIdQuery } from '@/redux/services/userData';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import PicturesRow from './PicturesRow';
 import { PicturesTileProps } from './types';
 
 export default function PicturesTile({ user: owner, sx, ...rootProps }: PicturesTileProps) {
   const theme = useTheme();
-  const { picturesMap } = useFetchUsersPictures(owner.id);
+  const { data: picturesMap } = useUserPicturesByIdQuery(owner.id);
+
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
         .filter((picture) => !!picture.createdAt)

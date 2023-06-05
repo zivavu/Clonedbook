@@ -9,20 +9,21 @@ export const loggedUser = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ['user'],
   endpoints: (builder) => ({
-    fetchLoggedUser: builder.query({
+    loggedUser: builder.query({
       async queryFn() {
         try {
           const userIdStorageItem = localStorage.getItem('loggedUser');
           const loggedUserId = userIdStorageItem ? JSON.parse(userIdStorageItem) : undefined;
           let loggedUser: IUser | undefined = undefined;
 
+          //Get the user by ID saved in the local storage
           if (loggedUserId) {
             const userDocRef = doc(db, 'users', loggedUserId);
             const userDoc = await getDoc(userDocRef);
             loggedUser = userDoc.data() as IUser;
           }
+          //Or if it doesnt exist, get a random one
           if (!loggedUser) {
-            //Always fetches random user
             const randomId = uuidv4();
             const usersRef = collection(db, 'users');
             const greaterQuery = query(usersRef, where('__name__', '>=', randomId), limit(1));
@@ -32,14 +33,12 @@ export const loggedUser = createApi({
               data = await getDocs(lesserQuery);
             }
             const user = data.docs.map((doc) => doc.data())[0] as IUser;
-
             loggedUser = user;
             localStorage.setItem('loggedUser', JSON.stringify(user.id));
           }
 
           return { data: loggedUser };
         } catch (err) {
-          console.log(err);
           localStorage.removeItem('loggedUser');
           return { error: 'Couldnt fetch the user' };
         }
@@ -49,4 +48,4 @@ export const loggedUser = createApi({
   }),
 });
 
-export const { useFetchLoggedUserQuery } = loggedUser;
+export const { useLoggedUserQuery } = loggedUser;

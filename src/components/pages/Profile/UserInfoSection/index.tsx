@@ -11,16 +11,18 @@ import HorizontalContentDevider from '@/components/atoms/contentDeviders/Horizon
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
+import { useUserPicturesByIdQuery } from '@/redux/services/userData';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
 
 export default function UserInfoSection({
   userData,
-  picturesMap,
+  refetchUser,
   sx,
   ...rootProps
 }: UserInfoSectionProps) {
   const theme = useTheme();
+  const { data: picturesMap } = useUserPicturesByIdQuery(userData.id);
   const profilePictureData = picturesMap
     ? picturesMap.account[userData?.profilePictureId || '']
     : null;
@@ -82,7 +84,11 @@ export default function UserInfoSection({
               spacing={1}
               mb={1}
               height={36}>
-              <AddFriendButton friendId={userData.id} allowMenu={true} />
+              <AddFriendButton
+                friendId={userData.id}
+                allowMenu={true}
+                refetchOtherUser={refetchUser}
+              />
               <MessageButton />
               <ButtonBase
                 focusRipple

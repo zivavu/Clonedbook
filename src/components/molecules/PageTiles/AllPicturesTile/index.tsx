@@ -1,6 +1,6 @@
-import useFetchUsersPictures from '@/common/firebase/readData/useFetchUsersPictures';
 import LoadingPlaceholder from '@/components/atoms/LoadingPlaceholder';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
+import { useUserPicturesByIdQuery } from '@/redux/services/userData';
 import { IAccountPicture } from '@/types/picture';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
@@ -11,7 +11,7 @@ import { AllPicturesTileProps } from './types';
 
 export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPicturesTileProps) {
   const theme = useTheme();
-  const { isError, isLoading, picturesMap } = useFetchUsersPictures(profileData.id);
+  const { data: picturesMap, isError, isLoading } = useUserPicturesByIdQuery(profileData.id);
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
         .filter((picture) => !!picture.createdAt)
@@ -25,7 +25,7 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
     setIsFullViewOpen(true);
   };
 
-  if (isError) return null;
+  if (!picturesMap || isError) return null;
   return (
     <>
       {isFullViewOpen && (

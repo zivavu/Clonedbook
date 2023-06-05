@@ -3,12 +3,12 @@ import { IServerUserBasicInfo, IServerUserPublicFriends } from '@/types/user';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { doc, getDoc } from 'firebase/firestore';
 
-export const allUsersBasicInfo = createApi({
+export const allUsersPublicData = createApi({
   reducerPath: 'allUsersBasicInfoAPI',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['allUsersBasicInfo', 'allUserPublicFriends'],
   endpoints: (builder) => ({
-    fetchAllUsersBasicInfo: builder.query({
+    allUsersBasicInfo: builder.query({
       async queryFn() {
         try {
           const usersDataRef = doc(db, 'usersPublicData', 'usersBasicInfo');
@@ -22,7 +22,8 @@ export const allUsersBasicInfo = createApi({
       },
       providesTags: ['allUsersBasicInfo'],
     }),
-    fetchUsersPublicFriends: builder.query({
+
+    allUsersPublicFriends: builder.query({
       async queryFn() {
         try {
           const usersDataRef = doc(db, 'usersPublicData', 'usersPublicFriends');
@@ -39,5 +40,4 @@ export const allUsersBasicInfo = createApi({
   }),
 });
 
-export const { useFetchAllUsersBasicInfoQuery, useFetchUsersPublicFriendsQuery } =
-  allUsersBasicInfo;
+export const { useAllUsersBasicInfoQuery, useAllUsersPublicFriendsQuery } = allUsersPublicData;

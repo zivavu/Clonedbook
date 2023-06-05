@@ -1,9 +1,9 @@
 import * as Pages from '@/components/pages';
-import { useFetchLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import Page from '@/templates/Page';
 
 export default function FriendsPage() {
-  const { data: user } = useFetchLoggedUserQuery({});
+  const { data: user } = useLoggedUserQuery({});
   if (!user?.id) return null;
   return (
     <Page

@@ -3,6 +3,6 @@ import { Dispatch, SetStateAction } from 'react';
 
 export interface FullPagePostPicturesViewProps extends StackProps {
   postId: string;
-  initialPhoto: string;
+  initialPhotoUrl: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }

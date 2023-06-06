@@ -61,7 +61,11 @@ export default function Picture({
   return (
     <>
       {isFullViewOpen && (
-        <FullPagePostPicturesView postId={postId} initialPhoto={src} setOpen={setIsFullViewOpen} />
+        <FullPagePostPicturesView
+          postId={postId}
+          initialPhotoUrl={src}
+          setOpen={setIsFullViewOpen}
+        />
       )}
       <StyledRoot sx={sx} {...rootProps}>
         <ButtonBase

@@ -19,6 +19,7 @@ export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: Fr
         .map(([id, timestamp]) => {
           return { id, timestamp };
         })
+        .filter((friend) => friend.id !== loggedUser?.id)
         .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds)
         .slice(0, friendsLimit)
     : [];

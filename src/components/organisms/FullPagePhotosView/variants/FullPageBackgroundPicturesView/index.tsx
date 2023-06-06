@@ -24,6 +24,7 @@ export default function FullPageBackgroundPicturesView({
     typeof initialPhoto === 'number'
       ? initialPhoto
       : pictures.findIndex((picture) => picture.id === initialPhoto.id);
+
   useEffect(() => {
     setCurrentPictureIndex(initialPhotoIndex);
   }, [initialPhoto, initialPhotoIndex]);

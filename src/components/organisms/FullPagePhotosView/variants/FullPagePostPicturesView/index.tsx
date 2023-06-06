@@ -1,5 +1,5 @@
 import useFetchSinglePostData from '@/common/firebase/readData/useFetchPostData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ElementInfo from '../../ElementInfo';
 import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';
 import PhotosCarousel from '../../PhotosCarousel';
@@ -7,16 +7,19 @@ import { FullPagePostPicturesViewProps } from './types';
 
 export default function FullPagePostPicturesView({
   sx,
-  initialPhoto,
+  initialPhotoUrl,
   postId,
   setOpen,
   ...rootProps
 }: FullPagePostPicturesViewProps) {
   const { postData: post, refetchPost } = useFetchSinglePostData(postId);
 
-  const [currentPictureIndex, setCurrentPictureIndex] = useState(
-    post?.pictures?.indexOf(initialPhoto) || 0,
-  );
+  const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(0);
+  useEffect(() => {
+    setCurrentPictureIndex(
+      post?.pictures?.findIndex((pictureUrl) => pictureUrl === initialPhotoUrl) || 0,
+    );
+  }, [initialPhotoUrl, post]);
 
   if (!post || !post.pictures) return null;
   return (

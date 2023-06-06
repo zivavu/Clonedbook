@@ -57,7 +57,14 @@ export default function PhotosCarousel({
     <>
       <StyledRoot {...rootProps} sx={sx}>
         <StyledPhotosWrapper>
-          <Box position='relative' width='100%' height='100%' onClick={() => setOpen(false)}>
+          <Box
+            position='absolute'
+            left={0}
+            width='100%'
+            height='100%'
+            onClick={() => setOpen(false)}
+          />
+          <Box position='relative' width='100%' height='100%'>
             <Image
               src={currentPictureUrl || ''}
               fill

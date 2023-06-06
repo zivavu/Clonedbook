@@ -19,6 +19,7 @@ export const StyledHeadingContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'row',
   marginTop: theme.spacing(2.5),
   padding: theme.spacing(0, 1),
+  paddingRight: theme.spacing(2),
   justifyContent: 'space-between',
   alignItems: 'center',
 }));

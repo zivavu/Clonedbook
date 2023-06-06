@@ -3,8 +3,8 @@ import { Stack, Typography, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import getShortDate from '@/common/misc/dateManagment/getShortDate';
-import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import UserLink from '@/components/atoms/UserLink';
 import { PostOwnerInfoDisplayProps } from './types';
 
 export default function PostOwnerInfoDisplay({
@@ -20,11 +20,13 @@ export default function PostOwnerInfoDisplay({
       <Stack direction='row' spacing={1}>
         <UserAvatar userId={owner.id} />
         <Stack justifyContent='center'>
-          <Link href={`/profile/${owner.id}`}>
-            <Typography fontWeight={500} variant='subtitle2' lineHeight='1rem'>
-              {owner.firstName} {owner.lastName}
-            </Typography>
-          </Link>
+          <UserLink
+            userId={owner.id}
+            usePopper
+            fontWeight={500}
+            variant='subtitle2'
+            lineHeight='1rem'
+          />
           <Typography variant='body2' color={theme.palette.text.secondary}>
             {getShortDate(createdAt.seconds, 'week')}
           </Typography>

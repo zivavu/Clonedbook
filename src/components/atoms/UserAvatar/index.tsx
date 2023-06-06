@@ -1,8 +1,9 @@
 import { Box, ButtonBase, CSSObject, useTheme } from '@mui/material';
 
-import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
+import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
+import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserAvatarProps, UserImageProps } from './types';
@@ -17,12 +18,13 @@ export default function UserAvatar({
   ...rootProps
 }: UserAvatarProps) {
   const theme = useTheme();
+  const { data: loggedUser } = useLoggedUserQuery({});
 
   const {
     isPopperOpen,
     anchorElRef,
-    handleMouseEnter: handleMouseOver,
-    handleMouseOut,
+    handleMouseEnter,
+    handleMouseLeave,
     handleTouchStart,
     handleTouchEnd,
   } = UserPreviewPopperHandlers();
@@ -58,8 +60,8 @@ export default function UserAvatar({
             }}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            onMouseEnter={handleMouseOver}
-            onMouseLeave={handleMouseOut}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             LinkComponent={Link}
             focusRipple
             href={`/profile/${userId}`}>
@@ -70,13 +72,13 @@ export default function UserAvatar({
         )}
       </Box>
 
-      {usePopper && userId && (
+      {usePopper && userId && loggedUser?.id !== userId && (
         <UserPreviewPopper
           open={isPopperOpen}
           userId={userId}
           anchorEl={anchorElRef.current}
-          handleMouseOver={handleMouseOver}
-          handleMouseOut={handleMouseOut}
+          handleMouseEnter={handleMouseEnter}
+          handleMouseLeave={handleMouseLeave}
         />
       )}
     </>

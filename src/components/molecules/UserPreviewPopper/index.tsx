@@ -1,18 +1,15 @@
-import { Fade, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Grow, Stack, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledButtonsStack, StyledPopper, StyledPopperBody } from './styles';
 
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import useGetUsersPublicFriends from '@/common/misc/userDataManagment/useGetUsersPublicFriends';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import UserLink from '@/components/atoms/UserLink';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import LoginAsUserButton from '@/components/atoms/friendActionButtons/LoginAsUserButton';
 import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
-import MutalFriendsWithAvatars from '../MutalFriendsDisplay/MutalFriendsWithAvatars';
-import { UserPreviewPopperProps } from './types';
 import MutalFriendsTextOnly from '../MutalFriendsDisplay/MutalFriendsTextOnly';
-import UserLink from '@/components/atoms/UserLink';
-import themeSlice from '@/redux/features/themeSlice';
+import { UserPreviewPopperProps } from './types';
 
 /**
  * @description - Popper used to display basic user info and actions,
@@ -23,8 +20,8 @@ export default function UserPreviewPopper({
   anchorEl,
   open,
   userId,
-  handleMouseOver,
-  handleMouseOut,
+  handleMouseEnter,
+  handleMouseLeave,
   sx,
   ...rootProps
 }: UserPreviewPopperProps) {
@@ -35,14 +32,12 @@ export default function UserPreviewPopper({
   return (
     <StyledPopper {...rootProps} anchorEl={anchorEl} open={open} sx={sx} placement='top' transition>
       {({ TransitionProps }) => (
-        <Fade {...TransitionProps} timeout={250}>
-          <StyledPopperBody onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut}>
+        <Grow {...TransitionProps} timeout={250}>
+          <StyledPopperBody onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Stack direction='row' spacing={2}>
               <UserAvatar userId={userId} usePopper={false} size={isSmallScreen ? 60 : 96} />
               <Stack>
-                <UserLink variant='h4' fontWeight={700} userId={userId}>
-                  {userData.firstName} {userData.lastName}
-                </UserLink>
+                <UserLink variant='h4' fontWeight={700} userId={userId} />
 
                 <MutalFriendsTextOnly userId={userId} size='medium' mt={1} />
               </Stack>
@@ -72,7 +67,7 @@ export default function UserPreviewPopper({
               />
             </StyledButtonsStack>
           </StyledPopperBody>
-        </Fade>
+        </Grow>
       )}
     </StyledPopper>
   );

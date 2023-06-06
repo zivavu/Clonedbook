@@ -5,21 +5,33 @@ export default function UserPreviewPopperHandlers(mouseEnterDelay: number = 300)
   const anchorElRef = useRef<HTMLButtonElement>(null);
 
   const mouseEnterTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mouseLeaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function handleMouseEnter() {
-    mouseEnterTimerRef.current = setTimeout(() => {
+    if (mouseLeaveTimerRef.current) {
+      clearTimeout(mouseLeaveTimerRef.current);
+      mouseLeaveTimerRef.current = null;
+    }
+    if (!isPopperOpen) {
+      mouseEnterTimerRef.current = setTimeout(() => {
+        setIsPopperOpen(true);
+      }, mouseEnterDelay);
+    } else {
       setIsPopperOpen(true);
-    }, mouseEnterDelay);
+    }
   }
-  function handleMouseOut() {
+
+  function handleMouseLeave() {
     if (mouseEnterTimerRef.current) {
       clearTimeout(mouseEnterTimerRef.current);
       mouseEnterTimerRef.current = null;
     }
-    setIsPopperOpen(false);
+    mouseLeaveTimerRef.current = setTimeout(() => {
+      setIsPopperOpen(false);
+    }, 100);
   }
 
-  const touchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   function handleTouchStart() {
     touchTimerRef.current = setTimeout(() => {
       setIsPopperOpen(true);
@@ -35,7 +47,7 @@ export default function UserPreviewPopperHandlers(mouseEnterDelay: number = 300)
     isPopperOpen,
     anchorElRef,
     handleMouseEnter,
-    handleMouseOut,
+    handleMouseLeave,
     handleTouchStart,
     handleTouchEnd,
   };

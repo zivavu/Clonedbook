@@ -2,8 +2,9 @@ import { Stack, Typography, useTheme } from '@mui/material';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import UserPicture from '@/components/atoms/UserPicture';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import UserLink from '@/components/atoms/UserLink';
+import UserPicture from '@/components/atoms/UserPicture';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import RemoveFriendButton from '@/components/atoms/friendActionButtons/RemoveFriendButton';
 import { StyledRoot } from './styles';
@@ -32,9 +33,13 @@ export default function FriendTile({
           sx={{ borderBottomRightRadius: 0, borderBottomLeftRadius: 0, border: 'none' }}
         />
         <Stack p={1.5} bgcolor={theme.palette.background.paper} spacing={1}>
-          <Typography variant='subtitle1' fontWeight={600} lineHeight='1rem'>
-            {user.firstName} {user.lastName}
-          </Typography>
+          <UserLink
+            userId={userId}
+            variant='subtitle1'
+            fontWeight={600}
+            lineHeight='1rem'
+            usePopper={false}
+          />
           {mutalFriends.length > 0 && (
             <Stack direction='row' pl={0.5}>
               {mutalFriends.slice(0, 2).map((friend, i) => (

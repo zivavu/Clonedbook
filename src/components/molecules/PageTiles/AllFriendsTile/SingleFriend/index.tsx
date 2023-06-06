@@ -1,9 +1,10 @@
-import { Box, Link, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import UserLink from '@/components/atoms/UserLink';
 import UserPicture from '@/components/atoms/UserPicture';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import { SingleFriendProps } from './types';
@@ -30,11 +31,13 @@ export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFrien
         />
         <Stack spacing={smallScreen ? 1 : 0}>
           <Box>
-            <Link href={`/profile/${friend.id}`}>
-              <Typography lineHeight='1rem' variant='subtitle1' fontWeight={550}>
-                {friend?.firstName} {friend.lastName}
-              </Typography>
-            </Link>
+            <UserLink
+              userId={friendId}
+              usePopper
+              lineHeight='1rem'
+              variant='subtitle1'
+              fontWeight={550}
+            />
             <Typography color={theme.palette.text.secondary} fontWeight={400}>
               {mutalFrineds?.length} mutual friends
             </Typography>

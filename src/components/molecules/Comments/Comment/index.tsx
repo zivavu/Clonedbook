@@ -7,8 +7,8 @@ import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import InteractButton from '@/components/atoms/InteractButton';
-import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import UserLink from '@/components/atoms/UserLink';
 import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useRef, useState } from 'react';
@@ -85,11 +85,8 @@ export default function Comment({
         <StyledTextContent>
           {!!ownerData && (
             <>
-              <Link href={`/profile/${comment.ownerId}`}>
-                <Typography variant='body1' fontWeight='500' lineHeight='1.2rem'>
-                  {ownerData.firstName} {ownerData.lastName}
-                </Typography>
-              </Link>
+              <UserLink userId={ownerData.id} usePopper />
+
               <Typography variant='body1'>{comment.commentText}</Typography>
             </>
           )}
@@ -142,7 +139,6 @@ export default function Comment({
         updateDocHandler={(type) => {
           handleUpdateCommentReaction(type);
         }}
-        disablePortal={true}
         open={isPopperOpen}
         placement='top-start'
         modifiers={[{ name: 'offset', options: { offset: [-30, 0] } }]}

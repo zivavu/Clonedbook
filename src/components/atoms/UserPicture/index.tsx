@@ -1,11 +1,11 @@
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
+import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
 import { ButtonBase } from '@mui/material';
 import Link from 'next/link';
 import ImageWithGradientLoading from '../ImageWithGradientLoading';
 import { StyledRoot } from './styles';
 import { UserPictureProps } from './types';
-import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
-import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
 
 export default function UserPicture({
   userId,
@@ -16,9 +16,9 @@ export default function UserPicture({
   const user = useGetUserPublicData(userId);
   const {
     anchorElRef,
-    handleMouseEnter: handleMouseOver,
     isPopperOpen,
-    handleMouseOut,
+    handleMouseEnter,
+    handleMouseLeave,
     handleTouchStart,
     handleTouchEnd,
   } = UserPreviewPopperHandlers();
@@ -28,8 +28,8 @@ export default function UserPicture({
       <StyledRoot
         sx={sx}
         {...rootProps}
-        onMouseEnter={handleMouseOver}
-        onMouseLeave={handleMouseOut}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         ref={anchorElRef}>
@@ -50,8 +50,8 @@ export default function UserPicture({
           open={isPopperOpen}
           userId={user.id}
           anchorEl={anchorElRef.current}
-          handleMouseOver={handleMouseOver}
-          handleMouseOut={handleMouseOut}
+          handleMouseEnter={handleMouseEnter}
+          handleMouseLeave={handleMouseLeave}
         />
       )}
     </>

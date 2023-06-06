@@ -1,8 +1,8 @@
 import { Box, Stack, useTheme } from '@mui/material';
 
-import Link from '@/components/atoms/Link';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import UserLink from '@/components/atoms/UserLink';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import MutalFriendsWithAvatars from '@/components/molecules/MutalFriendsDisplay/MutalFriendsWithAvatars';
 import { SingleUserProps } from './types';
@@ -14,7 +14,7 @@ export default function SingleUser({
   ...rootProps
 }: SingleUserProps) {
   const theme = useTheme();
-  const { firstName, lastName, id: profileId } = reaction.info;
+  const { id: profileId } = reaction.info;
   return (
     <Stack sx={sx} {...rootProps} direction='row' alignItems='center' pr={2}>
       <Box position='relative'>
@@ -27,9 +27,7 @@ export default function SingleUser({
         />
       </Box>
       <Stack>
-        <Link href={`/profile/${profileId}`} lineHeight='1rem'>
-          {firstName} {lastName}
-        </Link>
+        <UserLink userId={profileId} usePopper></UserLink>
         <MutalFriendsWithAvatars userId={profileId} avatarsToShow={0} />
       </Stack>
       <AddFriendButton

@@ -1,4 +1,4 @@
-import { Fade, IconButton, keyframes, useTheme } from '@mui/material';
+import { Fade, Grow, IconButton, keyframes, useTheme } from '@mui/material';
 
 import { StyledAnimationWrapper, StyledPopperBody, StyledReactionsPopper } from './styles';
 
@@ -36,7 +36,7 @@ export default function ReactionsPopper({
       onMouseOut={handleMouseOut}
       transition>
       {({ TransitionProps }) => (
-        <Fade {...TransitionProps} timeout={250}>
+        <Grow {...TransitionProps} timeout={250}>
           <StyledPopperBody>
             <StyledAnimationWrapper>
               {reactionTypes.map((reactionType, i) => {
@@ -72,7 +72,7 @@ export default function ReactionsPopper({
               })}
             </StyledAnimationWrapper>
           </StyledPopperBody>
-        </Fade>
+        </Grow>
       )}
     </StyledReactionsPopper>
   );

@@ -30,7 +30,7 @@ export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: Fr
       <Stack>
         <StyledPageTileHeader sx={{ paddingBottom: 0 }}>Friends</StyledPageTileHeader>
         <Typography pb={1} color={theme.palette.text.secondary} variant='subtitle1'>
-          {friendsCount} {loggedUser?.id !== user.id && `${mutalFriends.length} mutual`}
+          {friendsCount} {loggedUser?.id !== user.id && `(${mutalFriends.length} mutual)`}
         </Typography>
       </Stack>
       <Stack spacing={2}>

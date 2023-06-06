@@ -6,7 +6,7 @@ import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPub
 import UserAvatar from '@/components/atoms/UserAvatar';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import RemoveFriendButton from '@/components/atoms/friendActionButtons/RemoveFriendButton';
-import MutalFriendsDisplay from '@/components/molecules/MutalFriendsDisplay';
+import MutalFriendsWithAvatars from '@/components/molecules/MutalFriendsDisplay/MutalFriendsWithAvatars';
 import { FriendListItemProps } from './types';
 
 export default function FriendListItem({
@@ -28,7 +28,7 @@ export default function FriendListItem({
         <Typography fontWeight={450} variant='subtitle2' lineHeight='1.1rem'>
           {firstName} {lastName}
         </Typography>
-        <MutalFriendsDisplay userId={userId} avatarsToShow={isMobile ? 0 : 2} />
+        <MutalFriendsWithAvatars userId={userId} avatarsToShow={isMobile ? 0 : 2} />
         {mode === 'requests' && (
           <Stack direction='row' spacing={1}>
             <AddFriendButton

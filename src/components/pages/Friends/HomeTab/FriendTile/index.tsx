@@ -2,7 +2,7 @@ import { Stack, Typography, useTheme } from '@mui/material';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import FriendPicture from '@/components/atoms/FriendPicture';
+import UserPicture from '@/components/atoms/UserPicture';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import RemoveFriendButton from '@/components/atoms/friendActionButtons/RemoveFriendButton';
@@ -27,8 +27,8 @@ export default function FriendTile({
           border: `1px solid ${theme.palette.divider}`,
           margin: theme.spacing(1),
         }}>
-        <FriendPicture
-          friendId={userId}
+        <UserPicture
+          userId={userId}
           sx={{ borderBottomRightRadius: 0, borderBottomLeftRadius: 0, border: 'none' }}
         />
         <Stack p={1.5} bgcolor={theme.palette.background.paper} spacing={1}>

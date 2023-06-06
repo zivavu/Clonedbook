@@ -4,7 +4,7 @@ import Link from '@/components/atoms/Link';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
-import MutalFriendsDisplay from '@/components/molecules/MutalFriendsDisplay';
+import MutalFriendsWithAvatars from '@/components/molecules/MutalFriendsDisplay/MutalFriendsWithAvatars';
 import { SingleUserProps } from './types';
 
 export default function SingleUser({
@@ -30,7 +30,7 @@ export default function SingleUser({
         <Link href={`/profile/${profileId}`} lineHeight='1rem'>
           {firstName} {lastName}
         </Link>
-        <MutalFriendsDisplay userId={profileId} avatarsToShow={0} />
+        <MutalFriendsWithAvatars userId={profileId} avatarsToShow={0} />
       </Stack>
       <AddFriendButton
         friendId={profileId}

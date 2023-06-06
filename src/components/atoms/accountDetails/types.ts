@@ -13,12 +13,14 @@ export interface TextAccountDetailProps extends StackProps {
   iconSize?: number;
   accountDetail: ITextAccountDetail;
   showPlaceholder?: boolean;
+  allowWrap?: boolean;
 }
 
 export interface CategoryProps extends StackProps {
   userData: IUser;
   iconSize?: number;
   showPlaceholder?: boolean;
+  allowWrap?: boolean;
 }
 
 export interface FamilyAcountDetailProps extends StackProps {

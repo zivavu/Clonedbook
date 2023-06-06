@@ -1,14 +1,18 @@
-import { Fade, Stack, Typography, useTheme } from '@mui/material';
+import { Fade, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
-import { StyledPopper, StyledPopperBody } from './styles';
+import { StyledButtonsStack, StyledPopper, StyledPopperBody } from './styles';
 
+import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUsersPublicFriends from '@/common/misc/userDataManagment/useGetUsersPublicFriends';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import LivesIn from '@/components/atoms/accountDetails/detailCategories/LivesIn';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
+import LoginAsUserButton from '@/components/atoms/friendActionButtons/LoginAsUserButton';
 import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import MutalFriendsDisplay from '../MutalFriendsDisplay';
+import MutalFriendsWithAvatars from '../MutalFriendsDisplay/MutalFriendsWithAvatars';
 import { UserPreviewPopperProps } from './types';
+import MutalFriendsTextOnly from '../MutalFriendsDisplay/MutalFriendsTextOnly';
+import UserLink from '@/components/atoms/UserLink';
+import themeSlice from '@/redux/features/themeSlice';
 
 /**
  * @description - Popper used to display basic user info and actions,
@@ -25,34 +29,48 @@ export default function UserPreviewPopper({
   ...rootProps
 }: UserPreviewPopperProps) {
   const theme = useTheme();
-  const { data: user } = useLoggedUserQuery({});
-  if (!user) return null;
+  const userData = useGetUserPublicData(userId);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
+  if (!userData) return null;
   return (
-    <StyledPopper
-      {...rootProps}
-      anchorEl={anchorEl}
-      open={open}
-      sx={sx}
-      placement='top'
-      transition
-      disablePortal>
+    <StyledPopper {...rootProps} anchorEl={anchorEl} open={open} sx={sx} placement='top' transition>
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={250}>
           <StyledPopperBody onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut}>
             <Stack direction='row' spacing={2}>
-              <UserAvatar userId={userId} usePopper={false} size={96} />
-              <Stack spacing={1.5}>
-                <Typography variant='h4' fontWeight={700}>
-                  {user.firstName} {user.lastName}
-                </Typography>
-                <MutalFriendsDisplay userId={userId} avatarsToShow={4} size='medium' />
-                <LivesIn userData={user} />
+              <UserAvatar userId={userId} usePopper={false} size={isSmallScreen ? 60 : 96} />
+              <Stack>
+                <UserLink variant='h4' fontWeight={700} userId={userId}>
+                  {userData.firstName} {userData.lastName}
+                </UserLink>
+
+                <MutalFriendsTextOnly userId={userId} size='medium' mt={1} />
               </Stack>
             </Stack>
-            <Stack direction='row' spacing={1} mt='auto' alignSelf='center'>
-              <AddFriendButton friendId={userId} sx={{ padding: theme.spacing(1.3, 5) }} />
-              <MessageButton userId={userId} sx={{ padding: theme.spacing(1.3, 5) }} />
-            </Stack>
+            <StyledButtonsStack direction={isSmallScreen ? 'column' : 'row'}>
+              <AddFriendButton
+                friendId={userId}
+                allowMenu
+                sx={{
+                  width: isSmallScreen ? '100%' : 'auto',
+                  padding: theme.spacing(1.2, 2),
+                }}
+              />
+              <MessageButton
+                userId={userId}
+                sx={{
+                  width: isSmallScreen ? '100%' : 'auto',
+                  padding: theme.spacing(1.2, 2),
+                }}
+              />
+              <LoginAsUserButton
+                userId={userId}
+                sx={{
+                  width: isSmallScreen ? '100%' : 'auto',
+                  padding: theme.spacing(1.2, 2),
+                }}
+              />
+            </StyledButtonsStack>
           </StyledPopperBody>
         </Fade>
       )}

@@ -111,7 +111,7 @@ export default function AddFriendButton({
         ref={anchorElRef}
         focusRipple
         disabled={disabled}
-        sx={{ ...sx, ...buttonSx }}
+        sx={{ ...buttonSx, ...sx }}
         {...rootProps}
         onClick={clickHandler}>
         {showIcon && <StyledButtonIcon icon={icon} color={iconColor} />}
@@ -123,7 +123,7 @@ export default function AddFriendButton({
           anchorEl={anchorElRef.current}
           open={isMenuOpen}
           sx={{
-            zIndex: theme.zIndex.modal,
+            zIndex: theme.zIndex.modal + 20,
           }}>
           <ClickAwayListener onClickAway={() => setIsMenuOpen(false)}>
             <StyledPopperContent>

@@ -4,7 +4,7 @@ import { StyledRoot } from './styles';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import FriendPicture from '@/components/atoms/FriendPicture';
+import UserPicture from '@/components/atoms/UserPicture';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import { SingleFriendProps } from './types';
 
@@ -22,8 +22,8 @@ export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFrien
       alignItems='center'
       justifyContent='space-between'>
       <Stack direction='row' alignItems='center' height='100%' spacing={2}>
-        <FriendPicture
-          friendId={friendId}
+        <UserPicture
+          userId={friendId}
           sx={{
             height: smallScreen ? '80%' : '100%',
           }}

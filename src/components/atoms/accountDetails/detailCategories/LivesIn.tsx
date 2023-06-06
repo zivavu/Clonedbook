@@ -5,6 +5,7 @@ export default function LivesIn({
   userData,
   iconSize,
   showPlaceholder,
+  allowWrap,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -23,6 +24,7 @@ export default function LivesIn({
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
       iconSize={iconSize}
+      allowWrap={allowWrap || false}
       sx={sx}
       {...rootProps}
     />

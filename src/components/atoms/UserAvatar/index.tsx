@@ -1,10 +1,10 @@
 import { Box, ButtonBase, CSSObject, useTheme } from '@mui/material';
 
+import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
 import { UserAvatarProps, UserImageProps } from './types';
 export default function UserAvatar({
   sx,
@@ -18,28 +18,14 @@ export default function UserAvatar({
 }: UserAvatarProps) {
   const theme = useTheme();
 
-  const [isPopperOpen, setIsPopperOpen] = useState(false);
-  const anchorElRef = useRef<HTMLButtonElement>(null);
-
-  function handleMouseOver() {
-    setIsPopperOpen(true);
-  }
-  function handleMouseOut() {
-    setIsPopperOpen(false);
-  }
-
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  function startPressTimer() {
-    timerRef.current = setTimeout(() => {
-      setIsPopperOpen(true);
-    }, 400);
-  }
-  function stopPressTimer() {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  }
+  const {
+    isPopperOpen,
+    anchorElRef,
+    handleMouseEnter: handleMouseOver,
+    handleMouseOut,
+    handleTouchStart,
+    handleTouchEnd,
+  } = UserPreviewPopperHandlers();
 
   const user = useGetUserPublicData(userId);
   const px = `${size}px`;
@@ -70,8 +56,8 @@ export default function UserAvatar({
               boxShadow: shadow,
               ...containerSx,
             }}
-            onTouchStart={startPressTimer}
-            onTouchEnd={stopPressTimer}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             onMouseEnter={handleMouseOver}
             onMouseLeave={handleMouseOut}
             LinkComponent={Link}

@@ -9,6 +9,7 @@ export default function TextAccountDetail({
   accountDetail,
   iconSize = 24,
   showPlaceholder = true,
+  allowWrap,
   sx,
   ...rootProps
 }: TextAccountDetailProps) {
@@ -32,12 +33,22 @@ export default function TextAccountDetail({
       </Typography>
       {valueLink ? (
         <Link href={valueLink}>
-          <StyledTextDetailValue variant='subtitle2' fontWeight='500'>
+          <StyledTextDetailValue
+            variant='subtitle2'
+            fontWeight='500'
+            sx={{
+              whiteSpace: allowWrap ? 'break-spaces' : 'nowrap',
+            }}>
             {value}
           </StyledTextDetailValue>
         </Link>
       ) : (
-        <StyledTextDetailValue variant='subtitle2' fontWeight='500'>
+        <StyledTextDetailValue
+          variant='subtitle2'
+          fontWeight='500'
+          sx={{
+            whiteSpace: allowWrap ? 'break-spaces' : 'nowrap',
+          }}>
           {value}
         </StyledTextDetailValue>
       )}

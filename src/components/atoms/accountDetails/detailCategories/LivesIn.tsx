@@ -6,6 +6,7 @@ export default function LivesIn({
   iconSize,
   showPlaceholder,
   allowWrap,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -17,10 +18,13 @@ export default function LivesIn({
     value: publicAddres,
     icon: 'home',
     placeholder: 'Address not specified',
+    editPlaceholder: 'Add address',
   };
 
   return (
     <TextAccountDetail
+      userId={userData.id}
+      preventEdit={preventEdit}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
       iconSize={iconSize}

@@ -5,6 +5,7 @@ export default function BornIn({
   userData,
   iconSize,
   showPlaceholder,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -14,11 +15,14 @@ export default function BornIn({
     value: hometown || null,
     icon: 'location-dot',
     placeholder: 'Hometown not specified',
+    editPlaceholder: 'Add hometown',
   };
 
   return (
     <TextAccountDetail
+      userId={userData.id}
       accountDetail={accountDetail}
+      preventEdit={preventEdit}
       showPlaceholder={showPlaceholder}
       iconSize={iconSize}
       sx={sx}

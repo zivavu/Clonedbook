@@ -19,16 +19,17 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
   return (
     <StyledRoot sx={sx} className={classes?.root} {...rootProps}>
       <StyledToggleButton
-        value={'chats' as TPopper}
-        selected={currentPopper === 'chats'}
-        onClick={handlePopoverChange}>
-        <Icon icon={['fab', 'facebook-messenger']} color={theme.palette.text.primary} />
-      </StyledToggleButton>
-      <StyledToggleButton
+        disabled
         value={'notifications' as TPopper}
         selected={currentPopper === 'notifications'}
         onClick={handlePopoverChange}>
         <Icon icon='bell' color={theme.palette.text.primary} />
+      </StyledToggleButton>
+      <StyledToggleButton
+        value={'chats' as TPopper}
+        selected={currentPopper === 'chats'}
+        onClick={handlePopoverChange}>
+        <Icon icon={['fab', 'facebook-messenger']} color={theme.palette.text.primary} />
       </StyledToggleButton>
       <StyledToggleButton
         value={'account' as TPopper}

@@ -37,6 +37,7 @@ export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSecti
         const selected = currentPage === element.name;
         return (
           <StyledToggleButton
+            disabled
             key={element.name}
             value={element.name}
             selected={selected}

@@ -5,6 +5,7 @@ export default function GoesTo({
   userData,
   iconSize,
   showPlaceholder,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -15,12 +16,15 @@ export default function GoesTo({
     value: school,
     icon: 'graduation-cap',
     placeholder: 'No schools to show',
+    editPlaceholder: 'Add current school',
   };
 
   return (
     <TextAccountDetail
+      userId={userData.id}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
+      preventEdit={preventEdit}
       iconSize={iconSize}
       sx={sx}
       {...rootProps}

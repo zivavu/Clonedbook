@@ -22,11 +22,11 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
           <HorizontalContentDevider bottom={0} />
         </Box>
         <Stack spacing={2}>
-          <LivesIn userData={user} iconSize={iconSize} showPlaceholder={false} />
-          <WorksAt userData={user} iconSize={iconSize} showPlaceholder={false} />
-          <GoesTo userData={user} iconSize={iconSize} showPlaceholder={false} />
-          <Relationship userData={user} iconSize={iconSize} showPlaceholder={false} />
-          <BornIn userData={user} iconSize={iconSize} showPlaceholder={false} />
+          <LivesIn userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
+          <WorksAt userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
+          <GoesTo userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
+          <Relationship userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
+          <BornIn userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
         </Stack>
       </Stack>
     </StyledPageTile>

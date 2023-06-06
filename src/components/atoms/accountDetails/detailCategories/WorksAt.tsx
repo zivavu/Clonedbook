@@ -5,6 +5,7 @@ export default function WorksAt({
   userData,
   iconSize,
   showPlaceholder,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -14,11 +15,14 @@ export default function WorksAt({
     value: workplace || null,
     icon: 'briefcase',
     placeholder: 'No workplace to show',
+    editPlaceholder: 'Add workplace',
   };
   return (
     <TextAccountDetail
+      userId={userData.id}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
+      preventEdit={preventEdit}
       iconSize={iconSize}
       sx={sx}
       {...rootProps}

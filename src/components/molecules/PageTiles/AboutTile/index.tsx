@@ -45,7 +45,16 @@ export default function AboutTile({ profileData, sx, ...rootProps }: AboutTilePr
             ))}
           </List>
         </StyledListContainer>
-        <Stack>
+        <Stack
+          sx={{
+            width: '100%',
+            borderLeft: `1px solid ${theme.palette.divider}`,
+
+            [theme.breakpoints.down('md')]: {
+              borderLeft: 'none',
+              borderTop: `1px solid ${theme.palette.divider}`,
+            },
+          }}>
           {currentSection === 'overview' && <OverviewSection profileData={profileData} />}
           {currentSection === 'contact and basic info' && (
             <ContactAndBasicInfo profileData={profileData} />

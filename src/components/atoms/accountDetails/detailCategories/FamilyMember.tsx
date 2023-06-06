@@ -1,6 +1,6 @@
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import { FamilyMemberProps } from '../types';
 import FamilyAccountDetail from '../accountDetailItems/FamillyAccountDetail';
+import { FamilyMemberProps } from '../types';
 
 export default function FamilyMember({
   relativeId,

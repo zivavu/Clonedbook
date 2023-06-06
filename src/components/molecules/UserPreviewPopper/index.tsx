@@ -39,7 +39,7 @@ export default function UserPreviewPopper({
             <Stack direction='row' spacing={2}>
               <UserAvatar userId={userId} usePopper={false} size={isSmallScreen ? 60 : 96} />
               <Stack>
-                <UserLink variant='h4' fontWeight={700} userId={userId} />
+                <UserLink variant='h4' fontWeight={700} userId={userId} usePopper={false} />
 
                 <MutalFriendsTextOnly userId={userId} size='medium' mt={1} />
               </Stack>

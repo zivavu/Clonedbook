@@ -1,11 +1,12 @@
 import getDateFromTimestamp from '@/common/misc/dateManagment/getDateFromTimestamp';
-import { CategoryProps, ITextAccountDetail } from '../types';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
+import { CategoryProps, ITextAccountDetail } from '../types';
 
 export default function Birthdate({
   userData,
   iconSize,
   showPlaceholder,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -16,9 +17,12 @@ export default function Birthdate({
     value: birthDate ? `${birthDate.month}, ${birthDate.day}, ${birthDate.year}` : null,
     icon: 'birthday-cake',
     placeholder: `Didn't specified`,
+    editPlaceholder: 'Add birth date',
   };
   return (
     <TextAccountDetail
+      userId={userData.id}
+      preventEdit={preventEdit}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
       iconSize={iconSize}

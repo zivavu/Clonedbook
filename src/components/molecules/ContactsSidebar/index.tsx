@@ -1,5 +1,4 @@
 import Icon from '@/components/atoms/Icon/Icon';
-import UserAvatar from '@/components/atoms/UserAvatar';
 
 import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicData';
 import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
@@ -9,21 +8,25 @@ import {
   BoxProps,
   IconButton,
   List,
-  ListItemButton,
   OutlinedInput,
   Typography,
   useTheme,
 } from '@mui/material';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import FriendListItem from './FriendListItem';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 
 export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
+  const theme = useTheme();
+
   const { data: loggedUser } = useLoggedUserQuery({});
   const { data: everyUserBasicInfo } = useAllUsersBasicInfoQuery({});
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+
   const [friends, setFriends] = useState<IFriendWithBasicInfo[] | []>([]);
+
   useEffect(() => {
     if (loggedUser && everyUserBasicInfo) {
       const friendsWithBasicInfo = Object.values(loggedUser.friends)
@@ -42,7 +45,6 @@ export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
     setSearchValue('');
   }
 
-  const theme = useTheme();
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <StyledHeadingContainer>
@@ -78,24 +80,9 @@ export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
             return friendUserName.includes(searchValueLowerCase);
           })
           .slice(0, 20)
-          .map((friend) => {
-            return (
-              <ListItemButton
-                component={Link}
-                href={`/profile/${friend.id}`}
-                key={friend.id}
-                sx={{ pl: theme.spacing(1) }}>
-                <UserAvatar
-                  userId={friend.id}
-                  useLink={false}
-                  sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
-                />
-                <Typography variant='body1'>
-                  {friend.basicInfo.firstName} {friend.basicInfo.lastName}
-                </Typography>
-              </ListItemButton>
-            );
-          })}
+          .map((friend) => (
+            <FriendListItem key={friend.id} friend={friend} />
+          ))}
       </List>
     </StyledRoot>
   );

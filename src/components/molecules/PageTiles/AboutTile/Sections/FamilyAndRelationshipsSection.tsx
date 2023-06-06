@@ -2,6 +2,7 @@ import { Box, Stack } from '@mui/material';
 
 import FamilyMember from '@/components/atoms/accountDetails/detailCategories/FamilyMember';
 import Relationship from '@/components/atoms/accountDetails/detailCategories/Relationship';
+import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 export default function FamilyAndRelationshipsSection({
@@ -9,6 +10,9 @@ export default function FamilyAndRelationshipsSection({
   sx,
   ...rootProps
 }: SectionProps) {
+  const { data: loggedUser } = useLoggedUserQuery({});
+  const isOwner = loggedUser?.id === profileData.id;
+
   const partnertId = profileData?.about.relationship?.partnerId;
   const status = profileData?.about.relationship?.status;
   const hasPartner =
@@ -21,7 +25,7 @@ export default function FamilyAndRelationshipsSection({
   return (
     <SectionRoot sx={sx} {...rootProps} spacing={4} mb={2}>
       <Box>
-        <SectionTitle>Relationship</SectionTitle>
+        <SectionTitle pb={isOwner ? 2 : 1}>Relationship</SectionTitle>
         <Stack spacing={3}>
           {hasPartner ? (
             <FamilyMember kinshipType={status} relativeId={partnertId} />

@@ -5,6 +5,7 @@ export default function HighSchool({
   userData,
   iconSize,
   showPlaceholder,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -15,10 +16,13 @@ export default function HighSchool({
     value: school,
     icon: 'school',
     placeholder: 'No schools to show',
+    editPlaceholder: 'Add high school',
   };
 
   return (
     <TextAccountDetail
+      userId={userData.id}
+      preventEdit={preventEdit}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
       iconSize={iconSize}

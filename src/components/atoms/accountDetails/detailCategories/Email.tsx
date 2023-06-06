@@ -5,6 +5,7 @@ export default function Email({
   userData,
   iconSize,
   showPlaceholder,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -13,12 +14,16 @@ export default function Email({
     label: 'Email',
     value: email,
     icon: 'envelope',
+    placeholder: 'No email to show',
+    editPlaceholder: 'Add email',
   };
 
   return (
     <TextAccountDetail
+      userId={userData.id}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
+      preventEdit={preventEdit}
       iconSize={iconSize}
       sx={sx}
       {...rootProps}

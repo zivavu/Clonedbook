@@ -5,6 +5,7 @@ export default function Phone({
   userData,
   iconSize,
   showPlaceholder,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -13,12 +14,16 @@ export default function Phone({
     label: 'Phone',
     value: phoneNumber,
     icon: 'phone',
+    placeholder: 'No phone number to show',
+    editPlaceholder: 'Add phone number',
   };
 
   return (
     <TextAccountDetail
+      userId={userData.id}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
+      preventEdit={preventEdit}
       iconSize={iconSize}
       sx={sx}
       {...rootProps}

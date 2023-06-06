@@ -8,12 +8,16 @@ export interface ITextAccountDetail {
   icon: IconName;
   valueLink?: string;
   placeholder?: string;
+  editPlaceholder: string;
 }
 export interface TextAccountDetailProps extends StackProps {
+  userId: string;
   iconSize?: number;
   accountDetail: ITextAccountDetail;
   showPlaceholder?: boolean;
   allowWrap?: boolean;
+  //prevent edit is used when we don't want to show the edit button, even for the logged in user(for eg. in IntroTile)
+  preventEdit?: boolean;
 }
 
 export interface CategoryProps extends StackProps {
@@ -21,6 +25,7 @@ export interface CategoryProps extends StackProps {
   iconSize?: number;
   showPlaceholder?: boolean;
   allowWrap?: boolean;
+  preventEdit?: boolean;
 }
 
 export interface FamilyAcountDetailProps extends StackProps {

@@ -1,11 +1,12 @@
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import { CategoryProps, ITextAccountDetail } from '../types';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
+import { CategoryProps, ITextAccountDetail } from '../types';
 
 export default function Relationship({
   userData,
   iconSize,
   showPlaceholder,
+  preventEdit,
   sx,
   ...rootProps
 }: CategoryProps) {
@@ -23,11 +24,14 @@ export default function Relationship({
     value: (!partner ? relationship?.status : partnerName) || '',
     valueLink: partner ? `/profile/${partner.id}` : undefined,
     placeholder: 'No relationship info to show',
+    editPlaceholder: 'Add relationship info',
   };
   return (
     <TextAccountDetail
+      userId={userData.id}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
+      preventEdit={preventEdit}
       iconSize={iconSize}
       sx={sx}
       {...rootProps}

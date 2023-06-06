@@ -51,7 +51,8 @@ export default function ReactionIcon({
       break;
   }
 
-  src = size > 30 ? src?.slice(0, -1) + '2' : src;
+  //The image resolution is determined by the last number in the url * 20px
+  src = size > 30 ? src?.slice(0, -1) + '4' : src;
   return (
     <Box
       sx={{

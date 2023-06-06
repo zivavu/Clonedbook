@@ -16,7 +16,7 @@ export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
 
 export const StyledListContainer = styled(Stack)(({ theme }) => ({
   positin: 'relative',
-  width: 'max(25%, 250px)',
+  minWidth: 'max(25%, 250px)',
 
   [theme.breakpoints.down('md').replace('@media', '@container')]: {
     width: '100%',
@@ -25,11 +25,11 @@ export const StyledListContainer = styled(Stack)(({ theme }) => ({
 
 export const SectionRoot = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2, 2),
+  width: '100%',
 }));
 
 export const SectionTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 550,
   fontSize: theme.typography.subtitle1.fontSize,
   lineHeight: theme.typography.subtitle1.lineHeight,
-  paddingBottom: theme.spacing(1),
 }));

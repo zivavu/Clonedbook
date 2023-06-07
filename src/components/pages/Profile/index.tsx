@@ -36,30 +36,21 @@ export default function Profile({ userId, useTabsRouting = true, sx, ...rootProp
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Box bgcolor={theme.palette.background.paper} boxShadow={theme.shadows[1]}>
-        <BackgroundPicture userData={profileData} />
+        <BackgroundPicture key={userId} userData={profileData} userId={userId} />
         <Container maxWidth='lg'>
-          <UserInfoSection userData={profileData} refetchUser={refetch} />
+          <UserInfoSection userData={profileData} refetchUser={refetch} userId={userId} />
           <ProfileTabToggleGroup selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </Container>
       </Box>
       <StyledContentWrapper>
         {selectedTab === 'posts' && (
-          <PostsTab key={userId} userId={userId} profileData={profileData} isLoading={isLoading} />
+          <PostsTab key={userId} userId={userId} profileData={profileData} />
         )}
         {selectedTab === 'about' && (
-          <AboutTab
-            key={userId}
-            profileData={profileData}
-            setSelectedTab={setSelectedTab}
-            isLoading={isLoading}
-          />
+          <AboutTab key={userId} profileData={profileData} setSelectedTab={setSelectedTab} />
         )}
-        {selectedTab === 'friends' && (
-          <FriendsTab key={userId} profileData={profileData} isLoading={isLoading} />
-        )}
-        {selectedTab === 'photos' && (
-          <PhotosTab key={userId} profileData={profileData} isLoading={isLoading} />
-        )}
+        {selectedTab === 'friends' && <FriendsTab key={userId} profileData={profileData} />}
+        {selectedTab === 'photos' && <PhotosTab key={userId} profileData={profileData} />}
       </StyledContentWrapper>
     </StyledRoot>
   );

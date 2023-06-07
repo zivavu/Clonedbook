@@ -7,11 +7,17 @@ import { ButtonBase } from '@mui/material';
 import { useState } from 'react';
 import { BackgroundPictureProps } from './types';
 
-export default function BackgroundPicture({ userData, sx, ...rootProps }: BackgroundPictureProps) {
-  const { data: picturesMap } = useUserPicturesByIdQuery(userData.id);
+export default function BackgroundPicture({
+  userData,
+  userId,
+  sx,
+  ...rootProps
+}: BackgroundPictureProps) {
+  const { data: picturesMap } = useUserPicturesByIdQuery(userId);
   const backgroundPhotoData = picturesMap
     ? picturesMap.background[userData?.backgroundPictureId || '']
     : null;
+
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
   return (
     <>
@@ -28,7 +34,7 @@ export default function BackgroundPicture({ userData, sx, ...rootProps }: Backgr
           <ImageWithGradientLoading
             unoptimized
             alt={`${userData?.firstName}'s Bacground Picture`}
-            src={userData?.backgroundPicture || ''}
+            src={backgroundPhotoData?.url}
             fill
             style={{ objectFit: 'cover' }}
           />

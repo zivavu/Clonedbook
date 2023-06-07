@@ -11,7 +11,11 @@ import { AllPicturesTileProps } from './types';
 
 export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPicturesTileProps) {
   const theme = useTheme();
-  const { data: picturesMap, isError, isLoading } = useUserPicturesByIdQuery(profileData.id);
+  const {
+    data: picturesMap,
+    isError,
+    isLoading: isUserDataLoading,
+  } = useUserPicturesByIdQuery(profileData.id);
   const pictures = picturesMap
     ? Object.values(picturesMap.account)
         .filter((picture) => !!picture.createdAt)
@@ -42,7 +46,7 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
         overflow='hidden'
         minHeight='200px'>
         <StyledPageTileHeader mb={3}>Photos</StyledPageTileHeader>
-        {isLoading ? (
+        {isUserDataLoading ? (
           <LoadingPlaceholder />
         ) : (
           <Stack direction='row' flexWrap='wrap' justifyContent='flex-start' sx={{}}>

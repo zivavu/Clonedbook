@@ -17,21 +17,23 @@ import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
 
 export default function UserInfoSection({
+  userId,
   userData,
   refetchUser,
   sx,
   ...rootProps
 }: UserInfoSectionProps) {
   const theme = useTheme();
-  const { data: picturesMap } = useUserPicturesByIdQuery(userData.id);
+  const { data: picturesMap } = useUserPicturesByIdQuery(userId);
   const { data: loggedUser } = useLoggedUserQuery({});
+
   const profilePictureData = picturesMap
     ? picturesMap.account[userData?.profilePictureId || '']
     : null;
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
   const friendsCount = getAcceptedFriends(userData).length || 0;
-  const mutalFriends = useGetMutalFriends(userData.id);
+  const mutalFriends = useGetMutalFriends(userId);
 
   const containerHeight = '140px';
   return (
@@ -40,7 +42,7 @@ export default function UserInfoSection({
         <FullPageAccountPicturesView
           setOpen={setIsFullViewOpen}
           initialPhoto={profilePictureData}
-          ownerId={userData.id}
+          ownerId={userId}
         />
       )}
       <StyledRoot sx={sx} {...rootProps}>
@@ -50,7 +52,7 @@ export default function UserInfoSection({
               <ImageWithGradientLoading
                 unoptimized
                 alt={`${userData?.firstName}'s Profile Picture`}
-                src={profilePictureData?.url || userData?.pictureUrl || ''}
+                src={profilePictureData?.url}
                 fill
                 style={{ objectFit: 'cover' }}
               />
@@ -63,7 +65,7 @@ export default function UserInfoSection({
               </Typography>
               <Typography variant='subtitle1' fontWeight={600} color={theme.palette.text.secondary}>
                 {friendsCount} friends{' '}
-                {loggedUser?.id !== userData.id && `• ${mutalFriends.length} mutual`}
+                {loggedUser?.id !== userId && `• ${mutalFriends.length} mutual`}
               </Typography>
               <Stack direction='row' mt={0.8} ml={1}>
                 {mutalFriends.slice(0, 8).map((friend, i) => (
@@ -87,13 +89,9 @@ export default function UserInfoSection({
               spacing={1}
               mb={1}
               height={36}>
-              <AddFriendButton
-                friendId={userData.id}
-                allowMenu={true}
-                refetchOtherUser={refetchUser}
-              />
-              <MessageButton userId={userData.id} />
-              <LoginAsUserButton userId={userData.id} />
+              <AddFriendButton friendId={userId} allowMenu={true} refetchOtherUser={refetchUser} />
+              <MessageButton userId={userId} />
+              <LoginAsUserButton userId={userId} />
             </Stack>
           </Stack>
           <HorizontalContentDevider sx={{ bottom: 0 }} />

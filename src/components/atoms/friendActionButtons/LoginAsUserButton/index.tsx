@@ -6,12 +6,13 @@ import { LoginAsUserButtonProps } from './types';
 
 export default function LoginAsUserButton({ userId, sx, ...rootProps }: LoginAsUserButtonProps) {
   const user = useGetUserPublicData(userId);
+  const { data: loggedUser } = useLoggedUserQuery({});
   const { refetch } = useLoggedUserQuery({});
   function loginAsUserHandler() {
     localStorage.setItem('loggedUser', JSON.stringify(userId));
     refetch();
   }
-  if (!user) return null;
+  if (!user || loggedUser?.id === user.id) return null;
   return (
     <StyledRoot focusRipple sx={sx} {...rootProps} onClick={loginAsUserHandler}>
       <StyledButtonIcon icon='right-to-bracket' />

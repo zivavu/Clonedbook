@@ -1,8 +1,10 @@
-import { IconButton, Stack, Typography, useTheme } from '@mui/material';
+import { Button, IconButton, Stack, Typography, darken, lighten, useTheme } from '@mui/material';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import Link from '@/components/atoms/Link';
 import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useUserDataByIdQuery } from '@/redux/services/userData';
+import { ITimestamp } from '@/types/timestamp';
 import { useEffect, useRef, useState } from 'react';
 import { TextAccountDetailProps } from '../../types';
 import { StyledEditInput, StyledTextDetailValue } from './styles';
@@ -10,17 +12,24 @@ import { StyledEditInput, StyledTextDetailValue } from './styles';
 export default function TextAccountDetail({
   userId,
   accountDetail,
+  CustomEditComponent,
   iconSize = 24,
   showPlaceholder = true,
   preventEdit = false,
   allowWrap,
+  editHandler,
   sx,
   ...rootProps
 }: TextAccountDetailProps) {
   const theme = useTheme();
   const { data: loggedUser } = useLoggedUserQuery({});
+  //It's used only in edit mode(when logged user is owner of the account)
+  const { refetch: refetchLoggedUser } = useUserDataByIdQuery(loggedUser?.id || '');
+
   const [isInEditMode, setIsInEditMode] = useState(false);
-  const [editInputValue, setEditInputValue] = useState(accountDetail.value);
+  const [editInputValue, setEditInputValue] = useState<string | ITimestamp | null>(
+    accountDetail.value,
+  );
 
   const inputTextFieldRef = useRef<HTMLInputElement | null>(null);
 
@@ -35,7 +44,7 @@ export default function TextAccountDetail({
 
   const { icon, label, value, valueLink } = accountDetail;
   const placeholder = accountDetail.placeholder || "Didn't specified";
-  if ((!value && !showPlaceholder) || (!isOwner && preventEdit)) return null;
+  if ((!value && !showPlaceholder) || (!value && !isOwner && !preventEdit)) return null;
 
   return (
     <Stack
@@ -92,19 +101,59 @@ export default function TextAccountDetail({
         </>
       )}
       {isInEditMode && (
-        <>
-          <StyledEditInput
-            size='medium'
-            variant='outlined'
-            value={editInputValue}
-            onChange={(e) => setEditInputValue(e.target.value)}
-            label={label}
-            inputRef={inputTextFieldRef}
-          />
-        </>
+        <Stack direction='row' width='100%' spacing={1} alignItems='center'>
+          {CustomEditComponent ? (
+            <CustomEditComponent setEditInputValue={setEditInputValue} />
+          ) : (
+            <StyledEditInput
+              size='medium'
+              variant='outlined'
+              value={editInputValue}
+              onChange={(e) => setEditInputValue(e.target.value)}
+              label={label}
+              inputRef={inputTextFieldRef}
+            />
+          )}
+
+          <Button
+            variant='contained'
+            onClick={async () => {
+              if (editHandler && editInputValue) {
+                await editHandler(editInputValue);
+                refetchLoggedUser();
+              }
+              setIsInEditMode(false);
+            }}
+            sx={{
+              padding: theme.spacing(1, 3),
+              '&:hover': {
+                backgroundColor:
+                  theme.palette.mode === 'light'
+                    ? darken(theme.palette.primary.main, 0.1)
+                    : lighten(theme.palette.primary.main, 0.1),
+              },
+            }}>
+            Save
+          </Button>
+          <Button
+            onClick={() => setIsInEditMode(false)}
+            variant='contained'
+            sx={{
+              padding: theme.spacing(1, 3),
+              backgroundColor: theme.palette.secondary.main,
+              '&:hover': {
+                backgroundColor:
+                  theme.palette.mode === 'light'
+                    ? darken(theme.palette.secondary.main, 0.1)
+                    : lighten(theme.palette.secondary.main, 0.1),
+              },
+            }}>
+            Cancel
+          </Button>
+        </Stack>
       )}
 
-      {isOwner && !preventEdit && (
+      {isOwner && !preventEdit && !isInEditMode && (
         <IconButton
           onClick={() => {
             setIsInEditMode((prev) => !prev);

@@ -17,7 +17,7 @@ export default function FamilyAndRelationshipsSection({
   const status = profileData?.about.relationship?.status;
   const hasPartner =
     !!partnertId && (status === 'in relation' || status === 'married' || status === 'engaged');
-  const familyMembers = Object.entries(profileData?.about.relatives)
+  const familyMembers = Object.entries(profileData?.about.relatives || {})
     .map(([key, value]) => {
       return { id: key, kindship: value };
     })

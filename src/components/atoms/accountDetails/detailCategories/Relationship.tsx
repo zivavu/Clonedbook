@@ -31,7 +31,8 @@ export default function Relationship({
       userId={userData.id}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
-      preventEdit={preventEdit}
+      editHandler={async () => {}}
+      preventEdit={true}
       iconSize={iconSize}
       sx={sx}
       {...rootProps}

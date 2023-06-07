@@ -1,3 +1,4 @@
+import updateUserAboutField from '@/common/firebase/updateData/user/updateUserAboutTextFields';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 
@@ -26,6 +27,9 @@ export default function HighSchool({
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
       iconSize={iconSize}
+      editHandler={(value: string) =>
+        updateUserAboutField({ userId: userData.id, fieldName: 'highSchool', value: value })
+      }
       sx={sx}
       {...rootProps}
     />

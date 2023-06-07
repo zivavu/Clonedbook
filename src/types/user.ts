@@ -11,22 +11,7 @@ export interface IUser extends IUserBasicInfo {
   chatReferences: IChatReference[];
   friends: IFriendsMap;
   contact: IContactInfo;
-  about: {
-    intrests: string[];
-    bio?: string;
-    address?: string;
-    country?: string;
-    hometown?: string;
-    city?: string;
-    college?: string;
-    highSchool?: string;
-    workplace?: string;
-    jobTitle?: string;
-    relationship?: IRelationship;
-    birthDate?: ITimestamp;
-    relatives: IRealativesMap;
-    sex: TUserSex;
-  };
+  about: IUserStringAbout & IUserCustomAbout;
 }
 
 export interface IUserBasicInfo {
@@ -35,6 +20,27 @@ export interface IUserBasicInfo {
   middleName?: string;
   lastName: string;
   pictureUrl?: string;
+}
+
+export interface IUserStringAbout {
+  bio?: string;
+  address?: string;
+  country?: string;
+  hometown?: string;
+  city?: string;
+  college?: string;
+  highSchool?: string;
+  workplace?: string;
+  jobTitle?: string;
+  sex: TUserSex;
+}
+export type TUserAboutField = keyof IUserStringAbout;
+
+export interface IUserCustomAbout {
+  intrests: string[];
+  relationship?: IRelationship;
+  birthDate?: ITimestamp;
+  relatives: IRealativesMap;
 }
 
 export interface IRelationship {
@@ -59,6 +65,7 @@ export interface IContactInfo {
   email: string;
   phoneNumber: string;
 }
+export type TUserContactField = keyof IContactInfo;
 
 export interface IRealativesMap {
   [key: string]: TKinship;

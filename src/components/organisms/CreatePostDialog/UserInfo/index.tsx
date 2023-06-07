@@ -4,7 +4,6 @@ import { StyledRoot } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import UserLink from '@/components/atoms/UserLink';
 import { UserInfoProps } from './types';
 
 export default function UserInfo({ user, sx, ...rootProps }: UserInfoProps) {
@@ -14,9 +13,12 @@ export default function UserInfo({ user, sx, ...rootProps }: UserInfoProps) {
       <Stack direction='row' spacing={1}>
         <UserAvatar userId={user.id} />
         <Box>
-          <UserLink userId={user.id} />
+          <Typography variant='subtitle2' fontWeight={500} lineHeight='1rem' pb={0.3}>
+            {user.firstName} {user.lastName}
+          </Typography>
           <ButtonBase
             focusRipple
+            disabled
             sx={{
               backgroundColor: theme.palette.secondary.main,
               padding: theme.spacing(0.2, 1),

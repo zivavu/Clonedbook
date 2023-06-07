@@ -17,6 +17,7 @@ export default function FamilyMember({
   const label = isPartner
     ? `${kindship} with ${relative.firstName} ${relative.lastName}`
     : kindship;
+
   return (
     <FamilyAccountDetail
       label={label}

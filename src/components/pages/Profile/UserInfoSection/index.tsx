@@ -1,14 +1,14 @@
-import { Box, ButtonBase, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from './styles';
 
 import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
-import Icon from '@/components/atoms/Icon/Icon';
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
+import LoginAsUserButton from '@/components/atoms/friendActionButtons/LoginAsUserButton';
 import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
@@ -93,16 +93,7 @@ export default function UserInfoSection({
                 refetchOtherUser={refetchUser}
               />
               <MessageButton userId={userData.id} />
-              <ButtonBase
-                focusRipple
-                sx={{
-                  height: '100%',
-                  padding: theme.spacing(0, 2.5),
-                  bgcolor: theme.palette.secondary.dark,
-                  borderRadius: theme.spacing(0.75),
-                }}>
-                <Icon icon='caret-down' />
-              </ButtonBase>
+              <LoginAsUserButton userId={userData.id} />
             </Stack>
           </Stack>
           <HorizontalContentDevider sx={{ bottom: 0 }} />

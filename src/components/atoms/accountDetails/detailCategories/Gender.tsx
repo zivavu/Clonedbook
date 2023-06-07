@@ -1,3 +1,5 @@
+import updateUserAboutField from '@/common/firebase/updateData/user/updateUserAboutTextFields';
+import { TUserSex } from '@/types/user';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 
@@ -24,6 +26,9 @@ export default function Gender({
       showPlaceholder={showPlaceholder}
       preventEdit={preventEdit}
       iconSize={iconSize}
+      editHandler={(value: TUserSex) =>
+        updateUserAboutField({ userId: userData.id, fieldName: 'sex', value: value })
+      }
       sx={sx}
       {...rootProps}
     />

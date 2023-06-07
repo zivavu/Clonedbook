@@ -1,3 +1,4 @@
+import updateUserAboutField from '@/common/firebase/updateData/user/updateUserAboutTextFields';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 
@@ -25,6 +26,9 @@ export default function Phone({
       showPlaceholder={showPlaceholder}
       preventEdit={preventEdit}
       iconSize={iconSize}
+      editHandler={(value: string) =>
+        updateUserAboutField({ userId: userData.id, fieldName: 'phoneNumber', value: value })
+      }
       sx={sx}
       {...rootProps}
     />

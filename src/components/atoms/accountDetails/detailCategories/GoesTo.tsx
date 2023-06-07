@@ -25,6 +25,7 @@ export default function GoesTo({
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
       preventEdit={preventEdit}
+      editHandler={async () => {}}
       iconSize={iconSize}
       sx={sx}
       {...rootProps}

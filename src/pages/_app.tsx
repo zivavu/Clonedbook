@@ -1,5 +1,4 @@
 import { config, library } from '@fortawesome/fontawesome-svg-core';
-
 import { faComment, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import {
   faAngleLeft,
@@ -40,6 +39,8 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 import type { AppProps } from 'next/app';
 
 import { faFacebookMessenger, faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -47,6 +48,7 @@ import { faFacebookMessenger, faGithub } from '@fortawesome/free-brands-svg-icon
 import ThemeModeProvider from '@/design/ThemeModeProvider';
 import { store } from '@/redux/store';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Provider } from 'react-redux';
 config.autoAddCss = false;
 
@@ -100,9 +102,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Provider store={store}>
-        <ThemeModeProvider>
-          <Component {...pageProps} />
-        </ThemeModeProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <ThemeModeProvider>
+            <Component {...pageProps} />
+          </ThemeModeProvider>
+        </LocalizationProvider>
       </Provider>
     </>
   );

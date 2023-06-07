@@ -1,3 +1,4 @@
+import updateUserAboutField from '@/common/firebase/updateData/user/updateUserAboutTextFields';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 
@@ -5,7 +6,7 @@ export default function LivesIn({
   userData,
   iconSize,
   showPlaceholder,
-  allowWrap,
+  allowWrap = false,
   preventEdit,
   sx,
   ...rootProps
@@ -28,7 +29,10 @@ export default function LivesIn({
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}
       iconSize={iconSize}
-      allowWrap={allowWrap || false}
+      allowWrap={allowWrap}
+      editHandler={(value: string) =>
+        updateUserAboutField({ userId: userData.id, fieldName: 'address', value: value })
+      }
       sx={sx}
       {...rootProps}
     />

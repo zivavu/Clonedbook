@@ -1,8 +1,9 @@
+import { PaletteMode } from '@mui/material';
 import { createSlice } from '@reduxjs/toolkit';
 
 const getInitialTheme = () => {
   return {
-    mode: 'dark',
+    mode: 'dark' as PaletteMode,
   };
 };
 

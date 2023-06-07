@@ -60,9 +60,11 @@ export default function ElementInfo({
               ? `${commentsLength} comments`
               : `${commentsLength} comment`}
           </Typography>
-          <Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
-            {element.shareCount} shares
-          </Typography>
+          {element.shareCount > 0 && (
+            <Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
+              {element.shareCount} shares
+            </Typography>
+          )}
         </Box>
       </Stack>
       <ActionButtons

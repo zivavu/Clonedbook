@@ -1,6 +1,6 @@
 import { StyledContentWrapper, StyledRoot } from './styles';
 
-import { useUserDataByIdQuery, useUserPicturesByIdQuery } from '@/redux/services/userData';
+import { useUserDataByIdQuery } from '@/redux/services/userData';
 import { Box, Container, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ import { ProfileProps, TProfileTabs } from './types';
 export default function Profile({ userId, useTabsRouting = true, sx, ...rootProps }: ProfileProps) {
   const theme = useTheme();
   const router = useRouter();
-  const { data: profileData, refetch } = useUserDataByIdQuery(userId);
+  const { data: profileData, isLoading, refetch } = useUserDataByIdQuery(userId);
 
   const [selectedTab, setSelectedTab] = useState<TProfileTabs>(useTabsRouting ? null : 'posts');
 
@@ -43,12 +43,23 @@ export default function Profile({ userId, useTabsRouting = true, sx, ...rootProp
         </Container>
       </Box>
       <StyledContentWrapper>
-        {selectedTab === 'posts' && <PostsTab userId={userId} profileData={profileData} />}
-        {selectedTab === 'about' && (
-          <AboutTab profileData={profileData} setSelectedTab={setSelectedTab} />
+        {selectedTab === 'posts' && (
+          <PostsTab key={userId} userId={userId} profileData={profileData} isLoading={isLoading} />
         )}
-        {selectedTab === 'friends' && <FriendsTab profileData={profileData} />}
-        {selectedTab === 'photos' && <PhotosTab profileData={profileData} />}
+        {selectedTab === 'about' && (
+          <AboutTab
+            key={userId}
+            profileData={profileData}
+            setSelectedTab={setSelectedTab}
+            isLoading={isLoading}
+          />
+        )}
+        {selectedTab === 'friends' && (
+          <FriendsTab key={userId} profileData={profileData} isLoading={isLoading} />
+        )}
+        {selectedTab === 'photos' && (
+          <PhotosTab key={userId} profileData={profileData} isLoading={isLoading} />
+        )}
       </StyledContentWrapper>
     </StyledRoot>
   );

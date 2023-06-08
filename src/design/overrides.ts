@@ -59,9 +59,13 @@ export const getCompoentsOverrides = (palette: Palette, shadows: Shadows) => {
     MuiModal: {
       styleOverrides: {
         root: {
-          '& .MuiBackdrop-root': {
+          '& .MuiModal-backdrop': {
             backgroundColor: palette.background.default,
             opacity: `0.85 !important`,
+          },
+          '& .MuiBackdrop-invisible': {
+            backgroundColor: 'transparten',
+            opacity: `0 !important`,
           },
         },
       },

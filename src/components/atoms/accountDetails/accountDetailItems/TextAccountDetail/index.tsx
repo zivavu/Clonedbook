@@ -5,11 +5,12 @@ import Link from '@/components/atoms/Link';
 import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useUserDataByIdQuery } from '@/redux/services/userData';
 import { ITimestamp } from '@/types/timestamp';
+import { TUserSex } from '@/types/user';
 import { useEffect, useRef, useState } from 'react';
 import { TextAccountDetailProps } from '../../types';
 import { StyledEditInput, StyledTextDetailValue } from './styles';
 
-export default function TextAccountDetail({
+export default function TextAccountDetail<T = ITimestamp | TUserSex | string>({
   userId,
   accountDetail,
   CustomEditComponent,
@@ -20,24 +21,22 @@ export default function TextAccountDetail({
   editHandler,
   sx,
   ...rootProps
-}: TextAccountDetailProps) {
+}: TextAccountDetailProps<T>) {
   const theme = useTheme();
   const { data: loggedUser } = useLoggedUserQuery({});
   //It's used only in edit mode(when logged user is owner of the account)
   const { refetch: refetchLoggedUser } = useUserDataByIdQuery(loggedUser?.id || '');
 
   const [isInEditMode, setIsInEditMode] = useState(false);
-  const [editInputValue, setEditInputValue] = useState<string | ITimestamp | null>(
-    accountDetail.value,
-  );
+  const [editInputValue, setEditInputValue] = useState<T | undefined>();
 
-  const inputTextFieldRef = useRef<HTMLInputElement | null>(null);
+  const inputTextFieldRef = useRef<HTMLInputElement | undefined>();
 
   useEffect(() => {
     if (inputTextFieldRef.current) {
       inputTextFieldRef.current.focus();
     }
-    setEditInputValue(accountDetail.value);
+    setEditInputValue(accountDetail.value as T);
   }, [isInEditMode]);
 
   const isOwner = loggedUser?.id === userId;
@@ -103,13 +102,13 @@ export default function TextAccountDetail({
       {isInEditMode && (
         <Stack direction='row' width='100%' spacing={1} alignItems='center'>
           {CustomEditComponent ? (
-            <CustomEditComponent setEditInputValue={setEditInputValue} />
+            <CustomEditComponent setEditInputValue={setEditInputValue} initialValue={value as T} />
           ) : (
             <StyledEditInput
               size='medium'
               variant='outlined'
               value={editInputValue}
-              onChange={(e) => setEditInputValue(e.target.value)}
+              onChange={(e) => setEditInputValue(e.target.value as T)}
               label={label}
               inputRef={inputTextFieldRef}
             />

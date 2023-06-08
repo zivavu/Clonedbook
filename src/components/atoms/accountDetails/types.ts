@@ -1,4 +1,3 @@
-import { ITimestamp } from '@/types/timestamp';
 import { IUser, IUserBasicInfo, TKinship, TPartnerStatus } from '@/types/user';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { StackProps } from '@mui/material';
@@ -14,7 +13,7 @@ export interface ITextAccountDetail {
   //showed when the user is logged in and the value of field is null
   editPlaceholder: string;
 }
-export interface TextAccountDetailProps extends StackProps {
+export interface TextAccountDetailProps<T> extends StackProps {
   userId: string;
   iconSize?: number;
   accountDetail: ITextAccountDetail;
@@ -26,12 +25,16 @@ export interface TextAccountDetailProps extends StackProps {
   //prevent edit is used when we don't want to show the edit button, even for the logged in user(for eg. in IntroTile)
   preventEdit?: boolean;
 
-  editHandler: (value: any) => Promise<void>;
-  CustomEditComponent?: FC<CustomEditComponentProps>;
+  editHandler: (value: T) => Promise<void>;
+
+  CustomEditComponent?: TCustomEditComponent<T>;
 }
 
-export interface CustomEditComponentProps {
-  setEditInputValue: Dispatch<SetStateAction<ITimestamp | string | null>>;
+type TCustomEditComponent<T> = FC<CustomEditComponentProps<T>>;
+
+export interface CustomEditComponentProps<T> {
+  setEditInputValue: Dispatch<SetStateAction<T | undefined>>;
+  initialValue?: T;
 }
 
 export interface CategoryProps extends StackProps {

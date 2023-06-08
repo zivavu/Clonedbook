@@ -9,6 +9,7 @@ import { Timestamp } from 'firebase/firestore';
 import { useState } from 'react';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
 import { CategoryProps, CustomEditComponentProps, ITextAccountDetail } from '../types';
+
 export default function Birthdate({
   userData,
   iconSize,
@@ -44,7 +45,7 @@ export default function Birthdate({
   );
 }
 
-const CustomDatePicker = ({ setEditInputValue }: CustomEditComponentProps) => {
+const CustomDatePicker = ({ setEditInputValue }: CustomEditComponentProps<ITimestamp>) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);

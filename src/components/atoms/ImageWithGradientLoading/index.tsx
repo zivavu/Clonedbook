@@ -9,6 +9,7 @@ interface ImageWithGradientLoadingProps extends Omit<ImageProps, 'src'> {
 export default function ImageWithGradientLoading({
   alt,
   src,
+  sizes,
   ...rootProps
 }: ImageWithGradientLoadingProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,8 +18,8 @@ export default function ImageWithGradientLoading({
       {src && (
         <Image
           loading='lazy'
-          unoptimized
           onLoadingComplete={() => setIsLoading(false)}
+          sizes={sizes}
           alt={alt}
           src={src}
           {...rootProps}

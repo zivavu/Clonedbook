@@ -80,7 +80,6 @@ export default function Picture({
             position: 'relative',
           }}>
           <Image
-            unoptimized
             src={photoSrc}
             blurDataURL={blurSrc}
             alt={alt || "Post's picture"}

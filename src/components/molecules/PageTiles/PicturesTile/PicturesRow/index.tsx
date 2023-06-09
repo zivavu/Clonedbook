@@ -50,7 +50,6 @@ export default function PicturesRow({
                   src={picture.url}
                   fill
                   sizes='150px'
-                  unoptimized
                   style={{
                     objectFit: 'cover',
                   }}

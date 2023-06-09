@@ -72,7 +72,6 @@ export default function PhotosCarousel({
               quality={100}
               style={{ objectFit: 'contain' }}
               alt='Full Size Photo'
-              unoptimized
             />
           </Box>
         </StyledPhotosWrapper>

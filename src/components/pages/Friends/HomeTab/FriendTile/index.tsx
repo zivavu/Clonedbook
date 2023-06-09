@@ -29,6 +29,7 @@ export default function FriendTile({
           margin: theme.spacing(1),
         }}>
         <UserPicture
+          sizes='150px'
           userId={userId}
           sx={{ borderBottomRightRadius: 0, borderBottomLeftRadius: 0, border: 'none' }}
         />

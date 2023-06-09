@@ -32,7 +32,6 @@ export default function BackgroundPicture({
       <StyledBacgroundPictureContainer>
         <ButtonBase sx={{ width: '100%', height: '100%' }} onClick={() => setIsFullViewOpen(true)}>
           <ImageWithGradientLoading
-            unoptimized
             alt={`${userData?.firstName}'s Bacground Picture`}
             src={backgroundPhotoData?.url}
             fill

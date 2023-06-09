@@ -10,6 +10,7 @@ import { UserAvatarProps, UserImageProps } from './types';
 export default function UserAvatar({
   sx,
   size = 40,
+  sizes = '60px',
   alt,
   userId,
   useLink = true,
@@ -88,7 +89,6 @@ export default function UserAvatar({
 const UserImage = ({ user, alt }: UserImageProps) => {
   return (
     <Image
-      unoptimized
       fill
       src={user?.pictureUrl || '/no-profile-picture-icon.svg'}
       alt={alt || `${user?.firstName} ${user?.lastName}'s Profile Picture`}

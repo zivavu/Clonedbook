@@ -9,6 +9,7 @@ import { UserPictureProps } from './types';
 
 export default function UserPicture({
   userId,
+  sizes,
   usePopper = true,
   sx,
   ...rootProps
@@ -35,6 +36,7 @@ export default function UserPicture({
         ref={anchorElRef}>
         <ImageWithGradientLoading
           fill
+          sizes={sizes}
           src={user.pictureUrl || '/no-profile-picture-icon.svg'}
           alt={`${user.firstName} ${user.lastName} Profile picture`}
         />

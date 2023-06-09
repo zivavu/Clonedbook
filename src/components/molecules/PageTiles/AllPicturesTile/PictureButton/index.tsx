@@ -12,7 +12,6 @@ export default function PictureButton({ picture, onClick, sx, ...rootProps }: Pi
         src={picture.url}
         fill
         sizes='300px'
-        unoptimized
         style={{
           objectFit: 'cover',
         }}

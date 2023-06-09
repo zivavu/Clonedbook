@@ -50,8 +50,8 @@ export default function UserInfoSection({
           <Box height={containerHeight}>
             <StyledProfilePictureButton onClick={() => setIsFullViewOpen(true)}>
               <ImageWithGradientLoading
-                unoptimized
                 alt={`${userData?.firstName}'s Profile Picture`}
+                sizes='250px'
                 src={profilePictureData?.url}
                 fill
                 style={{ objectFit: 'cover' }}

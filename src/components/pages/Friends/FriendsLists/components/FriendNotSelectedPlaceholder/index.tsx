@@ -17,6 +17,7 @@ export default function FriendNotSelectedPlaceholder({ sx, ...rootProps }: Stack
           alignItems: 'center',
         }}>
         <Image
+          unoptimized
           src={SelectProfileFromListPlaceholderIcon}
           width={120}
           height={120}

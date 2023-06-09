@@ -24,6 +24,7 @@ export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFrien
       justifyContent='space-between'>
       <Stack direction='row' alignItems='center' height='100%' spacing={2}>
         <UserPicture
+          sizes='150px'
           userId={friendId}
           sx={{
             height: smallScreen ? '80%' : '100%',

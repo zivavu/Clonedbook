@@ -8,6 +8,7 @@ import InteractButton from '@/components/atoms/InteractButton';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
+import { IPictureUrls } from '@/types/picture';
 import { useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import PostActions from './PostActions';
@@ -53,7 +54,7 @@ export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPo
         </StyledContentWrapper>
         {hasPictures && (
           <Box mt={theme.spacing(1)}>
-            <PicturesDisplay pictures={postPictures as string[]} postId={postId} />
+            <PicturesDisplay pictures={postPictures as IPictureUrls[]} postId={postId} />
           </Box>
         )}
 

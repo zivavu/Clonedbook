@@ -45,6 +45,15 @@ export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
     setSearchValue('');
   }
 
+  const friendsToRender = searchValue
+    ? friends.filter((friend) => {
+        const friendUserName = (
+          friend.basicInfo.firstName + friend.basicInfo.lastName
+        ).toLowerCase();
+        const searchValueLowerCase = searchValue.toLowerCase();
+        return friendUserName.includes(searchValueLowerCase);
+      })
+    : friends;
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <StyledHeadingContainer>
@@ -71,18 +80,9 @@ export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
         </Box>
       )}
       <List sx={{ pt: theme.spacing(0) }}>
-        {friends
-          .filter((friend) => {
-            const friendUserName = (
-              friend.basicInfo.firstName + friend.basicInfo.lastName
-            ).toLowerCase();
-            const searchValueLowerCase = searchValue.toLowerCase();
-            return friendUserName.includes(searchValueLowerCase);
-          })
-          .slice(0, 20)
-          .map((friend) => (
-            <FriendListItem key={friend.id} friend={friend} />
-          ))}
+        {friendsToRender.slice(0, 20).map((friend) => (
+          <FriendListItem key={friend.id} friend={friend} />
+        ))}
       </List>
     </StyledRoot>
   );

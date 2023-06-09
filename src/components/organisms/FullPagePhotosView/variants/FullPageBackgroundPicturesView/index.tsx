@@ -36,7 +36,12 @@ export default function FullPageBackgroundPicturesView({
   return (
     <FullPagePhotosWrapper setOpen={setOpen} sx={sx} {...rootProps}>
       <PhotosCarousel
-        picturesUrls={pictures.map((picture) => picture.url)}
+        picturesUrls={pictures.map((picture) => {
+          return {
+            url: picture.url,
+            blurUrl: picture.blurUrl,
+          };
+        })}
         currentPictureIndex={currentPictureIndex}
         setCurrentPictureIndex={setCurrentPictureIndex}
         setOpen={setOpen}

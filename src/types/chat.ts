@@ -7,5 +7,4 @@ export interface IChat extends IChatReference {
 
 export interface IChatReference {
   id: string;
-  users: string[];
 }

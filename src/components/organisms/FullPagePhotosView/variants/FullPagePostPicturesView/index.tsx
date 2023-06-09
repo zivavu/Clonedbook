@@ -17,7 +17,7 @@ export default function FullPagePostPicturesView({
   const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(0);
   useEffect(() => {
     setCurrentPictureIndex(
-      post?.pictures?.findIndex((pictureUrl) => pictureUrl === initialPhotoUrl) || 0,
+      post?.pictures?.findIndex((picture) => picture.url === initialPhotoUrl) || 0,
     );
   }, [initialPhotoUrl, post]);
 

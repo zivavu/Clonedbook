@@ -19,9 +19,13 @@ export default function PicturesDisplay({
 
   //undefined as a second slice parameter means that we display all pictures
   const cutIndex = mode === 'single' ? 1 : mode === 'duo' ? 2 : undefined;
-  const picturesToDisplay: PictureToDisplay[] = pictures.slice(0, cutIndex).map((picture) => ({
-    src: picture,
-  }));
+  const picturesToDisplay: PictureToDisplay[] = pictures.slice(0, cutIndex).map(
+    (picture) =>
+      ({
+        url: picture.url,
+        blurUrl: picture.blurUrl,
+      } as PictureToDisplay),
+  );
 
   const pictureBorder = `1px solid ${theme.palette.background.paper}`;
 
@@ -31,7 +35,13 @@ export default function PicturesDisplay({
 
       {mode === 'single' && (
         <StyledPicturesContainer>
-          <Picture src={picturesToDisplay[0].src} size='large' quality={80} postId={postId} />
+          <Picture
+            src={picturesToDisplay[0].url}
+            blurSrc={picturesToDisplay[0].blurUrl}
+            size='large'
+            quality={80}
+            postId={postId}
+          />
         </StyledPicturesContainer>
       )}
 
@@ -39,14 +49,16 @@ export default function PicturesDisplay({
         <StyledPicturesContainer>
           <Stack direction='row' width='100%' height='100%' position='relative'>
             <Picture
-              src={picturesToDisplay[0].src}
+              src={picturesToDisplay[0].url}
+              blurSrc={picturesToDisplay[0].blurUrl}
               size='medium'
               quality={70}
               postId={postId}
               sx={{ borderRight: `1px solid ${theme.palette.background.paper}` }}
             />
             <Picture
-              src={picturesToDisplay[1].src}
+              src={picturesToDisplay[1].url}
+              blurSrc={picturesToDisplay[1].blurUrl}
               size='medium'
               quality={70}
               postId={postId}

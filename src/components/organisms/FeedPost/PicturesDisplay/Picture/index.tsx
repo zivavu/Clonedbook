@@ -9,6 +9,7 @@ import { PictureProps } from './types';
 
 export default function Picture({
   src,
+  blurSrc,
   alt,
   size: imageSize,
   quality,
@@ -81,6 +82,7 @@ export default function Picture({
           <Image
             unoptimized
             src={photoSrc}
+            blurDataURL={blurSrc}
             alt={alt || "Post's picture"}
             fill
             quality={quality}

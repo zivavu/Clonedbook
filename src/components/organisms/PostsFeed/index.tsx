@@ -15,7 +15,7 @@ export default function PostsFeed({
   return (
     <StyledRoot sx={sx} {...rootProps} spacing={2}>
       {posts.map((post) => (
-        <FeedPost key={post.id} post={post} refetchPost={() => refetchPostById(post.id)}></FeedPost>
+        <FeedPost key={post.id} post={post} refetchPost={() => refetchPostById(post.id)} />
       ))}
       {isLoading && (
         <>

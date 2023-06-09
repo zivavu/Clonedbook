@@ -7,16 +7,18 @@ import {
   StyledRoot,
 } from './styles';
 
-import { optimizePhotos } from '@/common/misc/optimizePhotos';
+import { blurPhotoFile } from '@/common/misc/blurPhotoFIle';
+import { optimizePhotoFilesArr } from '@/common/misc/optimizePhotoFilesArr';
 import { separateUserBasicInfo } from '@/common/misc/userDataManagment/separateUserBasicInfo';
 import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { db, storage } from '@/config/firebase.config';
+import { IPictureUrls } from '@/types/picture';
 import { IPost } from '@/types/post';
 import { IUserBasicInfo } from '@/types/user';
 import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
-import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRef, useState } from 'react';
 import ErrorsFeed from './ErrorsFeed';
 import PhotosInput from './PhotosInput';
@@ -51,33 +53,64 @@ export default function CreatePostDialog({
     }
     const userBasicInfo: IUserBasicInfo = separateUserBasicInfo(user);
     const postId = uuidv4();
-    const picturesIds: string[] = [];
+    const pictureUuids = postPhotos.map(() => uuidv4());
 
-    const optimizedPhotosBlobs = await optimizePhotos(postPhotos);
-    const uploadPhotosPromises = optimizedPhotosBlobs.map((photo) => {
-      const pictureId = uuidv4();
-      picturesIds.push(pictureId);
+    const optimizedPhotosBlobs = await optimizePhotoFilesArr(postPhotos);
+    const blurredPhotosBlobs = await Promise.all(postPhotos.map((photo) => blurPhotoFile(photo)));
+
+    const uploadPhotosPromises = optimizedPhotosBlobs.map(async (photo, i) => {
+      const pictureId = pictureUuids[i];
       const photoRef = ref(storage, `posts/${postId}/${pictureId}`);
-      return uploadBytes(photoRef, photo, { contentType: 'image/webp' });
+      const result = await uploadBytes(photoRef, photo, { contentType: 'image/webp' }).then(
+        (res) => {
+          if (!res.ref) return;
+          return getDownloadURL(res.ref);
+        },
+      );
+      return result;
     });
+
+    const uploadBlurredPhotosPromises = blurredPhotosBlobs.map(async (photo, i) => {
+      const pictureId = pictureUuids[i];
+      const photoRef = ref(storage, `posts/${postId}/${pictureId}-blurred`);
+      const result = await uploadBytes(photoRef, photo, { contentType: 'image/webp' }).then(
+        (res) => {
+          if (!res.ref) return;
+          return getDownloadURL(res.ref);
+        },
+      );
+      return result;
+    });
+
     try {
-      const results = await Promise.allSettled(uploadPhotosPromises);
-      const getDownloadUrlsPromises = results.map((result) => {
-        if (result.status === 'rejected') return;
-        return getDownloadURL(result.value.ref);
-      });
-      const urlsResults = await Promise.allSettled(getDownloadUrlsPromises);
-      const downloadUrls = urlsResults
+      const res = await Promise.allSettled(uploadPhotosPromises);
+      const urls = res
         .map((result) => {
           if (result.status === 'rejected') return;
           return result.value as string;
         })
         .filter((url) => url !== undefined) as string[];
 
+      const blurredRes = await Promise.allSettled(uploadBlurredPhotosPromises);
+      const blurredUrls = blurredRes
+        .map((result) => {
+          if (result.status === 'rejected') return;
+          return result.value as string;
+        })
+        .filter((url) => url !== undefined) as string[];
+      if (urls.length !== blurredUrls.length)
+        throw new Error('Problem with uploading photos occurred');
+
+      const picturesUrls: IPictureUrls[] = urls.map((url, i) => {
+        return {
+          url,
+          blurUrl: blurredUrls[i],
+        };
+      });
       const post: IPost = {
         text: postTextRef.current,
         createdAt: Timestamp.now(),
-        pictures: downloadUrls,
+        pictures: picturesUrls,
         comments: {},
         id: postId,
         ownerId: userBasicInfo.id,
@@ -91,16 +124,6 @@ export default function CreatePostDialog({
 
       await refetchPostById(postId);
     } catch (err) {
-      try {
-        const picturesRefs = picturesIds.map((id) => ref(storage, `posts/${postId}/${id}`));
-        const deletePromises = picturesRefs.map((id) => deleteObject(id));
-        await Promise.allSettled(deletePromises);
-      } catch {
-        setErrors((prev) => [
-          ...prev,
-          { content: 'Problem with deleting photos occurred', sevariety: 'error' },
-        ]);
-      }
       setErrors((prev) => [
         { content: 'Problem with creating post occurred. Try again', sevariety: 'error' },
         ...prev,

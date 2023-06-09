@@ -88,7 +88,8 @@ export default function ManyPicutresDisplay({
     return !isLastPicture ? (
       <Picture
         key={id}
-        src={picture.src}
+        src={picture.url}
+        blurSrc={picture.blurUrl}
         quality={quality}
         size={size}
         sx={usedLayout[i]}
@@ -99,7 +100,8 @@ export default function ManyPicutresDisplay({
         key={id}
         picturesLength={pictures.length}
         postId={postId}
-        src={picture.src}
+        src={picture.url}
+        blurSrc={picture.blurUrl}
         quality={quality}
         size={size}
         sx={{ ...usedLayout[i] }}

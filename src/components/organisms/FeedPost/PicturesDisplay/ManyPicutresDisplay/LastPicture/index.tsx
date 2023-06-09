@@ -6,6 +6,7 @@ import { LastPictureProps } from './types';
 export default function LastPicture({
   postId,
   src,
+  blurSrc,
   size,
   quality,
   picturesLength,
@@ -22,8 +23,7 @@ export default function LastPicture({
           width: '100%',
           height: '100%',
           pointerEvents: 'none',
-        }}
-      >
+        }}>
         <Typography
           variant='h4'
           color={theme.palette.common.white}
@@ -34,12 +34,11 @@ export default function LastPicture({
             left: '50%',
             transform: 'translate(-50%, -50%)',
             userSelect: 'none',
-          }}
-        >
+          }}>
           +{picturesLength - 4}
         </Typography>
       </Box>
-      <Picture src={src} quality={quality} size={size} postId={postId}></Picture>
+      <Picture src={src} blurSrc={blurSrc} quality={quality} size={size} postId={postId}></Picture>
     </Box>
   );
 }

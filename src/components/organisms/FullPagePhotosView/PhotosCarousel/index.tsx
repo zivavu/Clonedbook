@@ -21,8 +21,7 @@ export default function PhotosCarousel({
   ...rootProps
 }: PhotosCarouselProps) {
   const theme = useTheme();
-  const currentPictureUrl = picturesUrls?.[currentPictureIndex];
-
+  const currentPictureUrls = picturesUrls?.[currentPictureIndex];
   const handleSwitchPicture = (direction: 'left' | 'right') => {
     if (direction === 'left') {
       if (currentPictureIndex === 0) {
@@ -66,7 +65,8 @@ export default function PhotosCarousel({
           />
           <Box position='relative' width='100%' height='100%'>
             <Image
-              src={currentPictureUrl || ''}
+              src={currentPictureUrls?.url || ''}
+              blurDataURL={currentPictureUrls?.blurUrl || ''}
               fill
               sizes={imageSizes}
               quality={100}

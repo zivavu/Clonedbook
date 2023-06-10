@@ -37,7 +37,12 @@ export default function UserPreviewPopper({
         <Grow {...TransitionProps} timeout={250}>
           <StyledPopperBody onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Stack direction='row' spacing={2}>
-              <UserAvatar userId={userId} usePopper={false} size={isSmallScreen ? 60 : 96} />
+              <UserAvatar
+                userId={userId}
+                usePopper={false}
+                size={isSmallScreen ? 60 : 96}
+                sizes='150px'
+              />
               <Stack>
                 <UserLink variant='h4' fontWeight={700} userId={userId} usePopper={false} />
 

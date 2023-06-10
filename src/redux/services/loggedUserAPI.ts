@@ -1,4 +1,5 @@
 import { db } from '@/config/firebase.config';
+import { IChat } from '@/types/chat';
 import { IUser } from '@/types/user';
 import { uuidv4 } from '@firebase/util';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -36,7 +37,6 @@ export const loggedUser = createApi({
             loggedUser = user;
             localStorage.setItem('loggedUser', JSON.stringify(user.id));
           }
-
           return { data: loggedUser };
         } catch (err) {
           localStorage.removeItem('loggedUser');
@@ -45,7 +45,25 @@ export const loggedUser = createApi({
       },
       providesTags: ['user'],
     }),
+
+    userChats: builder.query({
+      async queryFn() {
+        try {
+          const userIdStorageItem = localStorage.getItem('loggedUser');
+          const loggedUserId = userIdStorageItem ? JSON.parse(userIdStorageItem) : undefined;
+          const chatsRef = collection(db, 'chats');
+          const chatsQuery = query(chatsRef, where('users', 'array-contains', loggedUserId));
+          const chatsSnapshot = await getDocs(chatsQuery);
+          const chats = chatsSnapshot.docs.map((doc) => doc.data()) as IChat[];
+          const nonEmptyChats = chats.filter((chat) => chat.messages.length > 0);
+          return { data: nonEmptyChats };
+        } catch (err) {
+          console.log(err);
+          return { error: 'Couldnt fetch users chats' };
+        }
+      },
+    }),
   }),
 });
 
-export const { useLoggedUserQuery } = loggedUser;
+export const { useLoggedUserQuery, useUserChatsQuery } = loggedUser;

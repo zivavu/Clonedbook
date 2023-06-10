@@ -25,10 +25,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
             width: '240px',
             color: theme.palette.text.secondary,
             fontWeight: 350,
-            backgroundColor:
-              theme.palette.mode === 'light'
-                ? theme.palette.secondary.main
-                : theme.palette.secondary.light,
+            backgroundColor: theme.palette.secondary.main,
 
             [theme.breakpoints.down('sm')]: {
               width: '44px',

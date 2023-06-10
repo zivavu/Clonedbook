@@ -1,4 +1,4 @@
-import { Box, List, PopoverProps, Switch, Typography, useTheme } from '@mui/material';
+import { Box, List, Switch, Typography, useTheme } from '@mui/material';
 
 import {
   StyledContentWrapper,
@@ -12,19 +12,14 @@ import {
 import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
+import { TopbarPopperProps } from '@/components/organisms/NavBar/RightSection/types';
 import { toggleTheme } from '@/redux/features/themeSlice';
 import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function LoggedUserPopover({
-  open,
-  onClose,
-  anchorEl,
-  sx,
-  ...rootProps
-}: PopoverProps) {
+export default function LoggedUserPopover({ open, anchorEl, sx, ...rootProps }: TopbarPopperProps) {
   const theme = useTheme();
   const { data: loggedUser, refetch: refetchUser } = useLoggedUserQuery({});
   const mode = useSelector((state: RootState) => state.theme.mode);
@@ -39,18 +34,7 @@ export default function LoggedUserPopover({
   };
   if (!loggedUser) return null;
   return (
-    <StyledRoot
-      open={open}
-      disableScrollLock
-      anchorEl={anchorEl}
-      onClose={onClose}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-      sx={sx}
-      {...rootProps}>
+    <StyledRoot open={open} anchorEl={anchorEl} sx={sx} {...rootProps}>
       <StyledContentWrapper>
         <InvisibleScrollableStack spacing={1} paddingY={1.5}>
           <Box paddingX={1}>

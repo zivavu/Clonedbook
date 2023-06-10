@@ -21,6 +21,7 @@ export const userData = createApi({
       },
       providesTags: ['userData'],
     }),
+
     userPicturesById: builder.query<IPicturesMap, string>({
       async queryFn(userId) {
         try {

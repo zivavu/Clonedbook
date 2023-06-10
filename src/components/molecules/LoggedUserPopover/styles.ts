@@ -1,10 +1,8 @@
 import Icon from '@/components/atoms/Icon/Icon';
-import { ButtonBase, ListItemButton, Popover, Stack, styled } from '@mui/material';
+import { ButtonBase, ListItemButton, Popper, Stack, styled } from '@mui/material';
 
-export const StyledRoot = styled(Popover)(({}) => ({
-  '& .MuiBackdrop-root': {
-    opacity: `0 !important`,
-  },
+export const StyledRoot = styled(Popper)(({ theme }) => ({
+  zIndex: theme.zIndex.appBar + 1,
 }));
 
 export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
@@ -14,6 +12,7 @@ export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.spacing(1),
   boxShadow: theme.shadows[19],
+  transform: 'translateX(-10px)',
 }));
 
 export const StyledLoggedUserButton = styled(ButtonBase)(({ theme }) => ({

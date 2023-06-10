@@ -24,6 +24,7 @@ export default function FullPageAccountPicturesView({
     typeof initialPhoto === 'number'
       ? initialPhoto
       : pictures.findIndex((picture) => picture.id === initialPhoto.id);
+
   useEffect(() => {
     setCurrentPictureIndex(initialPhotoIndex);
   }, [initialPhoto, initialPhotoIndex]);
@@ -35,9 +36,7 @@ export default function FullPageAccountPicturesView({
   return (
     <FullPagePhotosWrapper setOpen={setOpen} sx={sx} {...rootProps}>
       <PhotosCarousel
-        picturesUrls={pictures.map((picture) => {
-          return { url: picture.url, blurUrl: picture.blurUrl };
-        })}
+        pictures={pictures.map((picture) => picture.image)}
         currentPictureIndex={currentPictureIndex}
         setCurrentPictureIndex={setCurrentPictureIndex}
         setOpen={setOpen}

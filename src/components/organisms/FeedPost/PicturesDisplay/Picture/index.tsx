@@ -8,8 +8,7 @@ import { useState } from 'react';
 import { PictureProps } from './types';
 
 export default function Picture({
-  src,
-  blurSrc,
+  picture,
   alt,
   size: imageSize,
   quality,
@@ -19,7 +18,6 @@ export default function Picture({
   ...rootProps
 }: PictureProps) {
   const theme = useTheme();
-  const [photoSrc, setPhotoSrc] = useState(src);
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
   const handleClick = () => {
@@ -64,7 +62,7 @@ export default function Picture({
       {isFullViewOpen && (
         <FullPagePostPicturesView
           postId={postId}
-          initialPhotoUrl={src}
+          initialPhotoUrl={picture.url}
           setOpen={setIsFullViewOpen}
         />
       )}
@@ -80,17 +78,16 @@ export default function Picture({
             position: 'relative',
           }}>
           <Image
-            src={photoSrc}
-            blurDataURL={blurSrc}
+            src={picture.url}
+            blurDataURL={picture.blurDataUrl}
+            placeholder='blur'
             alt={alt || "Post's picture"}
             fill
             quality={quality}
             sizes={imageSizes}
-            onError={() => {
-              setPhotoSrc(`https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/800/800`);
-            }}
             style={{
               objectFit: 'cover',
+              backgroundColor: `${picture.dominantHex}`,
             }}
           />
           {children}

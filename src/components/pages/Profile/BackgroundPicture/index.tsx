@@ -33,9 +33,11 @@ export default function BackgroundPicture({
         <ButtonBase sx={{ width: '100%', height: '100%' }} onClick={() => setIsFullViewOpen(true)}>
           <ImageWithGradientLoading
             alt={`${userData?.firstName}'s Bacground Picture`}
-            src={backgroundPhotoData?.url}
+            src={backgroundPhotoData?.image.url || ''}
+            blurDataURL={backgroundPhotoData?.image.blurDataUrl || ''}
+            placeholder='blur'
             fill
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', backgroundColor: backgroundPhotoData?.image.dominantHex }}
           />
         </ButtonBase>
       </StyledBacgroundPictureContainer>

@@ -47,11 +47,14 @@ export default function PicturesRow({
                 height='100%'
                 position='relative'>
                 <ImageWithGradientLoading
-                  src={picture.url}
+                  src={picture.image.url}
+                  blurDataURL={picture.image.blurDataUrl}
+                  placeholder='blur'
                   fill
                   sizes='150px'
                   style={{
                     objectFit: 'cover',
+                    backgroundColor: picture.image.dominantHex,
                   }}
                   alt={`${owner.firstName} ${owner.lastName} Picture`}
                 />

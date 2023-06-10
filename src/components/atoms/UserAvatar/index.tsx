@@ -66,10 +66,10 @@ export default function UserAvatar({
             LinkComponent={Link}
             focusRipple
             href={`/profile/${userId}`}>
-            <UserImage user={user} alt={alt} />
+            <UserImage user={user} alt={alt} sizes={sizes} />
           </ButtonBase>
         ) : (
-          <UserImage user={user} alt={alt} />
+          <UserImage user={user} alt={alt} sizes={sizes} />
         )}
       </Box>
 
@@ -86,12 +86,13 @@ export default function UserAvatar({
   );
 }
 
-const UserImage = ({ user, alt }: UserImageProps) => {
+const UserImage = ({ user, alt, sizes }: UserImageProps) => {
   return (
     <Image
       fill
       src={user?.pictureUrl || '/no-profile-picture-icon.svg'}
       alt={alt || `${user?.firstName} ${user?.lastName}'s Profile Picture`}
+      sizes={sizes}
       style={{
         borderRadius: '50%',
       }}

@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { PhotosCarouselProps } from './types';
 
 export default function PhotosCarousel({
-  picturesUrls,
+  pictures,
   currentPictureIndex,
   setCurrentPictureIndex,
   setOpen,
@@ -21,17 +21,17 @@ export default function PhotosCarousel({
   ...rootProps
 }: PhotosCarouselProps) {
   const theme = useTheme();
-  const currentPictureUrls = picturesUrls?.[currentPictureIndex];
+  const currentPicture = pictures?.[currentPictureIndex];
   const handleSwitchPicture = (direction: 'left' | 'right') => {
     if (direction === 'left') {
       if (currentPictureIndex === 0) {
-        setCurrentPictureIndex((picturesUrls?.length || 1) - 1);
+        setCurrentPictureIndex((pictures?.length || 1) - 1);
       } else {
         setCurrentPictureIndex(currentPictureIndex - 1);
       }
     }
     if (direction === 'right') {
-      if (currentPictureIndex === (picturesUrls?.length || 1) - 1) {
+      if (currentPictureIndex === (pictures?.length || 1) - 1) {
         setCurrentPictureIndex(0);
       } else {
         setCurrentPictureIndex(currentPictureIndex + 1);
@@ -50,8 +50,8 @@ export default function PhotosCarousel({
     `1100px`,
   ].join(', ');
 
-  const isMoreThenOnePicture = (picturesUrls?.length || 0) > 1 || false;
-  if (!picturesUrls) return null;
+  const isMoreThenOnePicture = (pictures?.length || 0) > 1 || false;
+  if (!pictures) return null;
   return (
     <>
       <StyledRoot {...rootProps} sx={sx}>
@@ -65,12 +65,14 @@ export default function PhotosCarousel({
           />
           <Box position='relative' width='100%' height='100%'>
             <Image
-              src={currentPictureUrls?.url || ''}
-              blurDataURL={currentPictureUrls?.blurUrl || ''}
+              key={currentPicture.url}
+              src={currentPicture.url || ''}
+              blurDataURL={currentPicture.blurDataUrl}
+              placeholder='blur'
               fill
               sizes={imageSizes}
               quality={100}
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: 'contain', backgroundColor: currentPicture.dominantHex }}
               alt='Full Size Photo'
             />
           </Box>

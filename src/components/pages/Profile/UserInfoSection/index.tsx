@@ -52,9 +52,14 @@ export default function UserInfoSection({
               <ImageWithGradientLoading
                 alt={`${userData?.firstName}'s Profile Picture`}
                 sizes='250px'
-                src={profilePictureData?.url}
+                src={profilePictureData?.image.url || ''}
+                blurDataURL={profilePictureData?.image.blurDataUrl || ''}
+                placeholder='blur'
                 fill
-                style={{ objectFit: 'cover' }}
+                style={{
+                  objectFit: 'cover',
+                  backgroundColor: profilePictureData?.image.dominantHex,
+                }}
               />
             </StyledProfilePictureButton>
           </Box>

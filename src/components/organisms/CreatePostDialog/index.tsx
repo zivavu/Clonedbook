@@ -7,15 +7,13 @@ import {
   StyledRoot,
 } from './styles';
 
-import { blurPhotoFile } from '@/common/misc/blurPhotoFIle';
-import { optimizePhotoFilesArr } from '@/common/misc/optimizePhotoFilesArr';
-import { separateUserBasicInfo } from '@/common/misc/userDataManagment/separateUserBasicInfo';
+import { optimizePhotoFilesArr } from '@/common/misc/photoManagment/optimizePhotoFilesArr';
 import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { db, storage } from '@/config/firebase.config';
-import { IPictureUrls } from '@/types/picture';
+import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { IPictureWithPlaceholders } from '@/types/picture';
 import { IPost } from '@/types/post';
-import { IUserBasicInfo } from '@/types/user';
 import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -27,12 +25,12 @@ import UserInfo from './UserInfo';
 import { CreatePostDialogProps, CreatePostError } from './types';
 
 export default function CreatePostDialog({
-  user,
   setIsOpen,
   refetchPostById,
   sx,
   ...rootProps
 }: CreatePostDialogProps) {
+  const { data: loggedUser } = useLoggedUserQuery({});
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<CreatePostError[]>([]);
@@ -41,6 +39,7 @@ export default function CreatePostDialog({
   const postTextRef = useRef('');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    if (!loggedUser) return;
     e.preventDefault();
     if (isLoading) return;
     setIsLoading(true);
@@ -51,29 +50,15 @@ export default function CreatePostDialog({
       ]);
       return;
     }
-    const userBasicInfo: IUserBasicInfo = separateUserBasicInfo(user);
     const postId = uuidv4();
     const pictureUuids = postPhotos.map(() => uuidv4());
 
-    const optimizedPhotosBlobs = await optimizePhotoFilesArr(postPhotos);
-    const blurredPhotosBlobs = await Promise.all(postPhotos.map((photo) => blurPhotoFile(photo)));
+    const optimizedPhotos = await optimizePhotoFilesArr(postPhotos);
 
-    const uploadPhotosPromises = optimizedPhotosBlobs.map(async (photo, i) => {
+    const uploadPhotosPromises = optimizedPhotos.map(async (photo, i) => {
       const pictureId = pictureUuids[i];
       const photoRef = ref(storage, `posts/${postId}/${pictureId}`);
-      const result = await uploadBytes(photoRef, photo, { contentType: 'image/webp' }).then(
-        (res) => {
-          if (!res.ref) return;
-          return getDownloadURL(res.ref);
-        },
-      );
-      return result;
-    });
-
-    const uploadBlurredPhotosPromises = blurredPhotosBlobs.map(async (photo, i) => {
-      const pictureId = pictureUuids[i];
-      const photoRef = ref(storage, `posts/${postId}/${pictureId}-blurred`);
-      const result = await uploadBytes(photoRef, photo, { contentType: 'image/webp' }).then(
+      const result = await uploadBytes(photoRef, photo.blob, { contentType: 'image/webp' }).then(
         (res) => {
           if (!res.ref) return;
           return getDownloadURL(res.ref);
@@ -90,31 +75,24 @@ export default function CreatePostDialog({
           return result.value as string;
         })
         .filter((url) => url !== undefined) as string[];
+      if (urls.length !== optimizedPhotos.length) throw new Error('Not all photos were uploaded');
+      const photosData = urls.map(
+        (photo, i) =>
+          ({
+            url: photo,
+            blurDataUrl: optimizedPhotos[i].blurUrl,
+            dominantHex: optimizedPhotos[i].dominantHex,
+          } as IPictureWithPlaceholders),
+      );
 
-      const blurredRes = await Promise.allSettled(uploadBlurredPhotosPromises);
-      const blurredUrls = blurredRes
-        .map((result) => {
-          if (result.status === 'rejected') return;
-          return result.value as string;
-        })
-        .filter((url) => url !== undefined) as string[];
-      if (urls.length !== blurredUrls.length)
-        throw new Error('Problem with uploading photos occurred');
-
-      const picturesUrls: IPictureUrls[] = urls.map((url, i) => {
-        return {
-          url,
-          blurUrl: blurredUrls[i],
-        };
-      });
       const post: IPost = {
         text: postTextRef.current,
         createdAt: Timestamp.now(),
-        pictures: picturesUrls,
+        pictures: photosData,
         comments: {},
         id: postId,
-        ownerId: userBasicInfo.id,
-        wallOwnerId: userBasicInfo.id,
+        ownerId: loggedUser.id,
+        wallOwnerId: loggedUser.id,
         reactions: {},
         shareCount: 0,
       };
@@ -134,6 +112,7 @@ export default function CreatePostDialog({
     }
   }
 
+  if (!loggedUser) return null;
   return (
     <Dialog open onClose={() => setIsOpen(false)}>
       <form onSubmit={handleSubmit} style={{ display: 'contents' }}>
@@ -150,9 +129,9 @@ export default function CreatePostDialog({
             <Icon icon='xmark' />
           </DialogCloseIconButton>
 
-          <UserInfo user={user} />
+          <UserInfo user={loggedUser} />
           <StyledMainContentStack>
-            <PostTextInput user={user} postPhotos={postPhotos} postTextRef={postTextRef} />
+            <PostTextInput user={loggedUser} postPhotos={postPhotos} postTextRef={postTextRef} />
             <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setErrors} />
           </StyledMainContentStack>
           <Box p={2}>

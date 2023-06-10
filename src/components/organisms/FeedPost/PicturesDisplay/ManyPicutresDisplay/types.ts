@@ -1,9 +1,9 @@
+import { IPictureWithPlaceholders } from '@/types/picture';
 import { Theme } from '@emotion/react';
 import { BoxProps, SxProps } from '@mui/material';
-import { PictureToDisplay } from '../types';
 
 export interface ManyPicutresDisplayProps extends BoxProps {
-  pictures: PictureToDisplay[];
+  pictures: IPictureWithPlaceholders[];
   pictureBorder: string;
   postId: string;
 }

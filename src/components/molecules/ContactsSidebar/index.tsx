@@ -13,6 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import WriteSomethingTile from '../PageTiles/WriteSomethingTile';
 import FriendListItem from './FriendListItem';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 

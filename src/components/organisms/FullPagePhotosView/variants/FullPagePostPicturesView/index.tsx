@@ -25,7 +25,7 @@ export default function FullPagePostPicturesView({
   return (
     <FullPagePhotosWrapper setOpen={setOpen} sx={sx} {...rootProps}>
       <PhotosCarousel
-        picturesUrls={post.pictures}
+        pictures={post.pictures}
         currentPictureIndex={currentPictureIndex}
         setCurrentPictureIndex={setCurrentPictureIndex}
         setOpen={setOpen}

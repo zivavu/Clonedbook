@@ -1,4 +1,4 @@
-export async function blurPhotoFile(photo: File) {
+export async function getBlurPhotoUrl(photo: File) {
   const readPhotoPromise: Promise<HTMLImageElement> = new Promise((resolve) => {
     const reader = new FileReader();
     reader.readAsArrayBuffer(photo);
@@ -13,11 +13,11 @@ export async function blurPhotoFile(photo: File) {
   });
   const img = await readPhotoPromise;
 
-  const getBlobPromise: Promise<Blob | null> = new Promise((resolve) => {
+  function getDataUrl() {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    const MAX_WIDTH = 400;
-    const MAX_HEIGHT = 400;
+    const MAX_WIDTH = 20;
+    const MAX_HEIGHT = 20;
     if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
       const ratio = Math.min(MAX_WIDTH / img.width, MAX_HEIGHT / img.height);
       canvas.width = img.width * ratio;
@@ -26,14 +26,10 @@ export async function blurPhotoFile(photo: File) {
       canvas.width = img.width;
       canvas.height = img.height;
     }
-    ctx.filter = 'blur(3px)';
-    ctx.drawImage(img, -5, -5, canvas.width + 10, canvas.height + 10);
-    canvas.toBlob((blob) => resolve(blob), 'image/webp', 0.05);
-  });
 
-  const result = await getBlobPromise;
-  if (result === null) {
-    throw new Error('Something went wrong');
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL('image/webp', 0.1);
+    return dataUrl;
   }
-  return result;
+  return getDataUrl();
 }

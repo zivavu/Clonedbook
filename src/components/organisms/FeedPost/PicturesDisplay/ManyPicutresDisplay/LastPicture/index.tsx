@@ -5,8 +5,7 @@ import { LastPictureProps } from './types';
 
 export default function LastPicture({
   postId,
-  src,
-  blurSrc,
+  picture,
   size,
   quality,
   picturesLength,
@@ -38,7 +37,7 @@ export default function LastPicture({
           +{picturesLength - 4}
         </Typography>
       </Box>
-      <Picture src={src} blurSrc={blurSrc} quality={quality} size={size} postId={postId}></Picture>
+      <Picture picture={picture} quality={quality} size={size} postId={postId}></Picture>
     </Box>
   );
 }

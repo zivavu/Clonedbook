@@ -26,7 +26,6 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
             {user?.firstName} {user?.lastName}
           </Typography>
         </StyledListItemButton>
-
         {sidebarItems.map((item) => {
           const { key, icon, href, active } = item;
           const isActive = active && href;

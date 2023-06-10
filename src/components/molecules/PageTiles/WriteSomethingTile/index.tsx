@@ -17,25 +17,21 @@ export default function WriteSomethingTile({
   ...rootProps
 }: WriteSomethingTileProps) {
   const theme = useTheme();
-  const { data: user } = useLoggedUserQuery({});
+  const { data: loggedUser } = useLoggedUserQuery({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   function handleOpenDialog() {
     setIsDialogOpen(true);
   }
-  if (!user) return null;
+  if (!loggedUser) return null;
   return (
     <>
       {isDialogOpen && (
-        <CreatePostDialog
-          user={user}
-          setIsOpen={setIsDialogOpen}
-          refetchPostById={refetchPostById}
-        />
+        <CreatePostDialog setIsOpen={setIsDialogOpen} refetchPostById={refetchPostById} />
       )}
       <StyledPageTile sx={{ pb: 1, ...sx }} {...rootProps}>
         <Stack position='relative' spacing={1.5}>
           <Stack direction='row'>
-            <UserAvatar userId={user.id} mr={theme.spacing(1)} />
+            <UserAvatar userId={loggedUser.id} mr={theme.spacing(1)} />
             <ButtonBase
               sx={{
                 backgroundColor: theme.palette.secondary.main,
@@ -47,7 +43,7 @@ export default function WriteSomethingTile({
               focusRipple
               onClick={handleOpenDialog}>
               <Typography color={theme.palette.text.secondary} variant='subtitle1' fontWeight={390}>
-                What&apos;s on Your mind, {user.firstName}?
+                What&apos;s on Your mind, {loggedUser.firstName}?
               </Typography>
             </ButtonBase>
           </Stack>

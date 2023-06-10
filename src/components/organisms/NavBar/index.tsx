@@ -2,6 +2,7 @@ import { AppBar, useTheme } from '@mui/material';
 
 import { StyledContentContainer } from './styles';
 
+import { AddUsersButton } from '@/common/misc/generateRandomUsers';
 import LeftSection from './LeftSection';
 import MiddleSection from './MiddleSection';
 import RightSection from './RightSection';
@@ -20,6 +21,7 @@ export default function NavBar() {
       <StyledContentContainer>
         <LeftSection />
         <MiddleSection />
+        <AddUsersButton />
         <RightSection />
       </StyledContentContainer>
     </AppBar>

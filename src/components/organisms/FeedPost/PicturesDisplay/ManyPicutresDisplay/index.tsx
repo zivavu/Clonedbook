@@ -18,11 +18,11 @@ export default function ManyPicutresDisplay({
     let quality: number = 60;
     if (i < 2) {
       size = 'medium';
-      quality = 70;
+      quality = 80;
     }
     if (i === 0) {
       size = 'large';
-      quality = 80;
+      quality = 90;
     } else {
       size = 'small';
       quality = 50;
@@ -83,13 +83,11 @@ export default function ManyPicutresDisplay({
   const picturesToDisplay = pictures.map((picture, i) => {
     const { size, quality, id } = getPictureSizeAndQuality(i);
     const isLastPicture = pictures.length >= 5 && i === 4;
-
     //Returns a single picture, or a picture with an overlay if it is the 5th picture
     return !isLastPicture ? (
       <Picture
         key={id}
-        src={picture.url}
-        blurSrc={picture.blurUrl}
+        picture={picture}
         quality={quality}
         size={size}
         sx={usedLayout[i]}
@@ -97,31 +95,29 @@ export default function ManyPicutresDisplay({
       />
     ) : (
       <LastPicture
+        picture={picture}
         key={id}
         picturesLength={pictures.length}
         postId={postId}
-        src={picture.url}
-        blurSrc={picture.blurUrl}
         quality={quality}
         size={size}
-        sx={{ ...usedLayout[i] }}
+        sx={usedLayout[i]}
       />
     );
   });
 
   return (
     <>
-      {picturesToDisplay.length >= 5 && (
+      {picturesToDisplay.length === 3 && (
         <StyledPicturesContainer sx={{ height: '600px' }}>
-          <Stack height='60%' direction='row' position='relative'>
-            {picturesToDisplay.slice(0, 2)}
+          <Stack direction='row' position='relative' width='100%' height='60%'>
+            {picturesToDisplay.slice(0, 1)}
           </Stack>
-          <Stack height='40%' direction='row' position='relative'>
-            {picturesToDisplay.slice(2, 5)}
+          <Stack direction='row' position='relative' width='100%' height='40%'>
+            {picturesToDisplay.slice(1, 3)}
           </Stack>
         </StyledPicturesContainer>
       )}
-
       {picturesToDisplay.length === 4 && (
         <StyledPicturesContainer sx={{ height: '600px' }}>
           <Stack width='100%' height='50%' direction='row'>
@@ -132,14 +128,13 @@ export default function ManyPicutresDisplay({
           </Stack>
         </StyledPicturesContainer>
       )}
-
-      {picturesToDisplay.length === 3 && (
+      {picturesToDisplay.length >= 5 && (
         <StyledPicturesContainer sx={{ height: '600px' }}>
-          <Stack direction='row' position='relative' width='100%' height='60%'>
-            {picturesToDisplay.slice(0, 1)}
+          <Stack height='60%' direction='row' position='relative'>
+            {picturesToDisplay.slice(0, 2)}
           </Stack>
-          <Stack direction='row' position='relative' width='100%' height='40%'>
-            {picturesToDisplay.slice(1, 3)}
+          <Stack height='40%' direction='row' position='relative'>
+            {picturesToDisplay.slice(2, 5)}
           </Stack>
         </StyledPicturesContainer>
       )}

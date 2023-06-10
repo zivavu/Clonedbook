@@ -1,9 +1,9 @@
 import { IWallElement } from './misc';
-import { IPictureUrls } from './picture';
+import { IPictureWithPlaceholders } from './picture';
 
 export interface IPost extends IWallElement {
   text?: string;
-  pictures?: IPictureUrls[];
+  pictures?: IPictureWithPlaceholders[];
 }
 
 export interface IPostsMap {

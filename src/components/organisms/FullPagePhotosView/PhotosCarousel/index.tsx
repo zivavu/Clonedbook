@@ -28,9 +28,9 @@ export default function PhotosCarousel({
   };
   const imageSizes = [
     `${screens.small} 600px`,
-    `${screens.medium} 700px`,
-    `${screens.large} 800px`,
-    `1100px`,
+    `${screens.medium} 800px`,
+    `${screens.large} 1100px`,
+    `1300px`,
   ].join(', ');
 
   const currentPicture = pictures?.[currentPictureIndex];

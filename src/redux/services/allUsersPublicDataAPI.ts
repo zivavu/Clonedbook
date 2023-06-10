@@ -3,10 +3,10 @@ import { IServerUserBasicInfo, IServerUserPublicFriends } from '@/types/user';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { doc, getDoc } from 'firebase/firestore';
 
-export const allUsersPublicData = createApi({
+export const allUsersPublicDataAPI = createApi({
   reducerPath: 'allUsersBasicInfoAPI',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['allUsersBasicInfo', 'allUserPublicFriends'],
+  tagTypes: ['allUsersBasicInfo', 'allUsersPublicFriends'],
   endpoints: (builder) => ({
     allUsersBasicInfo: builder.query({
       async queryFn() {
@@ -35,9 +35,9 @@ export const allUsersPublicData = createApi({
           return { error: 'Couldnt fetch users public friends' };
         }
       },
-      providesTags: ['allUserPublicFriends'],
+      providesTags: ['allUsersPublicFriends'],
     }),
   }),
 });
 
-export const { useAllUsersBasicInfoQuery, useAllUsersPublicFriendsQuery } = allUsersPublicData;
+export const { useAllUsersBasicInfoQuery, useAllUsersPublicFriendsQuery } = allUsersPublicDataAPI;

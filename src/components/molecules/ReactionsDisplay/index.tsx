@@ -4,7 +4,7 @@ import { StyledRoot } from './styles';
 
 import useDeserializeReactions from '@/common/misc/userDataManagment/useDeserializeReactions';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useState } from 'react';
 import ReactionsModal from '../../organisms/AllReactionsModal';
 import { ReactionsDisplayProps } from './types';
@@ -19,7 +19,7 @@ export default function ReactionsDisplayBox({
   ...rootProps
 }: ReactionsDisplayProps) {
   const theme = useTheme();
-  const { data: user } = useLoggedUserQuery({});
+  const { data: user } = useGetLoggedUserQuery({});
   const userId = user?.id || '';
 
   const [showModal, setShowModal] = useState(false);

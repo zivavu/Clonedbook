@@ -11,8 +11,8 @@ import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendBut
 import LoginAsUserButton from '@/components/atoms/friendActionButtons/LoginAsUserButton';
 import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import { useUserPicturesByIdQuery } from '@/redux/services/userData';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
 import { useState } from 'react';
 import { UserInfoSectionProps } from './types';
 
@@ -25,7 +25,7 @@ export default function UserInfoSection({
 }: UserInfoSectionProps) {
   const theme = useTheme();
   const { data: picturesMap } = useUserPicturesByIdQuery(userId);
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
 
   const profilePictureData = picturesMap
     ? picturesMap.account[userData?.profilePictureId || '']

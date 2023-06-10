@@ -9,7 +9,7 @@ import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPub
 import InteractButton from '@/components/atoms/InteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useRef, useState } from 'react';
 import ReactionsDisplayBox from '../../ReactionsDisplay';
@@ -25,7 +25,7 @@ export default function Comment({
   ...rootProps
 }: CommentProps) {
   const theme = useTheme();
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const ownerData = useGetUserPublicData(comment.ownerId);
 
   const [isPopperOpen, setIsPopperOpen] = useState(false);

@@ -8,7 +8,7 @@ import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import PostsFeed from '@/components/organisms/PostsFeed';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { PostsTabProps } from './types';
 
 export default function PostsTab({ userId, profileData, sx, ...rootProps }: PostsTabProps) {
@@ -17,7 +17,7 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
     type: 'profileFeed',
     wallOwnerId: userId,
   });
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const mainDirection = useMediaQuery(theme.breakpoints.down('md')) ? 'column' : 'row';
   return (
     <>

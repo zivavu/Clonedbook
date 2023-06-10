@@ -2,8 +2,8 @@ import { Button, IconButton, Stack, Typography, darken, lighten, useTheme } from
 
 import Icon from '@/components/atoms/Icon/Icon';
 import Link from '@/components/atoms/Link';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import { useUserDataByIdQuery } from '@/redux/services/userData';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useUserDataByIdQuery } from '@/redux/services/userDataAPI';
 import { ITimestamp } from '@/types/timestamp';
 import { TUserSex } from '@/types/user';
 import { useEffect, useRef, useState } from 'react';
@@ -23,7 +23,7 @@ export default function TextAccountDetail<T = ITimestamp | TUserSex | string>({
   ...rootProps
 }: TextAccountDetailProps<T>) {
   const theme = useTheme();
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   //It's used only in edit mode(when logged user is owner of the account)
   const { refetch: refetchLoggedUser } = useUserDataByIdQuery(loggedUser?.id || '');
 

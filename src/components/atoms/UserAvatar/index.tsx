@@ -3,7 +3,7 @@ import { Box, ButtonBase, CSSObject, useTheme } from '@mui/material';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
 import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserAvatarProps, UserImageProps } from './types';
@@ -19,7 +19,7 @@ export default function UserAvatar({
   ...rootProps
 }: UserAvatarProps) {
   const theme = useTheme();
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
 
   const {
     isPopperOpen,

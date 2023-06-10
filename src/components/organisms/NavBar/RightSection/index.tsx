@@ -3,7 +3,7 @@ import { StyledRoot, StyledToggleButton } from './styles';
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import LoggedUserPopover from '@/components/molecules/LoggedUserPopover';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { Box, ClickAwayListener, useTheme } from '@mui/material';
 import { MouseEvent, useRef, useState } from 'react';
 import ChatsListPopper from '../../ChatsListPopper';
@@ -11,7 +11,7 @@ import { RightSectionProps, TTopbarPoper } from './types';
 
 export default function RightSection({ sx, classes, ...rootProps }: RightSectionProps) {
   const theme = useTheme();
-  const { data: user } = useLoggedUserQuery({});
+  const { data: user } = useGetLoggedUserQuery({});
   const accountButtonElRef = useRef<HTMLButtonElement>(null);
   const chatsButtonrElRef = useRef<HTMLButtonElement>(null);
   const [currentPopper, setCurrentPopper] = useState<TTopbarPoper>('none');

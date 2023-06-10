@@ -23,6 +23,7 @@ import {
   faPenToSquare,
   faPeopleGroup,
   faPhone,
+  faPlusCircle,
   faRepeat,
   faRightToBracket,
   faSchool,
@@ -45,6 +46,8 @@ import type { AppProps } from 'next/app';
 
 import { faFacebookMessenger, faGithub } from '@fortawesome/free-brands-svg-icons';
 
+import NavBar from '@/components/organisms/NavBar';
+import OpenedChatsPortal from '@/components/organisms/OpenedChatsPortal';
 import ThemeModeProvider from '@/design/ThemeModeProvider';
 import { store } from '@/redux/store';
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -95,6 +98,7 @@ const icons = [
   faGraduationCap,
   faBriefcase,
   faGithub,
+  faPlusCircle,
 ] as any;
 library.add(...icons);
 
@@ -104,7 +108,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <ThemeModeProvider>
+            <NavBar />
             <Component {...pageProps} />
+            <OpenedChatsPortal />
           </ThemeModeProvider>
         </LocalizationProvider>
       </Provider>

@@ -2,24 +2,25 @@ import { Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
+import getChatNewestMessage from '@/common/chatsManage/getChatLastMessage';
+import useHandleChatOpen from '@/common/chatsManage/useHandleChatOpen';
 import getDateDiffs from '@/common/misc/dateManagment/getDateDiffs';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { ListUserProps } from './types';
 
 export default function ListUser({ chat, sx, ...rootProps }: ListUserProps) {
   const theme = useTheme();
-  const { data: loggedUser } = useLoggedUserQuery({});
-  const friendId = chat.users.find((user) => user !== loggedUser?.id);
+  const { data: loggedUser } = useGetLoggedUserQuery({});
+  const friendId = chat.users.find((user) => user !== loggedUser?.id) as string;
   const friendData = useGetUserPublicData(friendId);
-  const lastMessage = [...chat.messages].sort(
-    (a, b) => b?.createdAt?.seconds - a?.createdAt?.seconds,
-  )[0];
+  const lastMessage = getChatNewestMessage(chat);
+  const openChat = useHandleChatOpen(friendId);
 
   const { largestDiff } = getDateDiffs(lastMessage.createdAt.seconds);
   return (
-    <StyledRoot sx={sx} {...rootProps}>
+    <StyledRoot sx={sx} {...rootProps} onClick={openChat}>
       <Stack direction='row' spacing={1.5} width='100%'>
         <UserAvatar userId={friendId} size={52} />
         <Stack width='60%'>

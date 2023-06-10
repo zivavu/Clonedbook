@@ -1,15 +1,22 @@
 import { Box, InputAdornment, List, TextField, Typography, useTheme } from '@mui/material';
 
+import getChatNewestMessage from '@/common/chatsManage/getChatLastMessage';
 import Icon from '@/components/atoms/Icon/Icon';
 import ScrollableStack from '@/components/atoms/scrollables/ScrollableStack';
-import { useUserChatsQuery } from '@/redux/services/loggedUserAPI';
+import { useGetUserChatsQuery } from '@/redux/services/loggedUserAPI';
 import { TopbarPopperProps } from '../NavBar/RightSection/types';
 import ListUser from './ListUser';
 import { StyledContentWrapper, StyledRoot } from './styles';
 
 export default function ChatsListPopper({ sx, open, anchorEl, ...rootProps }: TopbarPopperProps) {
   const theme = useTheme();
-  const { data: usersChats } = useUserChatsQuery({});
+  const { data: loggedUserChats } = useGetUserChatsQuery({});
+  const sortedChats =
+    loggedUserChats &&
+    [...loggedUserChats].sort(
+      (a, b) =>
+        getChatNewestMessage(b).createdAt.seconds - getChatNewestMessage(a).createdAt.seconds,
+    );
   return (
     <StyledRoot sx={sx} {...rootProps} open={open} anchorEl={anchorEl}>
       <StyledContentWrapper>
@@ -42,7 +49,7 @@ export default function ChatsListPopper({ sx, open, anchorEl, ...rootProps }: To
             />
           </Box>
           <List>
-            {usersChats?.map((chat) => (
+            {sortedChats?.map((chat) => (
               <ListUser key={chat.id} chat={chat} />
             ))}
           </List>

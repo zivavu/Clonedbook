@@ -1,23 +1,25 @@
 import { configureStore } from '@reduxjs/toolkit';
-import themeModeSlice from './features/themeSlice';
 import { loggedUser } from './services/loggedUserAPI';
 
-import { allUsersPublicData } from './services/allUsersPublicData';
-import { userData } from './services/userData';
+import openedChatsSlice from './features/openedChatsSlice';
+import themeModeSlice from './features/themeSlice';
+import { allUsersPublicDataAPI } from './services/allUsersPublicDataAPI';
+import { userDataAPI } from './services/userDataAPI';
 
 export const store = configureStore({
   reducer: {
     [loggedUser.reducerPath]: loggedUser.reducer,
-    [allUsersPublicData.reducerPath]: allUsersPublicData.reducer,
-    [userData.reducerPath]: userData.reducer,
+    [allUsersPublicDataAPI.reducerPath]: allUsersPublicDataAPI.reducer,
+    [userDataAPI.reducerPath]: userDataAPI.reducer,
     theme: themeModeSlice,
+    openedChats: openedChatsSlice,
   },
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
       loggedUser.middleware,
-      allUsersPublicData.middleware,
-      userData.middleware,
+      allUsersPublicDataAPI.middleware,
+      userDataAPI.middleware,
     ),
 });
 

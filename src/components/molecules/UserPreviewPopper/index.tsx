@@ -8,7 +8,7 @@ import UserLink from '@/components/atoms/UserLink';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
 import LoginAsUserButton from '@/components/atoms/friendActionButtons/LoginAsUserButton';
 import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import MutalFriendsTextOnly from '../MutalFriendsDisplay/MutalFriendsTextOnly';
 import { UserPreviewPopperProps } from './types';
 
@@ -26,7 +26,7 @@ export default function UserPreviewPopper({
   sx,
   ...rootProps
 }: UserPreviewPopperProps) {
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const theme = useTheme();
   const userData = useGetUserPublicData(userId);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));

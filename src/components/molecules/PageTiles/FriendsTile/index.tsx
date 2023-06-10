@@ -1,6 +1,6 @@
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
 import useGetUsersPublicFriends from '@/common/misc/userDataManagment/useGetUsersPublicFriends';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import Friend from './Friend';
@@ -8,7 +8,7 @@ import { FriendsTileProps } from './types';
 
 export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: FriendsTileProps) {
   const theme = useTheme();
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const publicFriends = useGetUsersPublicFriends(user.id);
 
   const mutalFriends = useGetMutalFriends(user.id);

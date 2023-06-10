@@ -1,7 +1,7 @@
 import { StyledButtonText, StyledRoot } from './styles';
 
 import { updateFriendshipStatus } from '@/common/firebase/updateData/friends/updateFriendshipStatus';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { MouseEvent } from 'react';
 import { RemoveFriendButtonProps } from './types';
 
@@ -10,7 +10,7 @@ export default function RemoveFriendButton({
   sx,
   ...rootProps
 }: RemoveFriendButtonProps) {
-  const { data: loggedUser, refetch } = useLoggedUserQuery({});
+  const { data: loggedUser, refetch } = useGetLoggedUserQuery({});
 
   async function handleRemoveFriend(e: MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();

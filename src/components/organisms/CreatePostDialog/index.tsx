@@ -11,7 +11,7 @@ import { optimizePhotoFilesArr } from '@/common/misc/photoManagment/optimizePhot
 import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { db, storage } from '@/config/firebase.config';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { IPictureWithPlaceholders } from '@/types/picture';
 import { IPost } from '@/types/post';
 import { uuidv4 } from '@firebase/util';
@@ -30,7 +30,7 @@ export default function CreatePostDialog({
   sx,
   ...rootProps
 }: CreatePostDialogProps) {
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<CreatePostStatus[]>([]);

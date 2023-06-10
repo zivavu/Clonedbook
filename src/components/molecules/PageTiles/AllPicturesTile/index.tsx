@@ -1,6 +1,6 @@
 import LoadingPlaceholder from '@/components/atoms/LoadingPlaceholder';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
-import { useUserPicturesByIdQuery } from '@/redux/services/userData';
+import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
 import { IAccountPicture } from '@/types/picture';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';

@@ -14,19 +14,23 @@ import HorizontalContentDevider from '@/components/atoms/contentDeviders/Horizon
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import { TopbarPopperProps } from '@/components/organisms/NavBar/RightSection/types';
 import { toggleTheme } from '@/redux/features/themeSlice';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery, useGetUserChatsQuery } from '@/redux/services/loggedUserAPI';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function LoggedUserPopover({ open, anchorEl, sx, ...rootProps }: TopbarPopperProps) {
   const theme = useTheme();
-  const { data: loggedUser, refetch: refetchUser } = useLoggedUserQuery({});
+  const { data: loggedUser, refetch: refetchUser, isFetching } = useGetLoggedUserQuery({});
+  const { refetch: refetchChats } = useGetUserChatsQuery({});
   const mode = useSelector((state: RootState) => state.theme.mode);
-  const switchUser = () => {
+
+  const switchUser = async () => {
     localStorage.removeItem('loggedUser');
-    refetchUser();
+    await refetchUser();
+    refetchChats();
   };
+
   const dispatch = useDispatch();
   const router = useRouter();
   const handleRedirectToProfile = () => {
@@ -54,11 +58,13 @@ export default function LoggedUserPopover({ open, anchorEl, sx, ...rootProps }: 
               <Typography variant='subtitle2'>Profile</Typography>
             </StyledListButton>
 
-            <StyledListButton onClick={() => switchUser()}>
+            <StyledListButton onClick={() => switchUser()} disabled={isFetching}>
               <StyledIconContainer>
                 <StyledListItemIcon icon='repeat' />
               </StyledIconContainer>
-              <Typography variant='subtitle2'>Reroll user</Typography>
+              <Typography variant='subtitle2'>
+                {isFetching ? 'Loading...' : 'Reroll user'}
+              </Typography>
             </StyledListButton>
 
             <StyledListButton onClick={() => dispatch(toggleTheme())}>

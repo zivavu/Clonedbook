@@ -4,7 +4,7 @@ import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
 import updateElementReaction from '@/common/firebase/updateData/reactions/updateElementReaction';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useRef, useState } from 'react';
 import ReactionsPopper from '../ReactionsPopper';
@@ -17,7 +17,7 @@ export default function ActionButtons({
   sx,
   ...rootProps
 }: ActionButtonsProps) {
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const theme = useTheme();
 
   const [isReactionsPopperOpen, setIsReactionPopperOpen] = useState(false);

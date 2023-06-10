@@ -1,16 +1,17 @@
 import { StyledButtonIcon, StyledButtonText, StyledRoot } from './styles';
 
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery, useGetUserChatsQuery } from '@/redux/services/loggedUserAPI';
 import { LoginAsUserButtonProps } from './types';
 
 export default function LoginAsUserButton({ userId, sx, ...rootProps }: LoginAsUserButtonProps) {
   const user = useGetUserPublicData(userId);
-  const { data: loggedUser } = useLoggedUserQuery({});
-  const { refetch } = useLoggedUserQuery({});
-  function loginAsUserHandler() {
+  const { data: loggedUser, refetch: refetchLoggedUser } = useGetLoggedUserQuery({});
+  const { refetch: refetchChats } = useGetUserChatsQuery({});
+  async function loginAsUserHandler() {
     localStorage.setItem('loggedUser', JSON.stringify(userId));
-    refetch();
+    await refetchLoggedUser();
+    refetchChats();
   }
   if (!user || loggedUser?.id === user.id) return null;
   return (

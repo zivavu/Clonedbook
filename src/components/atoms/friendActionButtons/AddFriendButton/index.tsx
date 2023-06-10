@@ -19,7 +19,7 @@ import {
 
 import { updateFriendshipStatus } from '@/common/firebase/updateData/friends/updateFriendshipStatus';
 import useGetFriendshipStatus from '@/common/friendsManage/useGetFriendshipStatus';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TFriendStatus } from '@/types/firend';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { useRef, useState } from 'react';
@@ -36,7 +36,7 @@ export default function AddFriendButton({
 }: AddFriendButtonProps) {
   const theme = useTheme();
   const userStatus = useGetFriendshipStatus(friendId);
-  const { data: loggedUser, refetch: refetchLoggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser, refetch: refetchLoggedUser } = useGetLoggedUserQuery({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const anchorElRef = useRef<HTMLButtonElement | null>(null);

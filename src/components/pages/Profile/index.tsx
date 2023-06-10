@@ -1,6 +1,6 @@
 import { StyledContentWrapper, StyledRoot } from './styles';
 
-import { useUserDataByIdQuery } from '@/redux/services/userData';
+import { useUserDataByIdQuery } from '@/redux/services/userDataAPI';
 import { Box, Container, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

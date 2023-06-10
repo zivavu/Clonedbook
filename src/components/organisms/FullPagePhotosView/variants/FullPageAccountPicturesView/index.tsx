@@ -1,4 +1,4 @@
-import { useUserPicturesByIdQuery } from '@/redux/services/userData';
+import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
 import { useEffect, useState } from 'react';
 import ElementInfo from '../../ElementInfo';
 import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';

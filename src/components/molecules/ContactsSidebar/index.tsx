@@ -1,7 +1,7 @@
 import Icon from '@/components/atoms/Icon/Icon';
 
-import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicData';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicDataAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { IFriendWithBasicInfo } from '@/types/firend';
 import {
   Box,
@@ -13,14 +13,13 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import WriteSomethingTile from '../PageTiles/WriteSomethingTile';
 import FriendListItem from './FriendListItem';
 import { StyledHeadingContainer, StyledRoot } from './styles';
 
 export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
   const theme = useTheme();
 
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const { data: everyUserBasicInfo } = useAllUsersBasicInfoQuery({});
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);

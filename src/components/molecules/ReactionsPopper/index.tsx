@@ -3,7 +3,7 @@ import { Fade, IconButton, keyframes, useTheme } from '@mui/material';
 import { StyledAnimationWrapper, StyledPopperBody, StyledReactionsPopper } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TReactionType } from '@/types/reaction';
 import { ReactionsPopperProps } from './types';
 
@@ -17,7 +17,7 @@ export default function ReactionsPopper({
   ...rootProps
 }: ReactionsPopperProps) {
   const theme = useTheme();
-  const { data: user } = useLoggedUserQuery({});
+  const { data: user } = useGetLoggedUserQuery({});
 
   const reactionTypes: TReactionType[] = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
 

@@ -7,7 +7,7 @@ import {
   SadIcon,
   WowIcon,
 } from '@/assets/reactionIcons';
-import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicData';
+import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicDataAPI';
 import { IReactionWithBasicInfo, IReactionsMap, TReactionType } from '@/types/reaction';
 import { IUserBasicInfo } from '@/types/user';
 

@@ -1,4 +1,4 @@
-import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicData';
+import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicDataAPI';
 import { IUserBasicInfo } from '@/types/user';
 
 export default function useGetUserPublicData(userId: string | '' | undefined) {

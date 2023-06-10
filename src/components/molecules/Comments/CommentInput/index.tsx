@@ -4,7 +4,7 @@ import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
 
 import { createUserComment } from '@/common/firebase/createData/createUserComment';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useForm } from 'react-hook-form';
 import { CommentInputProps } from './types';
 
@@ -16,7 +16,7 @@ export default function CommentInput({
   displayMode,
   ...rootProps
 }: CommentInputProps) {
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const theme = useTheme();
 
   const { register, handleSubmit, reset } = useForm();

@@ -4,7 +4,7 @@ import { IUser } from '@/types/user';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { doc, getDoc } from 'firebase/firestore';
 
-export const userData = createApi({
+export const userDataAPI = createApi({
   reducerPath: 'userDataAPI',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['userData', 'userPictures'],
@@ -38,4 +38,4 @@ export const userData = createApi({
   }),
 });
 
-export const { useUserDataByIdQuery, useUserPicturesByIdQuery } = userData;
+export const { useUserDataByIdQuery, useUserPicturesByIdQuery } = userDataAPI;

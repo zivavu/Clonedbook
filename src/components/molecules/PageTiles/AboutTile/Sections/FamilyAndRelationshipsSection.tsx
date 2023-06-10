@@ -2,7 +2,7 @@ import { Box, Stack } from '@mui/material';
 
 import FamilyMember from '@/components/atoms/accountDetails/detailCategories/FamilyMember';
 import Relationship from '@/components/atoms/accountDetails/detailCategories/Relationship';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 export default function FamilyAndRelationshipsSection({
@@ -10,7 +10,7 @@ export default function FamilyAndRelationshipsSection({
   sx,
   ...rootProps
 }: SectionProps) {
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const isOwner = loggedUser?.id === profileData.id;
 
   const partnertId = profileData?.about.relationship?.partnerId;

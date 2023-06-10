@@ -1,5 +1,5 @@
 import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { ListItem, Typography } from '@mui/material';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
@@ -12,7 +12,7 @@ export default function AllFriendsSidebarList({
   sx,
   ...rootProps
 }: FriendSidebarListProps) {
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   if (!loggedUser) return null;
   const allFriends = getAcceptedFriends(loggedUser);
   return (

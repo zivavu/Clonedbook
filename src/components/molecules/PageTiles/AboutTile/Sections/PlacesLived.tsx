@@ -2,12 +2,12 @@ import { Box, Stack } from '@mui/material';
 
 import BornIn from '@/components/atoms/accountDetails/detailCategories/BornIn';
 import LivesIn from '@/components/atoms/accountDetails/detailCategories/LivesIn';
-import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 
 export default function PlacesLived({ profileData, sx, ...rootProps }: SectionProps) {
-  const { data: loggedUser } = useLoggedUserQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const isOwner = loggedUser?.id === profileData.id;
   return (
     <SectionRoot sx={sx} {...rootProps} spacing={4} mb={2}>

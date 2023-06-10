@@ -1,7 +1,7 @@
 import { Stack, useTheme } from '@mui/material';
 
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
-import { useUserPicturesByIdQuery } from '@/redux/services/userData';
+import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import PicturesRow from './PicturesRow';
 import { PicturesTileProps } from './types';

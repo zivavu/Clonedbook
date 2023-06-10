@@ -1,5 +1,5 @@
 import useGetFriendSueggestions from '@/common/friendsManage/useGetFriendSueggestions';
-import { useTheme } from '@mui/material';
+import { ListItem, Typography } from '@mui/material';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
 import { StyledFriendsList, StyledRoot } from '../styles';
@@ -11,7 +11,6 @@ export default function FriendSuggestionsSidebarList({
   sx,
   ...rootProps
 }: FriendSidebarListProps) {
-  const theme = useTheme();
   const friendSuggestions = useGetFriendSueggestions();
   if (!friendSuggestions) return null;
   return (
@@ -26,6 +25,11 @@ export default function FriendSuggestionsSidebarList({
             mode='suggestions'
           />
         ))}
+        {friendSuggestions.length === 0 && (
+          <ListItem>
+            <Typography variant='subtitle2'>No friend suggestions to show</Typography>
+          </ListItem>
+        )}
       </StyledFriendsList>
     </StyledRoot>
   );

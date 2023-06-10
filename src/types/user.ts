@@ -1,4 +1,3 @@
-import { IChatReference } from './chat';
 import { IFriendsMap, IPublicFriendsMap } from './firend';
 import { ITimestamp } from './timestamp';
 
@@ -8,7 +7,6 @@ export interface IUser extends IUserBasicInfo {
   profilePictureId?: string;
   isDummy?: boolean;
   groups: {};
-  chatReferences: IChatReference[];
   friends: IFriendsMap;
   contact: IContactInfo;
   about: IUserStringAbout & IUserCustomAbout;

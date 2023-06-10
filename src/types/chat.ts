@@ -1,10 +1,8 @@
 import { IMessage } from './message';
 
 //This object is created both for sender and receiver users
-export interface IChat extends IChatReference {
-  messages: IMessage[];
-}
-
-export interface IChatReference {
+export interface IChat {
   id: string;
+  messages: IMessage[];
+  users: string[];
 }

@@ -1,5 +1,6 @@
 import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
 import { useLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { ListItem, Typography } from '@mui/material';
 import FriendListItem from '../components/FriendListItem';
 import ListHeadingSection from '../components/ListHeadingSection';
 import { StyledFriendsList, StyledRoot } from '../styles';
@@ -27,6 +28,11 @@ export default function AllFriendsSidebarList({
           />
         ))}
       </StyledFriendsList>
+      {allFriends.length === 0 && (
+        <ListItem>
+          <Typography variant='subtitle2'>No friend requests</Typography>
+        </ListItem>
+      )}
     </StyledRoot>
   );
 }

@@ -21,6 +21,18 @@ export default function PhotosCarousel({
   ...rootProps
 }: PhotosCarouselProps) {
   const theme = useTheme();
+  const screens = {
+    small: `(max-width: ${theme.breakpoints.values.sm}px)`,
+    medium: `(max-width: ${theme.breakpoints.values.md}px)`,
+    large: `(max-width: ${theme.breakpoints.values.xl}px)`,
+  };
+  const imageSizes = [
+    `${screens.small} 600px`,
+    `${screens.medium} 700px`,
+    `${screens.large} 800px`,
+    `1100px`,
+  ].join(', ');
+
   const currentPicture = pictures?.[currentPictureIndex];
   const handleSwitchPicture = (direction: 'left' | 'right') => {
     if (direction === 'left') {
@@ -38,17 +50,6 @@ export default function PhotosCarousel({
       }
     }
   };
-  const screens = {
-    small: `(max-width: ${theme.breakpoints.values.sm}px)`,
-    medium: `(max-width: ${theme.breakpoints.values.md}px)`,
-    large: `(max-width: ${theme.breakpoints.values.xl}px)`,
-  };
-  const imageSizes = [
-    `${screens.small} 600px`,
-    `${screens.medium} 700px`,
-    `${screens.large} 800px`,
-    `1100px`,
-  ].join(', ');
 
   const isMoreThenOnePicture = (pictures?.length || 0) > 1 || false;
   if (!pictures) return null;

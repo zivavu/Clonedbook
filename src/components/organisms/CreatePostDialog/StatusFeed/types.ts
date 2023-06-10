@@ -1,8 +1,8 @@
 import { BoxProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
-import { CreatePostError } from './../types';
+import { CreatePostStatus } from '../types';
 
 export interface ErrorsFeedProps extends BoxProps {
-  errors: CreatePostError[];
-  setErrors: Dispatch<SetStateAction<CreatePostError[]>>;
+  status: CreatePostStatus[];
+  setStatus: Dispatch<SetStateAction<CreatePostStatus[]>>;
 }

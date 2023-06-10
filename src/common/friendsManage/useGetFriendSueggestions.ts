@@ -5,6 +5,8 @@ export default function useGetFriendSueggestions() {
   const { data: loggedUser } = useLoggedUserQuery({});
   const { data: users } = useAllUsersBasicInfoQuery({});
   if (!users) return null;
-  const peopleYouMayKnow = Object.keys(users).filter((userId) => !loggedUser?.friends[userId]);
+  const peopleYouMayKnow = Object.keys(users).filter(
+    (userId) => !loggedUser?.friends[userId] && userId !== loggedUser?.id,
+  );
   return peopleYouMayKnow;
 }

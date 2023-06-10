@@ -18,11 +18,11 @@ import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRef, useState } from 'react';
-import ErrorsFeed from './ErrorsFeed';
 import PhotosInput from './PhotosInput';
 import PostTextInput from './PostTextInput';
+import StatusFeed from './StatusFeed';
 import UserInfo from './UserInfo';
-import { CreatePostDialogProps, CreatePostError } from './types';
+import { CreatePostDialogProps, CreatePostStatus } from './types';
 
 export default function CreatePostDialog({
   setIsOpen,
@@ -33,18 +33,20 @@ export default function CreatePostDialog({
   const { data: loggedUser } = useLoggedUserQuery({});
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<CreatePostError[]>([]);
+  const [status, setStatus] = useState<CreatePostStatus[]>([]);
 
   const [postPhotos, setPostPhotos] = useState<File[]>([]);
   const postTextRef = useRef('');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    if (!loggedUser) return;
     e.preventDefault();
+    if (!loggedUser) return;
     if (isLoading) return;
     setIsLoading(true);
+    setStatus((prev) => [...prev, { content: 'Creating post...', sevariety: 'info' }]);
+
     if (postTextRef.current.length === 0 && postPhotos.length === 0) {
-      setErrors((prev) => [
+      setStatus((prev) => [
         ...prev,
         { content: 'Post must contain text or photo', sevariety: 'error' },
       ]);
@@ -102,7 +104,7 @@ export default function CreatePostDialog({
 
       await refetchPostById(postId);
     } catch (err) {
-      setErrors((prev) => [
+      setStatus((prev) => [
         { content: 'Problem with creating post occurred. Try again', sevariety: 'error' },
         ...prev,
       ]);
@@ -117,7 +119,7 @@ export default function CreatePostDialog({
     <Dialog open onClose={() => setIsOpen(false)}>
       <form onSubmit={handleSubmit} style={{ display: 'contents' }}>
         <StyledRoot sx={sx} {...rootProps}>
-          <ErrorsFeed errors={errors} setErrors={setErrors} />
+          <StatusFeed status={status} setStatus={setStatus} />
 
           <Stack p={theme.spacing(2)} position='relative'>
             <Typography textAlign='center' variant='h4' fontWeight='500'>
@@ -132,12 +134,12 @@ export default function CreatePostDialog({
           <UserInfo user={loggedUser} />
           <StyledMainContentStack>
             <PostTextInput user={loggedUser} postPhotos={postPhotos} postTextRef={postTextRef} />
-            <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setErrors} />
+            <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setStatus} />
           </StyledMainContentStack>
           <Box p={2}>
             <PostSubmitButton fullWidth variant='contained' type='submit'>
               <Typography fontWeight='400' variant='subtitle1' lineHeight='1.5rem'>
-                Post
+                {isLoading ? 'Loading...' : 'Post'}
               </Typography>
             </PostSubmitButton>
           </Box>

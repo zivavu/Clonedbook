@@ -1,4 +1,3 @@
-import { IUser } from '@/types/user';
 import { BoxProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -7,7 +6,7 @@ export interface CreatePostDialogProps extends BoxProps {
   refetchPostById: (id: string) => Promise<void>;
 }
 
-export interface CreatePostError {
+export interface CreatePostStatus {
   content: string;
   sevariety: 'error' | 'warning' | 'info' | 'success';
 }

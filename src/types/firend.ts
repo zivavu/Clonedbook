@@ -1,10 +1,9 @@
-import { IChatReference } from './chat';
 import { ITimestamp } from './timestamp';
 import { IUserBasicInfo } from './user';
 
 export interface IFriend {
   id: string;
-  chatReference: IChatReference;
+  chatId: string;
   status: TFriendStatus;
   acceptedAt: ITimestamp;
 }

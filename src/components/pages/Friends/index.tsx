@@ -14,7 +14,6 @@ import TabSelectList from './TabsSidebar';
 import { TFriendsTabs } from './types';
 
 export default function Friends({ sx, ...rootProps }: StackProps) {
-  const theme = useTheme();
   const router = useRouter();
   const [currentTab, setCurrentTab] = useState<TFriendsTabs>('home');
   const [shownProfile, setShownProfile] = useState<string | null>(null);

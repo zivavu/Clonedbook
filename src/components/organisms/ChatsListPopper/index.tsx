@@ -1,9 +1,8 @@
-import { Box, List, Typography, useTheme } from '@mui/material';
+import { Box, List, Typography } from '@mui/material';
 
 import getChatNewestMessage from '@/common/chatsManage/getChatLastMessage';
 import ScrollableStack from '@/components/atoms/scrollables/ScrollableStack';
 import { useGetUserChatsQuery } from '@/redux/services/loggedUserAPI';
-import { useState } from 'react';
 import ListUserButton from './ListUserButton';
 import { StyledContentWrapper, StyledRoot } from './styles';
 import { ChatsListPopperProps } from './types';
@@ -15,9 +14,7 @@ export default function ChatsListPopper({
   anchorEl,
   ...rootProps
 }: ChatsListPopperProps) {
-  const theme = useTheme();
   const { data: loggedUserChats } = useGetUserChatsQuery({});
-  const [searchValue, setSearchValue] = useState('');
 
   const sortedChats =
     loggedUserChats &&

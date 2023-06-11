@@ -16,7 +16,7 @@ import { ProfileProps, TProfileTabs } from './types';
 export default function Profile({ userId, useTabsRouting = true, sx, ...rootProps }: ProfileProps) {
   const theme = useTheme();
   const router = useRouter();
-  const { data: profileData, isLoading, refetch } = useUserDataByIdQuery(userId);
+  const { data: profileData, refetch } = useUserDataByIdQuery(userId);
 
   const [selectedTab, setSelectedTab] = useState<TProfileTabs>(useTabsRouting ? null : 'posts');
 

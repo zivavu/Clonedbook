@@ -1,5 +1,4 @@
-import { BoxProps, PopperProps } from '@mui/material';
-import { Dispatch, SetStateAction } from 'react';
+import { BoxProps } from '@mui/material';
 
 export interface RightSectionProps extends BoxProps {
   classes?: Partial<RightSectionClasses>;

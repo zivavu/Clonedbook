@@ -32,10 +32,18 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
       });
   }, [searchQuery, searchPopperOpen]);
 
-  router.events.on('routeChangeStart', () => {
-    setSearchPopperOpen(false);
-    setUserHits([]);
-  });
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setSearchPopperOpen(false);
+      setUserHits([]);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, []);
+
   return (
     <>
       <StyledRoot sx={sx} className={classes?.root} {...rootProps}>

@@ -5,4 +5,5 @@ export interface IChat {
   id: string;
   messages: IMessage[];
   users: string[];
+  chatEmoji?: string;
 }

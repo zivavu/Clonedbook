@@ -71,7 +71,7 @@ export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             fullWidth
-            placeholder='Search'
+            placeholder='Search contacts'
             sx={{
               backgroundColor: theme.palette.background.paper,
               mb: theme.spacing(1),

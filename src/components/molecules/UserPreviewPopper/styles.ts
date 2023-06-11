@@ -13,6 +13,7 @@ export const StyledPopperBody = styled(Stack)(({ theme }) => ({
   width: 'min(430px, 98vw)',
   border: `1px solid ${theme.palette.secondary.main}`,
   pointerEvents: 'all',
+  boxShadow: theme.shadows[9],
 }));
 
 export const StyledButtonsStack = styled(Stack)(({ theme }) => ({

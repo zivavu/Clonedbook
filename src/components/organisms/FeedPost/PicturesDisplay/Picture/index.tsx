@@ -37,15 +37,15 @@ export default function Picture({
         `${screens.small} 100px`,
         `${screens.medium} 200px`,
         `${screens.large} 200px`,
-        `400px`,
+        `700px`,
       ].join(', ');
       break;
     case 'medium':
       imageSizes = [
         `${screens.small} 200px`,
-        `${screens.medium} 300px`,
-        `${screens.large} 400px`,
-        `600px`,
+        `${screens.medium} 400px`,
+        `${screens.large} 600px`,
+        `800px`,
       ].join(', ');
       break;
     case 'large':
@@ -53,7 +53,7 @@ export default function Picture({
         `${screens.small} 300px`,
         `${screens.medium} 500px`,
         `${screens.large} 700px`,
-        `800px`,
+        `1000px`,
       ].join(', ');
       break;
   }

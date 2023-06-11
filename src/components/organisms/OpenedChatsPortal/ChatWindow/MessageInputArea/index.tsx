@@ -1,4 +1,4 @@
-import { IconButton, TextField, useTheme } from '@mui/material';
+import { IconButton, TextField, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -8,7 +8,12 @@ import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useState } from 'react';
 import { MessageInputAreaProps } from './types';
 
-export default function MessageInputArea({ chatId, sx, ...rootProps }: MessageInputAreaProps) {
+export default function MessageInputArea({
+  chatId,
+  chatEmoji,
+  sx,
+  ...rootProps
+}: MessageInputAreaProps) {
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const [textValue, setTextValue] = useState('');
@@ -20,7 +25,7 @@ export default function MessageInputArea({ chatId, sx, ...rootProps }: MessageIn
   };
   const onEmojiClick = () => {
     if (!loggedUser) return;
-    createUserChatMessage({ chatId, senderId: loggedUser.id, text: '❤️' });
+    createUserChatMessage({ chatId, senderId: loggedUser.id, text: chatEmoji });
   };
 
   return (
@@ -61,13 +66,9 @@ export default function MessageInputArea({ chatId, sx, ...rootProps }: MessageIn
         </IconButton>
       ) : (
         <IconButton sx={{ width: '34px', height: '34px' }} onClick={onEmojiClick}>
-          <Icon
-            icon='heart'
-            style={{
-              fontSize: '22px',
-              color: '#ff6666',
-            }}
-          />
+          <Typography color={theme.palette.common.black} fontSize={22}>
+            {chatEmoji}
+          </Typography>
         </IconButton>
       )}
     </StyledRoot>

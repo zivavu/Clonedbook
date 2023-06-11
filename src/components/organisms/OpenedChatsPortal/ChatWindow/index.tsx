@@ -77,7 +77,8 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
           return <ChatMessage key={message.id} message={message} />;
         })}
       </StyledScrollableStack>
-      <MessageInputArea chatId={chatId} />
+
+      <MessageInputArea chatId={chatId} chatEmoji={chatData?.chatEmoji || '❤️'} />
     </StyledRoot>
   );
 }

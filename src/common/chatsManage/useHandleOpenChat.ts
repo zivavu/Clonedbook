@@ -18,6 +18,7 @@ export default function useHandleOpenChat(userId: string) {
         id: chatId,
         users: [loggedUser?.id, userId],
         messages: [],
+        chatEmoji: '❤️',
       };
       const chatsDocRef = doc(db, 'chats', chatId);
       await setDoc(chatsDocRef, newChat);

@@ -13,23 +13,18 @@ export default function ManyPicutresDisplay({
   postId,
 }: ManyPicutresDisplayProps) {
   //Used in next/image component for image optimization
-  function getPictureSizeAndQuality(i: number) {
+  function getPictureSize(i: number) {
     let size: pictureSize = 'medium';
-    let quality: number = 60;
     if (i < 2) {
       size = 'medium';
-      quality = 80;
     }
     if (i === 0) {
       size = 'large';
-      quality = 90;
     } else {
       size = 'small';
-      quality = 50;
     }
     return {
       size,
-      quality,
       id: uuidv4(),
     };
   }
@@ -81,25 +76,17 @@ export default function ManyPicutresDisplay({
       : layouts.fiveAndMore;
 
   const picturesToDisplay = pictures.map((picture, i) => {
-    const { size, quality, id } = getPictureSizeAndQuality(i);
+    const { size, id } = getPictureSize(i);
     const isLastPicture = pictures.length >= 5 && i === 4;
     //Returns a single picture, or a picture with an overlay if it is the 5th picture
     return !isLastPicture ? (
-      <Picture
-        key={id}
-        picture={picture}
-        quality={quality}
-        size={size}
-        sx={usedLayout[i]}
-        postId={postId}
-      />
+      <Picture key={id} picture={picture} size={size} sx={usedLayout[i]} postId={postId} />
     ) : (
       <LastPicture
         picture={picture}
         key={id}
         picturesLength={pictures.length}
         postId={postId}
-        quality={quality}
         size={size}
         sx={usedLayout[i]}
       />

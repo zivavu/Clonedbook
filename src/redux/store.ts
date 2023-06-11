@@ -6,9 +6,8 @@ import themeModeSlice from './features/themeSlice';
 import { allUsersPublicDataAPI } from './services/allUsersPublicDataAPI';
 import { userDataAPI } from './services/userDataAPI';
 
-const listenerMiddleware = createListenerMiddleware();
-
-listenerMiddleware.startListening({
+const openedChatsListenerMiddleware = createListenerMiddleware();
+openedChatsListenerMiddleware.startListening({
   matcher: isAnyOf(openChat, closeChat, closeAllChats),
 
   effect: (payload, action) => {
@@ -29,7 +28,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false })
       .concat(loggedUser.middleware, allUsersPublicDataAPI.middleware, userDataAPI.middleware)
-      .prepend(listenerMiddleware.middleware),
+      .prepend(openedChatsListenerMiddleware.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

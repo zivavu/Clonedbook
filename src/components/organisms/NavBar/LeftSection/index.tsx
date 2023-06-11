@@ -17,7 +17,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
       <TextField
         variant='outlined'
         size='small'
-        placeholder='Search Facebook'
+        placeholder='Search Clonedbook'
         InputProps={{
           sx: {
             fontSize: '1rem',

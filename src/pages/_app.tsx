@@ -20,6 +20,7 @@ import {
   faLocationDot,
   faMagnifyingGlass,
   faMoon,
+  faPaperPlane,
   faPenToSquare,
   faPeopleGroup,
   faPhone,
@@ -98,6 +99,7 @@ const icons = [
   faGraduationCap,
   faBriefcase,
   faGithub,
+  faPaperPlane,
   faPlusCircle,
 ] as any;
 library.add(...icons);

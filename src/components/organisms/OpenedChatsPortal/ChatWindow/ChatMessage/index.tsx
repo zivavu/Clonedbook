@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
-
+import emojiRegex from 'emoji-regex';
 import { StyledRoot } from './styles';
 
 import UserAvatar from '@/components/atoms/UserAvatar';
@@ -10,6 +10,9 @@ export default function ChatMessage({ message, sx, ...rootProps }: ChatMessagePr
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const isOwner = message.senderId === loggedUser?.id;
+  const regex = emojiRegex();
+  const match = message.text.match(regex) || [];
+  const isEmojiOnly = match.length === 1 && !/[ -~]/.test(message.text[0]);
   return (
     <StyledRoot
       direction='row'
@@ -29,12 +32,16 @@ export default function ChatMessage({ message, sx, ...rootProps }: ChatMessagePr
       )}
       <Box
         sx={{
-          padding: theme.spacing(1, 1.5),
+          padding: isEmojiOnly ? theme.spacing(1, 0) : theme.spacing(1, 1.5),
           borderRadius: theme.spacing(2),
-          backgroundColor: isOwner ? '#6699cc' : theme.palette.secondary.dark,
+          backgroundColor: isEmojiOnly
+            ? 'transparent'
+            : isOwner
+            ? '#6699cc'
+            : theme.palette.secondary.dark,
           color: isOwner ? theme.palette.common.white : theme.palette.text.primary,
         }}>
-        <Typography>{message.text}</Typography>
+        <Typography variant={isEmojiOnly ? 'h1' : 'body1'}>{message.text}</Typography>
       </Box>
     </StyledRoot>
   );

@@ -23,6 +23,7 @@ export const loggedUser = createApi({
             const userDoc = await getDoc(userDocRef);
             loggedUserData = userDoc.data() as IUser;
           }
+
           //Or if it doesnt exist, get a random one
           if (!loggedUserData) {
             const randomId = uuidv4();
@@ -37,6 +38,7 @@ export const loggedUser = createApi({
             loggedUserData = user;
             localStorage.setItem('loggedUser', JSON.stringify(user.id));
           }
+
           return { data: loggedUserData };
         } catch (err) {
           localStorage.removeItem('loggedUser');

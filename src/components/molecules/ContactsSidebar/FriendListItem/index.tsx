@@ -1,13 +1,14 @@
 import { Box, ListItemButton, Typography, useTheme } from '@mui/material';
 
+import useHandleOpenChat from '@/common/chatsManage/useHandleOpenChat';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import Link from 'next/link';
 import UserPreviewPopper from '../../UserPreviewPopper';
 import UserPreviewPopperHandlers from '../../UserPreviewPopper/UserPreviewPopperHandlers';
 import { FriendListItemProps } from './types';
 
 export default function FriendListItem({ friend, sx, ...rootProps }: FriendListItemProps) {
   const theme = useTheme();
+  const handleChatOpen = useHandleOpenChat(friend.id);
 
   const {
     anchorElRef,
@@ -25,11 +26,10 @@ export default function FriendListItem({ friend, sx, ...rootProps }: FriendListI
         onMouseLeave={handleMouseLeave}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        ref={anchorElRef}>
-        <ListItemButton
-          component={Link}
-          href={`/profile/${friend.id}`}
-          sx={{ pl: theme.spacing(1) }}>
+        ref={anchorElRef}
+        sx={sx}
+        {...rootProps}>
+        <ListItemButton onClick={handleChatOpen} sx={{ pl: theme.spacing(1) }}>
           <UserAvatar
             userId={friend.id}
             useLink={false}

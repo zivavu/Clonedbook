@@ -19,7 +19,7 @@ export default function MessageInputArea({ chatId, sx, ...rootProps }: MessageIn
     reset();
   });
   return (
-    <form>
+    <form style={{ display: 'contents' }}>
       <StyledRoot direction='row' sx={sx} {...rootProps}>
         <IconButton sx={{ width: '30px', height: '30px' }}>
           <Icon icon='plus-circle' fontSize='20px' />

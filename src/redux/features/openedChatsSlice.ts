@@ -1,8 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+const initialState: string[] =
+  typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('openedChats') || '[]') : [];
+
 export const openedChatsSlice = createSlice({
   name: 'openedChats',
-  initialState: [] as string[],
+  initialState,
   reducers: {
     openChat: (state, action: PayloadAction<string>) => {
       if (state.includes(action.payload)) return;

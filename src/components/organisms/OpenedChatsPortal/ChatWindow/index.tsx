@@ -3,13 +3,13 @@ import { IconButton, Stack, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import useContinousChatFetching from '@/common/firebase/readData/useContinousChatFetching';
-import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';
 import { StyledScrollableStack } from '@/components/atoms/scrollables/styles';
 import { closeChat } from '@/redux/features/openedChatsSlice';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useUserDataByIdQuery } from '@/redux/services/userDataAPI';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ChatMessage from './ChatMessage';
@@ -20,23 +20,29 @@ import { ChatWindowProps } from './types';
 export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps) {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { chatData } = useContinousChatFetching(chatId);
+  const { chatData, isLoading: isChatLoading } = useContinousChatFetching(chatId);
   const { data: loggedUser } = useGetLoggedUserQuery({});
 
   const otherUserId = chatData?.users.find((user) => user !== loggedUser?.id) as string;
-  const otherChatUser = useGetUserBasicInfo(otherUserId);
+  const {
+    data: otherUserData,
+    isLoading: isOtherUserLoading,
+    isFetching,
+  } = useUserDataByIdQuery(otherUserId);
 
-  const [initialLoaded, setInitialLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(isOtherUserLoading || isChatLoading || isFetching);
+
   const scrollableStackRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     scrollableStackRef.current?.scrollTo(0, scrollableStackRef.current.scrollHeight);
-    setInitialLoaded(true);
-  }, [chatData]);
+    if (!isOtherUserLoading && !isChatLoading && !isFetching) setIsLoading(false);
+  }, [isOtherUserLoading, isChatLoading, isFetching, chatData]);
 
   function handleChatClose() {
     dispatch(closeChat(chatId));
   }
 
+  if (!otherUserData || isLoading) return null;
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack
@@ -60,13 +66,13 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
       </Stack>
       <StyledScrollableStack
         //Hack to prevent chat flashing(caused by scrolling to bottom) on initial load
-        visibility={initialLoaded ? 'visible' : 'hidden'}
+        visibility={isLoading ? 'hidden' : 'visible'}
         position='relative'
         px={1}
         py={2}
         spacing={0.5}
         ref={scrollableStackRef}>
-        <UserInfoPlaceholder userId={otherUserId} pb={7} />
+        <UserInfoPlaceholder userData={otherUserData} pb={7} />
         {chatData?.messages.map((message) => {
           return <ChatMessage key={message.id} message={message} />;
         })}

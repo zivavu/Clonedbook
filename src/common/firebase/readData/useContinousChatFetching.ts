@@ -5,9 +5,11 @@ import { useEffect, useState } from 'react';
 
 export default function useContinousChatFetching(chatId: string) {
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [chatData, setChatData] = useState<IChat>();
 
   async function fetchChatData() {
+    setIsLoading(true);
     try {
       const chatRef = doc(db, 'chats', chatId);
       const unsubscribe = onSnapshot(chatRef, (doc) => {
@@ -15,6 +17,8 @@ export default function useContinousChatFetching(chatId: string) {
       });
     } catch (error) {
       setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -22,5 +26,5 @@ export default function useContinousChatFetching(chatId: string) {
     fetchChatData();
   }, [chatId]);
 
-  return { isError, chatData };
+  return { isError, isLoading, chatData };
 }

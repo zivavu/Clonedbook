@@ -4,23 +4,21 @@ import { StyledRoot } from './styles';
 
 import useGetFriendshipStatus from '@/common/friendsManage/useGetFriendshipStatus';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { useUserDataByIdQuery } from '@/redux/services/userDataAPI';
 import { UserInfoPlaceholderProps } from './types';
 /**
  * @description - Placeholder that is shown of the chat scrollable box
  */
 
 export default function UserInfoPlaceholder({
-  userId,
+  userData,
   sx,
   ...rootProps
 }: UserInfoPlaceholderProps) {
   const theme = useTheme();
-  const { data: userData } = useUserDataByIdQuery(userId);
-  const isFriend = useGetFriendshipStatus(userId) === 'accepted';
+  const isFriend = useGetFriendshipStatus(userData.id) === 'accepted';
   return (
     <StyledRoot sx={sx} {...rootProps} spacing={1}>
-      <UserAvatar userId={userId} size={52} usePopper={false} useLink={false} />
+      <UserAvatar userId={userData.id} size={52} usePopper={false} useLink={false} />
       <Typography variant='h6' fontWeight={650} letterSpacing={0.4}>
         {userData?.firstName} {userData?.lastName}
       </Typography>

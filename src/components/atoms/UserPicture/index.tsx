@@ -1,4 +1,4 @@
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
 import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
 import { ButtonBase } from '@mui/material';
@@ -14,7 +14,7 @@ export default function UserPicture({
   sx,
   ...rootProps
 }: UserPictureProps) {
-  const user = useGetUserPublicData(userId);
+  const user = useGetUserBasicInfo(userId);
   const {
     anchorElRef,
     isPopperOpen,

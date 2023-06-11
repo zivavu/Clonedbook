@@ -2,7 +2,7 @@ import { Grow, Stack, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledButtonsStack, StyledPopper, StyledPopperBody } from './styles';
 
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
@@ -28,7 +28,7 @@ export default function UserPreviewPopper({
 }: UserPreviewPopperProps) {
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const theme = useTheme();
-  const userData = useGetUserPublicData(userId);
+  const userData = useGetUserBasicInfo(userId);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
   if (!userData || loggedUser?.id === userId) return null;
   return (

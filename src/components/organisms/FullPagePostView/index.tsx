@@ -4,7 +4,7 @@ import { StyledCloseIconButton, StyledPostContentWrapper, StyledRoot } from './s
 
 import useFetchSinglePostData from '@/common/firebase/readData/useFetchPostData';
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
@@ -21,7 +21,7 @@ export default function FullPagePostView({
 }: FullPagePostViewProps) {
   const theme = useTheme();
   const { postData: post, refetchPost } = useFetchSinglePostData(postId);
-  const owner = useGetUserPublicData(post?.ownerId || '');
+  const owner = useGetUserBasicInfo(post?.ownerId || '');
 
   if (!post) return null;
   return (

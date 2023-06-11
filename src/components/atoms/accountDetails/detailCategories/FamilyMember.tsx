@@ -1,4 +1,4 @@
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import FamilyAccountDetail from '../accountDetailItems/FamillyAccountDetail';
 import { FamilyMemberProps } from '../types';
 
@@ -9,7 +9,7 @@ export default function FamilyMember({
   sx,
   ...rootProps
 }: FamilyMemberProps) {
-  const relative = useGetUserPublicData(relativeId);
+  const relative = useGetUserBasicInfo(relativeId);
   if (!relative) return null;
   const isPartner =
     kinshipType === 'in relation' || kinshipType === 'engaged' || kinshipType === 'married';

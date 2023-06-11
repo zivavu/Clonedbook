@@ -1,11 +1,12 @@
-import { IconButton, Stack, Typography, useTheme } from '@mui/material';
+import { IconButton, Stack, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
 import useContinousChatFetching from '@/common/firebase/readData/useContinousChatFetching';
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
+import UserLink from '@/components/atoms/UserLink';
 import { StyledScrollableStack } from '@/components/atoms/scrollables/styles';
 import { closeChat } from '@/redux/features/openedChatsSlice';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
@@ -13,6 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ChatMessage from './ChatMessage';
 import MessageInputArea from './MessageInputArea';
+import UserInfoPlaceholder from './UserInfoPlaceholder';
 import { ChatWindowProps } from './types';
 
 export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps) {
@@ -22,7 +24,7 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
   const { data: loggedUser } = useGetLoggedUserQuery({});
 
   const otherUserId = chatData?.users.find((user) => user !== loggedUser?.id) as string;
-  const otherChatUser = useGetUserPublicData(otherUserId);
+  const otherChatUser = useGetUserBasicInfo(otherUserId);
 
   const [initialLoaded, setInitialLoaded] = useState(false);
   const scrollableStackRef = useRef<HTMLDivElement>(null);
@@ -45,9 +47,7 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
         spacing={1}
         borderBottom={`1px solid ${theme.palette.divider}`}>
         <UserAvatar userId={otherUserId} size={36} />
-        <Typography variant='body1' fontWeight={500}>
-          {otherChatUser?.firstName} {otherChatUser?.lastName}
-        </Typography>
+        <UserLink userId={otherUserId} />
         <IconButton
           onClick={handleChatClose}
           sx={{
@@ -59,13 +59,14 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
         </IconButton>
       </Stack>
       <StyledScrollableStack
-        //Hack to prevent chat flashing on initial load (before scroll to bottom)
+        //Hack to prevent chat flashing(caused by scrolling to bottom) on initial load
         visibility={initialLoaded ? 'visible' : 'hidden'}
         position='relative'
         px={1}
         py={2}
         spacing={0.5}
         ref={scrollableStackRef}>
+        <UserInfoPlaceholder userId={otherUserId} pb={7} />
         {chatData?.messages.map((message) => {
           return <ChatMessage key={message.id} message={message} />;
         })}

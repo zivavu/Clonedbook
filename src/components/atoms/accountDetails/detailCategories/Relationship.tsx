@@ -1,4 +1,4 @@
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 
@@ -11,7 +11,7 @@ export default function Relationship({
   ...rootProps
 }: CategoryProps) {
   const { relationship } = userData.about;
-  const partner = useGetUserPublicData(relationship?.partnerId || '');
+  const partner = useGetUserBasicInfo(relationship?.partnerId || '');
   const partnerName = `${partner?.firstName} ${partner?.lastName}` || '';
   const relationshipLabel = !partner
     ? 'Relationship status'

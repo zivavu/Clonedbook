@@ -3,7 +3,7 @@ import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserLink from '@/components/atoms/UserLink';
 import UserPicture from '@/components/atoms/UserPicture';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
@@ -11,7 +11,7 @@ import { SingleFriendProps } from './types';
 
 export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFriendProps) {
   const theme = useTheme();
-  const friend = useGetUserPublicData(friendId);
+  const friend = useGetUserBasicInfo(friendId);
   const mutalFrineds = useGetMutalFriends(friendId);
   const smallScreen = useMediaQuery(theme.breakpoints.down('xs'));
   if (!friend) return null;

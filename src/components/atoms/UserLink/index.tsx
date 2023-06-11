@@ -1,6 +1,6 @@
 import { UserLinkProps } from './types';
 
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
 import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
@@ -8,7 +8,7 @@ import { Box } from '@mui/material';
 import Link from '../Link';
 export default function UserLink({ userId, usePopper = true, sx, ...rootProps }: UserLinkProps) {
   const { data: loggedUser } = useGetLoggedUserQuery({});
-  const user = useGetUserPublicData(userId);
+  const user = useGetUserBasicInfo(userId);
   const {
     anchorElRef,
     isPopperOpen,

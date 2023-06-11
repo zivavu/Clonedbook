@@ -1,4 +1,4 @@
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import * as Pages from '@/components/pages';
 import Page from '@/templates/Page';
 import { useRouter } from 'next/router';
@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 export default function ProfilePage() {
   const router = useRouter();
   const idParam = router.query.id as string;
-  const user = useGetUserPublicData(idParam);
+  const user = useGetUserBasicInfo(idParam);
   const pageTitle =
     user?.firstName && user.lastName && `${user?.firstName} ${user?.lastName} | Clonedbook`;
 

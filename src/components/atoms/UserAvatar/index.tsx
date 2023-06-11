@@ -1,6 +1,6 @@
 import { Box, ButtonBase, CSSObject, useTheme } from '@mui/material';
 
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
 import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
@@ -30,7 +30,7 @@ export default function UserAvatar({
     handleTouchEnd,
   } = UserPreviewPopperHandlers();
 
-  const user = useGetUserPublicData(userId);
+  const user = useGetUserBasicInfo(userId);
   const px = `${size}px`;
   const containerSx: CSSObject = {
     minWidth: px,

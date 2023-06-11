@@ -2,7 +2,7 @@ import { ButtonBase, useTheme } from '@mui/material';
 import { InteractButtonProps } from './types';
 
 /**
- * @description - A button that only styling is text underline on hover
+ * @description - A button thats only styling is text underline on hover
  */
 
 export default function InteractButton({

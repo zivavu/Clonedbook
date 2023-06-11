@@ -5,7 +5,7 @@ import { StyledRoot, StyledTextContent } from './styles';
 import { updateCommentReaction } from '@/common/firebase/updateData/reactions/updateCommentReaction';
 import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import InteractButton from '@/components/atoms/InteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';
@@ -26,7 +26,7 @@ export default function Comment({
 }: CommentProps) {
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
-  const ownerData = useGetUserPublicData(comment.ownerId);
+  const ownerData = useGetUserBasicInfo(comment.ownerId);
 
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const likeButtonRef = useRef<HTMLButtonElement>(null);

@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 export default function useChangeLoggedUser(userId?: string) {
+  const dispatch = useDispatch();
+
   const { refetch: refetchLoggedUser } = useGetLoggedUserQuery({});
   const { refetch: refetchChats } = useGetUserChatsQuery({});
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
 
   async function switchLoggedUser() {
     setIsLoading(true);

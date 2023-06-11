@@ -5,7 +5,7 @@ import { StyledRoot } from './styles';
 import getChatNewestMessage from '@/common/chatsManage/getChatLastMessage';
 import useHandleOpenChat from '@/common/chatsManage/useHandleOpenChat';
 import getDateDiffs from '@/common/misc/dateManagment/getDateDiffs';
-import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { ListUserProps } from './types';
@@ -19,7 +19,7 @@ export default function ListUserButton({
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const friendId = chat.users.find((user) => user !== loggedUser?.id) as string;
-  const friendData = useGetUserPublicData(friendId);
+  const friendData = useGetUserBasicInfo(friendId);
   const lastMessage = getChatNewestMessage(chat);
   const handleChatOpen = useHandleOpenChat(friendId);
 

@@ -2,7 +2,7 @@ import { StyledRoot, StyledToggleButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import LoggedUserPopover from '@/components/molecules/LoggedUserPopover';
+import LoggedUserPopper from '@/components/molecules/LoggedUserPopper';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { Box, ClickAwayListener, useTheme } from '@mui/material';
 import { MouseEvent, useRef, useState } from 'react';
@@ -48,8 +48,12 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
             <UserAvatar size={42} sx={{ position: 'absolute' }} userId={user?.id} useLink={false} />
           </StyledToggleButton>
 
-          <ChatsListPopper open={currentPopper === 'chats'} anchorEl={chatsButtonrElRef.current} />
-          <LoggedUserPopover
+          <ChatsListPopper
+            open={currentPopper === 'chats'}
+            anchorEl={chatsButtonrElRef.current}
+            handleClose={handlePopperClose}
+          />
+          <LoggedUserPopper
             open={currentPopper === 'account'}
             anchorEl={accountButtonElRef.current}
           />

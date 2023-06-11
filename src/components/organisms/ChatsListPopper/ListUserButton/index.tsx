@@ -3,24 +3,35 @@ import { Stack, Typography, useTheme } from '@mui/material';
 import { StyledRoot } from './styles';
 
 import getChatNewestMessage from '@/common/chatsManage/getChatLastMessage';
-import useHandleChatOpen from '@/common/chatsManage/useHandleChatOpen';
+import useHandleOpenChat from '@/common/chatsManage/useHandleOpenChat';
 import getDateDiffs from '@/common/misc/dateManagment/getDateDiffs';
 import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { ListUserProps } from './types';
 
-export default function ListUser({ chat, sx, ...rootProps }: ListUserProps) {
+export default function ListUserButton({
+  chat,
+  handlePopperClose,
+  sx,
+  ...rootProps
+}: ListUserProps) {
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const friendId = chat.users.find((user) => user !== loggedUser?.id) as string;
   const friendData = useGetUserPublicData(friendId);
   const lastMessage = getChatNewestMessage(chat);
-  const openChat = useHandleChatOpen(friendId);
+  const handleChatOpen = useHandleOpenChat(friendId);
 
   const { largestDiff } = getDateDiffs(lastMessage.createdAt.seconds);
   return (
-    <StyledRoot sx={sx} {...rootProps} onClick={openChat}>
+    <StyledRoot
+      sx={sx}
+      {...rootProps}
+      onClick={() => {
+        handleChatOpen();
+        handlePopperClose();
+      }}>
       <Stack direction='row' spacing={1.5} width='100%'>
         <UserAvatar userId={friendId} size={52} />
         <Stack width='60%'>

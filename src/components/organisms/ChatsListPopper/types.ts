@@ -1,4 +1,5 @@
-import { PopoverProps, PopperProps } from '@mui/material';
-import { Dispatch, SetStateAction } from 'react';
+import { PopperProps } from '@mui/material';
 
-export interface ChatsListPopperProps extends PopoverProps {}
+export interface ChatsListPopperProps extends PopperProps {
+  handleClose(): void;
+}

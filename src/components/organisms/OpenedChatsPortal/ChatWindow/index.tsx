@@ -1,4 +1,4 @@
-import { IconButton, OutlinedInput, Stack, Typography, useTheme } from '@mui/material';
+import { IconButton, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -7,9 +7,11 @@ import useGetUserPublicData from '@/common/misc/userDataManagment/useGetUsersPub
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import ScrollableStack from '@/components/atoms/scrollables/ScrollableStack';
+import { closeChat } from '@/redux/features/openedChatsSlice';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useDispatch } from 'react-redux';
 import ChatMessage from './ChatMessage';
+import MessageInputArea from './MessageInputArea';
 import { ChatWindowProps } from './types';
 
 export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps) {
@@ -21,7 +23,7 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
   const chatUser = useGetUserPublicData(otherUserId);
 
   function handleChatClose() {
-    dispatch({ type: 'openedChats/closeChat', payload: chatId });
+    dispatch(closeChat(chatId));
   }
   return (
     <StyledRoot sx={sx} {...rootProps}>
@@ -51,19 +53,7 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
           return <ChatMessage key={message.id} message={message} />;
         })}
       </ScrollableStack>
-      <Stack mt='auto' alignItems='center' direction='row' px={0.5} py={1.5}>
-        <IconButton sx={{ width: '30px', height: '30px' }}>
-          <Icon icon='plus-circle' fontSize='20px' />
-        </IconButton>
-        <OutlinedInput
-          placeholder='Aa'
-          size='small'
-          sx={{
-            backgroundColor: theme.palette.background.default,
-            fontSize: theme.typography.subtitle2.fontSize,
-          }}
-        />
-      </Stack>
+      <MessageInputArea chatId={chatId} />
     </StyledRoot>
   );
 }

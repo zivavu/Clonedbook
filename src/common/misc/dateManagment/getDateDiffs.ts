@@ -26,8 +26,8 @@ export default function getDateDiffs(seconds: number) {
     w: weeksDiff,
     y: yearsDiff,
   };
-  //eslint-disable-next-line no-unused-vars
-  const pressentDiffs = Object.entries(diffsMap).filter(([_, value]) => value > 0);
+
+  const pressentDiffs = Object.entries(diffsMap).filter(([, value]) => value > 0);
   const largestDiff = pressentDiffs[pressentDiffs.length - 1];
   const largestDiffObj: ITimeDiff = {
     unit: largestDiff[0] as TTimeDiffUnit,

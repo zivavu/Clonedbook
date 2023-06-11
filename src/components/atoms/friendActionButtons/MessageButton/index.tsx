@@ -1,16 +1,16 @@
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { StyledButtonIcon, StyledButtonText, StyledRoot } from './styles';
 
-import useHandleChatOpen from '@/common/chatsManage/useHandleChatOpen';
+import useHandleOpenChat from '@/common/chatsManage/useHandleOpenChat';
 import { MessageButtonProps } from './types';
 
 export default function MessageButton({ userId, sx, ...rootProps }: MessageButtonProps) {
   const { data: loggedUser } = useGetLoggedUserQuery({});
-  const openChat = useHandleChatOpen(userId);
+  const handleChatOpen = useHandleOpenChat(userId);
 
   if (loggedUser?.id === userId) return null;
   return (
-    <StyledRoot focusRipple sx={sx} {...rootProps} onClick={() => openChat()}>
+    <StyledRoot focusRipple sx={sx} {...rootProps} onClick={handleChatOpen}>
       <StyledButtonIcon icon={['fab', 'facebook-messenger']} />
       <StyledButtonText>Message</StyledButtonText>
     </StyledRoot>

@@ -12,9 +12,12 @@ export const openedChatsSlice = createSlice({
     closeChat: (state, action: PayloadAction<string>) => {
       return state.filter((chatId) => chatId !== action.payload);
     },
+    closeAllChats: () => {
+      return [];
+    },
   },
 });
 
-export const { openChat, closeChat } = openedChatsSlice.actions;
+export const { openChat, closeChat, closeAllChats } = openedChatsSlice.actions;
 
 export default openedChatsSlice.reducer;

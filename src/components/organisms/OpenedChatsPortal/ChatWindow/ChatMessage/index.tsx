@@ -19,12 +19,14 @@ export default function ChatMessage({ message, sx, ...rootProps }: ChatMessagePr
         ...sx,
       }}
       {...rootProps}>
-      <UserAvatar
-        size={30}
-        userId={message.senderId}
-        useLink={false}
-        sx={{ order: isOwner ? 1 : 0, alignSelf: 'flex-end' }}
-      />
+      {!isOwner && (
+        <UserAvatar
+          size={30}
+          userId={message.senderId}
+          useLink={false}
+          sx={{ alignSelf: 'flex-end' }}
+        />
+      )}
       <Box
         sx={{
           padding: theme.spacing(1, 1.5),

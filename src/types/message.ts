@@ -4,7 +4,7 @@ import { ITimestamp } from './timestamp';
 export interface IMessage {
   id: string;
   senderId: string;
-  text?: string;
+  text: string;
   pictures?: IInChatPicture[];
   createdAt: ITimestamp;
 }

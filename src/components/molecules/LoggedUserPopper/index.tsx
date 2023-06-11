@@ -1,4 +1,4 @@
-import { Box, List, Switch, Typography, useTheme } from '@mui/material';
+import { Box, List, PopperProps, Switch, Typography, useTheme } from '@mui/material';
 
 import {
   StyledContentWrapper,
@@ -9,33 +9,29 @@ import {
   StyledRoot,
 } from './styles';
 
+import useChangeLoggedUser from '@/common/misc/userDataManagment/useChangeLoggedUser';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
-import { TopbarPopperProps } from '@/components/organisms/NavBar/RightSection/types';
 import { toggleTheme } from '@/redux/features/themeSlice';
-import { useGetLoggedUserQuery, useGetUserChatsQuery } from '@/redux/services/loggedUserAPI';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function LoggedUserPopover({ open, anchorEl, sx, ...rootProps }: TopbarPopperProps) {
+export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: PopperProps) {
   const theme = useTheme();
-  const { data: loggedUser, refetch: refetchUser, isFetching } = useGetLoggedUserQuery({});
-  const { refetch: refetchChats } = useGetUserChatsQuery({});
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const mode = useSelector((state: RootState) => state.theme.mode);
 
-  const switchUser = async () => {
-    localStorage.removeItem('loggedUser');
-    await refetchUser();
-    refetchChats();
-  };
+  const { switchLoggedUser, isLoading } = useChangeLoggedUser();
 
   const dispatch = useDispatch();
   const router = useRouter();
   const handleRedirectToProfile = () => {
     router.push(`/profile`);
   };
+
   if (!loggedUser) return null;
   return (
     <StyledRoot open={open} anchorEl={anchorEl} sx={sx} {...rootProps}>
@@ -58,12 +54,12 @@ export default function LoggedUserPopover({ open, anchorEl, sx, ...rootProps }: 
               <Typography variant='subtitle2'>Profile</Typography>
             </StyledListButton>
 
-            <StyledListButton onClick={() => switchUser()} disabled={isFetching}>
+            <StyledListButton onClick={switchLoggedUser} disabled={isLoading}>
               <StyledIconContainer>
                 <StyledListItemIcon icon='repeat' />
               </StyledIconContainer>
               <Typography variant='subtitle2'>
-                {isFetching ? 'Loading...' : 'Reroll user'}
+                {isLoading ? 'Loading...' : 'Reroll user'}
               </Typography>
             </StyledListButton>
 

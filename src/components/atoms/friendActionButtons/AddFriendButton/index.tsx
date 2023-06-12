@@ -1,4 +1,6 @@
 import {
+  Box,
+  CircularProgress,
   ClickAwayListener,
   MenuList,
   Popper,
@@ -40,13 +42,16 @@ export default function AddFriendButton({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const anchorElRef = useRef<HTMLButtonElement | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleUpdateFriendshipStatus(newStatus: TFriendStatus | null) {
     if (!loggedUser?.id) return;
+    setIsLoading(true);
     setIsMenuOpen(false);
     await updateFriendshipStatus({ friendId: friendId, loggedUserId: loggedUser?.id, newStatus });
-    refetchLoggedUser();
+    await refetchLoggedUser();
     if (refetchOtherUser) refetchOtherUser();
+    setIsLoading(false);
   }
 
   const buttonColor =
@@ -114,7 +119,13 @@ export default function AddFriendButton({
         sx={{ ...buttonSx, ...sx }}
         {...rootProps}
         onClick={clickHandler}>
-        {showIcon && <StyledButtonIcon icon={icon} color={iconColor} />}
+        {isLoading ? (
+          <Box width='24px' pr={0.5}>
+            <CircularProgress thickness={6} size={18} sx={{ color: theme.palette.common.white }} />
+          </Box>
+        ) : (
+          showIcon && <StyledButtonIcon icon={icon} color={iconColor} />
+        )}
         <StyledButtonText>{buttonText}</StyledButtonText>
       </StyledRoot>
 

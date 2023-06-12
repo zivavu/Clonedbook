@@ -50,7 +50,9 @@ import { faFacebookMessenger, faGithub } from '@fortawesome/free-brands-svg-icon
 import NavBar from '@/components/organisms/NavBar';
 import OpenedChatsPortal from '@/components/organisms/OpenedChatsPortal';
 import ThemeModeProvider from '@/design/ThemeModeProvider';
+import createEmotionCache from '@/design/createEmotionCache';
 import { store } from '@/redux/store';
+import { EmotionCache, CacheProvider as EmotionCacheProvider } from '@emotion/react';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Provider } from 'react-redux';
@@ -105,17 +107,25 @@ const icons = [
 ] as any;
 library.add(...icons);
 
-export default function App({ Component, pageProps }: AppProps) {
+const emotionCache = createEmotionCache();
+
+export interface EmotionAppProps extends AppProps {
+  emotionCache?: EmotionCache;
+}
+
+export default function App({ Component, pageProps }: EmotionAppProps) {
   return (
     <>
       <Provider store={store}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <ThemeModeProvider>
-            <NavBar />
-            <Component {...pageProps} />
-            <OpenedChatsPortal />
-          </ThemeModeProvider>
-        </LocalizationProvider>
+        <EmotionCacheProvider value={emotionCache}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ThemeModeProvider>
+              <NavBar />
+              <Component {...pageProps} />
+              <OpenedChatsPortal />
+            </ThemeModeProvider>
+          </LocalizationProvider>
+        </EmotionCacheProvider>
       </Provider>
     </>
   );

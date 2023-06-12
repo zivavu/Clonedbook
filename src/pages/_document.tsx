@@ -1,15 +1,66 @@
-import { getInitColorSchemeScript } from '@mui/material';
-import { Head, Html, Main, NextScript } from 'next/document';
+import Document, {
+  DocumentContext,
+  DocumentProps,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from 'next/document';
 
-export default function Document() {
+import createEmotionCache from '@/design/createEmotionCache';
+import createEmotionServer from '@emotion/server/create-instance';
+import { getInitColorSchemeScript } from '@mui/material';
+import { AppType } from 'next/app';
+import { ComponentProps } from 'react';
+import { EmotionAppProps } from './_app';
+
+interface EmotionDocumentProps extends DocumentProps {
+  emotionStyleTags: JSX.Element[];
+}
+
+export default function MyDocument({ emotionStyleTags }: EmotionDocumentProps) {
   return (
     <Html lang='en'>
-      <Head />
+      <Head>
+        <meta name='emotion-insertion-point' content='' />
+        {emotionStyleTags}
+      </Head>
       <body style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-        {getInitColorSchemeScript({ defaultMode: 'system' })}
+        {getInitColorSchemeScript({ modeStorageKey: 'mui-color-scheme-light' })}
         <Main />
         <NextScript />
       </body>
     </Html>
   );
 }
+
+Document.getInitialProps = async (ctx: DocumentContext) => {
+  const originalRenderPage = ctx.renderPage;
+  const cache = createEmotionCache();
+  const { extractCriticalToChunks } = createEmotionServer(cache);
+
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: (App: React.ComponentType<ComponentProps<AppType> & EmotionAppProps>) =>
+        function EnhanceApp(props) {
+          return <App emotionCache={cache} {...props} />;
+        },
+    });
+
+  const initialProps: any = await Document.getInitialProps(ctx);
+
+  const emotionStyles = extractCriticalToChunks(initialProps.html);
+  const emotionStyleTags = emotionStyles.styles.map((style) => (
+    <style
+      data-emotion={`${style.key} ${style.ids.join(' ')}`}
+      key={style.key}
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: style.css }}
+    />
+  ));
+
+  return {
+    ...initialProps,
+    emotionStyleTags,
+  };
+};

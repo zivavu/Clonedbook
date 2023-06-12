@@ -22,11 +22,12 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: PopperProps) {
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
-  const mode = useSelector((state: RootState) => state.theme.mode);
 
   const { switchLoggedUser, isLoading } = useChangeLoggedUser();
 
   const dispatch = useDispatch();
+  const mode = useSelector((state: RootState) => state.theme.mode);
+
   const router = useRouter();
   const handleRedirectToProfile = () => {
     router.push(`/profile`);

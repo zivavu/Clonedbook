@@ -2,7 +2,7 @@ import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/tool
 import { loggedUser } from './services/loggedUserAPI';
 
 import openedChatsSlice, { closeAllChats, closeChat, openChat } from './features/openedChatsSlice';
-import themeModeSlice from './features/themeSlice';
+import themeSlice from './features/themeSlice';
 import { allUsersPublicDataAPI } from './services/allUsersPublicDataAPI';
 import { userDataAPI } from './services/userDataAPI';
 
@@ -21,7 +21,7 @@ export const store = configureStore({
     [loggedUser.reducerPath]: loggedUser.reducer,
     [allUsersPublicDataAPI.reducerPath]: allUsersPublicDataAPI.reducer,
     [userDataAPI.reducerPath]: userDataAPI.reducer,
-    theme: themeModeSlice,
+    theme: themeSlice,
     openedChats: openedChatsSlice,
   },
 

@@ -73,13 +73,14 @@ export default function useCreateNewPost() {
       );
 
       const post: IPost = {
-        text: postText,
-        createdAt: Timestamp.now(),
-        pictures: photosData,
-        comments: {},
         id: postId,
+        text: postText,
+        pictures: photosData,
+        createdAt: Timestamp.now(),
+        comments: {},
         ownerId: loggedUser.id,
         wallOwnerId: loggedUser.id,
+        elementType: 'post',
         reactions: {},
         shareCount: 0,
       };

@@ -6,13 +6,13 @@ import themeModeSlice from './features/themeSlice';
 import { allUsersPublicDataAPI } from './services/allUsersPublicDataAPI';
 import { userDataAPI } from './services/userDataAPI';
 
-const openedChatsListenerMiddleware = createListenerMiddleware();
+export const openedChatsListenerMiddleware = createListenerMiddleware();
 openedChatsListenerMiddleware.startListening({
   matcher: isAnyOf(openChat, closeChat, closeAllChats),
 
   effect: (payload, action) => {
     const state = action.getState() as RootState;
-    localStorage.setItem('openedChats', JSON.stringify(state.openedChats));
+    localStorage.setItem('openedChats', JSON.stringify(state.openedChats.chatIds));
   },
 });
 

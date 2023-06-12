@@ -67,13 +67,7 @@ export function getDesignTokens(mode: 'light' | 'dark') {
       borderRadius: 8,
     },
     breakpoints: {
-      values: {
-        xs: 450,
-        sm: 600,
-        md: 900,
-        lg: 1220,
-        xl: 1520,
-      },
+      values: { xs: 450, sm: 600, md: 960, lg: 1280, xl: 1920 },
     },
     shadows: customShadows,
 

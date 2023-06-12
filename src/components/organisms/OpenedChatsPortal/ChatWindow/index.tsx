@@ -1,4 +1,4 @@
-import { IconButton, Stack, useTheme } from '@mui/material';
+import { Box, CircularProgress, IconButton, Stack, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -42,7 +42,6 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
     dispatch(closeChat(chatId));
   }
 
-  if (!otherUserData || isLoading) return null;
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack
@@ -64,19 +63,34 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
           <Icon icon='xmark' fontSize={22} />
         </IconButton>
       </Stack>
-      <StyledScrollableStack
-        //Hack to prevent chat flashing(caused by scrolling to bottom) on initial load
-        visibility={isLoading ? 'hidden' : 'visible'}
-        position='relative'
-        px={1}
-        py={2}
-        spacing={0.5}
-        ref={scrollableStackRef}>
-        <UserInfoPlaceholder userData={otherUserData} pb={7} />
-        {chatData?.messages.map((message) => {
-          return <ChatMessage key={message.id} message={message} />;
-        })}
-      </StyledScrollableStack>
+      {!otherUserData || isLoading ? (
+        <Box position='relative' height='100%'>
+          <CircularProgress
+            size={38}
+            thickness={6}
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
+        </Box>
+      ) : (
+        <StyledScrollableStack
+          //Hack to prevent chat flashing(caused by scrolling to bottom) on initial load
+          visibility={isLoading ? 'hidden' : 'visible'}
+          position='relative'
+          px={1}
+          py={2}
+          spacing={0.5}
+          ref={scrollableStackRef}>
+          <UserInfoPlaceholder userData={otherUserData} pb={7} />
+          {chatData?.messages.map((message) => {
+            return <ChatMessage key={message.id} message={message} />;
+          })}
+        </StyledScrollableStack>
+      )}
 
       <MessageInputArea chatId={chatId} chatEmoji={chatData?.chatEmoji || '❤️'} />
     </StyledRoot>

@@ -5,5 +5,9 @@ export interface IChat {
   id: string;
   messages: IMessage[];
   users: string[];
+
   chatEmoji?: string;
+
+  //Hex color of chat theme
+  chatColor?: string;
 }

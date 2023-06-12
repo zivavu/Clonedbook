@@ -78,8 +78,6 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
         </Box>
       ) : (
         <StyledScrollableStack
-          //Hack to prevent chat flashing(caused by scrolling to bottom) on initial load
-          visibility={isLoading ? 'hidden' : 'visible'}
           position='relative'
           px={1}
           py={2}

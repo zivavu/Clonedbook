@@ -20,10 +20,10 @@ export async function deleteUserComment({
       postCommentDelete({ elementId, commentId });
     }
     if (elementType === 'accountPicture') {
-      accountPictureCommentCreate({ elementId, commentId, elementOwnerId });
+      accountPictureCommentDelete({ elementId, commentId, elementOwnerId });
     }
     if (elementType === 'backgroundPicture') {
-      backgroundPictureCommentCreate({ elementId, commentId, elementOwnerId });
+      backgroundPictureCommentDelete({ elementId, commentId, elementOwnerId });
     }
   } catch (err) {
     console.log(err);
@@ -39,7 +39,7 @@ async function postCommentDelete({
   await updateDoc(docRef, commentPath, deleteField());
 }
 
-async function accountPictureCommentCreate({
+async function accountPictureCommentDelete({
   elementId,
   commentId,
   elementOwnerId,
@@ -49,7 +49,7 @@ async function accountPictureCommentCreate({
   await updateDoc(docRef, commentPath, deleteField());
 }
 
-async function backgroundPictureCommentCreate({
+async function backgroundPictureCommentDelete({
   elementId,
   commentId,
   elementOwnerId,

@@ -62,7 +62,7 @@ const CustomDatePicker = ({ setEditInputValue }: CustomEditComponentProps<ITimes
           disableFuture
           onChange={(value: Dayjs | null) => {
             if (!value) return;
-            const timestamp = Timestamp.fromDate(value.toDate()) as ITimestamp;
+            const timestamp = Timestamp.now();
             setEditInputValue(timestamp);
           }}
           label='Birth date'

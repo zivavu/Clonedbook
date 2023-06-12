@@ -44,7 +44,12 @@ export default function FullPagePostView({
           <HorizontalContentDevider sx={{ bottom: 0 }} />
         </Stack>
         <StyledPostContentWrapper spacing={1}>
-          <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />
+          <PostOwnerInfoDisplay
+            owner={owner}
+            element={post}
+            elementType='post'
+            refetchElement={refetchPost}
+          />
           <Typography variant='body1'>{post.text}</Typography>
           <Stack direction='row' alignItems='center'>
             <ReactionsDisplayBox reactions={post.reactions} />

@@ -8,7 +8,7 @@ import { LoginAsUserButtonProps } from './types';
 
 export default function LoginAsUserButton({
   userId,
-  showIcon,
+  showIcon = true,
   sx,
   ...rootProps
 }: LoginAsUserButtonProps) {

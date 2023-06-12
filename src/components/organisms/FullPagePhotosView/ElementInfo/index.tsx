@@ -54,9 +54,11 @@ export default function ElementInfo({
       <HorizontalContentDevider />
       <PostOwnerInfoDisplay
         owner={owner}
-        createdAt={element.createdAt}
+        element={element}
+        elementType={type}
         mt={theme.spacing(2)}
         mb={theme.spacing(1)}
+        refetchElement={refetchElement}
       />
       <Box mb={theme.spacing(4)}>
         <Typography variant='body1'>{element.text}</Typography>

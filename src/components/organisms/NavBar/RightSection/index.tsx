@@ -30,7 +30,7 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
             value={'notifications' as TTopbarPoper}
             selected={currentPopper === 'notifications'}
             onClick={handlePopperChange}>
-            <Icon icon='bell' color={theme.palette.text.primary} />
+            <Icon icon='bell' color={theme.palette.text.secondary} />
           </StyledToggleButton>
 
           <StyledToggleButton

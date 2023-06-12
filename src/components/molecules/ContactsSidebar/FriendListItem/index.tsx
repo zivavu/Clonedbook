@@ -17,7 +17,7 @@ export default function FriendListItem({ friend, sx, ...rootProps }: FriendListI
     handleTouchEnd,
     handleTouchStart,
     isPopperOpen,
-  } = UserPreviewPopperHandlers();
+  } = UserPreviewPopperHandlers(600);
 
   return (
     <>

@@ -4,7 +4,12 @@ import { StyledButtonIcon, StyledButtonText, StyledRoot } from './styles';
 import useHandleOpenChat from '@/common/chatsManage/useHandleOpenChat';
 import { MessageButtonProps } from './types';
 
-export default function MessageButton({ userId, showIcon, sx, ...rootProps }: MessageButtonProps) {
+export default function MessageButton({
+  userId,
+  showIcon = true,
+  sx,
+  ...rootProps
+}: MessageButtonProps) {
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const handleChatOpen = useHandleOpenChat(userId);
 

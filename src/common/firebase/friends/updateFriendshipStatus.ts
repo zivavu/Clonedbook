@@ -41,8 +41,8 @@ export async function updateFriendshipStatus({
       await Promise.allSettled([
         await updateDoc(loggedUserDoc, friendPath, newStatus),
         await updateDoc(friendDoc, loggedUserPath, flippedStatus),
-        await updateDoc(publicFriendsDoc, loggedPublicFriendsPath, Timestamp.fromDate(new Date())),
-        await updateDoc(publicFriendsDoc, friendPublicFriendsPath, Timestamp.fromDate(new Date())),
+        await updateDoc(publicFriendsDoc, loggedPublicFriendsPath, Timestamp.now()),
+        await updateDoc(publicFriendsDoc, friendPublicFriendsPath, Timestamp.now()),
       ]);
     }
   } catch (err) {

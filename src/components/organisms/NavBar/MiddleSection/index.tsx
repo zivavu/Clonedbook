@@ -3,12 +3,14 @@ import { StyledRoot, StyledToggleButton } from './styles';
 import Icon from '@/components/atoms/Icon/Icon';
 import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { useTheme } from '@mui/material';
 import { useState } from 'react';
 import { MiddleSectionProps } from './types';
 
 const mainNavElements: {
   name: string;
   icon: IconName;
+  disabled?: boolean;
 }[] = [
   {
     name: 'Home',
@@ -17,14 +19,17 @@ const mainNavElements: {
   {
     name: 'Watch',
     icon: 'clapperboard',
+    disabled: true,
   },
   {
     name: 'Groups',
     icon: 'people-group',
+    disabled: true,
   },
 ];
 
 export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSectionProps) {
+  const theme = useTheme();
   const [currentPage, setCurrentPage] = useState('Home');
 
   const handleNavChange = (name: string) => {
@@ -37,12 +42,16 @@ export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSecti
         const selected = currentPage === element.name;
         return (
           <StyledToggleButton
-            disabled
+            disabled={element.disabled}
             key={element.name}
             value={element.name}
             selected={selected}
             onClick={() => handleNavChange(element.name)}>
-            <Icon icon={['fas', element.icon]} fontSize='1.3rem'></Icon>
+            <Icon
+              icon={['fas', element.icon]}
+              fontSize='1.3rem'
+              color={element.disabled ? theme.palette.text.disabled : theme.palette.text.primary}
+            />
             {selected ? <SelectedButtonUnderline /> : null}
           </StyledToggleButton>
         );

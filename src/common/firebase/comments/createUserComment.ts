@@ -28,7 +28,7 @@ export async function createUserComment({
   const comment: IComment = {
     commentText,
     ownerId: loggedUserId,
-    createdAt: Timestamp.fromDate(new Date()),
+    createdAt: Timestamp.now(),
     reactions: {},
     id: uuidv4(),
     responses: {},

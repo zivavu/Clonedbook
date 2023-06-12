@@ -96,6 +96,8 @@ export default function usePostsInfiniteScrolling({
       } else {
         setPosts((currentPosts) => [refetchedPost, ...currentPosts]);
       }
+    } else {
+      setPosts((currentPosts) => currentPosts.filter((post) => post.id !== id));
     }
   }
 

@@ -17,6 +17,7 @@ export interface IWallElement {
   reactions: IReactionsMap;
   comments: ICommentMap;
   shareCount: number;
+  elementType?: TElementType;
 }
 
 export interface IOptionalId {

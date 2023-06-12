@@ -14,7 +14,7 @@ export default async function createUserChatMessage({
   pictures,
 }: ICreateUserChatMessage) {
   const messageId = uuidv4();
-  const createdAt = Timestamp.fromDate(new Date());
+  const createdAt = Timestamp.now();
   const message: IMessage = {
     id: messageId,
     createdAt,

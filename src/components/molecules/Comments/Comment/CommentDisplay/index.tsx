@@ -7,7 +7,7 @@ import UserLink from '@/components/atoms/UserLink';
 import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useRef, useState } from 'react';
-import CommentManageMenu from '../CommentManageMenu';
+import ElementManageMenu from '../../../ElementManageMenu';
 import { StyledTextContent } from './styles';
 import { CommentDisplayProps } from './types';
 
@@ -31,14 +31,14 @@ export default function CommentDisplay({
   const isOwner = loggedUser?.id === comment.ownerId;
 
   async function handleCommentDelete() {
-    setIsMenuOpen(false);
     await deleteUserComment({
       elementType: elementType,
       elementId: element.id,
       elementOwnerId: element.ownerId,
       commentId: comment.id,
     });
-    refetchElement();
+    await refetchElement();
+    setIsMenuOpen(false);
   }
   return (
     <Stack direction='row' position='relative' sx={sx} {...rootProps}>
@@ -90,7 +90,8 @@ export default function CommentDisplay({
               }}>
               <Icon icon='ellipsis' fontSize={16} color={theme.palette.text.secondary} />
             </IconButton>
-            <CommentManageMenu
+            <ElementManageMenu
+              ownerId={comment.ownerId}
               anchorEl={commentManageAnchor.current}
               open={isMenuOpen}
               onClose={() => setIsMenuOpen(false)}
@@ -98,7 +99,7 @@ export default function CommentDisplay({
                 handleOpenEditMode();
                 setIsMenuOpen(false);
               }}
-              handleCommentDelete={handleCommentDelete}
+              handleElementDelete={handleCommentDelete}
             />
           </>
         )}

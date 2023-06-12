@@ -48,9 +48,15 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
   return (
     <>
       {isFullViewOpen && <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} />}
+
       <StyledRoot sx={sx} {...rootProps}>
         <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
-          <PostOwnerInfoDisplay owner={owner} createdAt={post.createdAt} />
+          <PostOwnerInfoDisplay
+            owner={owner}
+            element={post}
+            elementType='post'
+            refetchElement={refetchPost}
+          />
           {hasText && (
             <Box sx={{ pt: theme.spacing(1) }}>
               {isTextLong ? (

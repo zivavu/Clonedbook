@@ -17,7 +17,7 @@ export type TReactionsByTypes = {
 };
 
 export default function useDeserializeReactions(reactions: IReactionsMap) {
-  const { data: allUsers } = useAllUsersBasicInfoQuery({});
+  const { data: allUsers, isLoading } = useAllUsersBasicInfoQuery({});
 
   const usersPublicData: IUserBasicInfo[] | [] = allUsers
     ? Object.entries(allUsers).map(([id, profileData]) => ({
@@ -60,6 +60,7 @@ export default function useDeserializeReactions(reactions: IReactionsMap) {
   );
 
   return {
+    isLoading,
     reactingUsers,
     reactionsCount,
     largestByType,

@@ -1,6 +1,6 @@
 import { StyledRoot } from './styles';
 
-import usePostsInfiniteScrolling from '@/common/firebase/readData/usePostsInfiniteScrolling';
+import usePostsInfiniteScrolling from '@/common/firebase/posts/usePostsInfiniteScrolling';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
 import PostsFeed from '../PostsFeed';
 import { HomeWallProps } from './types';

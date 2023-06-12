@@ -2,7 +2,7 @@ import { Modal, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledCloseIconButton, StyledPostContentWrapper, StyledRoot } from './styles';
 
-import useFetchSinglePostData from '@/common/firebase/readData/useFetchPostData';
+import useFetchSinglePostData from '@/common/firebase/posts/useFetchPostData';
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import Icon from '@/components/atoms/Icon/Icon';

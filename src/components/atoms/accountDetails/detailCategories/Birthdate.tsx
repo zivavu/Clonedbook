@@ -1,4 +1,4 @@
-import updateUserBirthdate from '@/common/firebase/updateData/user/updateUserBirthDate';
+import updateUserBirthdate from '@/common/firebase/user/updateUserBirthDate';
 import getDateFromTimestamp from '@/common/misc/dateManagment/getDateFromTimestamp';
 import { ITimestamp } from '@/types/timestamp';
 import { Box, useMediaQuery, useTheme } from '@mui/material';

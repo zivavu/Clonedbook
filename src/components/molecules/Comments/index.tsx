@@ -61,10 +61,10 @@ export default function Comments({
       )}
       <CommentInput
         displayMode={displayMode}
-        commentInputRef={commentInputRef}
         element={element}
         parentElementType={elementType}
         refetchElement={refetchElement}
+        commentInputRef={commentInputRef}
         scrollToNewComment={scrollToNewComment}
       />
     </StyledRoot>

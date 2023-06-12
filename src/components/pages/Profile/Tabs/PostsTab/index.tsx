@@ -1,6 +1,6 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 
-import usePostsInfiniteScrolling from '@/common/firebase/readData/usePostsInfiniteScrolling';
+import usePostsInfiniteScrolling from '@/common/firebase/posts/usePostsInfiniteScrolling';
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';

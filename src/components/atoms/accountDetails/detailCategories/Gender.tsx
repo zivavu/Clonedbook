@@ -1,4 +1,4 @@
-import updateUserAboutField from '@/common/firebase/updateData/user/updateUserAboutTextFields';
+import updateUserAboutField from '@/common/firebase/user/updateUserAboutTextFields';
 import { TUserSex } from '@/types/user';
 import { InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';

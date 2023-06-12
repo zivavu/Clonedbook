@@ -2,7 +2,7 @@ import { IconButton, TextField, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import createUserChatMessage from '@/common/firebase/createData/createUserChatMessage';
+import createUserChatMessage from '@/common/firebase/chats/createUserChatMessage';
 import Icon from '@/components/atoms/Icon/Icon';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useState } from 'react';

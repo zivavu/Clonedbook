@@ -17,7 +17,7 @@ import {
   StyledRoot,
 } from './styles';
 
-import { updateFriendshipStatus } from '@/common/firebase/updateData/friends/updateFriendshipStatus';
+import { updateFriendshipStatus } from '@/common/firebase/friends/updateFriendshipStatus';
 import useGetFriendshipStatus from '@/common/friendsManage/useGetFriendshipStatus';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TFriendStatus } from '@/types/firend';

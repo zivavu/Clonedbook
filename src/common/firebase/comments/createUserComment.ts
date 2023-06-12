@@ -4,7 +4,7 @@ import { TElementType } from '@/types/misc';
 import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, updateDoc } from 'firebase/firestore';
 
-export interface ICreateCommentParams {
+interface ICreateCommentParams {
   commentText: string;
   elementId: string;
   elementType: TElementType;
@@ -12,7 +12,7 @@ export interface ICreateCommentParams {
   loggedUserId: string;
 }
 
-export interface ICommentCreateByElementType {
+interface ICommentCreateByElementType {
   comment: IComment;
   elementId: string;
   elementOwnerId: string;

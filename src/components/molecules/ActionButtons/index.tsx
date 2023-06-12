@@ -2,12 +2,12 @@ import { Typography, useTheme } from '@mui/material';
 
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
-import updateElementReaction from '@/common/firebase/updateData/reactions/updateElementReaction';
+import updateElementReaction from '@/common/firebase/reactions/updateElementReaction';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TLocalUserReaction } from '@/types/reaction';
-import { useRef, useState } from 'react';
 import ReactionsPopper from '../ReactionsPopper';
+import useReactionsPopperHandlers from '../ReactionsPopper/useReactionsPopperHandlers';
 import { ActionButtonsProps } from './types';
 
 export default function ActionButtons({
@@ -21,28 +21,16 @@ export default function ActionButtons({
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const theme = useTheme();
 
-  const [isReactionsPopperOpen, setIsReactionPopperOpen] = useState(false);
-  const likeButtonRef = useRef<HTMLButtonElement>(null);
   const userReaction = element.reactions && element.reactions[loggedUser?.id || ''];
 
-  function handleMouseOver() {
-    setIsReactionPopperOpen(true);
-  }
-  function handleMouseOut() {
-    setIsReactionPopperOpen(false);
-  }
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  function startPressTimer() {
-    timerRef.current = setTimeout(() => {
-      setIsReactionPopperOpen(true);
-    }, 400);
-  }
-  function stopPressTimer() {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  }
+  const {
+    isPopperOpen,
+    popperAnchorElRef,
+    handlePopperOpen,
+    handlePopperClose,
+    handleTouchStart,
+    handleTouchEnd,
+  } = useReactionsPopperHandlers();
 
   async function handleUpdateElementReaction(reaction: TLocalUserReaction) {
     if (!loggedUser) return;
@@ -55,12 +43,12 @@ export default function ActionButtons({
       reaction,
     });
     await refetchElement();
-    setIsReactionPopperOpen(false);
+    handlePopperClose();
   }
 
   function handleLikeButtonClick() {
     if (!loggedUser) return;
-    setIsReactionPopperOpen(false);
+    handlePopperClose();
     if (!userReaction) {
       handleUpdateElementReaction('like');
     } else {
@@ -71,24 +59,24 @@ export default function ActionButtons({
   return (
     <StyledRoot {...rootProps} sx={sx}>
       <ReactionsPopper
-        anchorEl={likeButtonRef.current}
+        anchorEl={popperAnchorElRef.current}
         placement={elementType === 'post' ? 'top-start' : 'top'}
         updateDocHandler={(reaction) => {
           handleUpdateElementReaction(reaction);
         }}
-        handleMouseOver={handleMouseOver}
-        handleMouseOut={handleMouseOut}
-        open={isReactionsPopperOpen}
+        handleMouseOver={handlePopperOpen}
+        handleMouseOut={handlePopperClose}
+        open={isPopperOpen}
       />
 
       <StyledActionButton
         focusRipple
         value='like'
-        ref={likeButtonRef}
-        onMouseEnter={handleMouseOver}
-        onMouseLeave={handleMouseOut}
-        onTouchStart={() => startPressTimer()}
-        onTouchEnd={() => stopPressTimer()}
+        ref={popperAnchorElRef}
+        onMouseEnter={handlePopperOpen}
+        onMouseLeave={handlePopperClose}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         onClick={handleLikeButtonClick}>
         {userReaction ? (
           <ReactionIcon

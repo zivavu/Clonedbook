@@ -1,4 +1,4 @@
-import updateUserAboutField from '@/common/firebase/updateData/user/updateUserAboutTextFields';
+import updateUserAboutField from '@/common/firebase/user/updateUserAboutTextFields';
 import TextAccountDetail from '../accountDetailItems/TextAccountDetail';
 import { CategoryProps, ITextAccountDetail } from '../types';
 

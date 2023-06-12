@@ -101,6 +101,7 @@ const icons = [
   faGithub,
   faPaperPlane,
   faPlusCircle,
+  faEllipsis,
 ] as any;
 library.add(...icons);
 

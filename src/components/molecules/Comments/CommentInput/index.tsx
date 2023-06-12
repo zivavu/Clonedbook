@@ -2,11 +2,11 @@ import { SxProps, Theme, useTheme } from '@mui/material';
 
 import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
 
-import { createUserComment } from '@/common/firebase/createData/createUserComment';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useState } from 'react';
 import { CommentInputProps } from './types';
+import { createUserComment } from '@/common/firebase/comments/createUserComment';
 
 export default function CommentInput({
   sx,

@@ -2,7 +2,7 @@ import { IconButton, Stack, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import useContinousChatFetching from '@/common/firebase/readData/useContinousChatFetching';
+import useContinousChatFetching from '@/common/firebase/chats/useContinousChatFetching';
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';

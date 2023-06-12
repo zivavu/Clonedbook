@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from './styles';
 
@@ -35,23 +35,18 @@ export default function UserInfoSection({
   const friendsCount = getAcceptedFriends(userData).length || 0;
   const mutalFriends = useGetMutalFriends(userId);
 
-  const containerHeight = '140px';
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
+  const pictureContainerHeight = isMobile ? '100px' : '140px';
   return (
     <>
-      {isFullViewOpen && profilePictureData && (
-        <FullPageAccountPicturesView
-          setOpen={setIsFullViewOpen}
-          initialPhoto={profilePictureData}
-          ownerId={userId}
-        />
-      )}
       <StyledRoot sx={sx} {...rootProps}>
         <StyledBasicInfoContainer>
-          <Box height={containerHeight}>
+          <Box height={pictureContainerHeight}>
             <StyledProfilePictureButton onClick={() => setIsFullViewOpen(true)}>
               <ImageWithGradientLoading
                 alt={`${userData?.firstName}'s Profile Picture`}
-                sizes='250px'
+                sizes='350px'
                 src={profilePictureData?.image.url || ''}
                 blurDataURL={profilePictureData?.image.blurDataUrl || ''}
                 placeholder='blur'
@@ -63,16 +58,24 @@ export default function UserInfoSection({
               />
             </StyledProfilePictureButton>
           </Box>
-          <Stack direction='row' width='100%' justifyContent='space-between'>
+
+          <Stack
+            direction={isMobile ? 'column' : 'row'}
+            width='100%'
+            alignItems='center'
+            textAlign={isMobile ? 'center' : 'left'}
+            justifyContent='space-between'>
             <Stack padding={theme.spacing(2)}>
               <Typography variant='h4' fontWeight={700}>
                 {userData?.firstName} {userData?.lastName}
               </Typography>
+
               <Typography variant='subtitle1' fontWeight={600} color={theme.palette.text.secondary}>
                 {friendsCount} friends{' '}
                 {loggedUser?.id !== userId && `• ${mutalFriends.length} mutual`}
               </Typography>
-              <Stack direction='row' mt={0.8} ml={1}>
+
+              <Stack direction='row' mt={0.8}>
                 {mutalFriends.slice(0, 8).map((friend, i) => (
                   <UserAvatar
                     key={friend.id}
@@ -87,21 +90,35 @@ export default function UserInfoSection({
                 ))}
               </Stack>
             </Stack>
+
             <Stack
               direction='row'
               justifyContent='center'
-              alignSelf='flex-end'
-              spacing={1}
+              alignSelf={isMobile ? 'center' : 'flex-end'}
+              spacing={1.3}
               mb={1}
               height={36}>
-              <AddFriendButton friendId={userId} allowMenu={true} refetchOtherUser={refetchUser} />
-              <MessageButton userId={userId} />
-              <LoginAsUserButton userId={userId} />
+              <AddFriendButton
+                friendId={userId}
+                allowMenu={true}
+                refetchOtherUser={refetchUser}
+                showIcon={!isXs}
+              />
+              <MessageButton userId={userId} showIcon={!isXs} />
+              <LoginAsUserButton userId={userId} showIcon={!isXs} />
             </Stack>
           </Stack>
+
           <HorizontalContentDevider sx={{ bottom: 0 }} />
         </StyledBasicInfoContainer>
       </StyledRoot>
+      {isFullViewOpen && profilePictureData && (
+        <FullPageAccountPicturesView
+          setOpen={setIsFullViewOpen}
+          initialPhoto={profilePictureData}
+          ownerId={userId}
+        />
+      )}
     </>
   );
 }

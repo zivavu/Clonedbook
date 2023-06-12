@@ -4,6 +4,7 @@ import { StyledContentSection } from '../styles';
 export const StyledRoot = styled(StyledContentSection)(({ theme }) => ({
   color: theme.palette.text.primary,
   paddingLeft: theme.spacing(0.5),
+  width: 'min(43%, 300px)',
 }));
 
 export const StyledSearchInput = styled(OutlinedInput)(({ theme }) => ({

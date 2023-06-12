@@ -1,8 +1,11 @@
-import { Box, ToggleButton, styled } from '@mui/material';
+import ScrollableBox from '@/components/atoms/scrollables/ScrollableBox';
+import { ToggleButton, styled } from '@mui/material';
 
-export const StyledRoot = styled(Box)(({ theme }) => ({
+export const StyledRoot = styled(ScrollableBox)(({ theme }) => ({
   color: theme.palette.text.primary,
   margin: theme.spacing(0.5, 0),
+  overflowY: 'hidden',
+  overflowX: 'auto',
 }));
 
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({

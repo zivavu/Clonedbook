@@ -37,7 +37,13 @@ export default function Profile({ userId, useTabsRouting = true, sx, ...rootProp
     <StyledRoot sx={sx} {...rootProps}>
       <Box bgcolor={theme.palette.background.paper} boxShadow={theme.shadows[1]}>
         <BackgroundPicture key={userId} userData={profileData} userId={userId} />
-        <Container maxWidth='lg'>
+        <Container
+          maxWidth='lg'
+          sx={{
+            [theme.breakpoints.down('md')]: {
+              padding: 0,
+            },
+          }}>
           <UserInfoSection userData={profileData} refetchUser={refetch} userId={userId} />
           <ProfileTabToggleGroup selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </Container>

@@ -4,7 +4,7 @@ import Icon from '../../Icon/Icon';
 export const StyledRoot = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
-  padding: theme.spacing(0, 1.5),
+  padding: theme.spacing(1, 1.5),
   borderRadius: theme.spacing(0.75),
   '&:hover': {
     backgroundColor:

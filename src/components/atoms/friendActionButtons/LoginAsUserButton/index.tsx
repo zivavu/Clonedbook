@@ -5,7 +5,12 @@ import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPubl
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { LoginAsUserButtonProps } from './types';
 
-export default function LoginAsUserButton({ userId, sx, ...rootProps }: LoginAsUserButtonProps) {
+export default function LoginAsUserButton({
+  userId,
+  showIcon,
+  sx,
+  ...rootProps
+}: LoginAsUserButtonProps) {
   const user = useGetUserBasicInfo(userId);
   const { data: loggedUser } = useGetLoggedUserQuery({});
 
@@ -14,7 +19,7 @@ export default function LoginAsUserButton({ userId, sx, ...rootProps }: LoginAsU
   if (!user || loggedUser?.id === user.id) return null;
   return (
     <StyledRoot focusRipple sx={sx} {...rootProps} onClick={switchLoggedUser} disabled={isLoading}>
-      <StyledButtonIcon icon='right-to-bracket' />
+      {showIcon && <StyledButtonIcon icon='right-to-bracket' />}
       <StyledButtonText>{isLoading ? 'Loading...' : 'Login as'} </StyledButtonText>
     </StyledRoot>
   );

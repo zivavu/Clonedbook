@@ -1,6 +1,13 @@
-import { Menu, styled } from '@mui/material';
+import { Menu, MenuItem, styled } from '@mui/material';
 
 export const StyledRoot = styled(Menu)(({ theme }) => ({
   color: theme.palette.text.primary,
-  width: '200px',
+  '& .MuiMenu-paper': {
+    padding: theme.spacing(0, 1),
+    width: 'min(70vw, 320px)',
+  },
+}));
+
+export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+  borderRadius: theme.spacing(0.5),
 }));

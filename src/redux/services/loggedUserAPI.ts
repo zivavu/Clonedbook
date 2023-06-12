@@ -50,11 +50,13 @@ export const loggedUser = createApi({
 
     getUserChats: builder.query({
       async queryFn() {
-        console.log('fetching chats');
         try {
           const userIdStorageItem = localStorage.getItem('loggedUser');
           const loggedUserId = userIdStorageItem ? JSON.parse(userIdStorageItem) : undefined;
-          if (!loggedUserId) return { error: 'Couldnt fetch users chats' };
+          if (!loggedUserId) {
+            return { error: 'Couldnt fetch users chats' };
+          }
+
           const chatsRef = collection(db, 'chats');
           const chatsQuery = query(chatsRef, where('users', 'array-contains', loggedUserId));
           const chatsSnapshot = await getDocs(chatsQuery);

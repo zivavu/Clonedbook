@@ -90,7 +90,7 @@ export default function ReactionsDisplayBox({
                 </Typography>
               ) : (
                 reactorsToDisplay.map((reactor, i) => {
-                  if (!reactor) return null;
+                  if (!reactor.info) return null;
                   const isLast = reactorsToDisplay.length === i + 1;
                   const userText = [reactor.info.firstName, reactor.info.lastName].join(' ');
                   return (

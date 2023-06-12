@@ -88,7 +88,6 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
             </InteractButton>
           )}
           <Comments
-            comments={comments}
             onlyUniqueUsers
             elementType='post'
             element={post}

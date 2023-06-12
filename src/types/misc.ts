@@ -22,3 +22,5 @@ export interface IWallElement {
 export interface IOptionalId {
   id?: string;
 }
+
+export type IRefetchElementHadler = (() => Promise<void>) | (() => void);

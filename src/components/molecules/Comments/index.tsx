@@ -1,17 +1,16 @@
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import { IComment } from '@/types/comment';
+import { useRef } from 'react';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
 import { CommentsProps } from './types';
 
 export default function Comments({
-  comments,
-  maxComments,
   element,
   refetchElement,
+  maxComments,
   commentInputRef,
   elementType,
   onlyUniqueUsers = false,
@@ -19,46 +18,55 @@ export default function Comments({
   sx,
   ...rootProps
 }: CommentsProps) {
-  if (!comments) return null;
+  const comments = element.comments;
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  let commentsToRender: IComment[] = [];
-  const sortedComments = Object.values(comments)
+  const sortedComments = Object.values(comments || {})
     .filter((picture) => !!picture.createdAt)
     .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
 
-  onlyUniqueUsers
-    ? sortedComments?.forEach((comment) => {
-        if (!commentsToRender.find((c) => c.ownerId === comment.ownerId)) {
-          commentsToRender.push(comment);
-        }
+  const commentsToRender = onlyUniqueUsers
+    ? sortedComments.filter((comment, i, self) => {
+        return self.findIndex((com) => com.ownerId === comment.ownerId) === i;
       })
-    : (commentsToRender = sortedComments);
+    : sortedComments;
 
   const commentsCutIndex = maxComments === 'all' ? undefined : maxComments;
+
+  function scrollToNewComment() {
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'start',
+      });
+    }
+  }
+
+  if (!comments) return null;
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <Box>
-        {!!comments && (
-          <Stack>
-            {commentsToRender.slice(0, commentsCutIndex).map((comment) => (
-              <Comment
-                key={comment.id}
-                refetchElement={refetchElement}
-                elementType={elementType}
-                comment={comment}
-                element={element}
-              />
-            ))}
-          </Stack>
-        )}
-        <CommentInput
-          displayMode={displayMode}
-          commentInputRef={commentInputRef}
-          element={element}
-          parentElementType={elementType}
-          refetchElement={refetchElement}
-        />
-      </Box>
+      {!!comments && (
+        <Stack ref={containerRef}>
+          {commentsToRender.slice(0, commentsCutIndex).map((comment) => (
+            <Comment
+              key={comment.id}
+              refetchElement={refetchElement}
+              elementType={elementType}
+              comment={comment}
+              element={element}
+            />
+          ))}
+        </Stack>
+      )}
+      <CommentInput
+        displayMode={displayMode}
+        commentInputRef={commentInputRef}
+        element={element}
+        parentElementType={elementType}
+        refetchElement={refetchElement}
+        scrollToNewComment={scrollToNewComment}
+      />
     </StyledRoot>
   );
 }

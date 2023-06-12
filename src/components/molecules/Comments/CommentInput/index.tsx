@@ -15,6 +15,7 @@ export default function CommentInput({
   parentElementType,
   displayMode,
   commentInputRef,
+  scrollToNewComment,
   ...rootProps
 }: CommentInputProps) {
   const theme = useTheme();
@@ -33,7 +34,8 @@ export default function CommentInput({
     });
 
     setCommentText('');
-    refetchElement();
+    await refetchElement();
+    scrollToNewComment();
   };
 
   let modeSx: SxProps<Theme>;

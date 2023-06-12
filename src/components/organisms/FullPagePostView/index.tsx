@@ -67,7 +67,6 @@ export default function FullPagePostView({
             sx={{ borderBottom: 'none' }}
           />
           <Comments
-            comments={post.comments}
             elementType='post'
             refetchElement={refetchPost}
             commentInputRef={commentInputRef}

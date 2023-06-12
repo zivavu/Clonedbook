@@ -25,8 +25,8 @@ export default function ElementInfo({
   const theme = useTheme();
   const commentsLength = getEntriesLength(element.comments);
   const owner = useGetUserBasicInfo(element.ownerId);
-
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
+
   function handleCommentInputFocus() {
     if (!commentInputRef.current) return;
     commentInputRef.current.scrollIntoView({
@@ -75,7 +75,7 @@ export default function ElementInfo({
           </Typography>
           {element.shareCount > 0 && (
             <Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
-              {element.shareCount} shares
+              {element.shareCount} {element.shareCount > 1 ? 'shares' : 'share'}
             </Typography>
           )}
         </Box>
@@ -90,7 +90,6 @@ export default function ElementInfo({
       <Comments
         element={element}
         elementType={type}
-        comments={element.comments}
         maxComments='all'
         displayMode='picture'
         commentInputRef={commentInputRef}

@@ -11,6 +11,7 @@ import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
+import { useRef } from 'react';
 import { FullPagePostViewProps } from './types';
 
 export default function FullPagePostView({
@@ -22,6 +23,17 @@ export default function FullPagePostView({
   const theme = useTheme();
   const { postData: post, refetchPost } = useFetchSinglePostData(postId);
   const owner = useGetUserBasicInfo(post?.ownerId || '');
+
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  function handleCommentInputFocus() {
+    if (!commentInputRef.current) return;
+    commentInputRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center',
+    });
+    commentInputRef.current.focus();
+  }
 
   if (!post) return null;
   return (
@@ -51,12 +63,14 @@ export default function FullPagePostView({
             element={post}
             elementType='post'
             refetchElement={refetchPost}
+            handleCommentClick={handleCommentInputFocus}
             sx={{ borderBottom: 'none' }}
           />
           <Comments
             comments={post.comments}
             elementType='post'
             refetchElement={refetchPost}
+            commentInputRef={commentInputRef}
             element={post}
             sx={{ height: '100%' }}
             maxComments='all'

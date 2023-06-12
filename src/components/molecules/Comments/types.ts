@@ -9,6 +9,7 @@ export interface CommentsProps extends BoxProps {
   elementType: TElementType;
   element: IPost | IAccountPicture;
   refetchElement: () => void;
+  commentInputRef: React.RefObject<HTMLTextAreaElement | null>;
   maxComments?: number | 'all';
   onlyUniqueUsers?: boolean;
   displayMode?: TDisplayMode;

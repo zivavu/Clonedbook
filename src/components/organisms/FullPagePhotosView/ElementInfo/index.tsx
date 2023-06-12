@@ -10,6 +10,7 @@ import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
+import { useRef } from 'react';
 import { NAVBAR_HEIGHT } from '../../NavBar';
 import RightSection from '../../NavBar/RightSection';
 import { ElementInfoProps } from './types';
@@ -24,6 +25,18 @@ export default function ElementInfo({
   const theme = useTheme();
   const commentsLength = getEntriesLength(element.comments);
   const owner = useGetUserBasicInfo(element.ownerId);
+
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  function handleCommentInputFocus() {
+    if (!commentInputRef.current) return;
+    commentInputRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center',
+    });
+    commentInputRef.current.focus();
+  }
+
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <Stack
@@ -71,6 +84,7 @@ export default function ElementInfo({
         element={element}
         elementType={type}
         refetchElement={refetchElement}
+        handleCommentClick={handleCommentInputFocus}
         my={theme.spacing(1)}
       />
       <Comments
@@ -79,6 +93,7 @@ export default function ElementInfo({
         comments={element.comments}
         maxComments='all'
         displayMode='picture'
+        commentInputRef={commentInputRef}
         refetchElement={refetchElement}
       />
     </StyledRoot>

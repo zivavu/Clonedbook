@@ -15,22 +15,22 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
   const theme = useTheme();
   const router = useRouter();
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [searchPopperOpen, setSearchPopperOpen] = useState(false);
   const searchElement = useRef<HTMLDivElement | null>(null);
 
   const [userHits, setUserHits] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!searchQuery || !searchPopperOpen) return;
+    if (!searchTerm || !searchPopperOpen) return;
     usersIndex
-      .search(searchQuery, {
+      .search(searchTerm, {
         attributesToRetrieve: ['objectID'],
       })
       .then(({ hits }) => {
         setUserHits(hits.slice(0, 15).map((hit) => hit.objectID));
       });
-  }, [searchQuery, searchPopperOpen]);
+  }, [searchTerm, searchPopperOpen]);
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -67,12 +67,16 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
           ref={searchElement}
           size='small'
           placeholder='Search Clonedbook'
-          value={searchQuery}
+          value={searchTerm}
           onClick={() => {
             searchElement.current?.focus();
             setSearchPopperOpen(true);
           }}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => {
+            if (!e.target.value) setUserHits([]);
+            setSearchPopperOpen(true);
+            setSearchTerm(e.target.value);
+          }}
           startAdornment={
             <InputAdornment
               position='start'
@@ -93,6 +97,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
         setOpen={setSearchPopperOpen}
         searchElement={searchElement.current}
         userHits={userHits}
+        searchTerm={searchTerm}
       />
     </>
   );

@@ -90,8 +90,9 @@ export default function ReactionsDisplayBox({
                 </Typography>
               ) : (
                 reactorsToDisplay.map((reactor, i) => {
+                  if (!reactor) return null;
                   const isLast = reactorsToDisplay.length === i + 1;
-                  const userText = [reactor?.info?.firstName, reactor?.info?.lastName].join(' ');
+                  const userText = [reactor.info.firstName, reactor.info.lastName].join(' ');
                   return (
                     <Box key={reactor?.info?.id}>
                       {!isLast ? (

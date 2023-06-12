@@ -12,6 +12,7 @@ export default function Comments({
   maxComments,
   element,
   refetchElement,
+  commentInputRef,
   elementType,
   onlyUniqueUsers = false,
   displayMode = 'post',
@@ -52,6 +53,7 @@ export default function Comments({
         )}
         <CommentInput
           displayMode={displayMode}
+          commentInputRef={commentInputRef}
           element={element}
           parentElementType={elementType}
           refetchElement={refetchElement}

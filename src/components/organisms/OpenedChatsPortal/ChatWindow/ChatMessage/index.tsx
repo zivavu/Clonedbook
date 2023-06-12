@@ -41,7 +41,12 @@ export default function ChatMessage({ message, sx, ...rootProps }: ChatMessagePr
             : theme.palette.secondary.dark,
           color: isOwner ? theme.palette.common.white : theme.palette.text.primary,
         }}>
-        <Typography variant={isEmojiOnly ? 'h1' : 'body1'}>{message.text}</Typography>
+        <Typography
+          fontWeight={300}
+          fontSize={isEmojiOnly ? '3rem' : theme.typography.subtitle2.fontSize}
+          lineHeight={isEmojiOnly ? '3rem' : '1.2rem'}>
+          {message.text}
+        </Typography>
       </Box>
     </StyledRoot>
   );

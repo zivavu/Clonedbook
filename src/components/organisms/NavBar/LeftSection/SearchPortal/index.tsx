@@ -5,6 +5,7 @@ import {
   IconButton,
   ListItem,
   Portal,
+  Typography,
   useTheme,
 } from '@mui/material';
 
@@ -17,6 +18,7 @@ import { SearchPortalProps } from './types';
 
 export default function SearchPortal({
   userHits,
+  searchTerm,
   searchElement,
   open,
   setOpen,
@@ -55,7 +57,17 @@ export default function SearchPortal({
               {userHits.map((userId) => (
                 <FriendListItem key={userId} userId={userId} />
               ))}
-              {userHits.length === 0 && <ListItem>No users found...</ListItem>}
+              {userHits.length === 0 ? (
+                !searchTerm ? (
+                  <ListItem sx={{ justifyContent: 'center' }}>
+                    <Typography>Start typing to find users</Typography>
+                  </ListItem>
+                ) : (
+                  <ListItem sx={{ justifyContent: 'center' }}>
+                    <Typography>No users found...</Typography>
+                  </ListItem>
+                )
+              ) : null}
             </ScrollableStack>
           </StyledPopperContent>
         </Fade>

@@ -5,4 +5,5 @@ export interface PostActionsProps extends BoxProps {
   post: IPost;
   handleShowMoreComments(): void;
   refetchPost(): void;
+  handleCommentInputFocus(): void;
 }

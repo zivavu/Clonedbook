@@ -6,4 +6,5 @@ export interface SearchPortalProps extends PortalProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   searchElement: HTMLDivElement | null;
   userHits: string[];
+  searchTerm: string;
 }

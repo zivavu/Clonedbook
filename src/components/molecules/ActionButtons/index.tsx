@@ -12,8 +12,9 @@ import { ActionButtonsProps } from './types';
 
 export default function ActionButtons({
   element,
-  refetchElement,
   elementType,
+  refetchElement,
+  handleCommentClick,
   sx,
   ...rootProps
 }: ActionButtonsProps) {
@@ -113,6 +114,7 @@ export default function ActionButtons({
       <StyledActionButton
         focusRipple
         value='comment'
+        onClick={handleCommentClick}
         sx={{ mr: theme.spacing(0.3), ml: theme.spacing(0.3) }}>
         <StyledActionIcon icon={['far', 'comment']} />
         <Typography variant='subtitle2' fontWeight='400'>
@@ -122,7 +124,7 @@ export default function ActionButtons({
 
       <StyledActionButton focusRipple value='share' disabled>
         <StyledActionIcon icon={['far', 'share-square']} color={theme.palette.text.disabled} />
-        <Typography variant='subtitle2' fontWeight='400'>
+        <Typography variant='subtitle2' fontWeight='400' color={theme.palette.text.disabled}>
           Share
         </Typography>
       </StyledActionButton>

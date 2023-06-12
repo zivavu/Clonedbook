@@ -24,7 +24,7 @@ export const loggedUser = createApi({
             loggedUserData = userDoc.data() as IUser;
           }
 
-          //Or if it doesnt exist, get a random one
+          //Or if it doesnt exist, get a random user
           if (!loggedUserData) {
             const randomId = uuidv4();
             const usersRef = collection(db, 'users');
@@ -50,6 +50,7 @@ export const loggedUser = createApi({
 
     getUserChats: builder.query({
       async queryFn() {
+        console.log('fetching chats');
         try {
           const userIdStorageItem = localStorage.getItem('loggedUser');
           const loggedUserId = userIdStorageItem ? JSON.parse(userIdStorageItem) : undefined;

@@ -3,6 +3,7 @@ import { Box, List, Typography } from '@mui/material';
 import getChatNewestMessage from '@/common/chatsManage/getChatLastMessage';
 import ScrollableStack from '@/components/atoms/scrollables/ScrollableStack';
 import { useGetUserChatsQuery } from '@/redux/services/loggedUserAPI';
+import { useEffect } from 'react';
 import ListUserButton from './ListUserButton';
 import { StyledContentWrapper, StyledRoot } from './styles';
 import { ChatsListPopperProps } from './types';
@@ -14,7 +15,11 @@ export default function ChatsListPopper({
   anchorEl,
   ...rootProps
 }: ChatsListPopperProps) {
-  const { data: loggedUserChats } = useGetUserChatsQuery({});
+  const { data: loggedUserChats, refetch } = useGetUserChatsQuery({});
+
+  useEffect(() => {
+    if (open) refetch();
+  }, [open, refetch]);
 
   const sortedChats =
     loggedUserChats &&

@@ -11,6 +11,7 @@ export default function PostActions({
   post,
   refetchPost,
   handleShowMoreComments,
+  handleCommentInputFocus,
   sx,
   ...rootProps
 }: PostActionsProps) {
@@ -39,7 +40,12 @@ export default function PostActions({
         </InteractButton>
       </Stack>
 
-      <ActionButtons element={post} refetchElement={refetchPost} elementType='post' />
+      <ActionButtons
+        element={post}
+        refetchElement={refetchPost}
+        elementType='post'
+        handleCommentClick={handleCommentInputFocus}
+      />
     </StyledContentWrapper>
   );
 }

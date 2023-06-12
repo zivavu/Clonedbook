@@ -8,5 +8,6 @@ export interface CommentInputProps extends BoxProps {
   displayMode: TDisplayMode;
   element: IPost | IAccountPicture;
   parentElementType: TElementType;
-  refetchElement?: () => void;
+  refetchElement: () => void;
+  commentInputRef: React.RefObject<HTMLTextAreaElement | null>;
 }

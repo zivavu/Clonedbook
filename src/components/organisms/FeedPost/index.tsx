@@ -9,12 +9,12 @@ import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
 import { IPictureWithPlaceholders } from '@/types/picture';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import PostActions from './PostActions';
 import { FeedPostProps } from './types';
 
-export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPostProps) {
+export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPostProps) {
   const { id: postId, comments, pictures: postPictures, text: postText } = post;
   const owner = useGetUserBasicInfo(post.ownerId);
   const theme = useTheme();
@@ -32,6 +32,17 @@ export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPo
 
   function handleShowMoreComments() {
     setIsFullViewOpen(true);
+  }
+
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  function handleCommentInputFocus() {
+    if (!commentInputRef.current) return;
+    commentInputRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center',
+    });
+    commentInputRef.current.focus();
   }
 
   return (
@@ -65,6 +76,7 @@ export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPo
           post={post}
           refetchPost={refetchPost}
           handleShowMoreComments={handleShowMoreComments}
+          handleCommentInputFocus={handleCommentInputFocus}
         />
 
         <StyledContentWrapper>
@@ -83,6 +95,7 @@ export default function FeedPost({ post, sx, refetchPost, ...rootProps }: FeedPo
             maxComments={maxComments}
             refetchElement={refetchPost}
             displayMode='feed'
+            commentInputRef={commentInputRef}
           />
         </StyledContentWrapper>
       </StyledRoot>

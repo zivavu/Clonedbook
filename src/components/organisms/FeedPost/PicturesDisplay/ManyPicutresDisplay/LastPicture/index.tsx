@@ -3,14 +3,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 import Picture from '../../Picture';
 import { LastPictureProps } from './types';
 
-export default function LastPicture({
-  postId,
-  picture,
-  size,
-  quality,
-  picturesLength,
-  sx,
-}: LastPictureProps) {
+export default function LastPicture({ postId, picture, picturesLength, sx }: LastPictureProps) {
   const theme = useTheme();
   return (
     <Box sx={{ ...sx, position: 'relative', pointerEvents: 'none' }}>
@@ -37,7 +30,7 @@ export default function LastPicture({
           +{picturesLength - 4}
         </Typography>
       </Box>
-      <Picture picture={picture} quality={quality} size={size} postId={postId}></Picture>
+      <Picture picture={picture} size='small' postId={postId}></Picture>
     </Box>
   );
 }

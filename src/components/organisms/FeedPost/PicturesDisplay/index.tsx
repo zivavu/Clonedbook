@@ -6,7 +6,7 @@ import HorizontalContentDevider from '@/components/atoms/contentDeviders/Horizon
 import { IPictureWithPlaceholders } from '@/types/picture';
 import ManyPicutresDisplay from './ManyPicutresDisplay';
 import Picture from './Picture';
-import { DisplayMode, PicturesDisplayProps } from './types';
+import { PicturesDisplayProps, TDisplayMode } from './types';
 
 export default function PicturesDisplay({
   pictures,
@@ -15,11 +15,12 @@ export default function PicturesDisplay({
   ...rootProps
 }: PicturesDisplayProps) {
   const theme = useTheme();
-  const mode: DisplayMode =
-    pictures.length === 1 ? 'single' : pictures.length === 2 ? 'duo' : 'many';
 
+  const mode: TDisplayMode =
+    pictures.length === 1 ? 'single' : pictures.length === 2 ? 'duo' : 'many';
   //undefined as a second slice parameter means that we display all pictures
   const cutIndex = mode === 'single' ? 1 : mode === 'duo' ? 2 : undefined;
+
   const picturesToDisplay: IPictureWithPlaceholders[] = pictures.slice(0, cutIndex);
 
   const pictureBorder = `1px solid ${theme.palette.background.paper}`;
@@ -30,30 +31,19 @@ export default function PicturesDisplay({
 
       {mode === 'single' && (
         <StyledPicturesContainer>
-          <Picture picture={picturesToDisplay[0]} size='large' quality={80} postId={postId} />
+          <Picture picture={picturesToDisplay[0]} postId={postId} size='xlarge' />
         </StyledPicturesContainer>
       )}
 
       {mode === 'duo' && (
         <StyledPicturesContainer>
           <Stack direction='row' width='100%' height='100%' position='relative'>
-            <Picture
-              picture={picturesToDisplay[0]}
-              size='medium'
-              quality={70}
-              postId={postId}
-              sx={{ borderRight: `1px solid ${theme.palette.background.paper}` }}
-            />
-            <Picture
-              picture={picturesToDisplay[1]}
-              size='medium'
-              quality={70}
-              postId={postId}
-              sx={{ borderLeft: `1px solid ${theme.palette.background.paper}` }}
-            />
+            <Picture picture={picturesToDisplay[0]} postId={postId} size='medium' />
+            <Picture picture={picturesToDisplay[1]} postId={postId} size='medium' />
           </Stack>
         </StyledPicturesContainer>
       )}
+
       {mode === 'many' && (
         <ManyPicutresDisplay
           pictures={picturesToDisplay}

@@ -26,9 +26,10 @@ export default function PhotosCarousel({
     medium: `(max-width: ${theme.breakpoints.values.md}px)`,
     large: `(max-width: ${theme.breakpoints.values.xl}px)`,
   };
+
   const imageSizes = [
-    `${screens.small} 600px`,
-    `${screens.medium} 800px`,
+    `${screens.small} 700px`,
+    `${screens.medium} 900px`,
     `${screens.large} 1100px`,
     `1300px`,
   ].join(', ');
@@ -72,7 +73,7 @@ export default function PhotosCarousel({
               placeholder='blur'
               fill
               sizes={imageSizes}
-              quality={100}
+              quality={80}
               style={{ objectFit: 'contain', backgroundColor: currentPicture.dominantHex }}
               alt='Full Size Photo'
             />

@@ -1,70 +1,36 @@
-import { Stack } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 
-import { uuidv4 } from '@firebase/util';
 import Picture from '../Picture';
 import { StyledPicturesContainer } from '../styles';
-import { pictureSize } from '../types';
 import LastPicture from './LastPicture';
 import { Layouts, ManyPicutresDisplayProps } from './types';
 
 export default function ManyPicutresDisplay({
   pictures,
-  pictureBorder,
+  pictureBorder: border,
   postId,
 }: ManyPicutresDisplayProps) {
-  //Used in next/image component for image optimization
-  function getPictureSize(i: number) {
-    let size: pictureSize = 'medium';
-    if (i < 2) {
-      size = 'medium';
-    }
-    if (i === 0) {
-      size = 'large';
-    } else {
-      size = 'small';
-    }
-    return {
-      size,
-      id: uuidv4(),
-    };
-  }
+  const theme = useTheme();
 
   const layouts: Layouts = {
-    //single layout is an array of objects with sx of every picture used in layout
+    //single layout is an array of objects with sx of every picture[i] used in layout
     triple: [
-      { width: '100%', borderBottom: pictureBorder },
-      { width: '50%', borderTop: pictureBorder, borderRight: pictureBorder },
-      { width: '50%', borderTop: pictureBorder, borderLeft: pictureBorder },
+      { width: '100%', borderBottom: border },
+      { width: '50%', borderTop: border, borderRight: border },
+      { width: '50%', borderTop: border, borderLeft: border },
     ],
     quadruple: [
-      { width: '50%', borderBottom: pictureBorder, borderRight: pictureBorder },
-      { width: '50%', borderBottom: pictureBorder, borderLeft: pictureBorder },
-      { width: '50%', borderTop: pictureBorder, borderRight: pictureBorder },
-      { width: '50%', borderTop: pictureBorder, borderLeft: pictureBorder },
+      { width: '50%', borderBottom: border, borderRight: border },
+      { width: '50%', borderBottom: border, borderLeft: border },
+      { width: '50%', borderTop: border, borderRight: border },
+      { width: '50%', borderTop: border, borderLeft: border },
     ],
     fiveAndMore: [
-      {
-        width: '50%',
-        borderBottom: pictureBorder,
-        borderRight: pictureBorder,
-      },
-      { width: '50%', borderBottom: pictureBorder, borderLeft: pictureBorder },
-      {
-        width: '33.33%',
-        borderTop: pictureBorder,
-        borderRight: pictureBorder,
-      },
-      {
-        width: '33.33%',
-        borderTop: pictureBorder,
-        borderLeft: pictureBorder,
-        borderRight: pictureBorder,
-      },
-      {
-        width: '33.33%',
-        borderTop: pictureBorder,
-        borderLeft: pictureBorder,
-      },
+      { width: '50%', borderBottom: border, borderRight: border },
+      { width: '50%', borderBottom: border, borderLeft: border },
+      { width: '33.33%', borderTop: border, borderRight: border },
+      { width: '33.33%', borderTop: border, borderLeft: border, borderRight: border },
+      { width: '33.33%', borderTop: border, borderLeft: border },
     ],
   };
 
@@ -75,53 +41,88 @@ export default function ManyPicutresDisplay({
       ? layouts.quadruple
       : layouts.fiveAndMore;
 
-  const picturesToDisplay = pictures.map((picture, i) => {
-    const { size, id } = getPictureSize(i);
-    const isLastPicture = pictures.length >= 5 && i === 4;
-    //Returns a single picture, or a picture with an overlay if it is the 5th picture
-    return !isLastPicture ? (
-      <Picture key={id} picture={picture} size={size} sx={usedLayout[i]} postId={postId} />
-    ) : (
-      <LastPicture
-        picture={picture}
-        key={id}
-        picturesLength={pictures.length}
-        postId={postId}
-        size={size}
-        sx={usedLayout[i]}
-      />
-    );
-  });
-
   return (
     <>
-      {picturesToDisplay.length === 3 && (
-        <StyledPicturesContainer sx={{ height: '600px' }}>
+      {pictures.length === 3 && (
+        <StyledPicturesContainer
+          sx={{
+            height: '600px',
+            [theme.breakpoints.down('sm')]: {
+              height: '400px',
+            },
+          }}>
           <Stack direction='row' position='relative' width='100%' height='60%'>
-            {picturesToDisplay.slice(0, 1)}
+            {pictures.slice(0, 1).map((picture) => (
+              <Picture key={picture.url} picture={picture} postId={postId} size='medium' />
+            ))}
           </Stack>
           <Stack direction='row' position='relative' width='100%' height='40%'>
-            {picturesToDisplay.slice(1, 3)}
+            {pictures.slice(1, 3).map((picture) => (
+              <Picture key={picture.url} picture={picture} postId={postId} size='medium' />
+            ))}
           </Stack>
         </StyledPicturesContainer>
       )}
-      {picturesToDisplay.length === 4 && (
-        <StyledPicturesContainer sx={{ height: '600px' }}>
+
+      {pictures.length === 4 && (
+        <StyledPicturesContainer
+          sx={{
+            height: '600px',
+            [theme.breakpoints.down('sm')]: {
+              height: '400px',
+            },
+          }}>
           <Stack width='100%' height='50%' direction='row'>
-            {picturesToDisplay.slice(0, 2)}
+            {pictures.slice(0, 2).map((picture) => (
+              <Picture key={picture.url} picture={picture} postId={postId} size='medium' />
+            ))}
           </Stack>
           <Stack direction='row' width='100%' height='50%'>
-            {picturesToDisplay.slice(2)}
+            {pictures.slice(2, 4).map((picture) => (
+              <Picture key={picture.url} picture={picture} postId={postId} size='medium' />
+            ))}
           </Stack>
         </StyledPicturesContainer>
       )}
-      {picturesToDisplay.length >= 5 && (
-        <StyledPicturesContainer sx={{ height: '600px' }}>
+
+      {pictures.length >= 5 && (
+        <StyledPicturesContainer
+          sx={{
+            height: '600px',
+            [theme.breakpoints.down('sm')]: {
+              height: '400px',
+            },
+          }}>
           <Stack height='60%' direction='row' position='relative'>
-            {picturesToDisplay.slice(0, 2)}
+            {pictures.slice(0, 2).map((picture, i) => (
+              <Picture
+                key={picture.url}
+                picture={picture}
+                postId={postId}
+                size='medium'
+                sx={usedLayout[i]}
+              />
+            ))}
           </Stack>
           <Stack height='40%' direction='row' position='relative'>
-            {picturesToDisplay.slice(2, 5)}
+            {pictures.slice(2, 4).map((picture, i) => (
+              <Picture
+                key={picture.url}
+                picture={picture}
+                postId={postId}
+                size='medium'
+                sx={usedLayout[2 + i]}
+              />
+            ))}
+            {pictures.slice(4).map((picture) => (
+              <LastPicture
+                key={picture.url}
+                picture={picture}
+                postId={postId}
+                picturesLength={pictures.length}
+                sx={usedLayout[4]}
+              />
+            ))}
           </Stack>
         </StyledPicturesContainer>
       )}

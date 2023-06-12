@@ -12,5 +12,5 @@ export interface PictureToDisplay {
   dominantHex: string;
 }
 
-export type DisplayMode = 'single' | 'duo' | 'many';
-export type pictureSize = 'small' | 'medium' | 'large';
+export type TDisplayMode = 'single' | 'duo' | 'many';
+export type TPictureSize = 'small' | 'medium' | 'large' | 'xlarge';

@@ -6,12 +6,11 @@ import FullPagePostPicturesView from '@/components/organisms/FullPagePhotosView/
 import Image from 'next/image';
 import { useState } from 'react';
 import { PictureProps } from './types';
+import useGetImageSizes from './useGetImageSizes';
 
 export default function Picture({
   picture,
-  alt,
   size: imageSize,
-  quality,
   postId,
   sx,
   children,
@@ -20,52 +19,14 @@ export default function Picture({
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
+  const imageSizes = useGetImageSizes(imageSize);
+
   const handleClick = () => {
     setIsFullViewOpen(!isFullViewOpen);
   };
 
-  let imageSizes;
-  const screens = {
-    small: `(max-width: ${theme.breakpoints.values.sm}px)`,
-    medium: `(max-width: ${theme.breakpoints.values.md}px)`,
-    large: `(max-width: ${theme.breakpoints.values.xl}px)`,
-  };
-
-  switch (imageSize) {
-    case 'small':
-      imageSizes = [
-        `${screens.small} 100px`,
-        `${screens.medium} 200px`,
-        `${screens.large} 200px`,
-        `700px`,
-      ].join(', ');
-      break;
-    case 'medium':
-      imageSizes = [
-        `${screens.small} 200px`,
-        `${screens.medium} 400px`,
-        `${screens.large} 600px`,
-        `800px`,
-      ].join(', ');
-      break;
-    case 'large':
-      imageSizes = [
-        `${screens.small} 300px`,
-        `${screens.medium} 500px`,
-        `${screens.large} 700px`,
-        `1000px`,
-      ].join(', ');
-      break;
-  }
   return (
     <>
-      {isFullViewOpen && (
-        <FullPagePostPicturesView
-          postId={postId}
-          initialPhotoUrl={picture.url}
-          setOpen={setIsFullViewOpen}
-        />
-      )}
       <StyledRoot sx={sx} {...rootProps}>
         <ButtonBase
           onClick={() => handleClick()}
@@ -81,9 +42,8 @@ export default function Picture({
             src={picture.url}
             blurDataURL={picture.blurDataUrl}
             placeholder='blur'
-            alt={alt || "Post's picture"}
+            alt={"Post's picture"}
             fill
-            quality={quality}
             sizes={imageSizes}
             style={{
               objectFit: 'cover',
@@ -93,6 +53,13 @@ export default function Picture({
           {children}
         </ButtonBase>
       </StyledRoot>
+      {isFullViewOpen && (
+        <FullPagePostPicturesView
+          postId={postId}
+          initialPhotoUrl={picture.url}
+          setOpen={setIsFullViewOpen}
+        />
+      )}
     </>
   );
 }

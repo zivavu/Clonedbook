@@ -115,7 +115,7 @@ export default function AddFriendButton({
       <StyledRoot
         ref={anchorElRef}
         focusRipple
-        disabled={disabled}
+        disabled={disabled || isLoading}
         sx={{ ...buttonSx, ...sx }}
         {...rootProps}
         onClick={clickHandler}>

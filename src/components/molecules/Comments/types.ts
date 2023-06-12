@@ -1,4 +1,3 @@
-import { ICommentMap } from '@/types/comment';
 import { TElementType } from '@/types/misc';
 import { IAccountPicture } from '@/types/picture';
 import { IPost } from '@/types/post';
@@ -12,5 +11,6 @@ export interface CommentsProps extends StackProps {
   maxComments?: number | 'all';
   onlyUniqueUsers?: boolean;
   displayMode?: TDisplayMode;
+  useAutoScroll?: boolean;
 }
 export type TDisplayMode = 'post' | 'picture' | 'feed';

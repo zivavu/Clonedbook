@@ -7,22 +7,16 @@ import {
   StyledRoot,
 } from './styles';
 
-import { optimizePhotoFilesArr } from '@/common/misc/photoManagment/optimizePhotoFilesArr';
+import useCreateNewPost from '@/common/firebase/posts/useCreateNewPost';
 import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
-import { db, storage } from '@/config/firebase.config';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import { IPictureWithPlaceholders } from '@/types/picture';
-import { IPost } from '@/types/post';
-import { uuidv4 } from '@firebase/util';
-import { Timestamp, doc, setDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRef, useState } from 'react';
 import PhotosInput from './PhotosInput';
 import PostTextInput from './PostTextInput';
 import StatusFeed from './StatusFeed';
 import UserInfo from './UserInfo';
-import { CreatePostDialogProps, CreatePostStatus } from './types';
+import { CreatePostDialogProps } from './types';
 
 export default function CreatePostDialog({
   setIsOpen,
@@ -32,85 +26,22 @@ export default function CreatePostDialog({
 }: CreatePostDialogProps) {
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const theme = useTheme();
-  const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState<CreatePostStatus[]>([]);
 
   const [postPhotos, setPostPhotos] = useState<File[]>([]);
   const postTextRef = useRef('');
 
+  const { createPost, isLoading, status, setStatus } = useCreateNewPost();
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!loggedUser) return;
-    if (isLoading) return;
-    setIsLoading(true);
-    setStatus((prev) => [...prev, { content: 'Creating post...', sevariety: 'info' }]);
-
-    if (postTextRef.current.length === 0 && postPhotos.length === 0) {
-      setStatus((prev) => [
-        ...prev,
-        { content: 'Post must contain text or photo', sevariety: 'error' },
-      ]);
-      return;
-    }
-    const postId = uuidv4();
-    const pictureUuids = postPhotos.map(() => uuidv4());
-
-    const optimizedPhotos = await optimizePhotoFilesArr(postPhotos);
-
-    const uploadPhotosPromises = optimizedPhotos.map(async (photo, i) => {
-      const pictureId = pictureUuids[i];
-      const photoRef = ref(storage, `posts/${postId}/${pictureId}`);
-      const result = await uploadBytes(photoRef, photo.blob, { contentType: 'image/webp' }).then(
-        (res) => {
-          if (!res.ref) return;
-          return getDownloadURL(res.ref);
-        },
-      );
-      return result;
+    if (!loggedUser || isLoading) return;
+    await createPost({
+      postPhotos: postPhotos,
+      postText: postTextRef.current,
+      refetchPostById: refetchPostById,
     });
-
-    try {
-      const res = await Promise.allSettled(uploadPhotosPromises);
-      const urls = res
-        .map((result) => {
-          if (result.status === 'rejected') return;
-          return result.value as string;
-        })
-        .filter((url) => url !== undefined) as string[];
-      if (urls.length !== optimizedPhotos.length) throw new Error('Not all photos were uploaded');
-      const photosData = urls.map(
-        (photo, i) =>
-          ({
-            url: photo,
-            blurDataUrl: optimizedPhotos[i].blurUrl,
-            dominantHex: optimizedPhotos[i].dominantHex,
-          } as IPictureWithPlaceholders),
-      );
-
-      const post: IPost = {
-        text: postTextRef.current,
-        createdAt: Timestamp.now(),
-        pictures: photosData,
-        comments: {},
-        id: postId,
-        ownerId: loggedUser.id,
-        wallOwnerId: loggedUser.id,
-        reactions: {},
-        shareCount: 0,
-      };
-      const postDocRef = doc(db, 'posts', postId);
-
-      await setDoc(postDocRef, post);
-
-      await refetchPostById(postId);
-    } catch (err) {
-      setStatus((prev) => [
-        { content: 'Problem with creating post occurred. Try again', sevariety: 'error' },
-        ...prev,
-      ]);
-    } finally {
+    if (status.every((status) => status.sevariety !== 'error')) {
       setIsOpen(false);
-      setIsLoading(false);
     }
   }
 
@@ -137,7 +68,7 @@ export default function CreatePostDialog({
             <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setStatus} />
           </StyledMainContentStack>
           <Box p={2}>
-            <PostSubmitButton fullWidth variant='contained' type='submit'>
+            <PostSubmitButton fullWidth variant='contained' type='submit' disabled={isLoading}>
               <Typography fontWeight='400' variant='subtitle1' lineHeight='1.5rem'>
                 {isLoading ? 'Loading...' : 'Post'}
               </Typography>

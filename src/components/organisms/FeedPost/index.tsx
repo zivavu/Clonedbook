@@ -95,6 +95,7 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
             refetchElement={refetchPost}
             displayMode='feed'
             commentInputRef={commentInputRef}
+            useAutoScroll={false}
           />
         </StyledContentWrapper>
       </StyledRoot>

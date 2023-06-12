@@ -15,6 +15,7 @@ export default function Comments({
   elementType,
   onlyUniqueUsers = false,
   displayMode = 'post',
+  useAutoScroll = true,
   sx,
   ...rootProps
 }: CommentsProps) {
@@ -34,7 +35,7 @@ export default function Comments({
   const commentsCutIndex = maxComments === 'all' ? undefined : maxComments;
 
   function scrollToNewComment() {
-    if (containerRef.current) {
+    if (containerRef.current && useAutoScroll) {
       containerRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',

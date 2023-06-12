@@ -9,6 +9,7 @@ export const StyledRoot = styled(ScrollableBox)(({ theme }) => ({
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
   overflowX: 'visible',
+  overflowY: 'hidden',
 
   [theme.breakpoints.down('lg')]: {
     minWidth: '100%',

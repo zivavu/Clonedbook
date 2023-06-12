@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html lang='en'>
       <Head />
-      <body style={{ overflowY: 'scroll' }}>
+      <body style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
         {getInitColorSchemeScript({ defaultMode: 'system' })}
         <Main />
         <NextScript />

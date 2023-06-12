@@ -2,7 +2,7 @@ import { Modal, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledCloseIconButton, StyledPostContentWrapper, StyledRoot } from './styles';
 
-import useFetchSinglePostData from '@/common/firebase/posts/useFetchPostData';
+import useFetchSinglePostData from '@/common/firebase/posts/useFetchSinglePostData';
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import Icon from '@/components/atoms/Icon/Icon';
@@ -27,11 +27,6 @@ export default function FullPagePostView({
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
   function handleCommentInputFocus() {
     if (!commentInputRef.current) return;
-    commentInputRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-      inline: 'center',
-    });
     commentInputRef.current.focus();
   }
 

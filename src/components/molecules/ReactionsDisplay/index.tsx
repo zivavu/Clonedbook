@@ -5,7 +5,7 @@ import { StyledRoot } from './styles';
 import useDeserializeReactions from '@/common/misc/userDataManagment/useDeserializeReactions';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import ReactionsModal from '../../organisms/AllReactionsModal';
 import { ReactionsDisplayProps } from './types';
 
@@ -33,7 +33,8 @@ export default function ReactionsDisplayBox({
     reactions || {},
   );
 
-  const reactorsToDisplay = reactingUsers.slice(0, 1);
+  const reactorsToDisplay = useMemo(() => reactingUsers.slice(0, 1), []);
+
   emotesCount = emotesCount > usedReactions.length ? usedReactions.length : emotesCount;
   displayCount = displayCount && reactionsCount > 0;
 

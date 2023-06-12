@@ -18,7 +18,14 @@ export default function CommentEdit({
 
   const onSubmit = async () => {
     if (!loggedUser) return;
-    if (commentText.length === 0 || commentText.length > 6000) return;
+    if (
+      commentText.length === 0 ||
+      commentText.length > 6000 ||
+      commentText === comment.commentText
+    ) {
+      handleCloseEditMode();
+      return;
+    }
     await editUserComment({
       commentId: comment.id,
       newText: commentText,

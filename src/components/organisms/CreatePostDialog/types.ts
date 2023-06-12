@@ -6,7 +6,7 @@ export interface CreatePostDialogProps extends BoxProps {
   refetchPostById: (id: string) => Promise<void>;
 }
 
-export interface CreatePostStatus {
+export interface ICreatePostStatus {
   content: string;
   sevariety: 'error' | 'warning' | 'info' | 'success';
 }

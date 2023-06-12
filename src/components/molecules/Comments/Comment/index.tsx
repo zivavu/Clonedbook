@@ -115,7 +115,7 @@ export default function Comment({
             </Typography>
           </InteractButton>
 
-          <InteractButton>
+          <InteractButton disabled>
             <Typography variant='body2' fontWeight={650}>
               Reply
             </Typography>

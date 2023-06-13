@@ -20,14 +20,12 @@ export default function FullPageAccountPicturesView({
         .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
     : [];
 
-  const initialPhotoIndex: number =
-    typeof initialPhoto === 'number'
-      ? initialPhoto
-      : pictures.findIndex((picture) => picture.id === initialPhoto.id);
+  const initialPhotoIndex: number = pictures.findIndex((picture) => picture.id === initialPhoto.id);
 
   useEffect(() => {
+    if (initialPhotoIndex === -1) return setOpen(false);
     setCurrentPictureIndex(initialPhotoIndex);
-  }, [initialPhoto, initialPhotoIndex]);
+  }, [picturesMap]);
 
   const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(initialPhotoIndex);
   const currentPicture = pictures[currentPictureIndex];

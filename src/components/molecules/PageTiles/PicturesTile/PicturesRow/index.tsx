@@ -2,6 +2,7 @@ import { StyledImageButton, StyledImagesRow } from './styles';
 
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
+import { IAccountPicture } from '@/types/picture';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { PicturesRowProps } from './types';
@@ -15,9 +16,9 @@ export default function PicturesRow({
 }: PicturesRowProps) {
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
-  const handleOpenFullView = (index: number) => {
-    setPhotoIndex(index);
+  const [selectedPhoto, setSelectedPhoto] = useState<IAccountPicture>(pictures[0]);
+  const handleOpenFullView = (picture: IAccountPicture) => {
+    setSelectedPhoto(picture);
     setIsFullViewOpen(true);
   };
 
@@ -25,7 +26,7 @@ export default function PicturesRow({
     <>
       {isFullViewOpen && (
         <FullPageAccountPicturesView
-          initialPhoto={photoIndex}
+          initialPhoto={selectedPhoto}
           setOpen={setIsFullViewOpen}
           ownerId={owner.id}
         />
@@ -37,8 +38,7 @@ export default function PicturesRow({
               key={picture.id}
               focusRipple
               onClick={() => {
-                const pictureIndex = startIndex + i;
-                handleOpenFullView(pictureIndex);
+                handleOpenFullView(picture);
               }}
               sx={{ borderLeft: i === 0 ? 0 : '', borderRight: i === 2 ? 0 : '' }}>
               <Box

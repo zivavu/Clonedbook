@@ -47,7 +47,9 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
 
   return (
     <>
-      {isFullViewOpen && <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} />}
+      {isFullViewOpen && (
+        <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} refetchPost={refetchPost} />
+      )}
 
       <StyledRoot sx={sx} {...rootProps}>
         <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>

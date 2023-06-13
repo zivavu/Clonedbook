@@ -3,7 +3,7 @@ import { StackProps } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface FullPageBackgroundPicturesViewProps extends StackProps {
-  initialPhoto: number | IAccountPicture;
+  initialPhoto: IAccountPicture;
   ownerId: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }

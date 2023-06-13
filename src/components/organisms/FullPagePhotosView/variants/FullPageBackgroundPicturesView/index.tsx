@@ -20,16 +20,15 @@ export default function FullPageBackgroundPicturesView({
         .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
     : [];
 
-  const initialPhotoIndex: number =
-    typeof initialPhoto === 'number'
-      ? initialPhoto
-      : pictures.findIndex((picture) => picture.id === initialPhoto.id);
-
-  useEffect(() => {
-    setCurrentPictureIndex(initialPhotoIndex);
-  }, [initialPhoto, initialPhotoIndex]);
+  const initialPhotoIndex: number = pictures.findIndex((picture) => picture.id === initialPhoto.id);
 
   const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(initialPhotoIndex);
+
+  useEffect(() => {
+    if (initialPhotoIndex === -1) return setOpen(false);
+    setCurrentPictureIndex(initialPhotoIndex);
+  }, [picturesMap]);
+
   const currentPicture = pictures[currentPictureIndex];
 
   if (!pictures || !currentPicture) return null;

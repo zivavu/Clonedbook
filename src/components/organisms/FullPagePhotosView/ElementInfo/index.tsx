@@ -8,6 +8,7 @@ import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPubl
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
+import ElementTextEditInput from '@/components/molecules/ElementTextEditInput';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
 import { useRef, useState } from 'react';
@@ -52,7 +53,9 @@ export default function ElementInfo({
         }}>
         <RightSection mr={theme.spacing(0.5)} />
       </Stack>
+
       <HorizontalContentDevider />
+
       <PostOwnerInfoDisplay
         owner={owner}
         element={element}
@@ -62,13 +65,25 @@ export default function ElementInfo({
         mt={theme.spacing(2)}
         mb={theme.spacing(1)}
       />
-      <Box mb={theme.spacing(4)}>
-        <Typography variant='body1'>{element.text}</Typography>
-      </Box>
+
+      {isInPhotoTextEditMode ? (
+        <ElementTextEditInput
+          element={element}
+          elementType={type}
+          refetchElement={refetchElement}
+          handleCloseEditMode={() => setIsInPhotoTextEditMode((prev) => !prev)}
+        />
+      ) : (
+        <Box mb={theme.spacing(4)}>
+          <Typography variant='body1'>{element.text}</Typography>
+        </Box>
+      )}
+
       <Stack width='100%' direction='row' justifyContent='space-between'>
         {!isObjectEmpty(element.reactions) && (
           <ReactionsDisplayBox reactions={element.reactions} displayCount displayNames={false} />
         )}
+
         <Box display='flex'>
           <Typography pr={theme.spacing(1)} variant='subtitle2' sx={{ color: 'text.secondary' }}>
             {commentsLength === 0
@@ -84,6 +99,7 @@ export default function ElementInfo({
           )}
         </Box>
       </Stack>
+
       <ActionButtons
         element={element}
         elementType={type}
@@ -91,6 +107,7 @@ export default function ElementInfo({
         handleCommentClick={handleCommentInputFocus}
         my={theme.spacing(1)}
       />
+
       <Comments
         element={element}
         elementType={type}

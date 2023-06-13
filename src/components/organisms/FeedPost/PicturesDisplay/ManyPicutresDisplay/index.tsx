@@ -114,7 +114,7 @@ export default function ManyPicutresDisplay({
                 sx={usedLayout[2 + i]}
               />
             ))}
-            {pictures.slice(4).map((picture) => (
+            {pictures.slice(4, 5).map((picture) => (
               <LastPicture
                 key={picture.url}
                 picture={picture}

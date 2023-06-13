@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 import { StyledContentWrapper, StyledRoot } from './styles';
 
@@ -12,6 +12,7 @@ import { IPictureWithPlaceholders } from '@/types/picture';
 import { useRef, useState } from 'react';
 import PicturesDisplay from './PicturesDisplay';
 import PostActions from './PostActions';
+import PostTextArea from './PostText';
 import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPostProps) {
@@ -22,8 +23,6 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
   const [isInPostTextEditMode, setIsInPostTextEditMode] = useState(false);
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
-  const hasText = !!postText ? true : false;
-  const isTextLong = (postText && postText.length > 130) || hasPictures ? true : false;
 
   const commentsSlice = Object.values(comments).slice(0, 2);
   const exampleCommentsLength =
@@ -59,21 +58,12 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
             refetchElement={refetchPost}
             handleOpenEditMode={() => setIsInPostTextEditMode((prev) => !prev)}
           />
-          {isInPostTextEditMode ? (
-            <TextField></TextField>
-          ) : (
-            hasText && (
-              <Box sx={{ pt: theme.spacing(1) }}>
-                {isTextLong ? (
-                  <Typography variant='body1'>{postText}</Typography>
-                ) : (
-                  <Typography variant='h4' fontWeight='400' lineHeight='1.7rem'>
-                    {postText}
-                  </Typography>
-                )}
-              </Box>
-            )
-          )}
+          <PostTextArea
+            post={post}
+            isInEditMode={isInPostTextEditMode}
+            handleCloseEditMode={() => setIsInPostTextEditMode(false)}
+            refetchPost={refetchPost}
+          />
         </StyledContentWrapper>
         {hasPictures && (
           <Box mt={theme.spacing(1)}>

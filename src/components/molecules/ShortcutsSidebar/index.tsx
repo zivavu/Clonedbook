@@ -36,8 +36,16 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
                 if (!isActive) return;
                 handleRedirect(href);
               }}
-              disabled={!isActive}>
-              <StyledListItemAvatar src={icon || PlaceholderIcon} alt={key}></StyledListItemAvatar>
+              sx={{
+                cursor: isActive ? 'pointer' : 'not-allowed',
+              }}>
+              <StyledListItemAvatar
+                src={icon || PlaceholderIcon}
+                alt={key}
+                sx={{
+                  opacity: isActive ? 1 : 0.7,
+                }}
+              />
               <Typography textTransform={'capitalize'} variant='body1'>
                 {key.split('-').join(' ')}
               </Typography>

@@ -8,8 +8,6 @@ export interface IFriend {
   acceptedAt: ITimestamp;
 }
 
-export type TFriendStatus = 'accepted' | 'req_sent' | 'req_received';
-
 export interface IFriendWithBasicInfo extends IFriend {
   basicInfo: IUserBasicInfo;
 }
@@ -18,10 +16,14 @@ export interface IFriendsMap {
   [key: string]: IFriend;
 }
 
+//Format of the firebase all public friends document
 export interface IPublicFriendsMap {
   [key: string]: ITimestamp;
 }
+
 export interface IPublicFriend {
   id: string;
   timestamp: ITimestamp;
 }
+
+export type TFriendStatus = 'accepted' | 'req_sent' | 'req_received';

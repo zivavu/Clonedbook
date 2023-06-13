@@ -42,8 +42,8 @@ export default function CommentEdit({
   };
 
   function handleClose() {
-    setCommentText('');
     handleCloseEditMode();
+    setCommentText('');
   }
 
   return (
@@ -69,9 +69,9 @@ export default function CommentEdit({
       />
       <Box height='18px'>
         {isFocused ? (
-          <Typography variant='body2' onClick={handleClose}>
+          <Typography variant='body2'>
             Press Esc to{' '}
-            <InteractButton>
+            <InteractButton onClick={handleClose}>
               <Typography variant='body2' color={theme.palette.info.main}>
                 cancel
               </Typography>

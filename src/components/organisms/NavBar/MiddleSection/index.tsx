@@ -42,11 +42,13 @@ export default function MiddleSection({ sx, classes, ...rootProps }: MiddleSecti
         const selected = currentPage === element.name;
         return (
           <StyledToggleButton
-            disabled={element.disabled}
             key={element.name}
+            sx={{
+              cursor: element.disabled ? 'not-allowed' : 'pointer',
+            }}
             value={element.name}
             selected={selected}
-            onClick={() => handleNavChange(element.name)}>
+            onClick={() => handleNavChange('Home')}>
             <Icon
               icon={['fas', element.icon]}
               fontSize='1.3rem'

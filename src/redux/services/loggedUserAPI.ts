@@ -53,9 +53,7 @@ export const loggedUser = createApi({
         try {
           const userIdStorageItem = localStorage.getItem('loggedUser');
           const loggedUserId = userIdStorageItem ? JSON.parse(userIdStorageItem) : undefined;
-          if (!loggedUserId) {
-            return { error: 'Couldnt fetch users chats' };
-          }
+          if (!loggedUserId) throw new Error();
 
           const chatsRef = collection(db, 'chats');
           const chatsQuery = query(chatsRef, where('users', 'array-contains', loggedUserId));
@@ -65,7 +63,6 @@ export const loggedUser = createApi({
 
           return { data: nonEmptyChats };
         } catch (err) {
-          console.log(err);
           return { error: 'Couldnt fetch users chats' };
         }
       },

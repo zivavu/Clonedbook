@@ -26,7 +26,9 @@ export default function RightSection({ sx, classes, ...rootProps }: RightSection
       <ClickAwayListener onClickAway={() => handlePopperClose()}>
         <Box>
           <StyledToggleButton
-            disabled
+            sx={{
+              cursor: 'not-allowed',
+            }}
             value={'notifications' as TTopbarPoper}
             selected={currentPopper === 'notifications'}
             onClick={handlePopperChange}>

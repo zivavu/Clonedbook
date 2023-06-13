@@ -16,7 +16,6 @@ import { InvisibleScrollableStack } from '@/components/atoms/scrollables/Scrolla
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useTheme as useNextThemes } from 'next-themes';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 
 export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: PopperProps) {
   const theme = useTheme();
@@ -25,8 +24,6 @@ export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: P
   const { data: loggedUser } = useGetLoggedUserQuery({});
 
   const { switchLoggedUser, isLoading } = useChangeLoggedUser();
-
-  const dispatch = useDispatch();
 
   const router = useRouter();
   const handleRedirectToProfile = () => {
@@ -88,7 +85,7 @@ export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: P
               <StyledIconContainer>
                 <StyledListItemIcon icon={['fab', 'github']} />
               </StyledIconContainer>
-              <Typography variant='subtitle2'>GitHub Project</Typography>
+              <Typography variant='subtitle2'>GitHub Repo</Typography>
             </StyledListButton>
           </List>
         </InvisibleScrollableStack>

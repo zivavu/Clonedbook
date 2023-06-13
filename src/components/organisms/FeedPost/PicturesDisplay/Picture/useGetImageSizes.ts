@@ -13,10 +13,10 @@ export default function useGetImageSizes(size: TPictureSize) {
   switch (size) {
     case 'small':
       imageSizes = [
-        `${screens.small} 250px`,
-        `${screens.medium} 500px`,
-        `${screens.large} 600px`,
-        `600px`,
+        `${screens.small} 200px`,
+        `${screens.medium} 300px`,
+        `${screens.large} 400px`,
+        `400px`,
       ].join(', ');
       break;
     case 'medium':
@@ -24,24 +24,17 @@ export default function useGetImageSizes(size: TPictureSize) {
         `${screens.small} 350px`,
         `${screens.medium} 500px`,
         `${screens.large} 600px`,
-        `600px`,
+        `700px`,
       ].join(', ');
       break;
     case 'large':
       imageSizes = [
         `${screens.small} 500px`,
-        `${screens.medium} 700px`,
+        `${screens.medium} 500px`,
         `${screens.large} 700px`,
         `800px`,
       ].join(', ');
       break;
-    case 'xlarge':
-      imageSizes = [
-        `${screens.small} 700px`,
-        `${screens.medium} 800px`,
-        `${screens.large} 1000px`,
-        `1300px`,
-      ].join(', ');
   }
   return imageSizes;
 }

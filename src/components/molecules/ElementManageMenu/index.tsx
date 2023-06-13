@@ -41,20 +41,19 @@ export default function ElementManageMenu({
         <Typography mr={1}>Edit</Typography>
       </StyledMenuItem>
       <StyledMenuItem onClick={handleDeleteClick}>
-        <Typography>
-          Delete
-          {isDeleteLoading && (
-            <CircularProgress
-              size={16}
-              sx={{
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.common.black
-                    : theme.palette.common.white,
-              }}
-            />
-          )}
-        </Typography>
+        <Typography>Delete</Typography>
+        {isDeleteLoading && (
+          <CircularProgress
+            size={16}
+            sx={{
+              marginLeft: theme.spacing(1),
+              color:
+                theme.palette.mode === 'light'
+                  ? theme.palette.common.black
+                  : theme.palette.common.white,
+            }}
+          />
+        )}
       </StyledMenuItem>
     </StyledRoot>
   );

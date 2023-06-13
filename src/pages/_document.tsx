@@ -18,7 +18,7 @@ interface EmotionDocumentProps extends DocumentProps {
 
 export default function MyDocument({ emotionStyleTags }: EmotionDocumentProps) {
   return (
-    <Html lang='en'>
+    <Html lang='en' suppressHydrationWarning>
       <Head>
         <meta name='emotion-insertion-point' content='' />
         {emotionStyleTags}

@@ -11,7 +11,7 @@ import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { FullPagePostViewProps } from './types';
 
 export default function FullPagePostView({
@@ -24,6 +24,8 @@ export default function FullPagePostView({
   const { postData: post, refetchPost } = useFetchSinglePostData(postId);
   const owner = useGetUserBasicInfo(post?.ownerId || '');
 
+  const [isInPostTextEditMode, setIsInPostTextEditMode] = useState(false);
+
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
   function handleCommentInputFocus() {
     if (!commentInputRef.current) return;
@@ -32,7 +34,12 @@ export default function FullPagePostView({
 
   if (!post) return null;
   return (
-    <Modal open onClose={() => setOpen(false)}>
+    <Modal
+      open
+      onClose={() => setOpen(false)}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') setOpen(false);
+      }}>
       <StyledRoot sx={sx} {...rootProps}>
         <Stack p={theme.spacing(1.5, 0)} position='relative'>
           <StyledCloseIconButton onClick={() => setOpen(false)}>
@@ -49,6 +56,7 @@ export default function FullPagePostView({
             element={post}
             elementType='post'
             refetchElement={refetchPost}
+            handleOpenEditMode={() => setIsInPostTextEditMode((prev) => !prev)}
           />
           <Typography variant='body1'>{post.text}</Typography>
           <Stack direction='row' alignItems='center'>

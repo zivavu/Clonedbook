@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, TextField, Typography, useTheme } from '@mui/material';
 
 import { StyledContentWrapper, StyledRoot } from './styles';
 
@@ -19,6 +19,7 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
   const owner = useGetUserBasicInfo(post.ownerId);
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
+  const [isInPostTextEditMode, setIsInPostTextEditMode] = useState(false);
 
   const hasPictures = !!postPictures && postPictures[0] ? true : false;
   const hasText = !!postText ? true : false;
@@ -56,17 +57,22 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
             element={post}
             elementType='post'
             refetchElement={refetchPost}
+            handleOpenEditMode={() => setIsInPostTextEditMode((prev) => !prev)}
           />
-          {hasText && (
-            <Box sx={{ pt: theme.spacing(1) }}>
-              {isTextLong ? (
-                <Typography variant='body1'>{postText}</Typography>
-              ) : (
-                <Typography variant='h4' fontWeight='400' lineHeight='1.7rem'>
-                  {postText}
-                </Typography>
-              )}
-            </Box>
+          {isInPostTextEditMode ? (
+            <TextField></TextField>
+          ) : (
+            hasText && (
+              <Box sx={{ pt: theme.spacing(1) }}>
+                {isTextLong ? (
+                  <Typography variant='body1'>{postText}</Typography>
+                ) : (
+                  <Typography variant='h4' fontWeight='400' lineHeight='1.7rem'>
+                    {postText}
+                  </Typography>
+                )}
+              </Box>
+            )
           )}
         </StyledContentWrapper>
         {hasPictures && (

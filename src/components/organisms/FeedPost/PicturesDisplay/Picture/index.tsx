@@ -16,7 +16,6 @@ export default function Picture({
   children,
   ...rootProps
 }: PictureProps) {
-  const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
   const imageSizes = useGetImageSizes(imageSize);

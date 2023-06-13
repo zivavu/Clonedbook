@@ -31,7 +31,7 @@ export default function PicturesDisplay({
 
       {mode === 'single' && (
         <StyledPicturesContainer>
-          <Picture picture={picturesToDisplay[0]} postId={postId} size='xlarge' />
+          <Picture picture={picturesToDisplay[0]} postId={postId} size='large' />
         </StyledPicturesContainer>
       )}
 

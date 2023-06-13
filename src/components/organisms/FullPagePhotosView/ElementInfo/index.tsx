@@ -10,7 +10,7 @@ import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { NAVBAR_HEIGHT } from '../../NavBar';
 import RightSection from '../../NavBar/RightSection';
 import { ElementInfoProps } from './types';
@@ -26,6 +26,7 @@ export default function ElementInfo({
   const commentsLength = getEntriesLength(element.comments);
   const owner = useGetUserBasicInfo(element.ownerId);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  const [isInPhotoTextEditMode, setIsInPhotoTextEditMode] = useState(false);
 
   function handleCommentInputFocus() {
     if (!commentInputRef.current) return;
@@ -56,9 +57,10 @@ export default function ElementInfo({
         owner={owner}
         element={element}
         elementType={type}
+        refetchElement={refetchElement}
+        handleOpenEditMode={() => setIsInPhotoTextEditMode((prev) => !prev)}
         mt={theme.spacing(2)}
         mb={theme.spacing(1)}
-        refetchElement={refetchElement}
       />
       <Box mb={theme.spacing(4)}>
         <Typography variant='body1'>{element.text}</Typography>

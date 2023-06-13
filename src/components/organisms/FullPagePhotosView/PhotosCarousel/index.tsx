@@ -10,6 +10,7 @@ import {
 import Icon from '@/components/atoms/Icon/Icon';
 
 import Image from 'next/image';
+import { KeyboardEvent, useCallback, useEffect } from 'react';
 import { PhotosCarouselProps } from './types';
 
 export default function PhotosCarousel({
@@ -35,22 +36,48 @@ export default function PhotosCarousel({
   ].join(', ');
 
   const currentPicture = pictures?.[currentPictureIndex];
-  const handleSwitchPicture = (direction: 'left' | 'right') => {
-    if (direction === 'left') {
-      if (currentPictureIndex === 0) {
-        setCurrentPictureIndex((pictures?.length || 1) - 1);
-      } else {
-        setCurrentPictureIndex(currentPictureIndex - 1);
+  const handleSwitchPicture = useCallback(
+    (direction: 'left' | 'right') => {
+      if (direction === 'left') {
+        if (currentPictureIndex === 0) {
+          setCurrentPictureIndex((pictures?.length || 1) - 1);
+        } else {
+          setCurrentPictureIndex(currentPictureIndex - 1);
+        }
       }
-    }
-    if (direction === 'right') {
-      if (currentPictureIndex === (pictures?.length || 1) - 1) {
-        setCurrentPictureIndex(0);
-      } else {
-        setCurrentPictureIndex(currentPictureIndex + 1);
+      if (direction === 'right') {
+        if (currentPictureIndex === (pictures?.length || 1) - 1) {
+          setCurrentPictureIndex(0);
+        } else {
+          setCurrentPictureIndex(currentPictureIndex + 1);
+        }
       }
-    }
-  };
+    },
+    [currentPictureIndex, pictures],
+  );
+
+  const handleKeyDown = useCallback(
+    (e: any) => {
+      const ev = e as KeyboardEvent;
+      switch (ev.key) {
+        case 'ArrowLeft':
+          handleSwitchPicture('left');
+          break;
+        case 'ArrowRight':
+          handleSwitchPicture('right');
+          break;
+        case 'Escape':
+          setOpen(false);
+          break;
+      }
+    },
+    [handleSwitchPicture],
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   const isMoreThenOnePicture = (pictures?.length || 0) > 1 || false;
   if (!pictures) return null;
@@ -65,7 +92,7 @@ export default function PhotosCarousel({
             height='100%'
             onClick={() => setOpen(false)}
           />
-          <Box position='relative' width='100%' height='100%'>
+          <Box position='relative' width='100%' height='100%' bgcolor={currentPicture.dominantHex}>
             <Image
               key={currentPicture.url}
               src={currentPicture.url || ''}
@@ -74,7 +101,7 @@ export default function PhotosCarousel({
               fill
               sizes={imageSizes}
               quality={80}
-              style={{ objectFit: 'contain', backgroundColor: currentPicture.dominantHex }}
+              style={{ objectFit: 'contain' }}
               alt='Full Size Photo'
             />
           </Box>

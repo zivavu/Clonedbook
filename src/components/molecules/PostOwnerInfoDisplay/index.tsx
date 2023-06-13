@@ -17,6 +17,7 @@ export default function PostOwnerInfoDisplay({
   elementType,
   refetchElement,
   owner,
+  handleOpenEditMode,
   sx,
   ...rootProps
 }: PostOwnerInfoDisplayProps) {
@@ -25,9 +26,6 @@ export default function PostOwnerInfoDisplay({
   const postManageAnchorEl = useRef<HTMLButtonElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  function handleOpenEditMode() {
-    const isEditMode = true;
-  }
   async function handleElementDelete() {
     if (!loggedUser || loggedUser.id !== element.ownerId) return;
     await deleteUsersElement({
@@ -36,7 +34,6 @@ export default function PostOwnerInfoDisplay({
       loggedUser,
     });
     await refetchElement();
-    console.log('refetchElement');
     setIsMenuOpen(false);
   }
 

@@ -8,5 +8,6 @@ export interface PostOwnerInfoDisplayProps extends BoxProps {
   owner: IUserBasicInfo | null;
   element: IPost | IAccountPicture;
   elementType: TElementType;
+  handleOpenEditMode: () => void;
   refetchElement: () => Promise<void> | void;
 }

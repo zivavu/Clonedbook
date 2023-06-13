@@ -13,4 +13,4 @@ export interface PictureToDisplay {
 }
 
 export type TDisplayMode = 'single' | 'duo' | 'many';
-export type TPictureSize = 'small' | 'medium' | 'large' | 'xlarge';
+export type TPictureSize = 'small' | 'medium' | 'large';

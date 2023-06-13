@@ -62,7 +62,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
             transform: searchPopperOpen
               ? 'translateX(-6px) scaleX(1.05)'
               : 'translateX(0) scaleX(1)',
-            transition: 'all 0.1s ease-in-out',
+            transition: 'transform 0.1s ease-in-out',
           }}
           ref={searchElement}
           size='small'

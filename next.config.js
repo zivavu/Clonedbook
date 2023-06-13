@@ -1,49 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  transpilePackages: ['@mui/system', '@mui/material', '@mui/icons-material'],
-  modularizeImports: {
-    '@mui/material/?(((\\w*)?/?)*)': {
-      transform: '@mui/material/{{ matches.[1] }}/{{member}}',
-    },
-    '@mui/icons-material/?(((\\w*)?/?)*)': {
-      transform: '@mui/icons-material/{{ matches.[1] }}/{{member}}',
-    },
+  compiler: {
+    emotion: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'www.facebook.com',
-        pathname: '/reaction/image/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'firebasestorage.googleapis.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'loremflickr.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'source.unsplash.com',
-        pathname: '/collection/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cloudflare-ipfs.com',
-        pathname: '/ipfs/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'static.xx.fbcdn.net',
-        pathname: '/rsrc.php/**',
-      },
+    domains: [
+      'www.facebook.com',
+      'firebasestorage.googleapis.com',
+      'loremflickr.com',
+      'source.unsplash.com',
+      'picsum.photos',
+      'cloudflare-ipfs.com',
+      'static.xx.fbcdn.net',
     ],
   },
 };

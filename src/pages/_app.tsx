@@ -1,4 +1,3 @@
-import { config, library } from '@fortawesome/fontawesome-svg-core';
 import { faComment, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import {
   faAngleLeft,
@@ -53,11 +52,21 @@ import ThemeModeProvider from '@/design/ThemeModeProvider';
 import createEmotionCache from '@/design/createEmotionCache';
 import { store } from '@/redux/store';
 import { EmotionCache, CacheProvider as EmotionCacheProvider } from '@emotion/react';
-import '@fortawesome/fontawesome-svg-core/styles.css';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { Provider } from 'react-redux';
-config.autoAddCss = false;
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { Provider as StoreProvider } from 'react-redux';
 
+import '@fortawesome/fontawesome-svg-core/styles.css';
+const { library, config } = require('@fortawesome/fontawesome-svg-core');
+
+// Prevent fontawesome from adding its CSS since we did it manually above:
+config.autoAddCss = false; /* eslint-disable import/first */
+
+/**
+ * Import FontAwesome icons.
+ * This is required, else the icon wont show up!
+ * Read more: https://fontawesome.com/v5/docs/web/use-with/react#using-icons-via-global-use
+ */
 const icons = [
   faShareSquare,
   faHouse,
@@ -107,26 +116,27 @@ const icons = [
 ] as any;
 library.add(...icons);
 
-const emotionCache = createEmotionCache();
+const localEmotionCache = createEmotionCache();
 
 export interface EmotionAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-export default function App({ Component, pageProps }: EmotionAppProps) {
+export default function MyApp(props: EmotionAppProps) {
+  const { Component, emotionCache = localEmotionCache, pageProps } = props;
   return (
-    <>
-      <Provider store={store}>
-        <EmotionCacheProvider value={emotionCache}>
+    <NextThemesProvider themes={['dark', 'light']} defaultTheme='dark'>
+      <EmotionCacheProvider value={emotionCache}>
+        <ThemeModeProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <ThemeModeProvider>
+            <StoreProvider store={store}>
               <NavBar />
               <Component {...pageProps} />
               <OpenedChatsPortal />
-            </ThemeModeProvider>
+            </StoreProvider>
           </LocalizationProvider>
-        </EmotionCacheProvider>
-      </Provider>
-    </>
+        </ThemeModeProvider>
+      </EmotionCacheProvider>
+    </NextThemesProvider>
   );
 }

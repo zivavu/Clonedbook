@@ -13,20 +13,20 @@ import useChangeLoggedUser from '@/common/misc/userDataManagment/useChangeLogged
 import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
-import { toggleTheme } from '@/redux/features/themeSlice';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import { RootState } from '@/redux/store';
+import { useTheme as useNextThemes } from 'next-themes';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: PopperProps) {
   const theme = useTheme();
+  const { setTheme: setThemeMode, theme: themeMode } = useNextThemes();
+
   const { data: loggedUser } = useGetLoggedUserQuery({});
 
   const { switchLoggedUser, isLoading } = useChangeLoggedUser();
 
   const dispatch = useDispatch();
-  const mode = useSelector((state: RootState) => state.theme.mode);
 
   const router = useRouter();
   const handleRedirectToProfile = () => {
@@ -64,12 +64,13 @@ export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: P
               </Typography>
             </StyledListButton>
 
-            <StyledListButton onClick={() => dispatch(toggleTheme())}>
+            <StyledListButton
+              onClick={() => setThemeMode(themeMode === 'light' ? 'dark' : 'light')}>
               <StyledIconContainer>
                 <StyledListItemIcon icon='moon' />
               </StyledIconContainer>
               <Typography variant='subtitle2'>Dark Mode</Typography>
-              <Switch checked={mode === 'dark'} sx={{ marginLeft: 'auto' }}></Switch>
+              <Switch checked={themeMode === 'dark'} sx={{ marginLeft: 'auto' }}></Switch>
             </StyledListButton>
           </List>
 

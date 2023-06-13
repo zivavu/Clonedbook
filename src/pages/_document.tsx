@@ -9,9 +9,7 @@ import Document, {
 
 import createEmotionCache from '@/design/createEmotionCache';
 import createEmotionServer from '@emotion/server/create-instance';
-import { getInitColorSchemeScript } from '@mui/material';
 import { AppType } from 'next/app';
-import { ComponentProps } from 'react';
 import { EmotionAppProps } from './_app';
 
 interface EmotionDocumentProps extends DocumentProps {
@@ -26,7 +24,6 @@ export default function MyDocument({ emotionStyleTags }: EmotionDocumentProps) {
         {emotionStyleTags}
       </Head>
       <body style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-        {getInitColorSchemeScript({ modeStorageKey: 'mui-color-scheme-light' })}
         <Main />
         <NextScript />
       </body>
@@ -34,21 +31,20 @@ export default function MyDocument({ emotionStyleTags }: EmotionDocumentProps) {
   );
 }
 
-Document.getInitialProps = async (ctx: DocumentContext) => {
+MyDocument.getInitialProps = async (ctx: DocumentContext) => {
   const originalRenderPage = ctx.renderPage;
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: (App: React.ComponentType<ComponentProps<AppType> & EmotionAppProps>) =>
+      enhanceApp: (App: React.ComponentType<React.ComponentProps<AppType> & EmotionAppProps>) =>
         function EnhanceApp(props) {
           return <App emotionCache={cache} {...props} />;
         },
     });
 
-  const initialProps: any = await Document.getInitialProps(ctx);
-
+  const initialProps = await Document.getInitialProps(ctx);
   const emotionStyles = extractCriticalToChunks(initialProps.html);
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style

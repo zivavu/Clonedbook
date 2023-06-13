@@ -1,7 +1,5 @@
 import { StyledRoot } from './styles';
 
-import NavBar from '@/components/organisms/NavBar';
-import OpenedChatsPortal from '@/components/organisms/OpenedChatsPortal';
 import Head from 'next/head';
 import { PageProps } from './types';
 

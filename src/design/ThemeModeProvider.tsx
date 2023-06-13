@@ -1,25 +1,19 @@
-import { validateTheme } from '@/redux/features/themeSlice';
-import { RootState } from '@/redux/store';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
-import { ReactNode, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'next-themes';
+import { ReactNode, useEffect, useState } from 'react';
 import { getDesignTokens } from './theme';
 
 export default function ThemeModeProvider({ children }: { children: ReactNode }) {
-  const mode = useSelector((state: RootState) => state.theme.mode);
-  const dispatch = useDispatch();
+  const { resolvedTheme } = useTheme();
+  const [currentTheme, setCurrentTheme] = useState(getDesignTokens('dark'));
 
   useEffect(() => {
-    dispatch(validateTheme());
-  }, []);
-
-  const theme = useMemo(() => {
-    return getDesignTokens(mode);
-  }, [mode]);
+    setCurrentTheme(getDesignTokens(resolvedTheme === 'dark' ? 'dark' : 'light'));
+  }, [resolvedTheme]);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={currentTheme}>
       <CssBaseline />
       {children}
     </ThemeProvider>

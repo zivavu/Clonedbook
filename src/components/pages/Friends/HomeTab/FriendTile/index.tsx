@@ -1,6 +1,6 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 
-import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetMutualFriends from '@/common/friendsManage/useGetMutualFriends';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';
@@ -18,7 +18,7 @@ export default function FriendTile({
 }: FriendTileProps) {
   const theme = useTheme();
   const user = useGetUserBasicInfo(userId);
-  const mutalFriends = useGetMutalFriends(userId);
+  const mutualFriends = useGetMutualFriends(userId);
   if (!user) return null;
   return (
     <StyledRoot sx={sx} {...rootProps}>
@@ -41,9 +41,9 @@ export default function FriendTile({
             lineHeight='1rem'
             usePopper={false}
           />
-          {mutalFriends.length > 0 && (
+          {mutualFriends.length > 0 && (
             <Stack direction='row' pl={0.5}>
-              {mutalFriends.slice(0, 2).map((friend, i) => (
+              {mutualFriends.slice(0, 2).map((friend, i) => (
                 <UserAvatar
                   key={friend.id}
                   userId={friend.id}
@@ -56,7 +56,7 @@ export default function FriendTile({
                 />
               ))}
               <Typography variant='body1' color={theme.palette.text.secondary} ml={0.5}>
-                {mutalFriends.length} mutal friends
+                {mutualFriends.length} mutual friends
               </Typography>
             </Stack>
           )}

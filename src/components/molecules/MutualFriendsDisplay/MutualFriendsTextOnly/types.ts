@@ -1,7 +1,7 @@
 import { BoxProps } from '@mui/material';
 
-export interface MutalFriendsWithAvatarsProps extends BoxProps {
+export interface MutualFriendsTextOnlyProps extends BoxProps {
   userId: string;
-  avatarsToShow: number;
   size?: 'small' | 'medium';
+  friendsToInclude?: number;
 }

@@ -1,6 +1,6 @@
 import { StyledRoot } from './styles';
 
-import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetMutualFriends from '@/common/friendsManage/useGetMutualFriends';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserLink from '@/components/atoms/UserLink';
 import UserPicture from '@/components/atoms/UserPicture';
@@ -10,7 +10,7 @@ import { FriendProps } from './types';
 export default function Friend({ friendId, sx, ...rootProps }: FriendProps) {
   const theme = useTheme();
   const friend = useGetUserBasicInfo(friendId);
-  const mutalFriends = useGetMutalFriends(friendId);
+  const mutualFriends = useGetMutualFriends(friendId);
 
   if (!friend) return null;
   return (
@@ -22,7 +22,7 @@ export default function Friend({ friendId, sx, ...rootProps }: FriendProps) {
         <Box>
           <UserLink variant='body2' fontWeight={500} userId={friendId} />
           <Typography variant='body2' lineHeight='0.7rem' color={theme.palette.text.secondary}>
-            {mutalFriends.length} mutal friends
+            {mutualFriends.length} mutual friends
           </Typography>
         </Box>
       </StyledRoot>

@@ -1,4 +1,4 @@
-import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetMutualFriends from '@/common/friendsManage/useGetMutualFriends';
 import useGetUsersPublicFriends from '@/common/misc/userDataManagment/useGetUsersPublicFriends';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { Stack, Typography, useTheme } from '@mui/material';
@@ -11,7 +11,7 @@ export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: Fr
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const publicFriends = useGetUsersPublicFriends(user.id);
 
-  const mutalFriends = useGetMutalFriends(user.id);
+  const mutualFriends = useGetMutualFriends(user.id);
   const friendsCount = (publicFriends && Object.entries(publicFriends).length) || 0;
 
   const friendsArr = publicFriends
@@ -31,7 +31,7 @@ export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: Fr
       <Stack>
         <StyledPageTileHeader sx={{ paddingBottom: 0 }}>Friends</StyledPageTileHeader>
         <Typography pb={1} color={theme.palette.text.secondary} variant='subtitle1'>
-          {friendsCount} {loggedUser?.id !== user.id && `(${mutalFriends.length} mutual)`}
+          {friendsCount} {loggedUser?.id !== user.id && `(${mutualFriends.length} mutual)`}
         </Typography>
       </Stack>
       <Stack spacing={2}>

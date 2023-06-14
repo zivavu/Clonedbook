@@ -4,7 +4,7 @@ import SelectedButtonUnderline from '@/components/atoms/SelectedButtonUnderline'
 import { useState } from 'react';
 import { StyledFullSizePageTile, StyledPageTileHeader } from '../styles';
 import AllFriendsSection from './Sections/AllFriends';
-import MutalFriendsSection from './Sections/MutalFriends';
+import MutualFriendsSection from './Sections/MutualFriends';
 import RecentlyAddedSection from './Sections/RecentlyAdded';
 import { SeeAllButton, StyledToggleButton } from './styles';
 import { AllFriendsTileProps, TFriendsSections } from './types';
@@ -41,7 +41,7 @@ export default function AllFriendsTile({
         <AllFriendsSection profileId={profileData.id} limit={limit} />
       )}
       {currentSection === 'mutual friends' && (
-        <MutalFriendsSection profileId={profileData.id} limit={limit} />
+        <MutualFriendsSection profileId={profileData.id} limit={limit} />
       )}
       {currentSection === 'recently added' && (
         <RecentlyAddedSection profileId={profileData.id} limit={limit} />

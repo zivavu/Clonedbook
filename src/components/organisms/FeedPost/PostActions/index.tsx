@@ -3,7 +3,7 @@ import { Stack, Typography, useTheme } from '@mui/material';
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import InteractButton from '@/components/atoms/InteractButton';
 import ActionButtons from '@/components/molecules/ActionButtons';
-import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
+import ReactionsDisplayBox from '@/components/organisms/ReactionsDisplay';
 import { StyledContentWrapper } from '../styles';
 import { PostActionsProps } from './types';
 

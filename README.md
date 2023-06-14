@@ -9,7 +9,7 @@
 
 ## :rocket: About the project
 
-This is a basic clone of <a href="https://www.facebook.com/">Facebook</a>. 
+This is a basic clone of <a href="https://www.facebook.com/">Facebook</a>.
 It includes most of the features from the home, profile, and friends pages(Including all the portals and poppers, used for interacting with elements).
 
 Interface for the most part is recreated one-to-one with the original, fully responsive, and has dark mode.
@@ -24,21 +24,23 @@ Users are also indexed on <a href="https://www.algolia.com/">Algolia</a> for sea
 
 ![Screenshot_1](https://github.com/zivavu/facebook-clone/assets/107223633/2d419cbd-4869-4a79-8007-445d65b4c9b8)
 
-
 ## :sparkles: Implemented features
 
 ### Interface
+
 - Built as an exact clone using MUI and styled-components
 - Light and dark modes(with persisting)
 - Responsive
 - Modular
 
 ### Home page
+
 - All posts, sorted by date with infinite scrolling, fully interactive
 - Contacts sidebar with recently added friends, and search
 - Shortcuts sidebar(most links aren't implemented)
 
 ### Profile page
+
 - Users info with background, profile picture, mutual friends, and friendship management buttons
 - Built with modular, responsive tiles
 - Posts tab
@@ -47,6 +49,7 @@ Users are also indexed on <a href="https://www.algolia.com/">Algolia</a> for sea
 - Photos tab
 
 ### Friends page
+
 - Home tab
 - Friends Requests
 - Friend Suggestions
@@ -54,6 +57,7 @@ Users are also indexed on <a href="https://www.algolia.com/">Algolia</a> for sea
 - Preview all the users(using the original profile page layout), and manage state of their friendship
 
 ### Navbar
+
 - Search box
   - Search users index powered by <a href="https://www.algolia.com/">Algolia</a>
   - Search results displayed as a users list
@@ -67,38 +71,42 @@ Users are also indexed on <a href="https://www.algolia.com/">Algolia</a> for sea
   - Dark mode switch
 
 ### Elements(posts & pictures)
+
 - Create(Post only atm)(uploaded pictures are optimised for size and quality using canvas)
 - Optimised sizes provided by next/image
 - View(using custom full screen portals, for all picture types and posts)
-- Edit
-- Delete
 - Comment
 - React
+- Edit
+- Delete
 
 ### Comments
+
 - React
-- View
 - Edit
 - Delete
 
 ### Reactions
+
 - Custom component for displaying most popular reactions and count
 - Custom popper for choosing reaction
 - Custom dialog for viewing all the reactions and their owners
 
 ### User preview popper
+
 - Opens while hovering links and photos of users
 - Displays users profile picture, name, and mutual friends
 - Has buttons for managing friendship
 
 ### Chats portal
+
 - Max opened chats count based on screen size
 - Chats
-  - List of opened ones is persisted 
+  - List of opened ones is persisted
   - Display all the messages
   - Send new ones
   - Custom chat emoji
- 
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## :technologist: Technologies used
@@ -115,6 +123,7 @@ Users are also indexed on <a href="https://www.algolia.com/">Algolia</a> for sea
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- LICENSE -->
+
 ## :memo: License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
@@ -122,6 +131,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
+
 ## :speech_balloon: Contact
 
 Tomasz Kierzenkowski - zivavu@gmail.com
@@ -130,32 +140,22 @@ Project Link: [https://github.com/zivavu/Clonedbook](https://github.com/zivavu/C
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [Next.js]: https://a11ybadges.com/badge?logo=nextdotjs
 [Next-url]: https://nextjs.org/
-
 [React.js]: https://a11ybadges.com/badge?logo=react
 [React-url]: https://reactjs.org/
-
 [Redux.js]: https://a11ybadges.com/badge?logo=redux
 [Redux-url]: https://redux.js.org/
-
 [MaterialUI]: https://a11ybadges.com/badge?logo=materialui
 [MaterialUI-url]: https://mui.com/
-
 [FontAwesome]: https://a11ybadges.com/badge?logo=fontawesome
 [FontAwesome-url]: https://fontawesome.com/
-
 [Firebase]: https://a11ybadges.com/badge?logo=firebase
 [Firebase-url]: https://firebase.google.com/
-
 [Algolia]: https://a11ybadges.com/badge?logo=algolia
 [Algolia-url]: https://www.algolia.com/
-
 [Vercel]: https://a11ybadges.com/badge?logo=vercel
 [Vercel-url]: https://vercel.com
-
-
-

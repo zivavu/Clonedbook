@@ -9,7 +9,7 @@ import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendBut
 import LoginAsUserButton from '@/components/atoms/friendActionButtons/LoginAsUserButton';
 import MessageButton from '@/components/atoms/friendActionButtons/MessageButton';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import MutalFriendsTextOnly from '../MutalFriendsDisplay/MutalFriendsTextOnly';
+import MutualFriendsTextOnly from '../MutualFriendsDisplay/MutualFriendsTextOnly';
 import { UserPreviewPopperProps } from './types';
 
 /**
@@ -46,7 +46,7 @@ export default function UserPreviewPopper({
               <Stack>
                 <UserLink variant='h4' fontWeight={700} userId={userId} usePopper={false} />
 
-                <MutalFriendsTextOnly userId={userId} size='medium' mt={1} />
+                <MutualFriendsTextOnly userId={userId} size='medium' mt={1} />
               </Stack>
             </Stack>
             <StyledButtonsStack direction={isSmallScreen ? 'column' : 'row'}>

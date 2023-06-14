@@ -1,24 +1,24 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 
-import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetMutualFriends from '@/common/friendsManage/useGetMutualFriends';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { MutalFriendsWithAvatarsProps } from './types';
+import { MutualFriendsWithAvatarsProps } from './types';
 
-export default function MutalFriendsWithAvatars({
+export default function MutualFriendsWithAvatars({
   userId,
   avatarsToShow = 5,
   size = 'small',
   sx,
   ...rootProps
-}: MutalFriendsWithAvatarsProps) {
+}: MutualFriendsWithAvatarsProps) {
   const theme = useTheme();
-  const mutalFriends = useGetMutalFriends(userId);
+  const mutualFriends = useGetMutualFriends(userId);
   return (
     <Box sx={sx} {...rootProps}>
-      {mutalFriends.length > 0 && (
+      {mutualFriends.length > 0 && (
         <Stack direction='row' alignItems='center'>
           {avatarsToShow > 0 &&
-            mutalFriends.slice(0, avatarsToShow).map((friend, i) => (
+            mutualFriends.slice(0, avatarsToShow).map((friend, i) => (
               <UserAvatar
                 key={friend.id}
                 userId={friend.id}
@@ -39,7 +39,8 @@ export default function MutalFriendsWithAvatars({
               variant={size === 'small' ? 'body2' : 'body1'}
               color={theme.palette.text.secondary}
               ml={avatarsToShow > 0 ? 0.5 : 0}>
-              {mutalFriends.length} {mutalFriends.length === 1 ? 'mutal friend' : 'mutal friends'}
+              {mutualFriends.length}{' '}
+              {mutualFriends.length === 1 ? 'mutual friend' : 'mutual friends'}
             </Typography>
           </Stack>
         </Stack>

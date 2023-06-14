@@ -1,6 +1,6 @@
 import ContactsSidebar from '@/components/molecules/ContactsSidebar';
-import ShortcutsSidebar from '@/components/molecules/ShortcutsSidebar';
 import HomeWall from '@/components/organisms/HomeWall';
+import ShortcutsSidebar from '@/components/organisms/ShortcutsSidebar';
 import { BoxProps } from '@mui/material';
 import { StyledRoot } from './styles';
 

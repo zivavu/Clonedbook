@@ -4,7 +4,7 @@ import ReactionIcon from '@/components/atoms/ReactionIcon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';
 import AddFriendButton from '@/components/atoms/friendActionButtons/AddFriendButton';
-import MutalFriendsWithAvatars from '@/components/molecules/MutalFriendsDisplay/MutalFriendsWithAvatars';
+import MutualFriendsWithAvatars from '@/components/molecules/MutualFriendsDisplay/MutualFriendsWithAvatars';
 import { SingleUserProps } from './types';
 
 export default function SingleUser({
@@ -28,7 +28,7 @@ export default function SingleUser({
       </Box>
       <Stack>
         <UserLink userId={profileId} usePopper></UserLink>
-        <MutalFriendsWithAvatars userId={profileId} avatarsToShow={0} />
+        <MutualFriendsWithAvatars userId={profileId} avatarsToShow={0} />
       </Stack>
       <AddFriendButton
         friendId={profileId}

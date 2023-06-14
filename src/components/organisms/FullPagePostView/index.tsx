@@ -11,7 +11,7 @@ import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
 import ElementTextEditInput from '@/components/molecules/ElementTextEditInput';
 import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
-import ReactionsDisplayBox from '@/components/molecules/ReactionsDisplay';
+import ReactionsDisplayBox from '@/components/organisms/ReactionsDisplay';
 import { useRef, useState } from 'react';
 import { FullPagePostViewProps } from './types';
 

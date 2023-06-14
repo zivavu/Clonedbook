@@ -2,7 +2,7 @@ import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetMutualFriends from '@/common/friendsManage/useGetMutualFriends';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserLink from '@/components/atoms/UserLink';
 import UserPicture from '@/components/atoms/UserPicture';
@@ -12,7 +12,7 @@ import { SingleFriendProps } from './types';
 export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFriendProps) {
   const theme = useTheme();
   const friend = useGetUserBasicInfo(friendId);
-  const mutalFrineds = useGetMutalFriends(friendId);
+  const mutualFrineds = useGetMutualFriends(friendId);
   const smallScreen = useMediaQuery(theme.breakpoints.down('xs'));
   if (!friend) return null;
   return (
@@ -40,7 +40,7 @@ export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFrien
               fontWeight={550}
             />
             <Typography color={theme.palette.text.secondary} fontWeight={400}>
-              {mutalFrineds?.length} mutual friends
+              {mutualFrineds?.length} mutual friends
             </Typography>
           </Box>
           {smallScreen && <AddFriendButton friendId={friendId} sx={{ minHeight: '36px' }} />}

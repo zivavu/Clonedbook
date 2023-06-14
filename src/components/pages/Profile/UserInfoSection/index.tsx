@@ -3,7 +3,7 @@ import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { StyledBasicInfoContainer, StyledProfilePictureButton, StyledRoot } from './styles';
 
 import getAcceptedFriends from '@/common/friendsManage/getAcceptedFriends';
-import useGetMutalFriends from '@/common/friendsManage/useGetMutalFriends';
+import useGetMutualFriends from '@/common/friendsManage/useGetMutualFriends';
 import ImageWithGradientLoading from '@/components/atoms/ImageWithGradientLoading';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
@@ -33,7 +33,7 @@ export default function UserInfoSection({
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
 
   const friendsCount = getAcceptedFriends(userData).length || 0;
-  const mutalFriends = useGetMutalFriends(userId);
+  const mutualFriends = useGetMutualFriends(userId);
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -72,11 +72,11 @@ export default function UserInfoSection({
 
               <Typography variant='subtitle1' fontWeight={600} color={theme.palette.text.secondary}>
                 {friendsCount} friends{' '}
-                {loggedUser?.id !== userId && `• ${mutalFriends.length} mutual`}
+                {loggedUser?.id !== userId && `• ${mutualFriends.length} mutual`}
               </Typography>
 
               <Stack direction='row' mt={0.8}>
-                {mutalFriends.slice(0, 8).map((friend, i) => (
+                {mutualFriends.slice(0, 8).map((friend, i) => (
                   <UserAvatar
                     key={friend.id}
                     userId={friend.id}

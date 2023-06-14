@@ -7,10 +7,14 @@ export const StyledRoot = styled(Popper)(({ theme }) => ({
 export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
   zIndex: theme.zIndex.modal + 10,
   position: 'relative',
-  width: 'min(360px, 92vw)',
+  width: 'min(360px, 80vw)',
   maxHeight: '90vh',
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.spacing(1),
   boxShadow: theme.shadows[19],
   transform: 'translateX(-10px)',
+
+  [theme.breakpoints.down('xs')]: {
+    transform: 'none',
+  },
 }));

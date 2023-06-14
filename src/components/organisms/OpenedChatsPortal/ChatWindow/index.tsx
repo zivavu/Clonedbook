@@ -1,4 +1,4 @@
-import { Box, CircularProgress, IconButton, Stack, useTheme } from '@mui/material';
+import { Box, CircularProgress, GlobalStyles, IconButton, Stack, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -43,54 +43,62 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
   }
 
   return (
-    <StyledRoot sx={sx} {...rootProps}>
-      <Stack
-        direction='row'
-        p={1}
-        width='100%'
-        alignItems='center'
-        spacing={1}
-        borderBottom={`1px solid ${theme.palette.divider}`}>
-        <UserAvatar userId={otherUserId} size={36} />
-        <UserLink userId={otherUserId} />
-        <IconButton
-          onClick={handleChatClose}
-          sx={{
-            width: '30px',
-            height: '30px',
-            marginLeft: 'auto !important',
-          }}>
-          <Icon icon='xmark' fontSize={22} />
-        </IconButton>
-      </Stack>
-      {!otherUserData || isLoading ? (
-        <Box position='relative' height='100%'>
-          <CircularProgress
-            size={38}
-            thickness={6}
+    <>
+      <StyledRoot sx={sx} {...rootProps}>
+        <Stack
+          direction='row'
+          p={1}
+          width='100%'
+          alignItems='center'
+          spacing={1}
+          borderBottom={`1px solid ${theme.palette.divider}`}>
+          <UserAvatar userId={otherUserId} size={36} />
+          <UserLink userId={otherUserId} />
+          <IconButton
+            onClick={handleChatClose}
             sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
-        </Box>
-      ) : (
-        <StyledScrollableStack
-          position='relative'
-          px={1}
-          py={2}
-          spacing={0.5}
-          ref={scrollableStackRef}>
-          <UserInfoPlaceholder userData={otherUserData} pb={7} />
-          {chatData?.messages.map((message) => {
-            return <ChatMessage key={message.id} message={message} />;
-          })}
-        </StyledScrollableStack>
-      )}
+              width: '30px',
+              height: '30px',
+              marginLeft: 'auto !important',
+            }}>
+            <Icon icon='xmark' fontSize={22} />
+          </IconButton>
+        </Stack>
+        {!otherUserData || isLoading ? (
+          <Box position='relative' minHeight='100%'>
+            <CircularProgress
+              size={38}
+              thickness={6}
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }}
+            />
+          </Box>
+        ) : (
+          <StyledScrollableStack position='relative' px={1} py={2} ref={scrollableStackRef}>
+            <UserInfoPlaceholder userData={otherUserData} pb={7} />
+            {chatData?.messages.map((message, i, arr) => {
+              const isNextMessageFromSameUser = arr[i + 1]?.senderId === message.senderId;
+              const messageSpacing = isNextMessageFromSameUser ? 0.5 : 1.2;
+              return <ChatMessage key={message.id} message={message} mb={messageSpacing} />;
+            })}
+          </StyledScrollableStack>
+        )}
 
-      <MessageInputArea chatId={chatId} chatEmoji={chatData?.chatEmoji || '❤️'} />
-    </StyledRoot>
+        <MessageInputArea chatId={chatId} chatEmoji={chatData?.chatEmoji || '❤️'} />
+      </StyledRoot>
+      <GlobalStyles
+        styles={{
+          body: {
+            [theme.breakpoints.down('xs')]: {
+              overflowY: 'hidden !important',
+            },
+          },
+        }}
+      />
+    </>
   );
 }

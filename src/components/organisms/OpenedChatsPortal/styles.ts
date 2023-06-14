@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material';
 
-export const ChatsContainer = styled(Box)(({ theme }) => ({
+export const StyledChatsContainer = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
   position: 'fixed',
   bottom: 0,
@@ -13,5 +13,12 @@ export const ChatsContainer = styled(Box)(({ theme }) => ({
 
   [theme.breakpoints.down('lg')]: {
     paddingRight: theme.spacing(2),
+  },
+
+  [theme.breakpoints.down('xs')]: {
+    top: 0,
+    width: '100vw',
+    padding: theme.spacing(0),
+    overflowY: 'visible',
   },
 }));

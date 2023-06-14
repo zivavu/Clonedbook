@@ -4,8 +4,8 @@ import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import InteractButton from '@/components/atoms/InteractButton';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import ReactionsDisplayBox from '@/components/organisms/ReactionsDisplay';
-import { StyledContentWrapper } from '../styles';
 import { PostActionsProps } from './types';
+import { StyledContentWrapper } from '../styles';
 
 export default function PostActions({
   post,

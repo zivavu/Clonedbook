@@ -1,7 +1,7 @@
 import { IPost } from '@/types/post';
-import { BoxProps } from '@mui/material';
+import { BoxProps, StackProps } from '@mui/material';
 
-export interface PostActionsProps extends BoxProps {
+export interface PostActionsProps extends StackProps {
   post: IPost;
   handleShowMoreComments(): void;
   refetchPost(): void;

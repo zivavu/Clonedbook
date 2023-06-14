@@ -43,10 +43,12 @@ export default function SingleFriend({ friendId, sx, ...rootProps }: SingleFrien
               {mutualFrineds?.length} mutual friends
             </Typography>
           </Box>
-          {smallScreen && <AddFriendButton friendId={friendId} sx={{ minHeight: '36px' }} />}
+          {smallScreen && (
+            <AddFriendButton friendId={friendId} sx={{ minHeight: '36px' }} allowMenu />
+          )}
         </Stack>
       </Stack>
-      {!smallScreen && <AddFriendButton friendId={friendId} sx={{ height: '36px' }} />}
+      {!smallScreen && <AddFriendButton friendId={friendId} sx={{ height: '36px' }} allowMenu />}
     </StyledRoot>
   );
 }

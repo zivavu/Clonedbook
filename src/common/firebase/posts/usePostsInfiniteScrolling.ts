@@ -26,7 +26,7 @@ export default function usePostsInfiniteScrolling({
   wallOwnerId,
 }: IUsePostFeedInfiniteScrolling) {
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData>>();
   const scrollElementRef = useRef<HTMLHtmlElement | null>(null);
@@ -65,10 +65,6 @@ export default function usePostsInfiniteScrolling({
     try {
       setIsLoading(true);
       const res = await getDocs(querySnapshot);
-      if (res.empty) {
-        setIsError(true);
-        return;
-      }
       setLastDoc(res.docs[res.docs.length - 1]);
       const newPosts = res.docs.map((doc) => doc.data()) as IPost[];
       setPosts((currentPosts) => currentPosts.concat(newPosts));
@@ -119,7 +115,7 @@ export default function usePostsInfiniteScrolling({
   }, []);
 
   useEffect(() => {
-    if (posts[0] || isLoading || isError) return;
+    if (posts[0] || isError) return;
     fetchPosts(getInitialQuery());
   }, []);
 

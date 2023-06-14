@@ -1,6 +1,6 @@
 import { BoxProps, Stack } from '@mui/material';
 
-import { StyledContentWrapper, StyledRoot } from '../styles';
+import { StyledContentWrapper, StyledRoot } from '../../../organisms/FeedPost/styles';
 import { StyledHorizontalHole, StyledRoundHole } from './styles';
 
 export default function LoadingPostPlaceholder({ sx, ...rootProps }: BoxProps) {

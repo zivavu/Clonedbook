@@ -3,6 +3,7 @@ import {
   faAngleLeft,
   faAngleRight,
   faArrowLeft,
+  faBabyCarriage,
   faBell,
   faBirthdayCake,
   faBriefcase,
@@ -26,6 +27,8 @@ import {
   faPlusCircle,
   faRepeat,
   faRightToBracket,
+  faSadCry,
+  faSadTear,
   faSchool,
   faSun,
   faUser,
@@ -113,6 +116,9 @@ const icons = [
   faPaperPlane,
   faPlusCircle,
   faEllipsis,
+  faSadCry,
+  faSadTear,
+  faBabyCarriage,
 ] as any;
 library.add(...icons);
 

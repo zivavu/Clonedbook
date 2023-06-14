@@ -19,6 +19,7 @@ export default function HomeWall({ sx, ...rootProps }: HomeWallProps) {
           isError={isError}
           isLoading={isLoading}
           refetchPostById={refetchPostById}
+          pb={6}
         />
       ) : null}
     </StyledRoot>

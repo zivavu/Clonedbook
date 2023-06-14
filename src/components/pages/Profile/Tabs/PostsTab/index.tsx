@@ -6,6 +6,8 @@ import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';
 import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
+import BornAtPostTile from '@/components/molecules/postCustomTiles/BornAtTile';
+import NoPostsTile from '@/components/molecules/postCustomTiles/NoPostsTile';
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import PostsFeed from '@/components/organisms/PostsFeed';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
@@ -43,7 +45,7 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
           {loggedUser?.id === profileData.id && (
             <WriteSomethingTile refetchPostById={refetchPostById} />
           )}
-          {posts && (
+          {posts && posts[0] && (
             <PostsFeed
               posts={posts}
               isLoading={isLoading}
@@ -51,6 +53,8 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
               refetchPostById={refetchPostById}
             />
           )}
+          {!posts[0] && !isLoading && !isError && <NoPostsTile wallOwnerId={userId} />}
+          {!isLoading && <BornAtPostTile userId={userId} />}
         </Stack>
       </Stack>
     </>

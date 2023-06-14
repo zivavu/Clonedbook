@@ -24,7 +24,84 @@ Users are also indexed on <a href="https://www.algolia.com/">Algolia</a> for sea
 
 ![Screenshot_1](https://github.com/zivavu/facebook-clone/assets/107223633/2d419cbd-4869-4a79-8007-445d65b4c9b8)
 
-## :technologist: Technologies used 
+
+## :sparkles: Implemented features
+
+### Interface
+- Built as an exact clone using MUI and styled-components
+- Light and dark modes(with persisting)
+- Responsive
+- Modular
+
+### Home page
+- All posts, sorted by date with infinite scrolling, fully interactive
+- Contacts sidebar with recently added friends, and search
+- Shortcuts sidebar(most links aren't implemented)
+
+### Profile page
+- Users info with background, profile picture, mutual friends, and friendship management buttons
+- Built with modular, responsive tiles
+- Posts tab
+- About tab
+- Friends tab
+- Photos tab
+
+### Friends page
+- Home tab
+- Friends Requests
+- Friend Suggestions
+- All Friends
+- Preview all the users(using the original profile page layout), and manage state of their friendship
+
+### Navbar
+- Search box
+  - Search users index powered by <a href="https://www.algolia.com/">Algolia</a>
+  - Search results displayed as a users list
+  - Autocomplete
+- Chats popper
+  - Displays all the chat, and recent messages
+  - Lets the user open chat, and view all the messages
+- Logged user popper
+  - Display logged user
+  - Button used to log on as a different, random user
+  - Dark mode switch
+
+### Elements(posts & pictures)
+- Create(Post only atm)(uploaded pictures are optimised for size and quality using canvas)
+- Optimised sizes provided by next/image
+- View(using custom full screen portals, for all picture types and posts)
+- Edit
+- Delete
+- Comment
+- React
+
+### Comments
+- React
+- View
+- Edit
+- Delete
+
+### Reactions
+- Custom component for displaying most popular reactions and count
+- Custom popper for choosing reaction
+- Custom dialog for viewing all the reactions and their owners
+
+### User preview popper
+- Opens while hovering links and photos of users
+- Displays users profile picture, name, and mutual friends
+- Has buttons for managing friendship
+
+### Chats portal
+- Max opened chats count based on screen size
+- Chats
+  - List of opened ones is persisted 
+  - Display all the messages
+  - Send new ones
+  - Custom chat emoji
+ 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## :technologist: Technologies used
 
 [![Next][Next.js]][Next-url]
 [![React][React.js]][React-url]

@@ -16,6 +16,6 @@ export const StyledSearchInput = styled(OutlinedInput)(({ theme }) => ({
   paddingLeft: theme.spacing(0.5),
 
   [theme.breakpoints.down('sm')]: {
-    width: '44px',
+    width: '42px',
   },
 }));

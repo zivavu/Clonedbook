@@ -1,11 +1,12 @@
-import { Box, List, Typography } from '@mui/material';
+import { IconButton, List, Typography, useTheme } from '@mui/material';
 
 import getChatNewestMessage from '@/common/chatsManage/getChatLastMessage';
+import Icon from '@/components/atoms/Icon/Icon';
 import ScrollableStack from '@/components/atoms/scrollables/ScrollableStack';
 import { useGetUserChatsQuery } from '@/redux/services/loggedUserAPI';
 import { useEffect } from 'react';
 import ListUserButton from './ListUserButton';
-import { StyledContentWrapper, StyledRoot } from './styles';
+import { StyledContentWrapper, StyledHeaderContainer, StyledRoot } from './styles';
 import { ChatsListPopperProps } from './types';
 
 export default function ChatsListPopper({
@@ -15,6 +16,7 @@ export default function ChatsListPopper({
   anchorEl,
   ...rootProps
 }: ChatsListPopperProps) {
+  const theme = useTheme();
   const { data: loggedUserChats, refetch } = useGetUserChatsQuery({});
 
   useEffect(() => {
@@ -31,12 +33,17 @@ export default function ChatsListPopper({
   return (
     <StyledRoot sx={sx} {...rootProps} open={open} anchorEl={anchorEl}>
       <StyledContentWrapper>
-        <ScrollableStack padding={1}>
-          <Box p={0.5}>
+        <ScrollableStack p={1} pt={0}>
+          <StyledHeaderContainer>
             <Typography variant='h3' fontWeight={700}>
               Chats
             </Typography>
-          </Box>
+            <IconButton
+              onClick={handleClose}
+              sx={{ marginRight: 1, width: '30px', height: '30px' }}>
+              <Icon icon='xmark' fontSize={22} />
+            </IconButton>
+          </StyledHeaderContainer>
           <List>
             {sortedChats?.map((chat) => (
               <ListUserButton key={chat.id} chat={chat} handlePopperClose={handleClose} />

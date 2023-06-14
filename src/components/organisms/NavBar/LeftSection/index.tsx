@@ -59,6 +59,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
         <StyledSearchInput
           sx={{
             width: '240px',
+            minWidth: searchPopperOpen ? '240px' : '40px',
             transform: searchPopperOpen
               ? 'translateX(-6px) scaleX(1.05)'
               : 'translateX(0) scaleX(1)',

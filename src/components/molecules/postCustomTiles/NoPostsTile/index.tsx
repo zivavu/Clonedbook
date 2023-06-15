@@ -1,6 +1,5 @@
 import { Typography } from '@mui/material';
 
-import Icon from '@/components/atoms/Icon/Icon';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { StyledContentWrapper, StyledRoot } from '../../../organisms/FeedPost/styles';
 import { StyledIcon, StyledIconContainer } from '../styles';
@@ -13,6 +12,7 @@ export default function NoPostsTile({ wallOwnerId, sx, ...rootProps }: NoPostsTi
     <StyledRoot height={220} position='relative' sx={sx} {...rootProps}>
       <StyledContentWrapper
         sx={{
+          width: '90%',
           position: 'absolute',
           top: '50%',
           left: '50%',
@@ -20,6 +20,7 @@ export default function NoPostsTile({ wallOwnerId, sx, ...rootProps }: NoPostsTi
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          textAlign: 'center',
         }}
         spacing={2}>
         <StyledIconContainer>

@@ -1,10 +1,8 @@
-import { StyledRoot } from './styles';
-
 import useGetMutualFriends from '@/common/friendsManage/useGetMutualFriends';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserLink from '@/components/atoms/UserLink';
 import UserPicture from '@/components/atoms/UserPicture';
-import { Box, Typography, useTheme } from '@mui/material';
+import { ImageListItem, Typography, useTheme } from '@mui/material';
 import { FriendProps } from './types';
 
 export default function Friend({ friendId, sx, ...rootProps }: FriendProps) {
@@ -14,18 +12,12 @@ export default function Friend({ friendId, sx, ...rootProps }: FriendProps) {
 
   if (!friend) return null;
   return (
-    <>
-      <StyledRoot sx={sx} {...rootProps} spacing={0.5}>
-        <Box>
-          <UserPicture userId={friendId} sizes='150px' />
-        </Box>
-        <Box>
-          <UserLink variant='body2' fontWeight={500} userId={friendId} />
-          <Typography variant='body2' lineHeight='0.7rem' color={theme.palette.text.secondary}>
-            {mutualFriends.length} mutual friends
-          </Typography>
-        </Box>
-      </StyledRoot>
-    </>
+    <ImageListItem sx={{ marginBottom: theme.spacing(1.5), ...sx }} {...rootProps}>
+      <UserPicture userId={friendId} sizes='150px' mb={0.5} />
+      <UserLink variant='body2' fontWeight={500} userId={friendId} />
+      <Typography variant='body2' lineHeight='0.7rem' color={theme.palette.text.secondary}>
+        {mutualFriends.length} mutual friends
+      </Typography>
+    </ImageListItem>
   );
 }

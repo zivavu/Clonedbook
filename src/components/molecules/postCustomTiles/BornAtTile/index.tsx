@@ -1,7 +1,6 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 
 import getDateFromTimestamp from '@/common/misc/dateManagment/getDateFromTimestamp';
-import Icon from '@/components/atoms/Icon/Icon';
 import { useUserDataByIdQuery } from '@/redux/services/userDataAPI';
 import { StyledContentWrapper, StyledRoot } from '../../../organisms/FeedPost/styles';
 import { StyledIcon, StyledIconContainer } from '../styles';
@@ -17,6 +16,7 @@ export default function BornAtPostTile({ userId, sx, ...rootProps }: BornAtPostT
     <StyledRoot height={220} position='relative' sx={sx} {...rootProps}>
       <StyledContentWrapper
         sx={{
+          width: '90%',
           position: 'absolute',
           top: '50%',
           left: '50%',
@@ -24,6 +24,7 @@ export default function BornAtPostTile({ userId, sx, ...rootProps }: BornAtPostT
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          textAlign: 'center',
         }}
         spacing={2}>
         <StyledIconContainer>

@@ -45,7 +45,7 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
         position='relative'
         overflow='hidden'
         minHeight='200px'>
-        <StyledPageTileHeader mb={3}>Photos</StyledPageTileHeader>
+        <StyledPageTileHeader mb={1}>Photos</StyledPageTileHeader>
         {isUserDataLoading ? (
           <LoadingPlaceholder />
         ) : (

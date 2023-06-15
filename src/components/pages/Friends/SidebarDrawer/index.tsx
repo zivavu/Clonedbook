@@ -27,6 +27,7 @@ export default function SidebarDrawer({ sx, children, ...rootProps }: SidebarDra
             padding: theme.spacing(2, 1),
             paddingRight: theme.spacing(0),
             top: NAVBAR_HEIGHT,
+            boxShadow: theme.shadows[7],
           },
 
           [theme.breakpoints.down('md')]: {
@@ -58,8 +59,8 @@ export default function SidebarDrawer({ sx, children, ...rootProps }: SidebarDra
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             padding: theme.spacing(2, 1),
-            paddingRight: theme.spacing(0),
             overflow: 'visible',
+            boxShadow: theme.shadows[19],
           },
 
           [theme.breakpoints.up('md')]: {

@@ -1,5 +1,6 @@
-import { Box, styled } from '@mui/material';
+import { ButtonBase, styled } from '@mui/material';
 
-export const StyledRoot = styled(Box)(({ theme }) => ({
-  color: theme.palette.text.primary,
+export const StyledImageButton = styled(ButtonBase)(({ theme }) => ({
+  position: 'relative',
+  aspectRatio: '1/1',
 }));

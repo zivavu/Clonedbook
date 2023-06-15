@@ -17,4 +17,8 @@ export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
 
   width: `min(${theme.breakpoints.values.lg}px, 100%)`,
   containerType: 'inline-size',
+
+  [theme.breakpoints.down('xs').replace('@media', '@container')]: {
+    padding: theme.spacing(2, 0.5),
+  },
 }));

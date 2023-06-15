@@ -2,11 +2,11 @@ import useGetMutualFriends from '@/common/friendsManage/useGetMutualFriends';
 import useGetUsersPublicFriends from '@/common/misc/userDataManagment/useGetUsersPublicFriends';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { Stack, Typography, useTheme } from '@mui/material';
-import { StyledPageTile, StyledPageTileHeader } from '../styles';
+import { StyledImageListContainer, StyledPageTile, StyledPageTileHeader } from '../styles';
 import Friend from './Friend';
 import { FriendsTileProps } from './types';
 
-export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: FriendsTileProps) {
+export default function FriendsTile({ user, sx, ...rootProps }: FriendsTileProps) {
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const publicFriends = useGetUsersPublicFriends(user.id);
@@ -21,44 +21,23 @@ export default function FriendsTile({ user, friendsLimit, sx, ...rootProps }: Fr
         })
         .filter((friend) => friend.id !== loggedUser?.id)
         .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds)
-        .slice(0, friendsLimit)
+        .slice(0, 9)
     : [];
-  const rowsCount = friendsArr.length > 8 ? 3 : friendsArr.length > 5 ? 2 : 1;
 
   if (!publicFriends) return null;
   return (
     <StyledPageTile sx={sx} {...rootProps}>
       <Stack>
         <StyledPageTileHeader sx={{ paddingBottom: 0 }}>Friends</StyledPageTileHeader>
-        <Typography pb={1} color={theme.palette.text.secondary} variant='subtitle1'>
+        <Typography color={theme.palette.text.secondary} variant='subtitle1'>
           {friendsCount} {loggedUser?.id !== user.id && `(${mutualFriends.length} mutual)`}
         </Typography>
       </Stack>
-      <Stack spacing={2}>
-        <>
-          {rowsCount >= 1 && (
-            <Stack direction='row' spacing={1.3}>
-              {friendsArr.slice(0, 3).map((friend) => (
-                <Friend key={friend.id} friendId={friend.id} />
-              ))}
-            </Stack>
-          )}
-          {rowsCount >= 2 && (
-            <Stack direction='row' spacing={1.3}>
-              {friendsArr.slice(3, 6).map((friend) => (
-                <Friend key={friend.id} friendId={friend.id} />
-              ))}
-            </Stack>
-          )}
-          {rowsCount >= 3 && (
-            <Stack direction='row' spacing={1.3}>
-              {friendsArr.slice(6, 9).map((friend) => (
-                <Friend key={friend.id} friendId={friend.id} />
-              ))}
-            </Stack>
-          )}
-        </>
-      </Stack>
+      <StyledImageListContainer gap={8}>
+        {friendsArr.map((friend) => {
+          return <Friend key={friend.id} friendId={friend.id} />;
+        })}
+      </StyledImageListContainer>
     </StyledPageTile>
   );
 }

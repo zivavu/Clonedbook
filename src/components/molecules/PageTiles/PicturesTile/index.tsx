@@ -1,9 +1,12 @@
-import { Stack, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
+import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
-import { StyledPageTile, StyledPageTileHeader } from '../styles';
-import PicturesRow from './PicturesRow';
+import { IAccountPicture } from '@/types/picture';
+import { useState } from 'react';
+import { StyledImageListContainer, StyledPageTile, StyledPageTileHeader } from '../styles';
+import SinglePicture from './SinglePicture';
 import { PicturesTileProps } from './types';
 
 export default function PicturesTile({ user: owner, sx, ...rootProps }: PicturesTileProps) {
@@ -17,49 +20,40 @@ export default function PicturesTile({ user: owner, sx, ...rootProps }: Pictures
         .slice(0, 9)
     : [];
 
-  const rowCount = pictures.length > 6 ? 3 : pictures.length > 3 ? 2 : 1;
+  const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<IAccountPicture>(pictures[0]);
+
+  const handleOpenFullView = (picture: IAccountPicture) => {
+    setSelectedPhoto(picture);
+    setIsFullViewOpen(true);
+  };
 
   if (isObjectEmpty(picturesMap)) return null;
   return (
-    <StyledPageTile sx={{ ...sx }} {...rootProps}>
-      <StyledPageTileHeader>Photos</StyledPageTileHeader>
-      <Stack mt={2}>
-        <PicturesRow
-          pictures={pictures}
-          startIndex={0}
-          owner={owner}
-          sx={{
-            borderTopRightRadius: theme.spacing(2),
-            borderTopLeftRadius: theme.spacing(2),
-          }}
+    <>
+      <StyledPageTile sx={{ ...sx }} {...rootProps}>
+        <StyledPageTileHeader>Photos</StyledPageTileHeader>
+        <StyledImageListContainer gap={2}>
+          {pictures.map((picture) => {
+            return (
+              <SinglePicture
+                key={picture.id}
+                picture={picture}
+                owner={owner}
+                handleOpenFullView={handleOpenFullView}
+              />
+            );
+          })}
+        </StyledImageListContainer>
+      </StyledPageTile>
+
+      {isFullViewOpen && (
+        <FullPageAccountPicturesView
+          initialPhoto={selectedPhoto}
+          setOpen={setIsFullViewOpen}
+          ownerId={owner.id}
         />
-        {rowCount > 1 && (
-          <PicturesRow
-            pictures={pictures}
-            owner={owner}
-            startIndex={3}
-            sx={
-              rowCount === 2
-                ? {
-                    borderBottomRightRadius: theme.spacing(2),
-                    borderBottomLeftRadius: theme.spacing(2),
-                  }
-                : {}
-            }
-          />
-        )}
-        {rowCount > 2 && (
-          <PicturesRow
-            pictures={pictures}
-            startIndex={6}
-            owner={owner}
-            sx={{
-              borderBottomRightRadius: theme.spacing(2),
-              borderBottomLeftRadius: theme.spacing(2),
-            }}
-          />
-        )}
-      </Stack>
-    </StyledPageTile>
+      )}
+    </>
   );
 }

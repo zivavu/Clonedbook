@@ -1,5 +1,5 @@
-import { StackProps } from '@mui/material';
+import { ImageListItemProps, StackProps } from '@mui/material';
 
-export interface FriendProps extends StackProps {
+export interface FriendProps extends ImageListItemProps {
   friendId: string;
 }

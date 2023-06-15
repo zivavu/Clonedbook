@@ -38,7 +38,7 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
             top={`calc(${NAVBAR_HEIGHT})`}>
             <IntroTile user={profileData} />
             <PicturesTile user={profileData} />
-            <FriendsTile user={profileData} friendsLimit={9} />
+            <FriendsTile user={profileData} />
           </InvisibleScrollableStack>
         )}
         <Stack width={mainDirection === 'column' ? '100%' : '55%'} spacing={2}>

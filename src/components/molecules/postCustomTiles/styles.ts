@@ -11,6 +11,6 @@ export const StyledIconContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export const StyledIcon = styled(Icon)(({ theme }) => ({
-  color: theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black,
+  color: theme.palette.common.white,
   fontSize: '2.5rem',
 }));

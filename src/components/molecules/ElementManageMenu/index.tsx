@@ -1,13 +1,18 @@
+import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicDataAPI';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { useUserDataByIdQuery } from '@/redux/services/userDataAPI';
+import updateUserSetPictures from '@/services/user/updateUserSetPictures';
 import { CircularProgress, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { StyledMenuItem, StyledRoot } from './styles';
 import { ElementManageMenuProps } from './types';
 
 export default function ElementManageMenu({
+  handleClose,
   handleOpenEditMode,
   handleElementDelete,
-  onClose,
+  elementId,
+  type,
   ownerId,
   sx,
   ...rootProps
@@ -15,11 +20,37 @@ export default function ElementManageMenu({
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+  const { refetch: refetchUser } = useUserDataByIdQuery(ownerId);
+  const { refetch: refetchBasicInfo } = useAllUsersBasicInfoQuery({});
+  const refetchUserData = async () => {
+    await Promise.allSettled([refetchUser(), refetchBasicInfo()]);
+  };
 
   async function handleDeleteClick() {
     setIsDeleteLoading(true);
     await handleElementDelete();
     setIsDeleteLoading(false);
+  }
+
+  async function handleSetProfilePicture() {
+    if (!loggedUser) return;
+    await updateUserSetPictures({
+      newPictureId: elementId,
+      loggedUser: loggedUser,
+      type: 'account',
+    });
+    await refetchUserData();
+    handleClose();
+  }
+  async function handleSetBackgroundPicture() {
+    if (!loggedUser) return;
+    await updateUserSetPictures({
+      newPictureId: elementId,
+      loggedUser: loggedUser,
+      type: 'background',
+    });
+    await refetchUserData();
+    handleClose();
   }
 
   if (!loggedUser || loggedUser.id !== ownerId) return null;
@@ -28,7 +59,7 @@ export default function ElementManageMenu({
       sx={sx}
       {...rootProps}
       disableScrollLock
-      onClose={onClose}
+      onClose={handleClose}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'center',
@@ -40,6 +71,7 @@ export default function ElementManageMenu({
       <StyledMenuItem onClick={handleOpenEditMode}>
         <Typography mr={1}>Edit</Typography>
       </StyledMenuItem>
+
       <StyledMenuItem onClick={handleDeleteClick}>
         <Typography>Delete</Typography>
         {isDeleteLoading && (
@@ -55,6 +87,16 @@ export default function ElementManageMenu({
           />
         )}
       </StyledMenuItem>
+      {type === 'accountPicture' && (
+        <StyledMenuItem onClick={handleSetProfilePicture}>
+          <Typography>Set as profile picture</Typography>
+        </StyledMenuItem>
+      )}
+      {type === 'backgroundPicture' && (
+        <StyledMenuItem onClick={handleSetBackgroundPicture}>
+          <Typography>Set as background picture</Typography>
+        </StyledMenuItem>
+      )}
     </StyledRoot>
   );
 }

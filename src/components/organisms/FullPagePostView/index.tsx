@@ -8,8 +8,8 @@ import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
+import ElementOwnerInfoDisplay from '@/components/molecules/ElementOwnerInfoDisplay';
 import ElementTextEditInput from '@/components/molecules/ElementTextEditInput';
-import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplayBox from '@/components/organisms/ReactionsDisplay';
 import { useRef, useState } from 'react';
 import { FullPagePostViewProps } from './types';
@@ -52,7 +52,7 @@ export default function FullPagePostView({
           <HorizontalContentDevider sx={{ bottom: 0 }} />
         </Stack>
         <StyledPostContentWrapper spacing={1}>
-          <PostOwnerInfoDisplay
+          <ElementOwnerInfoDisplay
             owner={owner}
             element={post}
             elementType='post'

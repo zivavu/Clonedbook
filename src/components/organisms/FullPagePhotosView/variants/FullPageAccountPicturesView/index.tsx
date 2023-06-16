@@ -1,10 +1,10 @@
+import getPicturesSortedByDate from '@/common/misc/photoManagment/getPicturesSortedByDate';
 import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
 import { useEffect, useState } from 'react';
 import ElementInfo from '../../ElementInfo';
 import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';
 import PhotosCarousel from '../../PhotosCarousel';
 import { FullPageAccountPicturesViewProps } from './types';
-import getPicturesSortedByDate from '@/common/misc/photoManagment/getPicturesSortedByDate';
 
 export default function FullPageAccountPicturesView({
   sx,
@@ -15,7 +15,7 @@ export default function FullPageAccountPicturesView({
 }: FullPageAccountPicturesViewProps) {
   const { data: picturesMap, refetch: refetchPictures } = useUserPicturesByIdQuery(ownerId);
 
-  const pictures = getPicturesSortedByDate(picturesMap);
+  const pictures = getPicturesSortedByDate({ picturesMap, type: 'account' });
 
   const initialPhotoIndex: number = pictures.findIndex((picture) => picture.id === initialPhoto.id);
 

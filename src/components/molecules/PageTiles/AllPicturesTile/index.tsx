@@ -18,7 +18,7 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
     isLoading: isUserDataLoading,
   } = useUserPicturesByIdQuery(profileData.id);
 
-  const pictures = getPicturesSortedByDate(picturesMap);
+  const pictures = getPicturesSortedByDate({ picturesMap, type: 'account' });
 
   const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
   const [currentPhoto, setCurrentPhoto] = useState<IAccountPicture>(pictures[0]);

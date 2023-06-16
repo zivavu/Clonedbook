@@ -10,7 +10,7 @@ import { useRef, useState } from 'react';
 import ElementManageMenu from '../ElementManageMenu';
 import { PostOwnerInfoDisplayProps } from './types';
 
-export default function PostOwnerInfoDisplay({
+export default function ElementOwnerInfoDisplay({
   element,
   elementType,
   refetchElement,
@@ -42,8 +42,10 @@ export default function PostOwnerInfoDisplay({
       <ElementManageMenu
         ownerId={owner.id}
         anchorEl={postManageAnchorEl.current}
+        type={elementType}
+        elementId={element.id}
         open={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
+        handleClose={() => setIsMenuOpen(false)}
         handleOpenEditMode={() => {
           handleOpenEditMode();
           setIsMenuOpen(false);

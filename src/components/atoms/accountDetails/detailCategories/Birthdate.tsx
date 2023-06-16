@@ -1,5 +1,5 @@
 import getDateFromTimestamp from '@/common/misc/dateManagment/getDateFromTimestamp';
-import updateUserBirthdate from '@/services/user/updateUserBirthDate';
+import useUpdateUserBirthdate from '@/services/user/updateUserBirthDate';
 import { ITimestamp } from '@/types/timestamp';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -31,9 +31,7 @@ export default function Birthdate({
   return (
     <TextAccountDetail
       userId={userData.id}
-      editHandler={(value: ITimestamp) =>
-        updateUserBirthdate({ userId: userData.id, value: value })
-      }
+      editHandler={(value: ITimestamp) => useUpdateUserBirthdate(value)}
       preventEdit={preventEdit}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}

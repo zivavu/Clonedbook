@@ -6,7 +6,7 @@ import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import InteractButton from '@/components/atoms/InteractButton';
 import Comments from '@/components/molecules/Comments';
-import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
+import ElementOwnerInfoDisplay from '@/components/molecules/ElementOwnerInfoDisplay';
 import FullPagePostView from '@/components/organisms/FullPagePostView';
 import { IPictureWithPlaceholders } from '@/types/picture';
 import { useRef, useState } from 'react';
@@ -53,7 +53,7 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
 
       <StyledRoot sx={sx} {...rootProps}>
         <StyledPostContentWrapper sx={{ pt: theme.spacing(2) }}>
-          <PostOwnerInfoDisplay
+          <ElementOwnerInfoDisplay
             owner={owner}
             element={post}
             elementType='post'

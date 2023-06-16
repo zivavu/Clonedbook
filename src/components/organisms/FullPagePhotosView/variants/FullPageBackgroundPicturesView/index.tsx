@@ -15,7 +15,7 @@ export default function FullPageBackgroundPicturesView({
 }: FullPageBackgroundPicturesViewProps) {
   const { data: picturesMap, refetch: refetchPictures } = useUserPicturesByIdQuery(ownerId);
 
-  const pictures = getPicturesSortedByDate(picturesMap);
+  const pictures = getPicturesSortedByDate({ picturesMap, type: 'background' });
 
   const initialPhotoIndex: number = pictures.findIndex((picture) => picture.id === initialPhoto.id);
 

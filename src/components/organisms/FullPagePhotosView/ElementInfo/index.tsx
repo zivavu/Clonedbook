@@ -8,8 +8,8 @@ import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPubl
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import Comments from '@/components/molecules/Comments';
+import ElementOwnerInfoDisplay from '@/components/molecules/ElementOwnerInfoDisplay';
 import ElementTextEditInput from '@/components/molecules/ElementTextEditInput';
-import PostOwnerInfoDisplay from '@/components/molecules/PostOwnerInfoDisplay';
 import ReactionsDisplayBox from '@/components/organisms/ReactionsDisplay';
 import { useRef, useState } from 'react';
 import { NAVBAR_HEIGHT } from '../../NavBar';
@@ -56,7 +56,7 @@ export default function ElementInfo({
 
       <HorizontalContentDevider />
 
-      <PostOwnerInfoDisplay
+      <ElementOwnerInfoDisplay
         owner={owner}
         element={element}
         elementType={type}

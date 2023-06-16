@@ -11,7 +11,7 @@ import { PicturesTileProps } from './types';
 export default function PicturesTile({ user: owner, sx, ...rootProps }: PicturesTileProps) {
   const { data: picturesMap } = useUserPicturesByIdQuery(owner.id);
 
-  const pictures = getPicturesSortedByDate(picturesMap).slice(0, 9);
+  const pictures = getPicturesSortedByDate({ picturesMap, type: 'account' }).slice(0, 9);
 
   const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
   const [selectedPhoto, setSelectedPhoto] = useState<IAccountPicture>(pictures[0]);

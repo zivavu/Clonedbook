@@ -17,7 +17,6 @@ export default function BackgroundPicture({
   const backgroundPhotoData = picturesMap
     ? picturesMap.background[userData?.backgroundPictureId || '']
     : null;
-
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
   return (
     <>

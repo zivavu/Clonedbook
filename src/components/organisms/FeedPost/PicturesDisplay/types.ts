@@ -1,9 +1,11 @@
 import { IPictureWithPlaceholders } from '@/types/picture';
+import { IPost } from '@/types/post';
 import { BoxProps } from '@mui/material';
 
 export interface PicturesDisplayProps extends BoxProps {
   pictures: IPictureWithPlaceholders[];
-  postId: string;
+  post: IPost;
+  refetchPost: () => Promise<void>;
 }
 
 export interface PictureToDisplay {

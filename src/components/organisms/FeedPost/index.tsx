@@ -16,7 +16,7 @@ import PostTextArea from './PostText';
 import { FeedPostProps } from './types';
 
 export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPostProps) {
-  const { id: postId, comments, pictures: postPictures, text: postText } = post;
+  const { id: postId, comments, pictures: postPictures } = post;
   const owner = useGetUserBasicInfo(post.ownerId);
   const theme = useTheme();
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
@@ -72,7 +72,8 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
           <Box mt={theme.spacing(1)}>
             <PicturesDisplay
               pictures={postPictures as IPictureWithPlaceholders[]}
-              postId={postId}
+              post={post}
+              refetchPost={refetchPost}
             />
           </Box>
         )}

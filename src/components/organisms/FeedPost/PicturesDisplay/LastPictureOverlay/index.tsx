@@ -1,12 +1,15 @@
 import { Box, Typography, useTheme } from '@mui/material';
+import { LastPictureOverlayProps } from './types';
 
-import Picture from '../../Picture';
-import { LastPictureProps } from './types';
-
-export default function LastPicture({ postId, picture, picturesLength, sx }: LastPictureProps) {
+export default function LastPictureOverlay({
+  picturesLength,
+  sx,
+  children,
+  ...rootProps
+}: LastPictureOverlayProps) {
   const theme = useTheme();
   return (
-    <Box sx={{ ...sx, position: 'relative', pointerEvents: 'none' }}>
+    <Box sx={{ ...sx, position: 'relative', pointerEvents: 'none' }} {...rootProps}>
       <Box
         sx={{
           position: 'absolute',
@@ -27,10 +30,10 @@ export default function LastPicture({ postId, picture, picturesLength, sx }: Las
             transform: 'translate(-50%, -50%)',
             userSelect: 'none',
           }}>
-          +{picturesLength - 4}
+          +{picturesLength - 5}
         </Typography>
       </Box>
-      <Picture picture={picture} imageSize='small' postId={postId}></Picture>
+      {children}
     </Box>
   );
 }

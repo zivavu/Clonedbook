@@ -1,4 +1,3 @@
-import useFetchSinglePostData from '@/services/posts/useFetchSinglePostData';
 import { useEffect, useState } from 'react';
 import ElementInfo from '../../ElementInfo';
 import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';
@@ -6,14 +5,13 @@ import PhotosCarousel from '../../PhotosCarousel';
 import { FullPagePostPicturesViewProps } from './types';
 
 export default function FullPagePostPicturesView({
-  sx,
+  post,
+  refetchPost,
   initialPhotoUrl,
-  postId,
   setOpen,
+  sx,
   ...rootProps
 }: FullPagePostPicturesViewProps) {
-  const { postData: post, refetchPost } = useFetchSinglePostData(postId);
-
   const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(0);
   useEffect(() => {
     setCurrentPictureIndex(

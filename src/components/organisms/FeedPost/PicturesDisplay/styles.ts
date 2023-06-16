@@ -5,12 +5,9 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'relative',
 }));
 
-export const StyledPicturesContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
+export const StyledImagesGrid = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  minWidth: '100%',
   height: '460px',
-  width: '100%',
-
-  [theme.breakpoints.down('sm')]: {
-    height: '300px',
-  },
+  gap: theme.spacing(0.5),
 }));

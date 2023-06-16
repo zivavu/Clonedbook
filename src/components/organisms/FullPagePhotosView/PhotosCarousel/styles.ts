@@ -55,6 +55,10 @@ export const StyledSwitchAreaButton = styled(ButtonBase)(({ theme }) => ({
   '& .MuiTouchRipple-child': {
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
   },
+
+  [theme.breakpoints.down('sm')]: {
+    '& .icon': { opacity: '1 !important' },
+  },
 }));
 
 export const StyledButtonIcon = styled(Box)(({ theme }) => ({
@@ -67,6 +71,7 @@ export const StyledButtonIcon = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   transform: 'translateY(-50%)',
+  fontSize: '28px',
 
   opacity: '0',
 
@@ -80,5 +85,19 @@ export const StyledButtonIcon = styled(Box)(({ theme }) => ({
   },
   '&.leftIcon': {
     left: theme.spacing(2),
+  },
+
+  [theme.breakpoints.down('sm')]: {
+    width: '38px',
+    height: '38px',
+    fontSize: '22px',
+    opacity: '1',
+    '&.rightIcon': {
+      right: theme.spacing(1),
+    },
+    '&.leftIcon': {
+      left: theme.spacing(1),
+    },
+    backgroundColor: `${theme.palette.common.black} !important`,
   },
 }));

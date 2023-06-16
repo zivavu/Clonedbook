@@ -2,33 +2,25 @@ import { ButtonBase } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import FullPagePostPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPagePostPicturesView';
 import Image from 'next/image';
-import { useState } from 'react';
 import { PictureProps } from './types';
 import useGetImageSizes from './useGetImageSizes';
 
 export default function Picture({
   picture,
   imageSize,
-  postId,
-  sx,
+  handleClick,
   children,
+  sx,
   ...rootProps
 }: PictureProps) {
-  const [isFullViewOpen, setIsFullViewOpen] = useState(false);
-
   const imageSizes = useGetImageSizes(imageSize);
-
-  const handleClick = () => {
-    setIsFullViewOpen(!isFullViewOpen);
-  };
 
   return (
     <>
       <StyledRoot sx={sx} {...rootProps}>
         <ButtonBase
-          onClick={() => handleClick()}
+          onClick={() => handleClick(picture)}
           focusRipple
           sx={{
             backgroundColor: 'transparent',
@@ -52,13 +44,6 @@ export default function Picture({
           {children}
         </ButtonBase>
       </StyledRoot>
-      {isFullViewOpen && (
-        <FullPagePostPicturesView
-          postId={postId}
-          initialPhotoUrl={picture.url}
-          setOpen={setIsFullViewOpen}
-        />
-      )}
     </>
   );
 }

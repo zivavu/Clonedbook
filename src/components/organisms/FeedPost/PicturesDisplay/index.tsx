@@ -1,57 +1,132 @@
-import { Stack, useTheme } from '@mui/material';
-
-import { StyledPicturesContainer, StyledRoot } from './styles';
+import { StyledImagesGrid, StyledRoot } from './styles';
 
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { IPictureWithPlaceholders } from '@/types/picture';
-import ManyPicutresDisplay from './ManyPicutresDisplay';
+import { useState } from 'react';
+import FullPagePostPicturesView from '../../FullPagePhotosView/variants/FullPagePostPicturesView';
+import LastPictureOverlay from './LastPictureOverlay';
 import Picture from './Picture';
-import { PicturesDisplayProps, TDisplayMode } from './types';
+import { PicturesDisplayProps } from './types';
+import useGetImagesGridSx from './useGetImagesGridSx';
 
 export default function PicturesDisplay({
+  post,
+  refetchPost,
   pictures,
-  postId,
   sx,
   ...rootProps
 }: PicturesDisplayProps) {
-  const theme = useTheme();
+  const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
+  const [currentPhoto, setCurrentPhoto] = useState<string>(pictures[0].url);
+  const picLength = pictures.length;
+  const gridSx = useGetImagesGridSx(picLength);
 
-  const mode: TDisplayMode =
-    pictures.length === 1 ? 'single' : pictures.length === 2 ? 'duo' : 'many';
-  //undefined as a second slice parameter means that we display all pictures
-  const cutIndex = mode === 'single' ? 1 : mode === 'duo' ? 2 : undefined;
-
-  const picturesToDisplay: IPictureWithPlaceholders[] = pictures.slice(0, cutIndex);
-
-  const pictureBorder = `1px solid ${theme.palette.background.paper}`;
-
+  function handleFullSizeViewOpen(picture: IPictureWithPlaceholders) {
+    setCurrentPhoto(picture.url);
+    setIsFullViewOpen(true);
+  }
   return (
-    <StyledRoot sx={sx} {...rootProps}>
-      <HorizontalContentDevider sx={{ top: '-1px' }} />
-
-      {mode === 'single' && (
-        <StyledPicturesContainer>
-          <Picture picture={picturesToDisplay[0]} postId={postId} imageSize='large' />
-        </StyledPicturesContainer>
-      )}
-
-      {mode === 'duo' && (
-        <StyledPicturesContainer>
-          <Stack direction='row' width='100%' height='100%' position='relative'>
-            <Picture picture={picturesToDisplay[0]} postId={postId} imageSize='medium' />
-            <Picture picture={picturesToDisplay[1]} postId={postId} imageSize='medium' />
-          </Stack>
-        </StyledPicturesContainer>
-      )}
-
-      {mode === 'many' && (
-        <ManyPicutresDisplay
-          pictures={picturesToDisplay}
-          pictureBorder={pictureBorder}
-          postId={postId}
+    <>
+      {isFullViewOpen && (
+        <FullPagePostPicturesView
+          initialPhotoUrl={currentPhoto}
+          post={post}
+          refetchPost={refetchPost}
+          setOpen={setIsFullViewOpen}
         />
       )}
-      <HorizontalContentDevider sx={{ bottom: '0' }} />
-    </StyledRoot>
+      <StyledRoot sx={sx} {...rootProps}>
+        <HorizontalContentDevider sx={{ top: '-1px' }} />
+
+        <StyledImagesGrid sx={gridSx}>
+          {picLength === 1 && (
+            <Picture
+              key={pictures[0].url}
+              picture={pictures[0]}
+              imageSize='large'
+              handleClick={handleFullSizeViewOpen}
+            />
+          )}
+
+          {picLength === 2 &&
+            pictures.map((picture) => (
+              <Picture
+                key={picture.url}
+                picture={picture}
+                handleClick={handleFullSizeViewOpen}
+                imageSize='medium'
+              />
+            ))}
+
+          {picLength === 3 && (
+            <>
+              <Picture
+                key={pictures[0].url}
+                picture={pictures[0]}
+                imageSize='medium'
+                handleClick={handleFullSizeViewOpen}
+                gridColumn='1 / 3'
+              />
+              {pictures.slice(1, 3).map((picture) => (
+                <Picture
+                  key={picture.url}
+                  picture={picture}
+                  imageSize='medium'
+                  handleClick={handleFullSizeViewOpen}
+                />
+              ))}
+            </>
+          )}
+
+          {picLength === 4 &&
+            pictures.map((picture) => (
+              <Picture
+                key={picture.url}
+                picture={picture}
+                imageSize='small'
+                handleClick={handleFullSizeViewOpen}
+              />
+            ))}
+
+          {picLength >= 5 && (
+            <>
+              {pictures.slice(0, 2).map((picture, i) => (
+                <Picture
+                  key={picture.url}
+                  picture={picture}
+                  imageSize='medium'
+                  gridColumn={`${i * 3 + 1} / ${i * 3 + 4}`}
+                  handleClick={handleFullSizeViewOpen}
+                />
+              ))}
+
+              {pictures.slice(2, 5).map((picture, i) => {
+                return i === 2 && picLength > 5 ? (
+                  <LastPictureOverlay
+                    picturesLength={picLength}
+                    gridColumn={`${i * 2 + 1} / ${i * 2 + 3}`}>
+                    <Picture
+                      key={picture.url}
+                      picture={picture}
+                      imageSize='medium'
+                      handleClick={handleFullSizeViewOpen}
+                    />
+                  </LastPictureOverlay>
+                ) : (
+                  <Picture
+                    key={picture.url}
+                    picture={picture}
+                    imageSize='medium'
+                    gridColumn={`${i * 2 + 1} / ${i * 2 + 3}`}
+                    handleClick={handleFullSizeViewOpen}
+                  />
+                );
+              })}
+            </>
+          )}
+        </StyledImagesGrid>
+        <HorizontalContentDevider sx={{ bottom: '0' }} />
+      </StyledRoot>
+    </>
   );
 }

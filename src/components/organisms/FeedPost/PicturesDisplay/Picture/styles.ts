@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, ImageListItem, styled } from '@mui/material';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'relative',

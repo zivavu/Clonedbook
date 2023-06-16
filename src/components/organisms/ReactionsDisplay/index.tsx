@@ -2,6 +2,7 @@ import { Box, ButtonBase, Typography, useMediaQuery, useTheme } from '@mui/mater
 
 import { StyledRoot } from './styles';
 
+import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
 import useDeserializeReactions from '@/common/misc/userDataManagment/useDeserializeReactions';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
@@ -44,7 +45,7 @@ export default function ReactionsDisplayBox({
     displayNames = false;
   }
 
-  if (!reactions) return null;
+  if (isObjectEmpty(reactions)) return null;
   return (
     <>
       {showModal && <ReactionsModal setShowModal={setShowModal} reactions={reactions} />}

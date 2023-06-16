@@ -114,12 +114,12 @@ export default function PhotosCarousel({
               focusRipple
               sx={{ left: 0 }}>
               <StyledButtonIcon className='icon leftIcon'>
-                <Icon icon='angle-left' fontSize='25px' />
+                <Icon icon='angle-left' />
               </StyledButtonIcon>
             </StyledSwitchAreaButton>
             <StyledSwitchAreaButton onClick={() => handleSwitchPicture('right')} sx={{ right: 0 }}>
               <StyledButtonIcon className='icon rightIcon'>
-                <Icon icon='angle-right' fontSize='25px' />
+                <Icon icon='angle-right' />
               </StyledButtonIcon>
             </StyledSwitchAreaButton>
           </>

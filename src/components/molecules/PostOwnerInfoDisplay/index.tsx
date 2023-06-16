@@ -1,7 +1,5 @@
 import { IconButton, Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledRoot } from './styles';
-
 import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
@@ -52,35 +50,33 @@ export default function PostOwnerInfoDisplay({
         }}
         handleElementDelete={handleElementDelete}
       />
-      <StyledRoot sx={sx} {...rootProps}>
-        <Stack direction='row' spacing={1} width='100%' pr={1}>
-          <UserAvatar userId={owner.id} />
-          <Stack justifyContent='center'>
-            <UserLink
-              userId={owner.id}
-              usePopper
-              fontWeight={500}
-              variant='subtitle2'
-              lineHeight='1rem'
-            />
-            <Typography variant='body2' color={theme.palette.text.secondary}>
-              {getShortDate(createdAt.seconds, 'week')}
-            </Typography>
-          </Stack>
-          {loggedUser?.id === element.ownerId && (
-            <IconButton
-              onClick={() => setIsMenuOpen(true)}
-              ref={postManageAnchorEl}
-              sx={{
-                width: '30px',
-                height: '30px',
-                marginLeft: 'auto !important',
-              }}>
-              <Icon icon='ellipsis' fontSize={18} color={theme.palette.text.secondary} />
-            </IconButton>
-          )}
+      <Stack direction='row' spacing={1} width='100%' pr={1} sx={sx} {...rootProps}>
+        <UserAvatar userId={owner.id} />
+        <Stack justifyContent='center'>
+          <UserLink
+            userId={owner.id}
+            usePopper
+            fontWeight={500}
+            variant='subtitle2'
+            lineHeight='1rem'
+          />
+          <Typography variant='body2' color={theme.palette.text.secondary}>
+            {getShortDate(createdAt.seconds, 'week')}
+          </Typography>
         </Stack>
-      </StyledRoot>
+        {loggedUser?.id === element.ownerId && (
+          <IconButton
+            onClick={() => setIsMenuOpen(true)}
+            ref={postManageAnchorEl}
+            sx={{
+              width: '30px',
+              height: '30px',
+              marginLeft: 'auto !important',
+            }}>
+            <Icon icon='ellipsis' fontSize={18} color={theme.palette.text.secondary} />
+          </IconButton>
+        )}
+      </Stack>
     </>
   );
 }

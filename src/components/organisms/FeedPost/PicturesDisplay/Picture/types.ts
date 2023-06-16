@@ -4,6 +4,6 @@ import { TPictureSize } from '../types';
 
 export interface PictureProps extends BoxProps {
   picture: IPictureWithPlaceholders;
-  postId: string;
   imageSize: TPictureSize;
+  handleClick: (picture: IPictureWithPlaceholders) => void;
 }

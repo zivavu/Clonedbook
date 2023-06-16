@@ -37,13 +37,13 @@ export async function createUserComment({
   try {
     switch (elementType) {
       case 'post':
-        postCommentCreate({ elementId, comment });
+        await postCommentCreate({ elementId, comment });
         break;
       case 'accountPicture':
-        accountPictureCommentCreate({ elementId, comment, elementOwnerId });
+        await accountPictureCommentCreate({ elementId, comment, elementOwnerId });
         break;
       case 'backgroundPicture':
-        backgroundPictureCommentCreate({ elementId, comment, elementOwnerId });
+        await backgroundPictureCommentCreate({ elementId, comment, elementOwnerId });
         break;
     }
   } catch (err) {

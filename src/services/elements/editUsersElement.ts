@@ -19,13 +19,13 @@ export async function editUserElement({
   try {
     switch (elementType) {
       case 'post':
-        postTextEdit({ elementId, newElementText });
+        await postTextEdit({ elementId, newElementText });
         break;
       case 'accountPicture':
-        accountPictureTextEdit({ elementId, loggedUser, newElementText });
+        await accountPictureTextEdit({ elementId, loggedUser, newElementText });
         break;
       case 'backgroundPicture':
-        backgroundPictureTextEdit({ elementId, loggedUser, newElementText });
+        await backgroundPictureTextEdit({ elementId, loggedUser, newElementText });
         break;
       default:
         break;

@@ -11,7 +11,7 @@ export const StyledRoot = styled(ScrollableStack)(({ theme }) => ({
   left: 0,
   flexDirection: 'row',
   backgroundColor: theme.palette.background.paper,
-  zIndex: theme.zIndex.appBar + 1,
+  zIndex: theme.zIndex.drawer + 1,
   overflow: 'hidden',
 
   [theme.breakpoints.down('lg')]: {

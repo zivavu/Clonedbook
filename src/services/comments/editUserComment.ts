@@ -27,13 +27,13 @@ export async function editUserComment({
   try {
     switch (elementType) {
       case 'post':
-        postCommentEdit({ elementId, commentId, newText });
+        await postCommentEdit({ elementId, commentId, newText });
         break;
       case 'accountPicture':
-        accountPictureCommentCreate({ elementId, commentId, newText, elementOwnerId });
+        await accountPictureCommentCreate({ elementId, commentId, newText, elementOwnerId });
         break;
       case 'backgroundPicture':
-        backgroundPictureCommentCreate({ elementId, commentId, newText, elementOwnerId });
+        await backgroundPictureCommentCreate({ elementId, commentId, newText, elementOwnerId });
         break;
     }
   } catch (err) {

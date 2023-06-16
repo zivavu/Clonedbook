@@ -4,6 +4,7 @@ import Page from '@/templates/Page';
 
 export default function ProfilePage() {
   const { data: user } = useGetLoggedUserQuery({});
+
   if (!user) return null;
   return (
     <Page

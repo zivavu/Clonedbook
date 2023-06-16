@@ -29,7 +29,9 @@ export default function ElementManageMenu({
   async function handleDeleteClick() {
     setIsDeleteLoading(true);
     await handleElementDelete();
+    if (type === 'accountPicture' || type === 'backgroundPicture') await refetchUserData();
     setIsDeleteLoading(false);
+    handleClose();
   }
 
   async function handleSetProfilePicture() {

@@ -94,7 +94,9 @@ export default function CommentDisplay({
               ownerId={comment.ownerId}
               anchorEl={commentManageAnchor.current}
               open={isMenuOpen}
-              onClose={() => setIsMenuOpen(false)}
+              type='comment'
+              elementId={comment.id}
+              handleClose={() => setIsMenuOpen(false)}
               handleOpenEditMode={() => {
                 handleOpenEditMode();
                 setIsMenuOpen(false);

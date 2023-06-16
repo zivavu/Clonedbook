@@ -5,7 +5,7 @@ export interface ElementManageMenuProps extends MenuProps {
   handleClose(): void;
   handleOpenEditMode(): void;
   handleElementDelete(): Promise<void>;
-  type: TElementType;
+  type: TElementType | 'comment';
   ownerId: string;
   elementId: string;
 }

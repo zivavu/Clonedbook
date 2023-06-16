@@ -18,13 +18,13 @@ export async function deleteUserComment({
   try {
     switch (elementType) {
       case 'post':
-        postCommentDelete({ elementId, commentId });
+        await postCommentDelete({ elementId, commentId });
         break;
       case 'accountPicture':
-        accountPictureCommentDelete({ elementId, commentId, elementOwnerId });
+        await accountPictureCommentDelete({ elementId, commentId, elementOwnerId });
         break;
       case 'backgroundPicture':
-        backgroundPictureCommentDelete({ elementId, commentId, elementOwnerId });
+        await backgroundPictureCommentDelete({ elementId, commentId, elementOwnerId });
         break;
     }
   } catch (err) {

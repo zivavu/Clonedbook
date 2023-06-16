@@ -1,6 +1,5 @@
-import { useTheme } from '@mui/material';
-
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
+import getPicturesSortedByDate from '@/common/misc/photoManagment/getPicturesSortedByDate';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
 import { IAccountPicture } from '@/types/picture';
@@ -10,15 +9,9 @@ import SinglePicture from './SinglePicture';
 import { PicturesTileProps } from './types';
 
 export default function PicturesTile({ user: owner, sx, ...rootProps }: PicturesTileProps) {
-  const theme = useTheme();
   const { data: picturesMap } = useUserPicturesByIdQuery(owner.id);
 
-  const pictures = picturesMap
-    ? Object.values(picturesMap.account)
-        .filter((picture) => !!picture.createdAt)
-        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
-        .slice(0, 9)
-    : [];
+  const pictures = getPicturesSortedByDate(picturesMap).slice(0, 9);
 
   const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
   const [selectedPhoto, setSelectedPhoto] = useState<IAccountPicture>(pictures[0]);

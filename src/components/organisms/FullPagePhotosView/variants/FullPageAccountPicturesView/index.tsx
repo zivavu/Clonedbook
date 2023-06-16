@@ -4,6 +4,7 @@ import ElementInfo from '../../ElementInfo';
 import FullPagePhotosWrapper from '../../FullPagePhotosWrapper';
 import PhotosCarousel from '../../PhotosCarousel';
 import { FullPageAccountPicturesViewProps } from './types';
+import getPicturesSortedByDate from '@/common/misc/photoManagment/getPicturesSortedByDate';
 
 export default function FullPageAccountPicturesView({
   sx,
@@ -14,11 +15,7 @@ export default function FullPageAccountPicturesView({
 }: FullPageAccountPicturesViewProps) {
   const { data: picturesMap, refetch: refetchPictures } = useUserPicturesByIdQuery(ownerId);
 
-  const pictures = picturesMap
-    ? Object.values(picturesMap.account)
-        .filter((picture) => !!picture.createdAt)
-        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
-    : [];
+  const pictures = getPicturesSortedByDate(picturesMap);
 
   const initialPhotoIndex: number = pictures.findIndex((picture) => picture.id === initialPhoto.id);
 

@@ -7,10 +7,10 @@ import {
   StyledRoot,
 } from './styles';
 
-import useCreateNewPost from '@/common/firebase/posts/useCreateNewPost';
 import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import useCreateNewPost from '@/services/posts/useCreateNewPost';
 import { useRef, useState } from 'react';
 import PhotosInput from './PhotosInput';
 import PostTextInput from './PostTextInput';

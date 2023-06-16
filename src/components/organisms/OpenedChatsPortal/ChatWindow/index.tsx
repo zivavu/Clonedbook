@@ -2,7 +2,6 @@ import { Box, CircularProgress, GlobalStyles, IconButton, Stack, useTheme } from
 
 import { StyledRoot } from './styles';
 
-import useContinousChatFetching from '@/common/firebase/chats/useContinousChatFetching';
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';
@@ -10,6 +9,7 @@ import { StyledScrollableStack } from '@/components/atoms/scrollables/styles';
 import { closeChat } from '@/redux/features/openedChatsSlice';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useUserDataByIdQuery } from '@/redux/services/userDataAPI';
+import useContinousChatFetching from '@/services/chats/useContinousChatFetching';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ChatMessage from './ChatMessage';

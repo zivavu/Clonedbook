@@ -1,5 +1,5 @@
-import updateUserBirthdate from '@/common/firebase/user/updateUserBirthDate';
 import getDateFromTimestamp from '@/common/misc/dateManagment/getDateFromTimestamp';
+import updateUserBirthdate from '@/services/user/updateUserBirthDate';
 import { ITimestamp } from '@/types/timestamp';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';

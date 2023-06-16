@@ -1,6 +1,5 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 
-import usePostsInfiniteScrolling from '@/common/firebase/posts/usePostsInfiniteScrolling';
 import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';
@@ -11,6 +10,7 @@ import NoPostsTile from '@/components/organisms/FeedPost/customPostTemplates/NoP
 import { NAVBAR_HEIGHT } from '@/components/organisms/NavBar';
 import PostsFeed from '@/components/organisms/PostsFeed';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import usePostsInfiniteScrolling from '@/services/posts/usePostsInfiniteScrolling';
 import { PostsTabProps } from './types';
 
 export default function PostsTab({ userId, profileData, sx, ...rootProps }: PostsTabProps) {

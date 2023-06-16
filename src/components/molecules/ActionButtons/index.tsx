@@ -2,9 +2,9 @@ import { Typography, useTheme } from '@mui/material';
 
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
-import updateElementReaction from '@/common/firebase/reactions/updateElementReaction';
 import ReactionIcon from '@/components/atoms/ReactionIcon';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import updateElementReaction from '@/services/reactions/updateElementReaction';
 import { TLocalUserReaction } from '@/types/reaction';
 import ReactionsPopper from '../ReactionsPopper';
 import useReactionsPopperHandlers from '../ReactionsPopper/useReactionsPopperHandlers';

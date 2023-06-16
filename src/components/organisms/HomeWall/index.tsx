@@ -1,7 +1,7 @@
 import { StyledRoot } from './styles';
 
-import usePostsInfiniteScrolling from '@/common/firebase/posts/usePostsInfiniteScrolling';
 import WriteSomethingTile from '@/components/molecules/PageTiles/WriteSomethingTile';
+import usePostsInfiniteScrolling from '@/services/posts/usePostsInfiniteScrolling';
 import PostsFeed from '../PostsFeed';
 import { HomeWallProps } from './types';
 

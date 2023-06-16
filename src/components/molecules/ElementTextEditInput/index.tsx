@@ -1,8 +1,8 @@
 import { Box, TextField, Typography, useTheme } from '@mui/material';
 
-import { editUserElement } from '@/common/firebase/elements/editUsersElement';
 import InteractButton from '@/components/atoms/InteractButton';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { editUserElement } from '@/services/elements/editUsersElement';
 import { useState } from 'react';
 import { ElementTextEditInputProps } from './types';
 

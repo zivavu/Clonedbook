@@ -2,12 +2,12 @@ import { Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import { updateCommentReaction } from '@/common/firebase/reactions/updateCommentReaction';
 import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import InteractButton from '@/components/atoms/InteractButton';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { updateCommentReaction } from '@/services/reactions/updateCommentReaction';
 import { TLocalUserReaction } from '@/types/reaction';
 import { useState } from 'react';
 import ReactionsPopper from '../../ReactionsPopper';

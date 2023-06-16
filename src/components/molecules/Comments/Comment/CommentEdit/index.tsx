@@ -1,6 +1,6 @@
-import { editUserComment } from '@/common/firebase/comments/editUserComment';
 import InteractButton from '@/components/atoms/InteractButton';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { editUserComment } from '@/services/comments/editUserComment';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { StyledCommentInput } from '../../CommentInput/styles';

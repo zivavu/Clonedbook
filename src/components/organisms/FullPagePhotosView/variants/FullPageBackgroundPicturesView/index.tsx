@@ -1,3 +1,4 @@
+import getPicturesSortedByDate from '@/common/misc/photoManagment/getPicturesSortedByDate';
 import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
 import { useEffect, useState } from 'react';
 import ElementInfo from '../../ElementInfo';
@@ -14,11 +15,7 @@ export default function FullPageBackgroundPicturesView({
 }: FullPageBackgroundPicturesViewProps) {
   const { data: picturesMap, refetch: refetchPictures } = useUserPicturesByIdQuery(ownerId);
 
-  const pictures = picturesMap
-    ? Object.values(picturesMap.background)
-        .filter((picture) => !!picture.createdAt)
-        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
-    : [];
+  const pictures = getPicturesSortedByDate(picturesMap);
 
   const initialPhotoIndex: number = pictures.findIndex((picture) => picture.id === initialPhoto.id);
 

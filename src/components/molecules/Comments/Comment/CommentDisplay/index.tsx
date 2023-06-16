@@ -1,11 +1,11 @@
 import { IconButton, Stack, Typography, useTheme } from '@mui/material';
 
-import { deleteUserComment } from '@/common/firebase/comments/deleteUserComment';
 import isObjectEmpty from '@/common/misc/objectManagment/isObjectEmpty';
 import Icon from '@/components/atoms/Icon/Icon';
 import UserLink from '@/components/atoms/UserLink';
 import ReactionsDisplayBox from '@/components/organisms/ReactionsDisplay';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { deleteUserComment } from '@/services/comments/deleteUserComment';
 import { useRef, useState } from 'react';
 import ElementManageMenu from '../../../ElementManageMenu';
 import { StyledTextContent } from './styles';

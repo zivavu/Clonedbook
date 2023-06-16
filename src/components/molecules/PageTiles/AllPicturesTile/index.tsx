@@ -1,3 +1,4 @@
+import getPicturesSortedByDate from '@/common/misc/photoManagment/getPicturesSortedByDate';
 import LoadingPlaceholder from '@/components/atoms/LoadingPlaceholder';
 import FullPageAccountPicturesView from '@/components/organisms/FullPagePhotosView/variants/FullPageAccountPicturesView';
 import { useUserPicturesByIdQuery } from '@/redux/services/userDataAPI';
@@ -16,11 +17,8 @@ export default function AllPicturesTile({ profileData, sx, ...rootProps }: AllPi
     isError,
     isLoading: isUserDataLoading,
   } = useUserPicturesByIdQuery(profileData.id);
-  const pictures = picturesMap
-    ? Object.values(picturesMap.account)
-        .filter((picture) => !!picture.createdAt)
-        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
-    : [];
+
+  const pictures = getPicturesSortedByDate(picturesMap);
 
   const [isFullViewOpen, setIsFullViewOpen] = useState<boolean>(false);
   const [currentPhoto, setCurrentPhoto] = useState<IAccountPicture>(pictures[0]);

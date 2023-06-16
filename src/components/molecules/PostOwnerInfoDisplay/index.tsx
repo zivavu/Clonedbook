@@ -2,12 +2,12 @@ import { IconButton, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
-import { deleteUsersElement } from '@/common/firebase/elements/deleteUsersElement';
 import getShortDate from '@/common/misc/dateManagment/getShortDate';
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserLink from '@/components/atoms/UserLink';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import { deleteUsersElement } from '@/services/elements/deleteUsersElement';
 import { useRef, useState } from 'react';
 import ElementManageMenu from '../ElementManageMenu';
 import { PostOwnerInfoDisplayProps } from './types';

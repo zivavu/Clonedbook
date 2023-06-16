@@ -1,5 +1,5 @@
 import { BoxProps } from '@mui/material';
 
-export interface NoPostsTile extends BoxProps {
+export interface NoPostsTileProps extends BoxProps {
   wallOwnerId: string;
 }

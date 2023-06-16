@@ -7,7 +7,8 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[3],
 }));
 
-export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
+export const StyledPostContentWrapper = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(0, 2),
   paddingTop: theme.spacing(1),
+  alignItems: 'flex-start',
 }));

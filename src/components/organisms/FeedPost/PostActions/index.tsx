@@ -4,8 +4,8 @@ import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import InteractButton from '@/components/atoms/InteractButton';
 import ActionButtons from '@/components/molecules/ActionButtons';
 import ReactionsDisplayBox from '@/components/organisms/ReactionsDisplay';
+import { StyledPostContentWrapper } from '../styles';
 import { PostActionsProps } from './types';
-import { StyledContentWrapper } from '../styles';
 
 export default function PostActions({
   post,
@@ -19,14 +19,14 @@ export default function PostActions({
   const commentsLength = getEntriesLength(post.comments);
 
   return (
-    <StyledContentWrapper sx={sx} {...rootProps}>
-      <Stack direction='row' alignItems='center' mb={theme.spacing(1)}>
+    <StyledPostContentWrapper sx={sx} {...rootProps}>
+      <Stack direction='row' width='100%' mb={theme.spacing(1)} justifyContent='space-between'>
         <ReactionsDisplayBox
           reactions={post.reactions}
           sx={{ pr: theme.spacing(0.25), maxWidth: '75%' }}
         />
+
         <InteractButton
-          sx={{ ml: 'auto' }}
           onClick={() => {
             handleShowMoreComments();
           }}>
@@ -46,6 +46,6 @@ export default function PostActions({
         elementType='post'
         handleCommentClick={handleCommentInputFocus}
       />
-    </StyledContentWrapper>
+    </StyledPostContentWrapper>
   );
 }

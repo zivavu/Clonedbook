@@ -1,16 +1,16 @@
 import { Typography } from '@mui/material';
 
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import { StyledContentWrapper, StyledRoot } from '../../../organisms/FeedPost/styles';
+import { StyledPostContentWrapper, StyledRoot } from '../../styles';
 import { StyledIcon, StyledIconContainer } from '../styles';
-import { NoPostsTile } from './types';
+import { NoPostsTileProps } from './types';
 
-export default function NoPostsTile({ wallOwnerId, sx, ...rootProps }: NoPostsTile) {
+export default function NoPostsTile({ wallOwnerId, sx, ...rootProps }: NoPostsTileProps) {
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const isOwner = loggedUser?.id === wallOwnerId;
   return (
     <StyledRoot height={220} position='relative' sx={sx} {...rootProps}>
-      <StyledContentWrapper
+      <StyledPostContentWrapper
         sx={{
           width: '90%',
           position: 'absolute',
@@ -29,7 +29,7 @@ export default function NoPostsTile({ wallOwnerId, sx, ...rootProps }: NoPostsTi
         <Typography variant='h3' fontWeight={600}>
           {isOwner ? 'You have no posts added' : 'This user has no posts'}
         </Typography>
-      </StyledContentWrapper>
+      </StyledPostContentWrapper>
     </StyledRoot>
   );
 }

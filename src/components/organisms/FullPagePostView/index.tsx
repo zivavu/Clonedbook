@@ -2,7 +2,6 @@ import { Modal, Stack, Typography, useTheme } from '@mui/material';
 
 import { StyledCloseIconButton, StyledPostContentWrapper, StyledRoot } from './styles';
 
-import useFetchSinglePostData from '@/common/firebase/posts/useFetchSinglePostData';
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import Icon from '@/components/atoms/Icon/Icon';
@@ -16,17 +15,13 @@ import { useRef, useState } from 'react';
 import { FullPagePostViewProps } from './types';
 
 export default function FullPagePostView({
-  postId,
+  post,
   setOpen,
-  refetchPost: refetchPostInFeed,
+  refetchPost,
   sx,
   ...rootProps
 }: FullPagePostViewProps) {
   const theme = useTheme();
-  const { postData: post, refetchPost: refetchSinglePost } = useFetchSinglePostData(postId);
-  async function refetchPost() {
-    await Promise.allSettled([refetchPostInFeed(), refetchSinglePost()]);
-  }
 
   const owner = useGetUserBasicInfo(post?.ownerId || '');
 
@@ -85,13 +80,13 @@ export default function FullPagePostView({
           <ActionButtons
             element={post}
             elementType='post'
-            refetchElement={refetchPostInFeed}
+            refetchElement={refetchPost}
             handleCommentClick={handleCommentInputFocus}
             sx={{ borderBottom: 'none' }}
           />
           <Comments
             elementType='post'
-            refetchElement={refetchPostInFeed}
+            refetchElement={refetchPost}
             commentInputRef={commentInputRef}
             element={post}
             sx={{ height: '100%' }}

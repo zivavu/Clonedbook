@@ -1,12 +1,12 @@
 import { BoxProps, Stack } from '@mui/material';
 
-import { StyledContentWrapper, StyledRoot } from '../../../organisms/FeedPost/styles';
+import { StyledPostContentWrapper, StyledRoot } from '../../styles';
 import { StyledHorizontalHole, StyledRoundHole } from './styles';
 
 export default function LoadingPostPlaceholder({ sx, ...rootProps }: BoxProps) {
   return (
     <StyledRoot sx={sx} {...rootProps}>
-      <StyledContentWrapper height={300} position='relative' overflow='hidden'>
+      <StyledPostContentWrapper height={300} position='relative' overflow='hidden'>
         <Stack width='100%' height='100%' pt={1} pb={2} justifyContent='space-between'>
           <Stack direction='row' spacing={2}>
             <StyledRoundHole />
@@ -21,7 +21,7 @@ export default function LoadingPostPlaceholder({ sx, ...rootProps }: BoxProps) {
             <StyledHorizontalHole width='min(70px, 30%)' />
           </Stack>
         </Stack>
-      </StyledContentWrapper>
+      </StyledPostContentWrapper>
     </StyledRoot>
   );
 }

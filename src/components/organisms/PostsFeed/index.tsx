@@ -1,8 +1,8 @@
 import { StyledRoot } from './styles';
 
-import LoadingPostPlaceholder from '@/components/molecules/postCustomTiles/LoadingPostPlaceholder';
-import PostsErrorPlaceholder from '@/components/molecules/postCustomTiles/PostsErrorPlaceholder';
 import FeedPost from '@/components/organisms/FeedPost';
+import LoadingPostPlaceholder from '@/components/organisms/FeedPost/customPostTemplates/LoadingPostPlaceholder';
+import PostsErrorPlaceholder from '@/components/organisms/FeedPost/customPostTemplates/PostsErrorPlaceholder';
 import { PostsFeedProps } from './types';
 
 export default function PostsFeed({

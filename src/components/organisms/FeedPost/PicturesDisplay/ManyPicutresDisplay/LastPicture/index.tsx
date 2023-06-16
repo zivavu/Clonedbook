@@ -30,7 +30,7 @@ export default function LastPicture({ postId, picture, picturesLength, sx }: Las
           +{picturesLength - 4}
         </Typography>
       </Box>
-      <Picture picture={picture} size='small' postId={postId}></Picture>
+      <Picture picture={picture} imageSize='small' postId={postId}></Picture>
     </Box>
   );
 }

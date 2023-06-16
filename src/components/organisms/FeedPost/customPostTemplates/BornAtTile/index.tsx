@@ -2,7 +2,7 @@ import { Stack, Typography, useTheme } from '@mui/material';
 
 import getDateFromTimestamp from '@/common/misc/dateManagment/getDateFromTimestamp';
 import { useUserDataByIdQuery } from '@/redux/services/userDataAPI';
-import { StyledContentWrapper, StyledRoot } from '../../../organisms/FeedPost/styles';
+import { StyledPostContentWrapper, StyledRoot } from '../../styles';
 import { StyledIcon, StyledIconContainer } from '../styles';
 import { BornAtPostTileProps } from './types';
 
@@ -14,7 +14,7 @@ export default function BornAtPostTile({ userId, sx, ...rootProps }: BornAtPostT
   if (!date) return null;
   return (
     <StyledRoot height={220} position='relative' sx={sx} {...rootProps}>
-      <StyledContentWrapper
+      <StyledPostContentWrapper
         sx={{
           width: '90%',
           position: 'absolute',
@@ -35,7 +35,7 @@ export default function BornAtPostTile({ userId, sx, ...rootProps }: BornAtPostT
             {`Born on ${date.month} ${date.day}, ${date.year}`}
           </Typography>
         </Stack>
-      </StyledContentWrapper>
+      </StyledPostContentWrapper>
     </StyledRoot>
   );
 }

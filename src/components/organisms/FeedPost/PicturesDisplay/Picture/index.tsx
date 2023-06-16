@@ -1,4 +1,4 @@
-import { ButtonBase, useTheme } from '@mui/material';
+import { ButtonBase } from '@mui/material';
 
 import { StyledRoot } from './styles';
 
@@ -10,7 +10,7 @@ import useGetImageSizes from './useGetImageSizes';
 
 export default function Picture({
   picture,
-  size: imageSize,
+  imageSize,
   postId,
   sx,
   children,

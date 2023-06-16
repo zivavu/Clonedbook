@@ -53,12 +53,12 @@ export default function ManyPicutresDisplay({
           }}>
           <Stack direction='row' position='relative' width='100%' height='60%'>
             {pictures.slice(0, 1).map((picture) => (
-              <Picture key={picture.url} picture={picture} postId={postId} size='medium' />
+              <Picture key={picture.url} picture={picture} postId={postId} imageSize='medium' />
             ))}
           </Stack>
           <Stack direction='row' position='relative' width='100%' height='40%'>
             {pictures.slice(1, 3).map((picture) => (
-              <Picture key={picture.url} picture={picture} postId={postId} size='medium' />
+              <Picture key={picture.url} picture={picture} postId={postId} imageSize='medium' />
             ))}
           </Stack>
         </StyledPicturesContainer>
@@ -74,12 +74,12 @@ export default function ManyPicutresDisplay({
           }}>
           <Stack width='100%' height='50%' direction='row'>
             {pictures.slice(0, 2).map((picture) => (
-              <Picture key={picture.url} picture={picture} postId={postId} size='medium' />
+              <Picture key={picture.url} picture={picture} postId={postId} imageSize='medium' />
             ))}
           </Stack>
           <Stack direction='row' width='100%' height='50%'>
             {pictures.slice(2, 4).map((picture) => (
-              <Picture key={picture.url} picture={picture} postId={postId} size='medium' />
+              <Picture key={picture.url} picture={picture} postId={postId} imageSize='medium' />
             ))}
           </Stack>
         </StyledPicturesContainer>
@@ -99,7 +99,7 @@ export default function ManyPicutresDisplay({
                 key={picture.url}
                 picture={picture}
                 postId={postId}
-                size='medium'
+                imageSize='medium'
                 sx={usedLayout[i]}
               />
             ))}
@@ -110,7 +110,7 @@ export default function ManyPicutresDisplay({
                 key={picture.url}
                 picture={picture}
                 postId={postId}
-                size='medium'
+                imageSize='medium'
                 sx={usedLayout[2 + i]}
               />
             ))}

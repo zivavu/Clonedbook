@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
 
-import { StyledContentWrapper, StyledRoot } from './styles';
+import { StyledPostContentWrapper, StyledRoot } from './styles';
 
 import getEntriesLength from '@/common/misc/objectManagment/getEntriesLength';
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
@@ -48,11 +48,11 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
   return (
     <>
       {isFullViewOpen && (
-        <FullPagePostView postId={post.id} setOpen={setIsFullViewOpen} refetchPost={refetchPost} />
+        <FullPagePostView post={post} setOpen={setIsFullViewOpen} refetchPost={refetchPost} />
       )}
 
       <StyledRoot sx={sx} {...rootProps}>
-        <StyledContentWrapper sx={{ pt: theme.spacing(2) }}>
+        <StyledPostContentWrapper sx={{ pt: theme.spacing(2) }}>
           <PostOwnerInfoDisplay
             owner={owner}
             element={post}
@@ -66,7 +66,8 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
             handleCloseEditMode={() => setIsInPostTextEditMode(false)}
             refetchPost={refetchPost}
           />
-        </StyledContentWrapper>
+        </StyledPostContentWrapper>
+
         {hasPictures && (
           <Box mt={theme.spacing(1)}>
             <PicturesDisplay
@@ -83,7 +84,7 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
           handleCommentInputFocus={handleCommentInputFocus}
         />
 
-        <StyledContentWrapper>
+        <StyledPostContentWrapper>
           {isMoreComments && (
             <InteractButton sx={{ mb: theme.spacing(1) }} onClick={() => handleShowMoreComments()}>
               <Typography variant='subtitle2' color={theme.palette.text.secondary} fontWeight='500'>
@@ -101,7 +102,7 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
             commentInputRef={commentInputRef}
             useAutoScroll={false}
           />
-        </StyledContentWrapper>
+        </StyledPostContentWrapper>
       </StyledRoot>
     </>
   );

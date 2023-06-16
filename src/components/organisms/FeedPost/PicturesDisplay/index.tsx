@@ -31,15 +31,15 @@ export default function PicturesDisplay({
 
       {mode === 'single' && (
         <StyledPicturesContainer>
-          <Picture picture={picturesToDisplay[0]} postId={postId} size='large' />
+          <Picture picture={picturesToDisplay[0]} postId={postId} imageSize='large' />
         </StyledPicturesContainer>
       )}
 
       {mode === 'duo' && (
         <StyledPicturesContainer>
           <Stack direction='row' width='100%' height='100%' position='relative'>
-            <Picture picture={picturesToDisplay[0]} postId={postId} size='medium' />
-            <Picture picture={picturesToDisplay[1]} postId={postId} size='medium' />
+            <Picture picture={picturesToDisplay[0]} postId={postId} imageSize='medium' />
+            <Picture picture={picturesToDisplay[1]} postId={postId} imageSize='medium' />
           </Stack>
         </StyledPicturesContainer>
       )}

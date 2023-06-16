@@ -3019,6 +3019,11 @@ firebase@^9.22.2:
     "@firebase/storage-compat" "0.3.2"
     "@firebase/util" "1.9.3"
 
+firestore-size@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/firestore-size/-/firestore-size-2.0.7.tgz#b697298029bd7b13f1cdcfba0c25fb30ee115fd2"
+  integrity sha512-K5D8e+9rrJs8YL/GIiET7ul9x5pV1WAUjK/yjZO360cF8A+71FnZg+ofO9U7g8XCr21mkbyZFM4yEf4o45FEIQ==
+
 flat-cache@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-3.0.4.tgz#61b0338302b2fe9f957dcc32fc2a87f1c3048b11"

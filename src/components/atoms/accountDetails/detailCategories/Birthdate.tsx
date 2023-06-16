@@ -1,5 +1,6 @@
 import getDateFromTimestamp from '@/common/misc/dateManagment/getDateFromTimestamp';
-import useUpdateUserBirthdate from '@/services/user/updateUserBirthDate';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import updateUserBirthdate from '@/services/user/updateUserBirthDate';
 import { ITimestamp } from '@/types/timestamp';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -18,6 +19,7 @@ export default function Birthdate({
   sx,
   ...rootProps
 }: CategoryProps) {
+  const { data: loggedUser } = useGetLoggedUserQuery({});
   const { birthDate: birthTimestamp } = userData.about;
   const birthDate = birthTimestamp ? getDateFromTimestamp(birthTimestamp.seconds) : null;
   const accountDetail: ITextAccountDetail = {
@@ -31,7 +33,10 @@ export default function Birthdate({
   return (
     <TextAccountDetail
       userId={userData.id}
-      editHandler={(value: ITimestamp) => useUpdateUserBirthdate(value)}
+      editHandler={async (value: ITimestamp) => {
+        if (!loggedUser) return;
+        await updateUserBirthdate({ userId: loggedUser.id, value });
+      }}
       preventEdit={preventEdit}
       accountDetail={accountDetail}
       showPlaceholder={showPlaceholder}

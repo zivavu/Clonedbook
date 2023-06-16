@@ -16,14 +16,16 @@ export async function deleteUserComment({
   commentId,
 }: IDeleteCommentParams) {
   try {
-    if (elementType === 'post') {
-      postCommentDelete({ elementId, commentId });
-    }
-    if (elementType === 'accountPicture') {
-      accountPictureCommentDelete({ elementId, commentId, elementOwnerId });
-    }
-    if (elementType === 'backgroundPicture') {
-      backgroundPictureCommentDelete({ elementId, commentId, elementOwnerId });
+    switch (elementType) {
+      case 'post':
+        postCommentDelete({ elementId, commentId });
+        break;
+      case 'accountPicture':
+        accountPictureCommentDelete({ elementId, commentId, elementOwnerId });
+        break;
+      case 'backgroundPicture':
+        backgroundPictureCommentDelete({ elementId, commentId, elementOwnerId });
+        break;
     }
   } catch (err) {
     console.log(err);

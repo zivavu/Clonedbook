@@ -29,6 +29,7 @@ export const openedChatsSlice = createSlice({
       state.chatIds = [];
     },
 
+    //Used for limiting the number of maximum opened chats on mobile devices
     setMaxChats: (state, action: PayloadAction<number>) => {
       state.maxChats = action.payload;
       if (state.chatIds.length > action.payload) {

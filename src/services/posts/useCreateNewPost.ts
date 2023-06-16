@@ -43,13 +43,13 @@ export default function useCreateNewPost() {
     const uploadPhotosPromises = optimizedPhotos.map(async (photo, i) => {
       const pictureId = pictureUuids[i];
       const photoRef = ref(storage, `posts/${postId}/${pictureId}`);
-      const result = await uploadBytes(photoRef, photo.blob, { contentType: 'image/webp' }).then(
+      const res = await uploadBytes(photoRef, photo.blob, { contentType: 'image/webp' }).then(
         (res) => {
           if (!res.ref) return;
           return getDownloadURL(res.ref);
         },
       );
-      return result;
+      return res;
     });
 
     try {

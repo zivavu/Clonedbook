@@ -25,8 +25,6 @@ export async function deleteUsersElement({
       case 'backgroundPicture':
         backgroundPictureDelete({ elementId, loggedUser });
         break;
-      default:
-        break;
     }
   } catch (err) {
     console.log(err);

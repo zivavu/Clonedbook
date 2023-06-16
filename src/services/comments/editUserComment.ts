@@ -25,14 +25,16 @@ export async function editUserComment({
   elementOwnerId,
 }: IEditCommentParams) {
   try {
-    if (elementType === 'post') {
-      postCommentEdit({ elementId, commentId, newText });
-    }
-    if (elementType === 'accountPicture') {
-      accountPictureCommentCreate({ elementId, commentId, newText, elementOwnerId });
-    }
-    if (elementType === 'backgroundPicture') {
-      backgroundPictureCommentCreate({ elementId, commentId, newText, elementOwnerId });
+    switch (elementType) {
+      case 'post':
+        postCommentEdit({ elementId, commentId, newText });
+        break;
+      case 'accountPicture':
+        accountPictureCommentCreate({ elementId, commentId, newText, elementOwnerId });
+        break;
+      case 'backgroundPicture':
+        backgroundPictureCommentCreate({ elementId, commentId, newText, elementOwnerId });
+        break;
     }
   } catch (err) {
     console.log(err);

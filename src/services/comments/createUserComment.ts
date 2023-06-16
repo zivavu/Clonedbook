@@ -35,14 +35,16 @@ export async function createUserComment({
   };
 
   try {
-    if (elementType === 'post') {
-      postCommentCreate({ elementId, comment });
-    }
-    if (elementType === 'accountPicture') {
-      accountPictureCommentCreate({ elementId, comment, elementOwnerId });
-    }
-    if (elementType === 'backgroundPicture') {
-      backgroundPictureCommentCreate({ elementId, comment, elementOwnerId });
+    switch (elementType) {
+      case 'post':
+        postCommentCreate({ elementId, comment });
+        break;
+      case 'accountPicture':
+        accountPictureCommentCreate({ elementId, comment, elementOwnerId });
+        break;
+      case 'backgroundPicture':
+        backgroundPictureCommentCreate({ elementId, comment, elementOwnerId });
+        break;
     }
   } catch (err) {
     console.log(err);

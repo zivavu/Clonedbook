@@ -18,7 +18,7 @@ export default function PostTextArea({
   const isTextLong = (text && text.length > 130) || hasPictures ? true : false;
 
   return (
-    <Box pt={1} sx={sx} {...rootProps}>
+    <Box pt={1} sx={sx} {...rootProps} width='100%'>
       {isInEditMode ? (
         <ElementTextEditInput
           element={post}

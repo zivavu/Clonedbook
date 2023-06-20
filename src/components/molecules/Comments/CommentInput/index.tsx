@@ -1,7 +1,8 @@
-import { SxProps, Theme, useTheme } from '@mui/material';
+import { IconButton, SxProps, Theme, useTheme } from '@mui/material';
 
-import { StyledCommentInput, StyledRoot, StyledWrapper } from './styles';
+import { StyledCommentInput, StyledCommentInputWrapper, StyledRoot } from './styles';
 
+import PaperPlaneRightIcon from '@/assets/PaperPlaneRightIcon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { createUserComment } from '@/services/comments/createUserComment';
@@ -56,7 +57,7 @@ export default function CommentInput({
   return (
     <StyledRoot sx={{ ...modeSx, ...sx }} {...rootProps}>
       <form onSubmit={onSubmit}>
-        <StyledWrapper>
+        <StyledCommentInputWrapper>
           <UserAvatar size={30} sx={{ mr: theme.spacing(0.7) }} userId={loggedUser?.id} />
           <StyledCommentInput
             multiline
@@ -72,8 +73,25 @@ export default function CommentInput({
               }
             }}
             placeholder='Write a comment...'
+            endAdornment={
+              <IconButton
+                onClick={onSubmit}
+                sx={{
+                  height: '32px',
+                  width: '32px',
+                  display: commentText.length > 0 ? 'flex' : 'none',
+                }}>
+                <PaperPlaneRightIcon
+                  color='info'
+                  sx={{
+                    width: '20px',
+                    height: '20px',
+                  }}
+                />
+              </IconButton>
+            }
           />
-        </StyledWrapper>
+        </StyledCommentInputWrapper>
       </form>
     </StyledRoot>
   );

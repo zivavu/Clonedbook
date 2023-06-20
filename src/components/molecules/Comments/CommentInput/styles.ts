@@ -8,7 +8,7 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   zIndex: 5,
 }));
 
-export const StyledWrapper = styled(Box)(({ theme }) => ({
+export const StyledCommentInputWrapper = styled(Box)(({ theme }) => ({
   paddingRight: theme.spacing(2),
   display: 'flex',
   alignItems: 'center',
@@ -21,6 +21,7 @@ export const StyledCommentInput = styled(OutlinedInput)(({ theme }) => ({
   fontSize: '1rem',
   backgroundColor: theme.palette.secondary.main,
 
+  transition: 'height 0.2s ease-in-out',
   '& .MuiOutlinedInput-input::placeholder': {
     opacity: '0.7',
   },

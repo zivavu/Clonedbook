@@ -23,6 +23,7 @@ export const StyledMainContentStack = styled(Stack)(({}) => ({
 
 export const PostSubmitButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
+  padding: theme.spacing(1.1, 2),
   color: theme.palette.common.white,
   transition: 'all 0.1s ease-out',
   '&:hover': {

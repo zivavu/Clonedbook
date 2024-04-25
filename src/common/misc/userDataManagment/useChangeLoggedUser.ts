@@ -14,11 +14,13 @@ export default function useChangeLoggedUser(userId?: string) {
 
     dispatch(closeAllChats());
 
-    if (userId) localStorage.setItem('loggedUser', JSON.stringify(userId));
-    // Redux logged user query handles random user fetching if no userId is stored in localStorage
-    else localStorage.removeItem('loggedUser');
-
     await refetchLoggedUser();
+
+    if (localStorage) {
+      if (userId) localStorage.setItem('loggedUser', JSON.stringify(userId));
+      // Redux logged user query handles random user fetching if no userId is stored in localStorage
+      else localStorage.removeItem('loggedUser');
+    }
 
     setIsLoading(false);
   }

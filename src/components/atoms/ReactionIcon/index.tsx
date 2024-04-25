@@ -1,20 +1,27 @@
-import { Box, useTheme } from '@mui/material';
+import { Box, SvgIcon, useTheme } from '@mui/material';
+import { ReactionIconProps } from './types';
 
 import {
   AngryIcon,
   CareIcon,
-  HeartIcon,
-  LaughIcon,
+  HahaIcon,
   LikeIcon,
+  LoveIcon,
   SadIcon,
   WowIcon,
 } from '@/assets/reactionIcons';
 
-import Image from 'next/image';
-import { ReactionIconProps } from './types';
+const iconMap = {
+  like: LikeIcon,
+  love: LoveIcon,
+  care: CareIcon,
+  haha: HahaIcon,
+  wow: WowIcon,
+  sad: SadIcon,
+  angry: AngryIcon,
+};
 
 export default function ReactionIcon({
-  src,
   type,
   alt,
   size = 22,
@@ -27,32 +34,8 @@ export default function ReactionIcon({
   const theme = useTheme();
   const imageBorder = showBorder ? `2px solid ${theme.palette.background.paper}` : 'none';
 
-  switch (type) {
-    case 'like':
-      src = LikeIcon;
-      break;
-    case 'love':
-      src = HeartIcon;
-      break;
-    case 'care':
-      src = CareIcon;
-      break;
-    case 'haha':
-      src = LaughIcon;
-      break;
-    case 'wow':
-      src = WowIcon;
-      break;
-    case 'sad':
-      src = SadIcon;
-      break;
-    case 'angry':
-      src = AngryIcon;
-      break;
-  }
+  const ReactionIcon = (type && iconMap[type]) || LikeIcon;
 
-  //The image resolution is determined by the last number in the url * 20px
-  src = size > 30 ? src?.slice(0, -1) + '4' : src;
   return (
     <Box
       sx={{
@@ -60,21 +43,12 @@ export default function ReactionIcon({
         marginRight: overlap ? `-4px` : '',
         width: `${size}px`,
         height: `${size}px`,
+        border: imageBorder,
+        borderRadius: '50%',
         ...sx,
       }}
       {...rootProps}>
-      <Image
-        unoptimized
-        width={size}
-        height={size}
-        loading='eager'
-        src={src || LikeIcon}
-        alt={alt || 'reaction icon'}
-        style={{
-          border: imageBorder,
-          borderRadius: '50%',
-        }}
-      />
+      <SvgIcon component={ReactionIcon} viewBox='0 0 16 16' sx={{ width: size, height: size }} />
     </Box>
   );
 }

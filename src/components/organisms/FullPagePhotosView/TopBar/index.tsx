@@ -17,7 +17,7 @@ export default function TopBar({ setOpen }: TopBarProps) {
           <Icon icon='xmark' fontSize='24px' color={theme.palette.common.white} />
         </IconButton>
         <Link href='/' style={{ height: '40px', marginLeft: theme.spacing(1) }}>
-          <Image unoptimized src='/facebook-logo.svg' width={40} height={40} alt='Site logo' />
+          <Image unoptimized src='/clonedbook-logo-200.png' width={40} height={40} alt='Site logo' />
         </Link>
       </Stack>
     </>

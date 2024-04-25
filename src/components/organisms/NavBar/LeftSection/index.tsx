@@ -53,7 +53,7 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
             height: '40px',
             paddingRight: theme.spacing(1),
           }}>
-          <Image unoptimized src='/facebook-logo.svg' width={40} height={40} alt='Site logo' />
+          <Image unoptimized src='/clonedbook-logo-200.png' width={40} height={40} alt='Site logo' />
         </Link>
 
         <StyledSearchInput

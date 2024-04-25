@@ -41,12 +41,12 @@ export default function ReactionsPopper({
             <StyledAnimationWrapper>
               {reactionTypes.map((reactionType, i) => {
                 const slidein = keyframes`
-              from {
-                transform: translateX(${i * 25 - 50}px) scale(0.6);
-              }
-              to {
-                transform: translateX(0px) scale(1);
-              }`;
+                    from {
+                      transform: translateX(${i * 25 - 50}px) scale(0.6);
+                    }
+                    to {
+                      transform: translateX(0px) scale(1);
+                    }`;
                 return (
                   <IconButton
                     key={reactionType}

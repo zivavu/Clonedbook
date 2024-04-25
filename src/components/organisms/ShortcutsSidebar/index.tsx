@@ -1,6 +1,6 @@
 import { BoxProps, List, Typography, useTheme } from '@mui/material';
 
-import { StyledListItemAvatar, StyledListItem as StyledListItemButton, StyledRoot } from './styles';
+import { StyledListItem as StyledListItemButton, StyledListItemImage, StyledRoot } from './styles';
 
 import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
@@ -40,7 +40,7 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
                 cursor: isActive ? 'pointer' : 'not-allowed',
               }}>
               {IconImage && (
-                <StyledListItemAvatar
+                <StyledListItemImage
                   src={IconImage}
                   alt={key}
                   sx={{ opacity: isActive ? 1 : 0.7 }}

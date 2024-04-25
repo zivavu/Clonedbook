@@ -1,8 +1,8 @@
 import { ButtonBase, Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledButtonIcon, StyledButtonText, StyledPostTypeButton } from './styles';
+import { StyledButtonText, StyledPostTypeButton } from './styles';
 
-import { LiveEventIcon, LiveVideoIcon, PhotoVideoIcon } from '@/assets/pageIcons';
+import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import CreatePostDialog from '@/components/organisms/CreatePostDialog';
@@ -49,20 +49,16 @@ export default function WriteSomethingTile({
           </Stack>
           <Stack direction='row' position='relative' pt={theme.spacing(1)}>
             <StyledPostTypeButton focusRipple onClick={handleOpenDialog}>
-              <StyledButtonIcon width={24} height={24} alt='Live Video Icon' src={LiveVideoIcon} />
+              <Icon size='xl' icon='video' />
+
               <StyledButtonText>Live video</StyledButtonText>
             </StyledPostTypeButton>
             <StyledPostTypeButton focusRipple onClick={handleOpenDialog}>
-              <StyledButtonIcon
-                width={24}
-                height={24}
-                alt='Photo Video Icon'
-                src={PhotoVideoIcon}
-              />
+              <Icon size='xl' icon='photo-film' />
               <StyledButtonText>Photo/video</StyledButtonText>
             </StyledPostTypeButton>
             <StyledPostTypeButton focusRipple onClick={handleOpenDialog}>
-              <StyledButtonIcon width={24} height={24} alt='Live Event Icon' src={LiveEventIcon} />
+              <Icon size='xl' icon='people-group' />
               <StyledButtonText>Live event</StyledButtonText>
             </StyledPostTypeButton>
             <HorizontalContentDevider top='0' />

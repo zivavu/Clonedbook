@@ -24,6 +24,7 @@ import {
   faPenToSquare,
   faPeopleGroup,
   faPhone,
+  faPhotoFilm,
   faPlusCircle,
   faRepeat,
   faRightToBracket,
@@ -40,6 +41,7 @@ import {
   faUsers,
   faUsersLine,
   faVenusMars,
+  faVideo,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -119,6 +121,8 @@ const icons = [
   faSadCry,
   faSadTear,
   faBabyCarriage,
+  faPhotoFilm,
+  faVideo,
 ] as any;
 library.add(...icons);
 

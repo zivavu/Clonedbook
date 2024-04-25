@@ -4,6 +4,7 @@ import { IconProps } from './types';
 
 const Icon = ({ classes, ...rootProps }: IconProps) => {
   const theme = useTheme();
+
   return (
     <NoSsr>
       <FontAwesomeIcon

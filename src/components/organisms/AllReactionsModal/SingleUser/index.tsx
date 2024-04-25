@@ -20,7 +20,7 @@ export default function SingleUser({
       <Box position='relative'>
         <UserAvatar userId={profileId} mr={theme.spacing(1)} size={40} />
         <ReactionIcon
-          src={reactionsByTypes[reaction.type].icon}
+          type={reaction.type}
           sx={{ position: 'absolute', bottom: '-4px', right: '10px' }}
           showBorder={false}
           size={16}

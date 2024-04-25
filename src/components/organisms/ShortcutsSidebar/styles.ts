@@ -1,6 +1,6 @@
-import { Avatar, Box, ListItemButton, styled } from '@mui/material';
-import { NAVBAR_HEIGHT } from '../NavBar';
+import { Box, ListItemButton, styled } from '@mui/material';
 import Image from 'next/image';
+import { NAVBAR_HEIGHT } from '../NavBar';
 
 export const StyledRoot = styled(Box)(({ theme }) => ({
   position: 'sticky',
@@ -22,8 +22,8 @@ export const StyledListItem = styled(ListItemButton)(({ theme }) => ({
   paddingLeft: theme.spacing(1),
 }));
 
-export const StyledListItemAvatar = styled(Image)(({ theme }) => ({
+export const StyledListItemImage = styled(Image)(({ theme }) => ({
   marginRight: theme.spacing(1.5),
-  width: '36px',
-  height: '36px',
+  width: '32px',
+  height: '32px',
 }));

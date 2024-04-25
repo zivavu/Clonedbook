@@ -1,4 +1,4 @@
-import { Box, ButtonBase, CSSObject, useTheme } from '@mui/material';
+import { Box, BoxProps, ButtonBase, useTheme } from '@mui/material';
 
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
@@ -32,7 +32,7 @@ export default function UserAvatar({
 
   const user = useGetUserBasicInfo(userId);
   const px = `${size}px`;
-  const containerSx: CSSObject = {
+  const containerSx: BoxProps['sx'] = {
     minWidth: px,
     minHeight: px,
     maxWidth: px,

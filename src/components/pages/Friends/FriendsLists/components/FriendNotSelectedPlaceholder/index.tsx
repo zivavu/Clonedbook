@@ -1,8 +1,5 @@
 import { Stack, StackProps, Typography, useTheme } from '@mui/material';
 
-import { SelectProfileFromListPlaceholderIcon } from '@/assets/pageIcons';
-import Image from 'next/image';
-
 export default function FriendNotSelectedPlaceholder({ sx, ...rootProps }: StackProps) {
   const theme = useTheme();
   return (
@@ -16,13 +13,6 @@ export default function FriendNotSelectedPlaceholder({ sx, ...rootProps }: Stack
           transform: 'translate(-50%, -50%)',
           alignItems: 'center',
         }}>
-        <Image
-          unoptimized
-          src={SelectProfileFromListPlaceholderIcon}
-          width={120}
-          height={120}
-          alt='SelectProfileImage'
-        />
         <Typography
           variant='h3'
           textAlign='center'

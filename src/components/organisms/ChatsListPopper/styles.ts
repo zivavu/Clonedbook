@@ -1,18 +1,14 @@
-import { Popper, Stack, styled } from '@mui/material';
-
-export const StyledRoot = styled(Popper)(({ theme }) => ({
-  zIndex: theme.zIndex.appBar + 1,
-}));
+import { Stack, styled } from '@mui/material';
 
 export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
   zIndex: theme.zIndex.modal + 10,
-  position: 'relative',
+  position: 'fixed',
+  right: '10px',
   width: 'min(360px, 98vw)',
   maxHeight: '90vh',
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.spacing(1),
   boxShadow: theme.shadows[19],
-  transform: 'translateX(-10px)',
 
   [theme.breakpoints.down('xs')]: {
     transform: 'none',

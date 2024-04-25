@@ -1,65 +1,76 @@
-import * as icons from '@/assets/pageIcons';
+import {
+  BarChartImage,
+  EventsImage,
+  FavouritesImage,
+  FlagImage,
+  FriendsImage,
+  GameImage,
+  GroupImage,
+  MegaphoneImage,
+  MemoriesImage,
+  WorldImage,
+} from '@/assets/sidebarIcons';
 import { Shortcut } from './types';
 
 export const sidebarItems: Shortcut[] = [
   {
     key: 'friends',
-    icon: icons.FriendsIcon,
+    IconImage: FriendsImage,
     href: '/friends',
     active: true,
   },
   {
     key: 'groups',
-    icon: icons.GroupsIcon,
+    IconImage: GroupImage,
     href: '/groups',
     active: false,
   },
   {
     key: 'pages',
-    icon: icons.PagesIcon,
+    IconImage: FlagImage,
     href: '/pages',
     active: false,
   },
   {
-    key: 'events',
-    icon: icons.EventsIcon,
-    href: '/events',
+    key: 'news',
+    IconImage: MegaphoneImage,
+    href: '/news',
     active: false,
   },
   {
-    key: 'most-recent',
-    href: '/marketplace',
-    icon: icons.MostRecentIcon,
+    key: 'events',
+    IconImage: EventsImage,
+    href: '/events',
     active: false,
   },
   {
     key: 'favourites',
     href: '/favourites',
-    icon: icons.FavouritesIcon,
+    IconImage: FavouritesImage,
     active: false,
   },
   {
     key: 'games',
     href: '/games',
-    icon: icons.GamesIcon,
+    IconImage: GameImage,
     active: false,
   },
   {
     key: 'climate-and-science',
     href: '/climate-and-science',
-    icon: icons.ClimateAndScienceIcon,
-    active: false,
-  },
-  {
-    key: 'ad-center',
-    href: '/ad-center',
-    icon: icons.AdCenterIcon,
+    IconImage: WorldImage,
     active: false,
   },
   {
     key: 'ads-manager',
     href: '/ads-manager',
-    icon: icons.AdsManagerIcon,
+    IconImage: BarChartImage,
+    active: false,
+  },
+  {
+    key: 'memories',
+    href: '/memories',
+    IconImage: MemoriesImage,
     active: false,
   },
 ];

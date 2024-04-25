@@ -2,7 +2,7 @@ import { BoxProps, List, Typography, useTheme } from '@mui/material';
 
 import { StyledListItemAvatar, StyledListItem as StyledListItemButton, StyledRoot } from './styles';
 
-import { PlaceholderIcon } from '@/assets/pageIcons';
+import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useRouter } from 'next/router';
@@ -27,7 +27,7 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
           </Typography>
         </StyledListItemButton>
         {sidebarItems.map((item) => {
-          const { key, icon, href, active } = item;
+          const { key, IconImage, href, active } = item;
           const isActive = active && href;
           return (
             <StyledListItemButton
@@ -39,13 +39,13 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
               sx={{
                 cursor: isActive ? 'pointer' : 'not-allowed',
               }}>
-              <StyledListItemAvatar
-                src={icon || PlaceholderIcon}
-                alt={key}
-                sx={{
-                  opacity: isActive ? 1 : 0.7,
-                }}
-              />
+              {IconImage && (
+                <StyledListItemAvatar
+                  src={IconImage}
+                  alt={key}
+                  sx={{ opacity: isActive ? 1 : 0.7 }}
+                />
+              )}
               <Typography textTransform={'capitalize'} variant='body1'>
                 {key.split('-').join(' ')}
               </Typography>
@@ -53,6 +53,9 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
           );
         })}
       </List>
+      <Link href='https://www.freepik.com/' target='_blank'>
+        Designed by Freepik
+      </Link>
     </StyledRoot>
   );
 }

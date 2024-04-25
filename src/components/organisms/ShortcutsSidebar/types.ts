@@ -1,6 +1,8 @@
+import { StaticImageData } from 'next/image';
+
 export interface Shortcut {
   key: string;
-  icon?: string;
+  IconImage?: StaticImageData;
   href: string;
   active: boolean;
 }

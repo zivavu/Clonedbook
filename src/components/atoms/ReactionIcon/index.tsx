@@ -1,4 +1,4 @@
-import { Box, SvgIcon, useTheme } from '@mui/material';
+import { SvgIcon, useTheme } from '@mui/material';
 import { ReactionIconProps } from './types';
 
 import {
@@ -10,6 +10,7 @@ import {
   SadIcon,
   WowIcon,
 } from '@/assets/reactionIcons';
+import { StyledRoot } from './styles';
 
 const iconMap = {
   like: LikeIcon,
@@ -32,23 +33,28 @@ export default function ReactionIcon({
   ...rootProps
 }: ReactionIconProps) {
   const theme = useTheme();
-  const imageBorder = showBorder ? `2px solid ${theme.palette.background.paper}` : 'none';
 
   const ReactionIcon = (type && iconMap[type]) || LikeIcon;
 
   return (
-    <Box
+    <StyledRoot
       sx={{
-        zIndex: zIndex || 0,
-        marginRight: overlap ? `-4px` : '',
         width: `${size}px`,
         height: `${size}px`,
-        border: imageBorder,
-        borderRadius: '50%',
+        marginRight: overlap ? `-4px` : '0',
+        outline: showBorder ? `2px solid ${theme.palette.background.paper}` : 'none',
         ...sx,
       }}
       {...rootProps}>
-      <SvgIcon component={ReactionIcon} viewBox='0 0 16 16' sx={{ width: size, height: size }} />
-    </Box>
+      <SvgIcon
+        component={ReactionIcon}
+        viewBox='0 0 16 16'
+        sx={{
+          zIndex: zIndex || 0,
+          width: `${size - 2}px`,
+          height: `${size - 2}px`,
+        }}
+      />
+    </StyledRoot>
   );
 }

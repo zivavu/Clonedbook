@@ -47,7 +47,7 @@ export default function AllReactionsModal({
                 return (
                   <StyledToggleButton key={reaction.type} value={reaction.type}>
                     <Stack direction='row' alignItems='center'>
-                      <ReactionIcon src={reaction.icon} size={20} showBorder={false} />
+                      <ReactionIcon type={reaction.type} size={20} showBorder={false} />
                       <Typography variant='body1' fontWeight='400' ml={theme.spacing(1.3)}>
                         {reaction.count}
                       </Typography>

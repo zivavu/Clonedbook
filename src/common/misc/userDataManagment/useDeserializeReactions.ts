@@ -1,9 +1,9 @@
 import {
   AngryIcon,
   CareIcon,
-  HeartIcon,
-  LaughIcon,
+  HahaIcon,
   LikeIcon,
+  LoveIcon,
   SadIcon,
   WowIcon,
 } from '@/assets/reactionIcons';
@@ -38,8 +38,8 @@ export default function useDeserializeReactions(reactions: IReactionsMap) {
   const reactionsCount = Object.keys(reactions).length || 0;
   const reactionsByTypes: TReactionsByTypes = {
     like: { count: 0, icon: LikeIcon },
-    love: { count: 0, icon: HeartIcon },
-    haha: { count: 0, icon: LaughIcon },
+    love: { count: 0, icon: LoveIcon },
+    haha: { count: 0, icon: HahaIcon },
     wow: { count: 0, icon: WowIcon },
     sad: { count: 0, icon: SadIcon },
     angry: { count: 0, icon: AngryIcon },
@@ -52,7 +52,7 @@ export default function useDeserializeReactions(reactions: IReactionsMap) {
   }
 
   const largestByType = Object.entries(reactionsByTypes)
-    .map(([type, { count, icon }]) => ({ type, count, icon }))
+    .map(([type, { count, icon }]) => ({ type: type as TReactionType, count, icon }))
     .sort((a, b) => b.count - a.count);
 
   const usedReactions = Object.entries(reactionsByTypes).filter(

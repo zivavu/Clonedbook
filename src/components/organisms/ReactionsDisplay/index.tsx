@@ -66,10 +66,16 @@ export default function ReactionsDisplayBox({
             zIndex: 4,
           }}
         />
-        <Box display='flex' sx={{ pr: theme.spacing(0.25), pointerEvents: 'none' }}>
+        <Box display='flex' sx={{ pr: theme.spacing(0.5), pointerEvents: 'none' }}>
           {largestByType.slice(0, emotesCount).map((reaction, i) => {
             return (
-              <ReactionIcon key={reaction.type} src={reaction.icon} zIndex={2 - i} size={size} />
+              <ReactionIcon
+                key={reaction.type}
+                type={reaction.type}
+                zIndex={2 - i}
+                size={size}
+                showBorder
+              />
             );
           })}
         </Box>

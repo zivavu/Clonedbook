@@ -61,6 +61,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { Provider as StoreProvider } from 'react-redux';
 
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 const { library, config } = require('@fortawesome/fontawesome-svg-core');
 

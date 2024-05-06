@@ -11,6 +11,7 @@ import createEmotionCache from '@/design/createEmotionCache';
 import createEmotionServer from '@emotion/server/create-instance';
 import { AppType } from 'next/app';
 import { EmotionAppProps } from './_app';
+import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 
 interface EmotionDocumentProps extends DocumentProps {
   emotionStyleTags: JSX.Element[];

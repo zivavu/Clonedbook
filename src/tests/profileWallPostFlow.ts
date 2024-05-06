@@ -1,8 +1,8 @@
 import { Selector, fixture } from 'testcafe';
-import { BASE_HOME_URL } from './consts';
+import { BASE_URL } from './consts';
 const path = require('path');
 
-fixture('Post flow').page(`${BASE_HOME_URL}/profile`);
+fixture('Post flow').page(`${BASE_URL}/profile`);
 
 test('user can add, edit, and delete a post', async (t) => {
   await t.expect(Selector('[data-testid="new-post-button"]').exists).ok({ timeout: 4000 });

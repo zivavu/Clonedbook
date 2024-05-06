@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "testcafe chrome src/tests/"
+    "test:e2e": "testcafe chrome src/tests/",
+    "test:e2e-gh": "testcafe chrome:headless src/tests/"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",

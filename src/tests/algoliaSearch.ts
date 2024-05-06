@@ -1,7 +1,7 @@
 import { Selector, fixture } from 'testcafe';
-import { BASE_HOME_URL } from './consts';
+import { BASE_URL } from './consts';
 
-fixture('Search users').page(BASE_HOME_URL);
+fixture('Search users').page(BASE_URL);
 
 test('first search result contains user info and is clickable', async (t) => {
   const searchInput = Selector('[data-testid="search-input"]');

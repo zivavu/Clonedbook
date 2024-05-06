@@ -1,6 +1,6 @@
 import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import * as Pages from '@/components/pages';
-import Page from '@/templates/Page';
+import PageTemplate from '@/templates/Page';
 import { useRouter } from 'next/router';
 
 export default function ProfilePage() {
@@ -11,8 +11,10 @@ export default function ProfilePage() {
     user?.firstName && user.lastName && `${user?.firstName} ${user?.lastName} | Clonedbook`;
 
   return (
-    <Page title={pageTitle} description={`Profile page of ${user?.firstName} ${user?.lastName}`}>
-      <Pages.Profile userId={idParam} />
-    </Page>
+    <PageTemplate
+      title={pageTitle}
+      description={`Profile page of ${user?.firstName} ${user?.lastName}`}>
+      <Pages.ProfilePage userId={idParam} />
+    </PageTemplate>
   );
 }

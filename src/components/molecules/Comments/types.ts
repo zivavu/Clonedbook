@@ -4,7 +4,7 @@ import { IPost } from '@/types/post';
 import { StackProps } from '@mui/material';
 
 export interface CommentsProps extends StackProps {
-  elementType: TElementType;
+  parentElementType: TElementType;
   element: IPost | IAccountPicture;
   refetchElement: () => Promise<void> | void;
   commentInputRef: React.RefObject<HTMLTextAreaElement | null>;

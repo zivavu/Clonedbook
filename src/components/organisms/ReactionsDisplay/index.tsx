@@ -49,7 +49,7 @@ export default function ReactionsDisplayBox({
   return (
     <>
       {showModal && <ReactionsModal setShowModal={setShowModal} reactions={reactions} />}
-      <StyledRoot {...rootProps} sx={sx}>
+      <StyledRoot {...rootProps} sx={sx} data-testid='reactions-display'>
         <ButtonBase
           onClick={() => handleShowModal()}
           TouchRippleProps={{

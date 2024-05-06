@@ -34,8 +34,8 @@ export default function PostActions({
             {commentsLength === 0
               ? ''
               : commentsLength > 1
-              ? `${commentsLength} comments`
-              : `${commentsLength} comment`}
+                ? `${commentsLength} comments`
+                : `${commentsLength} comment`}
           </Typography>
         </InteractButton>
       </Stack>

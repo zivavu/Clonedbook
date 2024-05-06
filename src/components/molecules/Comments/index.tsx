@@ -12,7 +12,7 @@ export default function Comments({
   refetchElement,
   maxComments,
   commentInputRef,
-  elementType,
+  parentElementType,
   onlyUniqueUsers = false,
   displayMode = 'post',
   useAutoScroll = true,
@@ -53,7 +53,7 @@ export default function Comments({
             <Comment
               key={comment.id}
               refetchElement={refetchElement}
-              elementType={elementType}
+              elementType={parentElementType}
               comment={comment}
               element={element}
             />
@@ -63,7 +63,7 @@ export default function Comments({
       <CommentInput
         displayMode={displayMode}
         element={element}
-        parentElementType={elementType}
+        parentElementType={parentElementType}
         refetchElement={refetchElement}
         commentInputRef={commentInputRef}
         scrollToNewComment={scrollToNewComment}

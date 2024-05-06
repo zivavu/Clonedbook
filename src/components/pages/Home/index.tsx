@@ -4,7 +4,7 @@ import ShortcutsSidebar from '@/components/organisms/ShortcutsSidebar';
 import { BoxProps } from '@mui/material';
 import { StyledRoot } from './styles';
 
-export default function Home({ sx, ...rootProps }: BoxProps) {
+export default function HomePage({ sx, ...rootProps }: BoxProps) {
   return (
     <StyledRoot sx={sx} {...rootProps}>
       <ShortcutsSidebar />

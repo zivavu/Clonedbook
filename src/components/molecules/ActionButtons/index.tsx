@@ -70,6 +70,7 @@ export default function ActionButtons({
       />
 
       <StyledActionButton
+        data-testid='like-button'
         focusRipple
         value='like'
         ref={popperAnchorElRef}
@@ -100,6 +101,7 @@ export default function ActionButtons({
       </StyledActionButton>
 
       <StyledActionButton
+        data-testid='comment-button'
         focusRipple
         value='comment'
         onClick={handleCommentClick}
@@ -110,7 +112,7 @@ export default function ActionButtons({
         </Typography>
       </StyledActionButton>
 
-      <StyledActionButton focusRipple value='share' disabled>
+      <StyledActionButton data-testid='share-button' focusRipple value='share' disabled>
         <StyledActionIcon icon={['far', 'share-square']} color={theme.palette.text.disabled} />
         <Typography variant='subtitle2' fontWeight='400' color={theme.palette.text.disabled}>
           Share

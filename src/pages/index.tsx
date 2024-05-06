@@ -1,11 +1,11 @@
 import * as Pages from '@/components/pages';
 
-import Page from '@/templates/Page';
+import PageTemplate from '@/templates/Page';
 
 export default function Index() {
   return (
-    <Page>
-      <Pages.Home />
-    </Page>
+    <PageTemplate>
+      <Pages.HomePage />
+    </PageTemplate>
   );
 }

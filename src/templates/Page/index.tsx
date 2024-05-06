@@ -3,7 +3,7 @@ import { StyledRoot } from './styles';
 import Head from 'next/head';
 import { PageProps } from './types';
 
-export default function Page({ children, title, description }: PageProps) {
+export default function PageTemplate({ children, title, description }: PageProps) {
   return (
     <>
       <Head>

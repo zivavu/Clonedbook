@@ -89,8 +89,8 @@ export default function ElementInfo({
             {commentsLength === 0
               ? ''
               : commentsLength > 1
-              ? `${commentsLength} comments`
-              : `${commentsLength} comment`}
+                ? `${commentsLength} comments`
+                : `${commentsLength} comment`}
           </Typography>
           {element.shareCount > 0 && (
             <Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
@@ -110,7 +110,7 @@ export default function ElementInfo({
 
       <Comments
         element={element}
-        elementType={type}
+        parentElementType={type}
         maxComments='all'
         displayMode='picture'
         commentInputRef={commentInputRef}

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "testcafe firefox src/tests/"
+    "test:e2e": "testcafe chrome src/tests/"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",

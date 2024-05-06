@@ -53,10 +53,17 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
             height: '40px',
             paddingRight: theme.spacing(1),
           }}>
-          <Image unoptimized src='/clonedbook-logo-200.png' width={40} height={40} alt='Site logo' />
+          <Image
+            unoptimized
+            src='/clonedbook-logo-200.png'
+            width={40}
+            height={40}
+            alt='Site logo'
+          />
         </Link>
 
         <StyledSearchInput
+          data-testid='search-input'
           sx={{
             width: '240px',
             minWidth: searchPopperOpen ? '240px' : '40px',

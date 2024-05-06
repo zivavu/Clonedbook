@@ -100,6 +100,7 @@ export default function Comment({
         </Stack>
         <Stack ml={theme.spacing(6)} direction='row' alignItems='center' spacing={1}>
           <InteractButton
+            data-testid='like-comment-button'
             buttonRef={popperAnchorElRef}
             onMouseOver={handlePopperOpen}
             onMouseOut={handlePopperClose}

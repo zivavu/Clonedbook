@@ -16,6 +16,14 @@ export const StyledPostTypeButton = styled(ButtonBase)(({ theme }) => ({
   },
 }));
 
+export const StyledAddPostButton = styled(ButtonBase)(({ theme }) => ({
+  backgroundColor: theme.palette.secondary.main,
+  width: '100%',
+  borderRadius: '20px',
+  padding: theme.spacing(1, 2),
+  justifyContent: 'flex-start',
+}));
+
 export const StyledButtonIcon = styled(Icon)(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));

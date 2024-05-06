@@ -55,7 +55,11 @@ export default function SearchPortal({
                 maxHeight: 'min(80vh, 700px)',
               }}>
               {userHits.map((userId) => (
-                <FriendListItem key={userId} userId={userId} />
+                <FriendListItem
+                  key={userId}
+                  userId={userId}
+                  data-testid={`search-result-list-item-${userId}`}
+                />
               ))}
               {userHits.length === 0 ? (
                 !searchTerm ? (

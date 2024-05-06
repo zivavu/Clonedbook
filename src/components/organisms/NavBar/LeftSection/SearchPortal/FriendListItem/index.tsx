@@ -7,6 +7,7 @@ import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPubl
 import UserAvatar from '@/components/atoms/UserAvatar';
 import UserPreviewPopper from '@/components/molecules/UserPreviewPopper';
 import UserPreviewPopperHandlers from '@/components/molecules/UserPreviewPopper/UserPreviewPopperHandlers';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FriendListItemProps } from './types';
 
@@ -17,7 +18,7 @@ export default function FriendListItem({ userId, sx, ...rootProps }: FriendListI
   const user = useGetUserBasicInfo(userId);
   const friendshipStatus = useGetFriendshipStatus(userId);
 
-  if (!user) return null;
+  if (!user || !user.firstName || !user.lastName) return null;
   const {
     anchorElRef,
     handleMouseEnter,
@@ -34,7 +35,13 @@ export default function FriendListItem({ userId, sx, ...rootProps }: FriendListI
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         ref={anchorElRef}>
-        <StyledRoot sx={sx} {...rootProps} onClick={() => router.push(`/profile/${userId}`)}>
+        <StyledRoot
+          data-testid={`search-result-link-${userId}`}
+          sx={sx}
+          {...rootProps}
+          LinkComponent={Link}
+          //@ts-expect-error
+          href={`/profile/${userId}`}>
           <Stack direction='row' spacing={1.5}>
             <UserAvatar userId={userId} useLink={false} usePopper={false} size={36} />
             <Stack>
@@ -45,8 +52,8 @@ export default function FriendListItem({ userId, sx, ...rootProps }: FriendListI
                 {friendshipStatus === 'accepted'
                   ? 'Friends'
                   : friendshipStatus === 'req_received'
-                  ? 'Friend request received'
-                  : 'User'}
+                    ? 'Friend request received'
+                    : 'User'}
               </Typography>
             </Stack>
           </Stack>

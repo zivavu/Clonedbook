@@ -68,7 +68,12 @@ export default function CreatePostDialog({
             <PhotosInput photos={postPhotos} setPhotos={setPostPhotos} setErrors={setStatus} />
           </StyledMainContentStack>
           <Box p={2}>
-            <PostSubmitButton fullWidth variant='contained' type='submit' disabled={isLoading}>
+            <PostSubmitButton
+              data-testid='new-post-submit-button'
+              fullWidth
+              variant='contained'
+              type='submit'
+              disabled={isLoading}>
               <Typography fontWeight='400' variant='subtitle1' lineHeight='1.5rem'>
                 {isLoading ? 'Loading...' : 'Post'}
               </Typography>

@@ -70,7 +70,6 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
             handleOpenEditMode={() => setIsInPostTextEditMode((prev) => !prev)}
           />
           <PostTextArea
-            data-testid='post-content'
             post={post}
             isInEditMode={isInPostTextEditMode}
             handleCloseEditMode={() => setIsInPostTextEditMode(false)}

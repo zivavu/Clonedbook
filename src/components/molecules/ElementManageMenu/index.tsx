@@ -58,23 +58,18 @@ export default function ElementManageMenu({
   if (!loggedUser || loggedUser.id !== ownerId) return null;
   return (
     <StyledRoot
-      sx={sx}
-      {...rootProps}
+      data-testid='manage-element-menu'
       disableScrollLock
       onClose={handleClose}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-      }}>
-      <StyledMenuItem onClick={handleOpenEditMode}>
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      sx={sx}
+      {...rootProps}>
+      <StyledMenuItem onClick={handleOpenEditMode} data-testid='edit-element-button'>
         <Typography mr={1}>Edit</Typography>
       </StyledMenuItem>
 
-      <StyledMenuItem onClick={handleDeleteClick}>
+      <StyledMenuItem onClick={handleDeleteClick} data-testid='delete-element-button'>
         <Typography>Delete</Typography>
         {isDeleteLoading && (
           <CircularProgress

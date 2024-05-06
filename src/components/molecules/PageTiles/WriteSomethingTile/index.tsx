@@ -1,6 +1,6 @@
-import { ButtonBase, Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 
-import { StyledButtonText, StyledPostTypeButton } from './styles';
+import { StyledAddPostButton, StyledButtonText, StyledPostTypeButton } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import UserAvatar from '@/components/atoms/UserAvatar';
@@ -32,20 +32,14 @@ export default function WriteSomethingTile({
         <Stack position='relative' spacing={1.5}>
           <Stack direction='row'>
             <UserAvatar userId={loggedUser.id} mr={theme.spacing(1)} />
-            <ButtonBase
-              sx={{
-                backgroundColor: theme.palette.secondary.main,
-                width: '100%',
-                borderRadius: '20px',
-                padding: theme.spacing(1, 2),
-                justifyContent: 'flex-start',
-              }}
+            <StyledAddPostButton
+              data-testid='new-post-button'
               focusRipple
               onClick={handleOpenDialog}>
               <Typography color={theme.palette.text.secondary} variant='subtitle1' fontWeight={390}>
                 What&apos;s on Your mind, {loggedUser.firstName}?
               </Typography>
-            </ButtonBase>
+            </StyledAddPostButton>
           </Stack>
           <Stack direction='row' position='relative' pt={theme.spacing(1)}>
             <StyledPostTypeButton focusRipple onClick={handleOpenDialog}>

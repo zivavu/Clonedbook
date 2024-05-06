@@ -1,8 +1,7 @@
 import { Selector, t } from 'testcafe';
+import { BASE_HOME_URL } from './consts';
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
-
-fixture('Home Page').page(BASE_URL);
+fixture('Home Page').page(BASE_HOME_URL);
 
 async function waitForPosts(selector: Selector, timeout: number) {
   const startTime = Date.now();

@@ -69,6 +69,7 @@ export default function ElementOwnerInfoDisplay({
         </Stack>
         {loggedUser?.id === element.ownerId && (
           <IconButton
+            data-testid='manage-element-menu-button'
             onClick={() => setIsMenuOpen(true)}
             ref={postManageAnchorEl}
             sx={{

@@ -49,6 +49,7 @@ export default function CommentEdit({
   return (
     <form onSubmit={onSubmit} style={{ width: '100%' }}>
       <StyledCommentInput
+        data-testid='edit-comment-input'
         multiline
         fullWidth
         size='small'

@@ -12,6 +12,7 @@ export default function PostTextInput({ postTextRef, user, postPhotos }: PostTex
 
   return (
     <StyledPostTextField
+      data-testid='new-post-text-input'
       variant='outlined'
       multiline
       placeholder={placeholder}

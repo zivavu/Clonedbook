@@ -12,7 +12,7 @@ import {
 import useChangeLoggedUser from '@/common/misc/userDataManagment/useChangeLoggedUser';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
-import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
+import { NoBarScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useTheme as useNextThemes } from 'next-themes';
 import { useRouter } from 'next/router';
@@ -34,7 +34,7 @@ export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: P
   return (
     <StyledRoot open={open} anchorEl={anchorEl} sx={sx} {...rootProps}>
       <StyledContentWrapper>
-        <InvisibleScrollableStack spacing={1} paddingY={1.5}>
+        <NoBarScrollableStack spacing={1} paddingY={1.5}>
           <Box paddingX={1}>
             <StyledLoggedUserButton onClick={handleRedirectToProfile}>
               <UserAvatar userId={loggedUser.id} mr={1} size={36} />
@@ -88,7 +88,7 @@ export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: P
               <Typography variant='subtitle2'>GitHub Repo</Typography>
             </StyledListButton>
           </List>
-        </InvisibleScrollableStack>
+        </NoBarScrollableStack>
       </StyledContentWrapper>
     </StyledRoot>
   );

@@ -36,6 +36,7 @@ export default function ElementTextEditInput({
   return (
     <Box mb={1} sx={sx} {...rootProps} width='100%'>
       <OutlinedInput
+        data-testid='edit-element-text-content'
         value={postEditText}
         fullWidth
         multiline
@@ -58,19 +59,14 @@ export default function ElementTextEditInput({
         }}
         endAdornment={
           <IconButton
+            data-testid='edit-element-submit'
             onClick={handleSubmit}
             sx={{
               height: '32px',
               width: '32px',
               display: postEditText.length > 0 ? 'flex' : 'none',
             }}>
-            <PaperPlaneRightIcon
-              color='info'
-              sx={{
-                width: '20px',
-                height: '20px',
-              }}
-            />
+            <PaperPlaneRightIcon color='info' sx={{ width: '20px', height: '20px' }} />
           </IconButton>
         }
         onChange={(e) => setPostEditText(e.target.value)}

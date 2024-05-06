@@ -54,6 +54,6 @@ export const StyledScrollableStack = styled(Stack)(({ theme }) => ({
   ...getScrollableStyles(theme),
 }));
 
-export const StyledInvisibleScrollableStack = styled(Stack)(({ theme }) => ({
+export const StyledNoBarScrollableStack = styled(Stack)(({ theme }) => ({
   ...getInvisibleScrollStyles(theme),
 }));

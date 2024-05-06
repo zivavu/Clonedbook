@@ -1,6 +1,6 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 
-import { InvisibleScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
+import { NoBarScrollableStack } from '@/components/atoms/scrollables/ScrollableStack';
 import FriendsTile from '@/components/molecules/PageTiles/FriendsTile';
 import IntroTile from '@/components/molecules/PageTiles/IntroTile';
 import PicturesTile from '@/components/molecules/PageTiles/PicturesTile';
@@ -25,7 +25,7 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
     <>
       <Stack direction={mainDirection} spacing={2} sx={sx} {...rootProps}>
         {profileData && (
-          <InvisibleScrollableStack
+          <NoBarScrollableStack
             width={mainDirection === 'column' ? '100%' : '45%'}
             spacing={2}
             borderRadius={1}
@@ -39,7 +39,7 @@ export default function PostsTab({ userId, profileData, sx, ...rootProps }: Post
             <IntroTile user={profileData} />
             <PicturesTile user={profileData} />
             <FriendsTile user={profileData} />
-          </InvisibleScrollableStack>
+          </NoBarScrollableStack>
         )}
         <Stack width={mainDirection === 'column' ? '100%' : '55%'} spacing={2}>
           {loggedUser?.id === profileData.id && (

@@ -82,6 +82,7 @@ export default function PhotosInput({
               handleFileUpload(e);
             }}>
             <input
+              data-testid='new-post-image-input'
               type='file'
               id='file-upload'
               multiple

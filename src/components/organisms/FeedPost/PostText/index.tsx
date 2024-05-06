@@ -28,7 +28,7 @@ export default function PostTextArea({
         />
       ) : (
         hasText && (
-          <>
+          <Box data-testid='post-text-content'>
             {isTextLong ? (
               <Typography variant='body1'>{text}</Typography>
             ) : (
@@ -36,7 +36,7 @@ export default function PostTextArea({
                 {text}
               </Typography>
             )}
-          </>
+          </Box>
         )
       )}
     </Box>

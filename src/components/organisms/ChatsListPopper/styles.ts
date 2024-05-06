@@ -4,6 +4,7 @@ export const StyledContentWrapper = styled(Stack)(({ theme }) => ({
   zIndex: theme.zIndex.modal + 10,
   position: 'fixed',
   right: '10px',
+  top: theme.spacing(7),
   width: 'min(360px, 98vw)',
   maxHeight: '90vh',
   backgroundColor: theme.palette.background.paper,

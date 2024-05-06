@@ -45,13 +45,7 @@ export default function UserAvatar({
   const shadow = showBorder ? `0px 0px 0px 2px ${theme.palette.secondary.main}` : 'none';
   return (
     <>
-      <Box
-        sx={{
-          ...containerSx,
-          ...sx,
-        }}
-        ref={anchorElRef}
-        {...rootProps}>
+      <Box sx={{ ...containerSx, ...sx }} ref={anchorElRef} {...rootProps}>
         {useLink && userId ? (
           <ButtonBase
             sx={{

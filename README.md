@@ -107,6 +107,11 @@ Users are also indexed on <a href="https://www.algolia.com/">Algolia</a> for sea
   - Send new ones
   - Custom chat emoji
 
+### Tests
+
+- End-to-end tests using TestCafe
+- Tests cover key user flows such as searching for users, infinite scrolling on the home page, and creating/editing/deleting posts on the profile page
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## :technologist: Technologies used

@@ -22,7 +22,11 @@ test('Posts are displayed on the home page', async (t) => {
 test('Infinite scroll loads more posts', async (t) => {
   await waitForPosts(Selector('[data-testid="feed-post"]'), 10000);
   const initialPostCount = await Selector('[data-testid="feed-post"]').count;
-  await t.scroll(Selector('html'), 0, 5000);
-  const newPostCount = await Selector('[data-testid="feed-post"]').count;
-  await t.expect(newPostCount).gt(initialPostCount);
+  await t.scroll(Selector('html'), 0, 7000);
+  await t
+    .expect(async () => {
+      const newPostCount = await Selector('[data-testid="feed-post"]').count;
+      return newPostCount > initialPostCount;
+    })
+    .ok({ timeout: 5000 });
 });

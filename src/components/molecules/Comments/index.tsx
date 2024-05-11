@@ -24,7 +24,7 @@ export default function Comments({
 
   const sortedComments = Object.values(comments || {})
     .filter((picture) => !!picture.createdAt)
-    .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
+    .sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
 
   const commentsToRender = onlyUniqueUsers
     ? sortedComments.filter((comment, i, self) => {

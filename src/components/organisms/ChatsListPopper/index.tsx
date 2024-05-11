@@ -27,7 +27,7 @@ export default function ChatsListPopper({
     loggedUserChats &&
     [...loggedUserChats].sort(
       (a, b) =>
-        getChatNewestMessage(b).createdAt.seconds - getChatNewestMessage(a).createdAt.seconds,
+        getChatNewestMessage(b).createdAt?.seconds - getChatNewestMessage(a).createdAt?.seconds,
     );
 
   if (!open) return null;

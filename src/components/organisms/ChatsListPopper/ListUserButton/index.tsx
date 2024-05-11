@@ -23,7 +23,7 @@ export default function ListUserButton({
   const lastMessage = getChatNewestMessage(chat);
   const handleChatOpen = useHandleOpenChat(friendId);
 
-  const { largestDiff } = getDateDiffs(lastMessage.createdAt.seconds);
+  const { largestDiff } = getDateDiffs(lastMessage.createdAt?.seconds);
   return (
     <StyledRoot
       sx={sx}

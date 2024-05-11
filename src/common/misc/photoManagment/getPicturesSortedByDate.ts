@@ -9,6 +9,6 @@ export default function getPicturesSortedByDate({ picturesMap, type }: IGetPictu
   return picturesMap
     ? Object.values(picturesMap[type])
         .filter((picture) => !!picture.createdAt)
-        .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+        .sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds)
     : [];
 }

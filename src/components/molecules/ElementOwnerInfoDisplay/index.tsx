@@ -64,7 +64,7 @@ export default function ElementOwnerInfoDisplay({
             lineHeight='1rem'
           />
           <Typography variant='body2' color={theme.palette.text.secondary}>
-            {getShortDate(createdAt.seconds, 'week')}
+            {getShortDate(createdAt?.seconds, 'week')}
           </Typography>
         </Stack>
         {loggedUser?.id === element.ownerId && (

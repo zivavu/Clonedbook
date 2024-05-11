@@ -123,7 +123,7 @@ export default function Comment({
           </InteractButton>
 
           <Typography variant='body2' color={theme.palette.text.secondary}>
-            {getShortDate(comment.createdAt.seconds)}
+            {getShortDate(comment.createdAt?.seconds)}
           </Typography>
         </Stack>
       </StyledRoot>

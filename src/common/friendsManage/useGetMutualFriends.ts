@@ -12,6 +12,6 @@ export default function useGetMutualFriends(friendId: string) {
       .filter((friend) => {
         return userFriends[friend.id];
       })
-      .sort((b, a) => b.acceptedAt.seconds - a.acceptedAt.seconds) || [];
+      .sort((b, a) => b?.acceptedAt?.seconds - a?.acceptedAt?.seconds) || [];
   return mutualFriends;
 }

@@ -35,7 +35,7 @@ export default function ContactsSidebar({ sx, ...rootProps }: BoxProps) {
           const friendData = everyUserBasicInfo[friend.id];
           return { basicInfo: friendData, ...friend } as IFriendWithBasicInfo;
         })
-        .sort((a, b) => b.acceptedAt.seconds - a.acceptedAt.seconds);
+        .sort((a, b) => b?.acceptedAt?.seconds - a?.acceptedAt?.seconds);
       setFriends(friendsWithBasicInfo);
     }
   }, [loggedUser, everyUserBasicInfo]);

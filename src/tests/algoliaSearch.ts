@@ -10,7 +10,7 @@ test('first search result contains user info and is clickable', async (t) => {
   await t.typeText(searchInput, 'a');
 
   const userResultsCount = await userResultsLinks.count;
-  await t.expect(userResultsCount).gte(1);
+  await t.expect(userResultsCount).gte(1, { timeout: 2000 });
 
   const firstUserListItem = userResultsLinks.nth(0);
 

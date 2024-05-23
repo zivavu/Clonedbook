@@ -5,7 +5,7 @@ fixture('Search users').page(BASE_URL);
 
 test('first search result contains user info and is clickable', async (t) => {
   const searchInput = Selector('[data-testid="search-input"]');
-  const userResultsLinks = Selector('a[data-testid^="search-result-list-item-"]');
+  const userResultsLinks = Selector('[data-testid^="search-result-list-item-"]');
 
   await t.expect(searchInput.exists).ok({ timeout: 2000 });
 

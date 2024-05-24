@@ -45,6 +45,8 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
+import { Analytics } from '@vercel/analytics/react';
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import type { AppProps } from 'next/app';
@@ -61,7 +63,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { Provider as StoreProvider } from 'react-redux';
 
-import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 const { library, config } = require('@fortawesome/fontawesome-svg-core');
 
@@ -137,6 +138,7 @@ export default function MyApp(props: EmotionAppProps) {
   const { Component, emotionCache = localEmotionCache, pageProps } = props;
   return (
     <NextThemesProvider themes={['dark', 'light']} defaultTheme='dark'>
+      <Analytics />
       <EmotionCacheProvider value={emotionCache}>
         <ThemeModeProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -30,9 +30,11 @@ export default function PostTextArea({
         hasText && (
           <Box data-testid='post-text-content'>
             {isTextLong ? (
-              <Typography variant='body1'>{text}</Typography>
+              <Typography variant='body1' whiteSpace='pre-wrap'>
+                {text}
+              </Typography>
             ) : (
-              <Typography variant='h4' fontWeight='400' lineHeight='1.7rem'>
+              <Typography variant='h4' fontWeight='400' lineHeight='1.7rem' whiteSpace='pre-wrap'>
                 {text}
               </Typography>
             )}

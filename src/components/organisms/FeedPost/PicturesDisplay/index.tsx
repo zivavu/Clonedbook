@@ -103,6 +103,7 @@ export default function PicturesDisplay({
               {pictures.slice(2, 5).map((picture, i) => {
                 return i === 2 && picLength > 5 ? (
                   <LastPictureOverlay
+                    key={picture.url}
                     picturesLength={picLength}
                     gridColumn={`${i * 2 + 1} / ${i * 2 + 3}`}>
                     <Picture

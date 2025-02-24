@@ -5,14 +5,35 @@ const nextConfig = {
     emotion: true,
   },
   images: {
-    domains: [
-      'www.facebook.com',
-      'firebasestorage.googleapis.com',
-      'loremflickr.com',
-      'source.unsplash.com',
-      'picsum.photos',
-      'cloudflare-ipfs.com',
-      'static.xx.fbcdn.net',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.facebook.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'loremflickr.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cloudflare-ipfs.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.xx.fbcdn.net',
+      },
     ],
   },
   webpack(config) {

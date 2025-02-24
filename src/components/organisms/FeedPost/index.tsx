@@ -81,6 +81,7 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
           <Box data-testid='post-image' mt={theme.spacing(1)}>
             <PicturesDisplay
               pictures={postPictures as IPictureWithPlaceholders[]}
+              key={post.id}
               post={post}
               refetchPost={refetchPost}
             />

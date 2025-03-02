@@ -1,32 +1,24 @@
-import { Box, Stack } from '@mui/material';
-
-import Birthdate from '@/components/atoms/accountDetails/detailCategories/Birthdate';
-import Email from '@/components/atoms/accountDetails/detailCategories/Email';
-import Gender from '@/components/atoms/accountDetails/detailCategories/Gender';
-import Phone from '@/components/atoms/accountDetails/detailCategories/Phone';
-import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import AccountDetailCategory from '@/components/atoms/accountDetails/AccountDetailCategory';
+import { Stack, Typography } from '@mui/material';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 
-export default function ContactAndBasicInfo({ profileData, sx, ...rootProps }: SectionProps) {
-  const { data: loggedUser } = useGetLoggedUserQuery({});
-  const isOwner = loggedUser?.id === profileData.id;
+export default function ContactsAndBasicInfoSection({ profileData }: SectionProps) {
   return (
-    <SectionRoot sx={sx} {...rootProps} spacing={4} mb={2}>
-      <Box>
-        <SectionTitle pb={isOwner ? 2 : 1}>Contact info</SectionTitle>
-        <Stack spacing={3}>
-          <Email userData={profileData} />
-          <Phone userData={profileData} />
-        </Stack>
-      </Box>
-      <Box>
-        <SectionTitle pb={isOwner ? 2 : 1}> Basic info</SectionTitle>
-        <Stack spacing={3}>
-          <Gender userData={profileData} />
-          <Birthdate userData={profileData} />
-        </Stack>
-      </Box>
+    <SectionRoot>
+      <SectionTitle>Contact info</SectionTitle>
+      <Stack pl={1} mt={1} spacing={1}>
+        <AccountDetailCategory detailType='email' userData={profileData} />
+        <AccountDetailCategory detailType='phone' userData={profileData} />
+      </Stack>
+
+      <Typography variant='subtitle1' fontWeight='bold' mt={2}>
+        Basic info
+      </Typography>
+      <Stack pl={1} mt={1} spacing={1}>
+        <AccountDetailCategory detailType='gender' userData={profileData} />
+        <AccountDetailCategory detailType='birthdate' userData={profileData} />
+      </Stack>
     </SectionRoot>
   );
 }

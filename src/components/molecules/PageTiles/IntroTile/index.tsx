@@ -1,10 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 
-import BornIn from '@/components/atoms/accountDetails/detailCategories/BornIn';
-import GoesTo from '@/components/atoms/accountDetails/detailCategories/GoesTo';
-import LivesIn from '@/components/atoms/accountDetails/detailCategories/LivesIn';
-import Relationship from '@/components/atoms/accountDetails/detailCategories/Relationship';
-import WorksAt from '@/components/atoms/accountDetails/detailCategories/WorksAt';
+import AccountDetailCategory from '@/components/atoms/accountDetails/AccountDetailCategory';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { StyledPageTile, StyledPageTileHeader } from '../styles';
 import { IntroTileProps } from './types';
@@ -22,11 +18,41 @@ export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
           <HorizontalContentDevider bottom={0} />
         </Box>
         <Stack spacing={2}>
-          <LivesIn userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
-          <WorksAt userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
-          <GoesTo userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
-          <Relationship userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
-          <BornIn userData={user} iconSize={iconSize} showPlaceholder={false} preventEdit />
+          <AccountDetailCategory
+            detailType='livesIn'
+            userData={user}
+            iconSize={iconSize}
+            showPlaceholder={false}
+            preventEdit
+          />
+          <AccountDetailCategory
+            detailType='worksAt'
+            userData={user}
+            iconSize={iconSize}
+            showPlaceholder={false}
+            preventEdit
+          />
+          <AccountDetailCategory
+            detailType='goesTo'
+            userData={user}
+            iconSize={iconSize}
+            showPlaceholder={false}
+            preventEdit
+          />
+          <AccountDetailCategory
+            detailType='relationship'
+            userData={user}
+            iconSize={iconSize}
+            showPlaceholder={false}
+            preventEdit
+          />
+          <AccountDetailCategory
+            detailType='bornin'
+            userData={user}
+            iconSize={iconSize}
+            showPlaceholder={false}
+            preventEdit
+          />
         </Stack>
       </Stack>
     </StyledPageTile>

@@ -6,9 +6,9 @@ import OverviewSection from '../AboutTile/Sections/OverviewSection';
 import PlacesLived from '../AboutTile/Sections/PlacesLived';
 import WorkAndEducationSection from '../AboutTile/Sections/WorkAndEducationSection';
 import { StyledFullSizePageTile, StyledPageTileHeader } from '../styles';
-import ContactAndBasicInfo from './Sections/ContactsAndBasicInfoSection';
 import { StyledContentWrapper, StyledListContainer, StyledListItemButton } from './styles';
 import { AboutTileProps, TAboutTileSections } from './types';
+import ContactsAndBasicInfoSection from './Sections/ContactsAndBasicInfoSection';
 
 export default function AboutTile({ profileData, sx, ...rootProps }: AboutTileProps) {
   const theme = useTheme();
@@ -57,7 +57,7 @@ export default function AboutTile({ profileData, sx, ...rootProps }: AboutTilePr
           }}>
           {currentSection === 'overview' && <OverviewSection profileData={profileData} />}
           {currentSection === 'contact and basic info' && (
-            <ContactAndBasicInfo profileData={profileData} />
+            <ContactsAndBasicInfoSection profileData={profileData} />
           )}
           {currentSection === 'work and education' && (
             <WorkAndEducationSection profileData={profileData} />

@@ -1,23 +1,22 @@
-import { Box, Stack } from '@mui/material';
-
-import BornIn from '@/components/atoms/accountDetails/detailCategories/BornIn';
-import LivesIn from '@/components/atoms/accountDetails/detailCategories/LivesIn';
-import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
+import AccountDetailCategory from '@/components/atoms/accountDetails/AccountDetailCategory';
+import { Stack, Typography } from '@mui/material';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
 
-export default function PlacesLived({ profileData, sx, ...rootProps }: SectionProps) {
-  const { data: loggedUser } = useGetLoggedUserQuery({});
-  const isOwner = loggedUser?.id === profileData.id;
+export default function PlacesLived({ profileData, ...rootProps }: SectionProps) {
   return (
-    <SectionRoot sx={sx} {...rootProps} spacing={4} mb={2}>
-      <Box>
-        <SectionTitle pb={isOwner ? 2 : 1}>Places lived</SectionTitle>
-        <Stack spacing={3}>
-          <LivesIn userData={profileData} />
-          <BornIn userData={profileData} />
-        </Stack>
-      </Box>
+    <SectionRoot {...rootProps}>
+      <SectionTitle>Places lived</SectionTitle>
+      <Stack spacing={1} pl={1} mt={1}>
+        <Typography variant='subtitle1' fontWeight='bold'>
+          Current town
+        </Typography>
+        <AccountDetailCategory detailType='livesIn' userData={profileData} />
+        <Typography variant='subtitle1' fontWeight='bold' mt={2}>
+          Hometown
+        </Typography>
+        <AccountDetailCategory detailType='bornin' userData={profileData} />
+      </Stack>
     </SectionRoot>
   );
 }

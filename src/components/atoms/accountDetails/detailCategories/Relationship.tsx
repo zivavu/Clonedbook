@@ -39,3 +39,20 @@ export default function Relationship({
     />
   );
 }
+
+// Export a helper function to use in AccountDetailCategory
+export function getRelationshipDetailConfig() {
+  // This is just a placeholder for the AccountDetailCategory
+  // The actual rendering will be handled by the Relationship component
+  return {
+    accountDetail: {
+      icon: 'heart',
+      label: 'Relationship',
+      value: null,
+      placeholder: 'No relationship info to show',
+      editPlaceholder: 'Add relationship info',
+    },
+    editHandler: async () => Promise.resolve(),
+    useCustomComponent: true, // Signal to use the custom component instead
+  };
+}

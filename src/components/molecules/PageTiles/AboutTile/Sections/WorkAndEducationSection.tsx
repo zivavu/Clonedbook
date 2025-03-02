@@ -1,9 +1,6 @@
 import { Box, Stack } from '@mui/material';
 
-import College from '@/components/atoms/accountDetails/detailCategories/College';
-import HighSchool from '@/components/atoms/accountDetails/detailCategories/HighSchool';
-import JobTitle from '@/components/atoms/accountDetails/detailCategories/JobTitle';
-import WorksAt from '@/components/atoms/accountDetails/detailCategories/WorksAt';
+import AccountDetailCategory from '@/components/atoms/accountDetails/AccountDetailCategory';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
@@ -17,15 +14,15 @@ export default function WorkAndEducationSection({ profileData, sx, ...rootProps 
       <Box>
         <SectionTitle pb={isOwner ? 2 : 1}>Work</SectionTitle>
         <Stack spacing={3}>
-          <WorksAt userData={profileData} />
-          <JobTitle userData={profileData} />
+          <AccountDetailCategory detailType='worksAt' userData={profileData} />
+          <AccountDetailCategory detailType='jobTitle' userData={profileData} />
         </Stack>
       </Box>
       <Box>
         <SectionTitle pb={isOwner ? 2 : 1}>Education</SectionTitle>
         <Stack spacing={3}>
-          <College userData={profileData} />
-          <HighSchool userData={profileData} />
+          <AccountDetailCategory detailType='college' userData={profileData} />
+          <AccountDetailCategory detailType='highSchool' userData={profileData} />
         </Stack>
       </Box>
     </SectionRoot>

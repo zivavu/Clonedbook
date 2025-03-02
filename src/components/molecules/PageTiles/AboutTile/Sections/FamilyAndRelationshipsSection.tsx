@@ -1,11 +1,33 @@
 import { Box, Stack, Typography } from '@mui/material';
 
+import useGetUserBasicInfo from '@/common/misc/userDataManagment/useGetUsersPublicData';
 import AccountDetailCategory from '@/components/atoms/accountDetails/AccountDetailCategory';
-import FamilyMember from '@/components/atoms/accountDetails/detailCategories/FamilyMember';
+import FamilyAccountDetail from '@/components/atoms/accountDetails/accountDetailItems/FamillyAccountDetail';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
-import { TKinship } from '@/types/user';
+import { TKinship, TPartnerStatus } from '@/types/user';
 import { SectionRoot, SectionTitle } from '../styles';
 import { SectionProps } from '../types';
+
+type FamilyMemberProps = {
+  relativeId: string;
+  kinshipType: TKinship | TPartnerStatus;
+  pictureSize?: number;
+};
+
+function FamilyMemberDisplay({ relativeId, kinshipType, pictureSize = 40 }: FamilyMemberProps) {
+  const relative = useGetUserBasicInfo(relativeId);
+  if (!relative) return null;
+
+  const isPartner =
+    kinshipType === 'in relation' || kinshipType === 'engaged' || kinshipType === 'married';
+  const kindship = kinshipType[0].toUpperCase() + kinshipType.slice(1);
+  const label = isPartner
+    ? `${kindship} with ${relative.firstName} ${relative.lastName}`
+    : kindship;
+
+  return <FamilyAccountDetail label={label} user={relative} pictureSize={pictureSize} />;
+}
+
 export default function FamilyAndRelationshipsSection({
   profileData,
   sx,
@@ -29,7 +51,7 @@ export default function FamilyAndRelationshipsSection({
         <SectionTitle pb={isOwner ? 2 : 1}>Relationship</SectionTitle>
         <Stack spacing={2}>
           {!!partnertId && status && (
-            <FamilyMember kinshipType={status as TKinship} relativeId={partnertId} />
+            <FamilyMemberDisplay kinshipType={status as TKinship} relativeId={partnertId} />
           )}
           {!partnertId && (
             <AccountDetailCategory detailType='relationship' userData={profileData} />
@@ -40,7 +62,11 @@ export default function FamilyAndRelationshipsSection({
             </Typography>
           )}
           {familyMembers.map((member) => (
-            <FamilyMember key={member.id} kinshipType={member.kindship} relativeId={member.id} />
+            <FamilyMemberDisplay
+              key={member.id}
+              kinshipType={member.kindship}
+              relativeId={member.id}
+            />
           ))}
         </Stack>
       </Box>

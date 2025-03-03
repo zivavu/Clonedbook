@@ -6,7 +6,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import EmojiPicker, { EmojiClickData, Theme } from 'emoji-picker-react';
 
 import { StyledRoot } from './styles';
 
@@ -93,7 +93,11 @@ export default function MessageInputArea({
         placement='top-end'
         style={{ zIndex: 1300 }}>
         <ClickAwayListener onClickAway={() => setShowEmojiPicker(false)}>
-          <EmojiPicker onEmojiClick={onEmojiClick} />
+          <EmojiPicker
+            onEmojiClick={onEmojiClick}
+            theme={theme.palette.mode as Theme}
+            skinTonesDisabled
+          />
         </ClickAwayListener>
       </Popper>
     </StyledRoot>

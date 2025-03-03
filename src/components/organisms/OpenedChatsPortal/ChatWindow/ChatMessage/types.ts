@@ -3,4 +3,5 @@ import { StackProps } from '@mui/material';
 
 export interface ChatMessageProps extends StackProps {
   message: IMessage;
+  chatColor?: string;
 }

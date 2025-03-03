@@ -6,7 +6,12 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { ChatMessageProps } from './types';
 
-export default function ChatMessage({ message, sx, ...rootProps }: ChatMessageProps) {
+export default function ChatMessage({
+  message,
+  chatColor = '#6699cc',
+  sx,
+  ...rootProps
+}: ChatMessageProps) {
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const isOwner = message.senderId === loggedUser?.id;
@@ -37,8 +42,8 @@ export default function ChatMessage({ message, sx, ...rootProps }: ChatMessagePr
           backgroundColor: isEmojiOnly
             ? 'transparent'
             : isOwner
-            ? '#6699cc'
-            : theme.palette.secondary.dark,
+              ? chatColor
+              : theme.palette.secondary.dark,
           color: isOwner ? theme.palette.common.white : theme.palette.text.primary,
         }}>
         <Typography

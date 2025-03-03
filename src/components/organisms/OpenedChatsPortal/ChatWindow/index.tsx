@@ -32,6 +32,9 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
 
   const [isLoading, setIsLoading] = useState(isOtherUserLoading || isChatLoading || isFetching);
 
+  // Get the custom chat color or use a default
+  const chatColor = chatData?.chatColor || '#0084ff';
+
   const scrollableStackRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     scrollableStackRef.current?.scrollTo(0, scrollableStackRef.current.scrollHeight);
@@ -44,7 +47,7 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
 
   return (
     <>
-      <StyledRoot sx={sx} {...rootProps}>
+      <StyledRoot sx={{ ...sx, borderTop: `3px solid ${chatColor}` }} {...rootProps}>
         <Stack
           direction='row'
           p={1}
@@ -74,6 +77,7 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
+                color: chatColor,
               }}
             />
           </Box>
@@ -83,12 +87,23 @@ export default function ChatWindow({ chatId, sx, ...rootProps }: ChatWindowProps
             {chatData?.messages.map((message, i, arr) => {
               const isNextMessageFromSameUser = arr[i + 1]?.senderId === message.senderId;
               const messageSpacing = isNextMessageFromSameUser ? 0.5 : 1.2;
-              return <ChatMessage key={message.id} message={message} mb={messageSpacing} />;
+              return (
+                <ChatMessage
+                  key={message.id}
+                  message={message}
+                  mb={messageSpacing}
+                  chatColor={chatColor}
+                />
+              );
             })}
           </StyledScrollableStack>
         )}
 
-        <MessageInputArea chatId={chatId} chatEmoji={chatData?.chatEmoji || '❤️'} />
+        <MessageInputArea
+          chatId={chatId}
+          chatEmoji={chatData?.chatEmoji || '❤️'}
+          chatColor={chatColor}
+        />
       </StyledRoot>
       <GlobalStyles
         styles={{

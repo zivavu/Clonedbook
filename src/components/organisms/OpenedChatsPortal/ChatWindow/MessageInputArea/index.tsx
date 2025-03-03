@@ -1,11 +1,19 @@
-import { IconButton, TextField, Typography, useTheme } from '@mui/material';
+import {
+  ClickAwayListener,
+  IconButton,
+  Popper,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 import { StyledRoot } from './styles';
 
 import Icon from '@/components/atoms/Icon/Icon';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import createUserChatMessage from '@/services/chats/createUserChatMessage';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { MessageInputAreaProps } from './types';
 
 export default function MessageInputArea({
@@ -17,13 +25,21 @@ export default function MessageInputArea({
   const theme = useTheme();
   const { data: loggedUser } = useGetLoggedUserQuery({});
   const [textValue, setTextValue] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiButtonRef = useRef<HTMLButtonElement>(null);
 
   const onSubmit = async () => {
     if (!loggedUser || !textValue) return;
     await createUserChatMessage({ chatId, senderId: loggedUser.id, text: textValue });
     setTextValue('');
   };
-  const onEmojiClick = () => {
+
+  const onEmojiClick = (emojiData: EmojiClickData) => {
+    setTextValue((prev) => prev + emojiData.emoji);
+    setShowEmojiPicker(false);
+  };
+
+  const onQuickEmojiClick = () => {
     if (!loggedUser) return;
     createUserChatMessage({ chatId, senderId: loggedUser.id, text: chatEmoji });
   };
@@ -54,23 +70,32 @@ export default function MessageInputArea({
           marginLeft: theme.spacing(1),
         }}
       />
+      <IconButton
+        ref={emojiButtonRef}
+        onClick={() => setShowEmojiPicker((prev) => !prev)}
+        sx={{ width: '34px', height: '34px', mr: 1 }}>
+        <Icon icon='face-smile' style={{ fontSize: '20px' }} />
+      </IconButton>
       {textValue ? (
-        <IconButton sx={{ width: '34px', height: '34px' }}>
-          <Icon
-            icon='paper-plane'
-            style={{
-              fontSize: '20px',
-              color: '#6699cc',
-            }}
-          />
+        <IconButton sx={{ width: '34px', height: '34px' }} onClick={onSubmit}>
+          <Icon icon='paper-plane' style={{ fontSize: '20px', color: '#6699cc' }} />
         </IconButton>
       ) : (
-        <IconButton sx={{ width: '34px', height: '34px' }} onClick={onEmojiClick}>
+        <IconButton sx={{ width: '34px', height: '34px' }} onClick={onQuickEmojiClick}>
           <Typography color={theme.palette.common.black} fontSize={22}>
             {chatEmoji}
           </Typography>
         </IconButton>
       )}
+      <Popper
+        open={showEmojiPicker}
+        anchorEl={emojiButtonRef.current}
+        placement='top-end'
+        style={{ zIndex: 1300 }}>
+        <ClickAwayListener onClickAway={() => setShowEmojiPicker(false)}>
+          <EmojiPicker onEmojiClick={onEmojiClick} />
+        </ClickAwayListener>
+      </Popper>
     </StyledRoot>
   );
 }

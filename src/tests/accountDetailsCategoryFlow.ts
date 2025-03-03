@@ -195,6 +195,30 @@ test('Edit, verify and revert all account details', async (t) => {
         const originalGender = originalValues[detailType] || 'Male';
         await editGenderField(t, originalGender);
       } else if (detailType === 'birthdate') {
+        // Parse the original date string
+        const originalDate = originalValues[detailType] || '';
+        if (originalDate) {
+          // Extract day, month, and year from the date string
+          // Expected format: "January 1, 1990" or similar
+          const dateParts = originalDate.match(/(\w+)\s+(\d+),\s+(\d+)/);
+
+          if (dateParts) {
+            const [_, month, day, year] = dateParts;
+
+            await editDateField(t, {
+              day: day,
+              month: month,
+              year: year,
+            });
+          } else {
+            // If we can't parse the date, set a default value
+            await editDateField(t, {
+              day: '1',
+              month: 'January',
+              year: '1980',
+            });
+          }
+        }
       } else {
         await editTextField(t, detailType, originalValues[detailType] || '');
       }

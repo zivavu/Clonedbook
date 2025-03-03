@@ -1,18 +1,36 @@
 import Image, { ImageProps } from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingPlaceholder from '../LoadingPlaceholder';
 
 interface ImageWithGradientLoadingProps extends Omit<ImageProps, 'src'> {
   src: string | undefined;
+  type?: 'profile' | 'background';
 }
 
 export default function ImageWithGradientLoading({
   alt,
   src,
   sizes,
+  type,
   ...rootProps
 }: ImageWithGradientLoadingProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [showPlaceholder, setShowPlaceholder] = useState(false);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (isLoading && type === 'profile') {
+      timeoutId = setTimeout(() => {
+        setShowPlaceholder(true);
+      }, 2000);
+    }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [isLoading, type]);
+
   return (
     <>
       {src && (
@@ -25,7 +43,10 @@ export default function ImageWithGradientLoading({
           {...rootProps}
         />
       )}
-      {isLoading && <LoadingPlaceholder />}
+      {isLoading && !showPlaceholder && <LoadingPlaceholder />}
+      {isLoading && type === 'profile' && showPlaceholder && (
+        <Image src='/no-profile-picture-icon.svg' alt='Profile placeholder' fill />
+      )}
     </>
   );
 }

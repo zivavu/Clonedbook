@@ -75,7 +75,7 @@ export default function ChatSettingsDialog({
       <DialogTitle>Chat Settings</DialogTitle>
       <DialogContent>
         <Stack spacing={3} sx={{ mt: 1 }}>
-          <div>
+          <Box>
             <Typography variant='subtitle1' sx={{ mb: 1 }}>
               Chat Emoji
             </Typography>
@@ -99,9 +99,9 @@ export default function ChatSettingsDialog({
               width='100%'
               height='250px'
             />
-          </div>
+          </Box>
 
-          <div>
+          <Box>
             <Typography variant='subtitle1' sx={{ mb: 1 }}>
               Chat Color
             </Typography>
@@ -128,7 +128,7 @@ export default function ChatSettingsDialog({
                 Selected Color
               </Typography>
             </Box>
-          </div>
+          </Box>
         </Stack>
       </DialogContent>
       <DialogActions>

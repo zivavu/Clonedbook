@@ -87,9 +87,7 @@ const UserImage = ({ user, alt, sizes }: UserImageProps) => {
       src={user?.pictureUrl || '/no-profile-picture-icon.svg'}
       alt={alt || `${user?.firstName} ${user?.lastName}'s Profile Picture`}
       sizes={sizes}
-      style={{
-        borderRadius: '50%',
-      }}
+      style={{ borderRadius: '50%' }}
     />
   );
 };

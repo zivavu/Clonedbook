@@ -47,6 +47,7 @@ export default function UserInfoSection({
               <ImageWithGradientLoading
                 alt={`${userData?.firstName}'s Profile Picture`}
                 sizes='350px'
+                type='profile'
                 src={profilePictureData?.image.url || ''}
                 blurDataURL={profilePictureData?.image.blurDataUrl || ''}
                 placeholder='blur'

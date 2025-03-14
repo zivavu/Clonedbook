@@ -11,10 +11,10 @@ import Icon from '@/components/atoms/Icon/Icon';
 import HorizontalContentDevider from '@/components/atoms/contentDeviders/HorizontalContentDevider';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import useCreateNewPost from '@/services/posts/useCreateNewPost';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import PhotosInput from './PhotosInput';
 import PostTextInput from './PostTextInput';
-import StatusFeed from './StatusFeed';
 import UserInfo from './UserInfo';
 import { CreatePostDialogProps } from './types';
 
@@ -31,6 +31,28 @@ export default function CreatePostDialog({
   const postTextRef = useRef('');
 
   const { createPost, isLoading, status, setStatus } = useCreateNewPost();
+
+  // Display toasts whenever status changes
+  useEffect(() => {
+    status.forEach((statusItem) => {
+      switch (statusItem.sevariety) {
+        case 'error':
+          toast.error(statusItem.content);
+          break;
+        case 'warning':
+          toast.warning(statusItem.content);
+          break;
+        case 'success':
+          toast.success(statusItem.content);
+          break;
+        case 'info':
+          toast.info(statusItem.content);
+          break;
+        default:
+          toast(statusItem.content);
+      }
+    });
+  }, [status]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,8 +72,6 @@ export default function CreatePostDialog({
     <Dialog open onClose={() => setIsOpen(false)}>
       <form onSubmit={handleSubmit} style={{ display: 'contents' }}>
         <StyledRoot sx={sx} {...rootProps}>
-          <StatusFeed status={status} setStatus={setStatus} />
-
           <Stack p={theme.spacing(2)} position='relative'>
             <Typography textAlign='center' variant='h4' fontWeight='500'>
               Create Post

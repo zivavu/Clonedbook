@@ -64,6 +64,7 @@ import { EmotionCache, CacheProvider as EmotionCacheProvider } from '@emotion/re
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { Provider as StoreProvider } from 'react-redux';
+import { Toaster } from 'sonner';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 const { library, config } = require('@fortawesome/fontawesome-svg-core');
@@ -150,6 +151,7 @@ export default function MyApp(props: EmotionAppProps) {
               <NavBar />
               <Component {...pageProps} />
               <OpenedChatsPortal />
+              <Toaster position='top-center' richColors />
             </StoreProvider>
           </LocalizationProvider>
         </ThemeModeProvider>

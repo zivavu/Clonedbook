@@ -7,6 +7,7 @@ import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export interface ICreatePostStatus {
   content: string;
@@ -25,10 +26,13 @@ export default function useCreateNewPost() {
 
   async function createPost({ postPhotos, postText, refetchPostById }: ICreatePost) {
     if (!loggedUser) return;
+
+    toast.info('Uploading...');
     setStatus((prev) => [...prev, { content: 'Uploading...', sevariety: 'info' }]);
     setIsLoading(true);
 
     if (postText.length === 0 && postPhotos.length === 0) {
+      toast.warning('Post must contain text or photo');
       setStatus((prev) => [
         ...prev,
         { content: 'Post must contain text or photo', sevariety: 'warning' },
@@ -69,7 +73,7 @@ export default function useCreateNewPost() {
             url: photo,
             blurDataUrl: optimizedPhotos[i].blurUrl,
             dominantHex: optimizedPhotos[i].dominantHex,
-          } as IPictureWithPlaceholders),
+          }) as IPictureWithPlaceholders,
       );
 
       const post: IPost = {
@@ -90,6 +94,7 @@ export default function useCreateNewPost() {
 
       await refetchPostById(postId);
     } catch (err) {
+      toast.error('Problem with creating post occurred. Try again');
       setStatus((prev) => [
         { content: 'Problem with creating post occurred. Try again', sevariety: 'error' },
         ...prev,

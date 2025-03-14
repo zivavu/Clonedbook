@@ -10,6 +10,7 @@ import {
 
 import Icon from '@/components/atoms/Icon/Icon';
 import { ChangeEvent, DragEvent, useState } from 'react';
+import { toast } from 'sonner';
 import UserPhotosDisplay from './UserPhotosDisplay';
 import { PhotosInputProps } from './types';
 
@@ -37,6 +38,7 @@ export default function PhotosInput({
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         if (photos.some((photo) => photo.name === file.name && photo.size === file.size)) {
+          toast.warning('You have already added this photo');
           setErrors((prev) => [
             ...prev,
             { content: `You have already added this photo`, sevariety: 'warning' },
@@ -44,6 +46,7 @@ export default function PhotosInput({
           continue;
         }
         if (file.size / 1024 / 1024 > fileMiBLimit) {
+          toast.warning(`Photo is too big (max ${fileMiBLimit}MiB)`);
           setErrors((prev) => [
             ...prev,
             { content: `Photo is too big(max ${fileMiBLimit}MiB)`, sevariety: 'warning' },

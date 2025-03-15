@@ -32,26 +32,66 @@ export default function CreatePostDialog({
 
   const { createPost, isLoading, status, setStatus } = useCreateNewPost();
 
-  // Display toasts whenever status changes
+  // Store active toast IDs
+  const activeToastsRef = useRef<Record<string, boolean>>({});
+
+  // Display or update toasts whenever status changes
   useEffect(() => {
-    status.forEach((statusItem) => {
+    if (status.length === 0) return;
+
+    // Get the status item
+    const statusItem = status[0];
+    const toastId = statusItem.id || 'default';
+
+    if (!activeToastsRef.current[toastId]) {
+      // Create new toast
+      activeToastsRef.current[toastId] = true;
+
       switch (statusItem.sevariety) {
         case 'error':
-          toast.error(statusItem.content);
+          toast.error(statusItem.content, { id: toastId });
           break;
         case 'warning':
-          toast.warning(statusItem.content);
+          toast.warning(statusItem.content, { id: toastId });
           break;
         case 'success':
-          toast.success(statusItem.content);
+          toast.success(statusItem.content, {
+            id: toastId,
+            onDismiss: () => {
+              delete activeToastsRef.current[toastId];
+            },
+          });
           break;
         case 'info':
-          toast.info(statusItem.content);
+          toast.info(statusItem.content, { id: toastId });
           break;
         default:
-          toast(statusItem.content);
+          toast(statusItem.content, { id: toastId });
       }
-    });
+    } else {
+      // Update existing toast
+      switch (statusItem.sevariety) {
+        case 'error':
+          toast.error(statusItem.content, { id: toastId });
+          break;
+        case 'warning':
+          toast.warning(statusItem.content, { id: toastId });
+          break;
+        case 'success':
+          toast.success(statusItem.content, {
+            id: toastId,
+            onDismiss: () => {
+              delete activeToastsRef.current[toastId];
+            },
+          });
+          break;
+        case 'info':
+          toast.info(statusItem.content, { id: toastId });
+          break;
+        default:
+          toast(statusItem.content, { id: toastId });
+      }
+    }
   }, [status]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

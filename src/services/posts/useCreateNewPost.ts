@@ -7,11 +7,11 @@ import { uuidv4 } from '@firebase/util';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 export interface ICreatePostStatus {
   content: string;
   sevariety: 'error' | 'warning' | 'info' | 'success';
+  id?: string;
 }
 interface ICreatePost {
   postText: string;
@@ -27,18 +27,24 @@ export default function useCreateNewPost() {
   async function createPost({ postPhotos, postText, refetchPostById }: ICreatePost) {
     if (!loggedUser) return;
 
-    toast.info('Uploading...');
-    setStatus((prev) => [...prev, { content: 'Uploading...', sevariety: 'info' }]);
+    // Clear previous status
+    setStatus([]);
+
+    // Create a unique ID for this upload process
+    const toastId = uuidv4();
+
+    // Set initial status
+    setStatus([{ id: toastId, content: 'Uploading...', sevariety: 'info' }]);
     setIsLoading(true);
 
     if (postText.length === 0 && postPhotos.length === 0) {
-      toast.warning('Post must contain text or photo');
-      setStatus((prev) => [
-        ...prev,
-        { content: 'Post must contain text or photo', sevariety: 'warning' },
+      setStatus([
+        { id: toastId, content: 'Post must contain text or photo', sevariety: 'warning' },
       ]);
+      setIsLoading(false);
       return;
     }
+
     const postId = uuidv4();
     const pictureUuids = postPhotos.map(() => uuidv4());
 
@@ -92,12 +98,18 @@ export default function useCreateNewPost() {
 
       await setDoc(postDocRef, post);
 
+      // Update status to success
+      setStatus([{ id: toastId, content: 'Post created successfully!', sevariety: 'success' }]);
+
       await refetchPostById(postId);
     } catch (err) {
-      toast.error('Problem with creating post occurred. Try again');
-      setStatus((prev) => [
-        { content: 'Problem with creating post occurred. Try again', sevariety: 'error' },
-        ...prev,
+      // Update status to error
+      setStatus([
+        {
+          id: toastId,
+          content: 'Problem with creating post occurred. Try again',
+          sevariety: 'error',
+        },
       ]);
     } finally {
       setIsLoading(false);

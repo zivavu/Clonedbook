@@ -151,7 +151,7 @@ export default function MyApp(props: EmotionAppProps) {
               <NavBar />
               <Component {...pageProps} />
               <OpenedChatsPortal />
-              <Toaster position='top-center' richColors />
+              <Toaster position='bottom-right' richColors />
             </StoreProvider>
           </LocalizationProvider>
         </ThemeModeProvider>

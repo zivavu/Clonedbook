@@ -21,88 +21,126 @@ Data is stored in Firebase and optimized to reduce document reads by consolidati
 
 ## :sparkles: Implemented Features
 
-### Interface
+### Interface & Design
 
-- Built with MUI
-- Supports both light and dark modes (with state persistence)
-- Fully responsive design
-- Modular component structure
+- Built with MUI (Material-UI) with custom theme and component overrides
+- Supports both light and dark modes with state persistence using `next-themes`
+- Fully responsive design with custom breakpoints
+- Custom scrollbars and animations
+- Modular component structure following Atomic Design methodology
+- Beautiful loading states with gradient placeholders
+- Font Awesome icons integration
 
 ### Home Page
 
 - Interactive post feed with infinite scrolling, sorted by date
-- Contacts sidebar displaying recently added friends and search functionality
-- Shortcuts sidebar (most links not yet implemented)
+- Smart post layout adaptation based on content length
+- Contacts sidebar with:
+  - Recently added friends display
+  - Real-time friend search functionality
+  - Online status indicators
+- Shortcuts sidebar with quick navigation links
 
 ### Profile Page
 
-- User info including background, profile picture, mutual friends, and friendship management buttons
-- Built with modular, responsive tiles
-- Tabs for:
-  - Posts
-  - About
-  - Friends
-  - Photos
+- Rich user info display including:
+  - Background and profile pictures
+  - Mutual friends counter
+  - Smart friendship management buttons
+- Modular tile-based layout with:
+  - Posts Feed
+  - About Section with multiple categories:
+    - Overview
+    - Contact and Basic Info
+    - Work and Education
+    - Family and Relationships
+    - Places Lived
+  - Friends Grid
+  - Photos Collection
 
 ### Friends Page
 
-- Tabs for:
-  - Home
+- Comprehensive friendship management with tabs for:
+  - Home Overview
   - Friend Requests
   - Friend Suggestions
-  - All Friends
-- Preview users using the original profile page layout and manage friendship status
+  - All Friends List
+- Interactive user preview cards
+- Friendship status management
+- Smart mutual friends display
 
 ### Navbar
 
-- **Search Box**
-  - User search powered by [Algolia](https://www.algolia.com/)
-  - Displays results as a user list with autocomplete functionality
-- **Chats Popper**
-  - Displays all chats and recent messages
-  - Allows users to open chats and view all messages
-- **Logged User Popper**
-  - Displays the logged-in user
-  - Option to switch to a different random user
-  - Dark mode toggle
+- **Smart Search**
+  - Powered by [Algolia](https://www.algolia.com/) for lightning-fast results
+  - Real-time user search with autocomplete
+  - Rich preview cards for search results
+- **Chat System**
+  - Persistent chat list with recent messages
+  - Responsive chat window management
+  - Unread messages indicators
+- **User Menu**
+  - Quick profile access
+  - Theme toggle (Light/Dark mode)
+  - Session management
 
-### Posts & Pictures
+### Posts & Media
 
-- Create posts (image uploads optimized for size and quality using Canvas)
-- Optimized image sizes using `next/image`
-- View posts and pictures in custom full-screen portals
-- Comment, react, edit, and delete functionality
+- Rich post creation with:
+  - Text formatting
+  - Multiple image upload support
+  - Smart image optimization:
+    - Automatic resizing
+    - WebP conversion
+    - Dominant color extraction
+    - Blur placeholder generation
+- Interactive post viewing:
+  - Full-screen image viewer
+  - Smart layout adaptation
+  - Rich text formatting
+- Complete post management:
+  - Create, edit, delete operations
+  - Rich media attachments
+  - Privacy controls
 
-### Comments
+### Social Interactions
 
-- Ability to react, edit, and delete comments
+- **Comments System**
+  - Nested comments support
+  - Rich text formatting
+  - Edit and delete capabilities
+  - Smart pagination
+- **Reactions System**
+  - Multiple reaction types
+  - Real-time updates
+  - Reaction summaries
+  - User lists for each reaction
+- **Friend System**
+  - Friend requests
+  - Friendship suggestions
+  - Mutual friends tracking
+  - Relationship status management
 
-### Reactions
+### Performance Optimizations
 
-- Custom component for displaying the most popular reactions with a count
-- Custom popper for choosing reactions
-- Custom dialog for viewing all reactions and their owners
+- Image optimization pipeline:
+  - Automatic WebP conversion
+  - Resolution optimization
+  - Dominant color extraction
+  - Blur hash generation
+- Infinite scrolling with smart pagination
+- Real-time updates using Redux
+- Optimized bundle size with dynamic imports
+- Vercel Analytics integration
 
-### User Preview Popper
-
-- Displays user profile picture, name, and mutual friends when hovering over links or photos
-- Includes buttons for managing friendship status
-
-### Chats Portal
-
-- Limits the number of open chats based on screen size
-- Persistent chat list
-- Displays all messages in each chat
-- Supports sending new messages
-- Custom emoji support
-
-### Tests
+### Testing
 
 - End-to-end tests with TestCafe
-- Coverage includes key user flows such as:
-  - Searching for users
-  - Infinite scrolling on the home page
-  - Creating, editing, and deleting posts on the profile page
+- Key user flows coverage:
+  - User search functionality
+  - Infinite scroll behavior
+  - Post CRUD operations
+  - Profile interactions
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

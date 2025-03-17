@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
+
+// Set this to true to disable image optimization, false to enable it
+const DISABLE_IMAGE_OPTIMIZATION = true;
+
 const nextConfig = {
   reactStrictMode: false,
   compiler: {
     emotion: true,
   },
   images: {
+    unoptimized: DISABLE_IMAGE_OPTIMIZATION,
     remotePatterns: [
       {
         protocol: 'https',

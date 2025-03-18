@@ -97,7 +97,7 @@ export default function ChatSettingsDialog({
               theme={theme.palette.mode as Theme}
               skinTonesDisabled
               width='100%'
-              height='250px'
+              height='550px'
             />
           </Box>
 

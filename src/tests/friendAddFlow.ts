@@ -23,7 +23,7 @@ fixture('Friend Add Flow').page(`${BASE_URL}`);
  * 3. Unfriend (as recipient)
  *
  * It uses direct navigation to bypass UI elements when possible
- * and takes screenshots at critical steps for debugging.
+ * and includes detailed logging for debugging.
  */
 test('Friend request flow - core operations', async () => {
   // Define selectors for each action button
@@ -46,9 +46,9 @@ test('Friend request flow - core operations', async () => {
   });
 
   // Step 1: Visit sender's profile as recipient to check relationship status
+  console.log(`Step 1: Visiting sender's profile (${TEST_USERS.SENDER})`);
   await t.navigateTo(`${BASE_URL}/profile/${TEST_USERS.SENDER}`);
   await t.wait(2000);
-  await t.takeScreenshot('sender-profile-initial.png');
 
   // Check if we need to unfriend first (if already friends)
   try {
@@ -68,9 +68,9 @@ test('Friend request flow - core operations', async () => {
   }
 
   // Step 2: Visit the recipient's profile as sender
+  console.log(`Step 2: Visiting recipient's profile (${TEST_USERS.RECIPIENT})`);
   await t.navigateTo(`${BASE_URL}/profile/${TEST_USERS.RECIPIENT}`);
   await t.wait(2000);
-  await t.takeScreenshot('recipient-profile.png');
 
   // Try to send a friend request
   console.log('Looking for Add Friend button');
@@ -87,7 +87,6 @@ test('Friend request flow - core operations', async () => {
       await t.click(addFriendButton);
       await t.wait(2000);
       console.log('Clicked the button that might be Add Friend');
-      await t.takeScreenshot('after-send-request.png');
     } else {
       // Try a more generic selector
       const anyButton = Selector('button');
@@ -113,9 +112,9 @@ test('Friend request flow - core operations', async () => {
   }
 
   // Step 3: Visit the sender's profile as recipient
+  console.log(`Step 3: Visiting sender's profile as recipient (${TEST_USERS.SENDER})`);
   await t.navigateTo(`${BASE_URL}/profile/${TEST_USERS.SENDER}`);
   await t.wait(2000);
-  await t.takeScreenshot('sender-profile-with-request.png');
 
   // Try to accept friend request
   console.log('Looking for Accept button');
@@ -181,17 +180,15 @@ test('Friend request flow - core operations', async () => {
     console.log(`Error accepting friend request: ${error}`);
   }
 
-  await t.takeScreenshot('after-accept.png');
-
   // Step 4: Verify in friends list
+  console.log('Step 4: Navigating to friends list to verify friendship');
   await t.navigateTo(`${BASE_URL}/friends/?tab=all_friends`);
   await t.wait(2000);
-  await t.takeScreenshot('friends-list.png');
 
   // Step 5: Go back to sender's profile to unfriend
+  console.log(`Step 5: Navigating back to sender's profile to unfriend (${TEST_USERS.SENDER})`);
   await t.navigateTo(`${BASE_URL}/profile/${TEST_USERS.SENDER}`);
   await t.wait(2000);
-  await t.takeScreenshot('sender-profile-friended.png');
 
   // Try to unfriend
   console.log('Looking for Friends button to unfriend');
@@ -260,12 +257,10 @@ test('Friend request flow - core operations', async () => {
     console.log(`Error unfriending: ${error}`);
   }
 
-  await t.takeScreenshot('after-unfriend.png');
-
   // Step 6: Verify no longer in friends list
+  console.log('Step 6: Navigating to friends list to verify removal');
   await t.navigateTo(`${BASE_URL}/friends/?tab=all_friends`);
   await t.wait(2000);
-  await t.takeScreenshot('friends-list-after-unfriend.png');
 
   console.log('Test completed - all steps executed');
 });

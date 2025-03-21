@@ -20,7 +20,8 @@ export default function TabSelectList({
       <List>
         <StyledListItemButton
           selected={currentTab === 'home'}
-          onClick={() => setCurrentTab('home')}>
+          onClick={() => setCurrentTab('home')}
+          data-testid='friends-tab-home'>
           <StyledIconContainer sx={{ backgroundColor: theme.palette.primary.main }}>
             <Icon fontSize={18} icon='house-user' />
           </StyledIconContainer>
@@ -29,7 +30,8 @@ export default function TabSelectList({
 
         <StyledListItemButton
           selected={currentTab === 'recieved_requests'}
-          onClick={() => setCurrentTab('recieved_requests')}>
+          onClick={() => setCurrentTab('recieved_requests')}
+          data-testid='friends-tab-recieved_requests'>
           <StyledIconContainer>
             <Icon fontSize={18} icon='user-check' />
           </StyledIconContainer>
@@ -39,7 +41,8 @@ export default function TabSelectList({
 
         <StyledListItemButton
           selected={currentTab === 'suggestions'}
-          onClick={() => setCurrentTab('suggestions')}>
+          onClick={() => setCurrentTab('suggestions')}
+          data-testid='friends-tab-suggestions'>
           <StyledIconContainer>
             <Icon fontSize={18} icon='user-plus' />
           </StyledIconContainer>
@@ -49,7 +52,8 @@ export default function TabSelectList({
 
         <StyledListItemButton
           selected={currentTab === 'all_friends'}
-          onClick={() => setCurrentTab('all_friends')}>
+          onClick={() => setCurrentTab('all_friends')}
+          data-testid='friends-tab-all_friends'>
           <StyledIconContainer>
             <Icon fontSize={18} icon='users-line' />
           </StyledIconContainer>

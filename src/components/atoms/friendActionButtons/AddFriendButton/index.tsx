@@ -118,7 +118,8 @@ export default function AddFriendButton({
         disabled={disabled || isLoading}
         sx={{ ...buttonSx, ...sx }}
         {...rootProps}
-        onClick={clickHandler}>
+        onClick={clickHandler}
+        data-testid='add-friend-button'>
         {isLoading ? (
           <Box width='24px' pr={0.5}>
             <CircularProgress thickness={6} size={18} sx={{ color: theme.palette.common.white }} />
@@ -140,18 +141,24 @@ export default function AddFriendButton({
             <StyledPopperContent>
               <MenuList>
                 {userStatus === 'accepted' && (
-                  <StyledMenuItem onClick={() => handleUpdateFriendshipStatus(null)}>
+                  <StyledMenuItem
+                    onClick={() => handleUpdateFriendshipStatus(null)}
+                    data-testid='unfriend-menu-item'>
                     <Icon icon='user-xmark' fontSize={16} />
                     <Typography ml={1}>Unfriend</Typography>
                   </StyledMenuItem>
                 )}
                 {userStatus === 'req_received' && (
                   <>
-                    <StyledMenuItem onClick={() => handleUpdateFriendshipStatus('accepted')}>
+                    <StyledMenuItem
+                      onClick={() => handleUpdateFriendshipStatus('accepted')}
+                      data-testid='accept-friend-request'>
                       <Icon icon='user-check' fontSize={16} />
                       <Typography ml={1}>Accept</Typography>
                     </StyledMenuItem>
-                    <StyledMenuItem onClick={() => handleUpdateFriendshipStatus(null)}>
+                    <StyledMenuItem
+                      onClick={() => handleUpdateFriendshipStatus(null)}
+                      data-testid='reject-friend-request'>
                       <Icon icon='user-xmark' fontSize={16} />
                       <Typography ml={1}>Reject</Typography>
                     </StyledMenuItem>

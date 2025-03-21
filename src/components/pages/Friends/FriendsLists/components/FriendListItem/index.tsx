@@ -22,7 +22,12 @@ export default function FriendListItem({
   if (!friendData) return null;
   const { firstName, lastName } = friendData;
   return (
-    <StyledRoot sx={sx} {...rootProps} onClick={() => setShownProfile(userId)}>
+    <StyledRoot
+      sx={sx}
+      {...rootProps}
+      onClick={() => setShownProfile(userId)}
+      data-testid={`friend-list-item-${mode}`}
+      data-user-id={userId}>
       <UserAvatar userId={userId} useLink={false} size={isMobile ? 40 : 60} mr={1} />
       <Stack spacing={isMobile ? 0 : 1}>
         <Typography fontWeight={450} variant='subtitle2' lineHeight='1.1rem'>

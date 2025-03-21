@@ -20,7 +20,13 @@ export default function LoginAsUserButton({
 
   if (!user || loggedUser?.id === user.id) return null;
   return (
-    <StyledRoot focusRipple sx={sx} {...rootProps} onClick={switchLoggedUser} disabled={isLoading}>
+    <StyledRoot
+      focusRipple
+      sx={sx}
+      {...rootProps}
+      onClick={switchLoggedUser}
+      disabled={isLoading}
+      data-testid='login-as-button'>
       {isLoading ? (
         <Box width='24px' pr={0.5}>
           <CircularProgress thickness={6} size={18} sx={{ color: theme.palette.common.white }} />

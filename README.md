@@ -19,6 +19,53 @@ Data is stored in Firebase and optimized to reduce document reads by consolidati
 
 ![Screenshot_1](https://github.com/zivavu/facebook-clone/assets/107223633/2d419cbd-4869-4a79-8007-445d65b4c9b8)
 
+## :wrench: Getting Started
+
+### Forking and Setting Up
+
+If you want to fork and run this project locally, you'll need to set up a few things:
+
+1. **Firebase and Algolia Access**: The project requires Firebase and Algolia credentials. Create your own accounts and services or contact me for access to existing ones.
+
+2. **Environment Variables**: Create a `.env.local` file in the root directory with the following variables:
+
+   ```
+   NEXT_PUBLIC_ALGOLIA_APP_ID=your_algolia_app_id
+   NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY=your_algolia_search_api_key
+   NEXT_PUBLIC_DATABASE_URL=your_firebase_database_url
+   NEXT_PUBLIC_API_KEY=your_firebase_api_key
+   NEXT_PUBLIC_AUTH_DOMAIN=your_firebase_auth_domain
+   NEXT_PUBLIC_APP_ID=your_firebase_app_id
+   NEXT_PUBLIC_MESSENGING_SENDER_ID=your_firebase_messaging_sender_id
+   NEXT_PUBLIC_PROJECT_ID=your_firebase_project_id
+   NEXT_PUBLIC_STORAGE_BUCKET=your_firebase_storage_bucket
+   ```
+
+3. **Database Data**: The application requires a specific data structure to function properly:
+
+   - The original data was generated using a 500-line script (unfortunately lost) with Faker and LoremFlickr
+   - If you need a copy of the database structure and sample data, please email me at zivavu@gmail.com
+   - Alternatively, you can create your own data following the Firebase structure visible in the code
+
+4. **Installation and Running**:
+
+   ```bash
+   # Install dependencies using your preferred package manager (npm, yarn, pnpm, bun)
+   npm install
+   # or
+   bun install
+
+   # Run development server
+   npm run dev
+   # or
+   bun dev
+
+   # Run tests
+   npm run test:e2e
+   # or
+   bun test:e2e
+   ```
+
 ## :sparkles: Implemented Features
 
 ### Interface & Design

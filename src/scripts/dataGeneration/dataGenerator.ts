@@ -250,7 +250,7 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
 
     // Add optional fields based on user popularity
     if (popularityTier === 'high' || (popularityTier === 'medium' && shouldFill(0.7))) {
-      user.middleName = shouldFill(0.3) ? faker.person.middleName() : undefined;
+      user.middleName = shouldFill(0.6) ? faker.person.middleName() : undefined;
       user.backgroundPicture = shouldFill(0.8) ? faker.image.url() : undefined;
       user.bio = faker.lorem.paragraph();
       user.birthday = faker.date.birthdate({ min: 18, max: 65, mode: 'age' }).toISOString();
@@ -265,6 +265,7 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
       user.phone = faker.phone.number();
       user.website = shouldFill(0.3) ? faker.internet.url() : undefined;
     } else if (popularityTier === 'medium' || (popularityTier === 'low' && shouldFill(0.5))) {
+      user.middleName = shouldFill(0.3) ? faker.person.middleName() : undefined;
       user.bio = shouldFill(0.6) ? faker.lorem.sentences(2) : undefined;
       user.birthday = shouldFill(0.7)
         ? faker.date.birthdate({ min: 18, max: 65, mode: 'age' }).toISOString()

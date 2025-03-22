@@ -18,7 +18,7 @@
 # misc
 .DS_Store
 *.pem
-generateRandomUsers.tsx
+data
 
 
 # debug

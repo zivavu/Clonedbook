@@ -5,7 +5,7 @@ import { generateDummyData } from './dataGenerator';
 // Configure data generation options
 const options = {
   userCount: 100,
-  maxFriendsPerUser: 70,
+  maxFriendsPerUser: 20,
   postsPerUser: 10,
   maxCommentsPerPost: 5,
   maxRepliesPerComment: 3,

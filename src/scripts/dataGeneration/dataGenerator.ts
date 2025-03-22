@@ -443,29 +443,21 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
     const { popularityTier, activityLevel } = userMetadata[user.id];
 
     // Determine friend count based on popularity and activity
-    // Ensure at least 15 friends and up to maxFriendsPerUser (which is now 70)
-    let minFriends = 15;
     let maxFriends = maxFriendsPerUser;
-
     if (popularityTier === 'high') {
-      minFriends = 40;
-      maxFriends = maxFriendsPerUser;
+      maxFriends =
+        Math.floor(maxFriendsPerUser * 0.8) + Math.floor(Math.random() * (maxFriendsPerUser * 0.2));
     } else if (popularityTier === 'medium') {
-      minFriends = 25;
-      maxFriends = Math.floor(maxFriendsPerUser * 0.8);
+      maxFriends =
+        Math.floor(maxFriendsPerUser * 0.4) + Math.floor(Math.random() * (maxFriendsPerUser * 0.4));
     } else {
-      minFriends = 15;
-      maxFriends = Math.floor(maxFriendsPerUser * 0.6);
+      maxFriends = Math.floor(Math.random() * (maxFriendsPerUser * 0.4));
     }
 
     // Further adjust based on activity level
-    if (activityLevel === 'inactive') {
-      minFriends = Math.max(15, Math.floor(minFriends * 0.6));
-      maxFriends = Math.floor(maxFriends * 0.6);
-    } else if (activityLevel === 'low') {
-      minFriends = Math.max(15, Math.floor(minFriends * 0.8));
-      maxFriends = Math.floor(maxFriends * 0.8);
-    }
+    if (activityLevel === 'inactive') maxFriends = Math.floor(maxFriends * 0.3);
+    else if (activityLevel === 'low') maxFriends = Math.floor(maxFriends * 0.6);
+    else if (activityLevel === 'medium') maxFriends = Math.floor(maxFriends * 0.8);
 
     // Find potential friends
     const potentialFriends = users.filter(
@@ -474,38 +466,22 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
 
     if (!potentialFriends.length) continue;
 
-    // Create random number of friends between minFriends and maxFriends
-    const friendCount = Math.min(
-      potentialFriends.length,
-      Math.floor(Math.random() * (maxFriends - minFriends + 1)) + minFriends,
-    );
+    // Create random number of friends up to maxFriends
+    const friendCount = Math.floor(Math.random() * maxFriends) + 1;
     const selectedFriends = getRandomSubset(potentialFriends, friendCount);
 
     if (!user.friends) {
       user.friends = [];
     }
 
-    // Determine how many chats this user should have (5-10)
-    const minChats = 5;
-    const maxChats = 10;
-    const desiredChatCount = Math.floor(Math.random() * (maxChats - minChats + 1)) + minChats;
-    let chatCount = 0;
-
     for (const friend of selectedFriends) {
-      // Increase acceptance rate to create more chats
+      // Determine friendship status
       let status: 'req_sent' | 'req_received' | 'accepted';
       const acceptanceRate =
-        popularityTier === 'high' ? 0.95 : popularityTier === 'medium' ? 0.85 : 0.75;
+        popularityTier === 'high' ? 0.9 : popularityTier === 'medium' ? 0.7 : 0.5;
 
-      // Increase the chance of acceptance if we haven't created enough chats
-      const needMoreChats = chatCount < desiredChatCount;
-      const effectiveAcceptanceRate = needMoreChats
-        ? Math.min(0.98, acceptanceRate + 0.2)
-        : acceptanceRate;
-
-      if (Math.random() < effectiveAcceptanceRate) {
+      if (Math.random() < acceptanceRate) {
         status = 'accepted';
-        chatCount++;
       } else {
         status = Math.random() > 0.5 ? 'req_sent' : 'req_received';
       }
@@ -530,15 +506,15 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
             participantsIds: [user.id, friend.id],
             lastMessageAt: lastMessageDate,
             lastMessage: faker.lorem.sentence(),
-            emoji: shouldFill(0.4) ? getRandomEmoji() : undefined, // Increased from 0.3 to 0.4
-            color: shouldFill(0.4) ? getRandomColor() : undefined, // Increased from 0.3 to 0.4
+            emoji: shouldFill(0.3) ? getRandomEmoji() : undefined,
+            color: shouldFill(0.3) ? getRandomColor() : undefined,
             createdAt: chatCreationDate,
           };
 
           chats.push(chat);
 
-          // Generate more chat messages
-          const messageCount = Math.floor(Math.random() * maxMessagesPerChat) + 5; // Minimum 5 messages
+          // Generate chat messages
+          const messageCount = Math.floor(Math.random() * maxMessagesPerChat) + 1;
 
           // Create timeline of messages
           for (let i = 0; i < messageCount; i++) {

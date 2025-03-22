@@ -13,7 +13,6 @@ import { FriendListItemProps } from './types';
 
 export default function FriendListItem({ userId, sx, ...rootProps }: FriendListItemProps) {
   const theme = useTheme();
-  const router = useRouter();
 
   const user = useGetUserBasicInfo(userId);
   const friendshipStatus = useGetFriendshipStatus(userId);

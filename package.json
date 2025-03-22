@@ -27,6 +27,7 @@
     "@reduxjs/toolkit": "^2.6.1",
     "@svgr/webpack": "^8.1.0",
     "@types/react-color": "^3.0.13",
+    "@types/uuid": "^10.0.0",
     "@vercel/analytics": "^1.5.0",
     "algoliasearch": "^4.24.0",
     "dayjs": "^1.11.13",
@@ -40,11 +41,13 @@
     "react-dom": "^18.3.1",
     "react-redux": "^9.2.0",
     "sharp": "^0.33.5",
-    "sonner": "^2.0.1"
+    "sonner": "^2.0.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@testing-library/react": "^15.0.7",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.17.25",
     "@types/react": "^18.3.19",
     "@types/react-dom": "^18.3.5",

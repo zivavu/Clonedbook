@@ -5,12 +5,16 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
+    "dev:local": "cross-env NODE_ENV=development NEXT_PUBLIC_USE_ALGOLIA_MOCK=true NEXT_PUBLIC_USE_FIREBASE_EMULATOR=true next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:e2e": "testcafe edge src/tests/",
-    "test:e2e-gh": "testcafe edge:headless src/tests/"
+    "test:e2e-gh": "testcafe edge:headless src/tests/",
+    "firebase:emulator": "bun src/scripts/setupLocalEnvironment.ts",
+    "algolia:mock": "bun src/scripts/setupLocalEnvironment.ts algolia-only",
+    "generate:data": "bun src/scripts/dataGeneration/generateData.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -54,6 +58,7 @@
     "@types/react-redux": "^7.1.34",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.22.0",
     "eslint-config-next": "^14.2.25",
     "eslint-config-prettier": "^9.1.0",

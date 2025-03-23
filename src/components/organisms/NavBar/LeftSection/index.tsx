@@ -23,13 +23,14 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
 
   useEffect(() => {
     if (!searchTerm || !searchPopperOpen) return;
-    usersIndex
-      .search(searchTerm, {
-        attributesToRetrieve: ['objectID'],
-      })
-      .then(({ hits }) => {
-        setUserHits(hits.slice(0, 15).map((hit) => hit.objectID));
-      });
+
+    const search = usersIndex.search as (query: string, options?: any) => Promise<any>;
+
+    search(searchTerm, {
+      attributesToRetrieve: ['objectID'],
+    }).then(({ hits }) => {
+      setUserHits(hits.slice(0, 15).map((hit: any) => hit.objectID));
+    });
   }, [searchTerm, searchPopperOpen]);
 
   useEffect(() => {

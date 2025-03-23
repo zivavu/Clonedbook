@@ -55,6 +55,7 @@ import type { AppProps } from 'next/app';
 
 import { faFacebookMessenger, faGithub } from '@fortawesome/free-brands-svg-icons';
 
+import DevModeIndicator from '@/components/DevModeIndicator';
 import NavBar from '@/components/organisms/NavBar';
 import OpenedChatsPortal from '@/components/organisms/OpenedChatsPortal';
 import ThemeModeProvider from '@/design/ThemeModeProvider';
@@ -63,6 +64,7 @@ import { store } from '@/redux/store';
 import { EmotionCache, CacheProvider as EmotionCacheProvider } from '@emotion/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { useEffect } from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import { Toaster } from 'sonner';
 
@@ -141,6 +143,23 @@ export interface EmotionAppProps extends AppProps {
 
 export default function MyApp(props: EmotionAppProps) {
   const { Component, emotionCache = localEmotionCache, pageProps } = props;
+
+  useEffect(() => {
+    // Debug environment variables - only run in development mode
+    if (process.env.NODE_ENV === 'development') {
+      console.log('==== App Environment Check ====');
+      console.log('NODE_ENV:', process.env.NODE_ENV);
+      console.log('USE_FIREBASE_EMULATOR:', process.env.USE_FIREBASE_EMULATOR);
+      console.log('USE_ALGOLIA_MOCK:', process.env.USE_ALGOLIA_MOCK);
+      console.log(
+        'NEXT_PUBLIC_FIREBASE_API_KEY exists:',
+        !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+      );
+      console.log('NEXT_PUBLIC_API_KEY exists:', !!process.env.NEXT_PUBLIC_API_KEY);
+      console.log('==============================');
+    }
+  }, []);
+
   return (
     <NextThemesProvider themes={['dark', 'light']} defaultTheme='dark'>
       <Analytics />
@@ -151,6 +170,7 @@ export default function MyApp(props: EmotionAppProps) {
               <NavBar />
               <Component {...pageProps} />
               <OpenedChatsPortal />
+              <DevModeIndicator />
               <Toaster position='bottom-right' richColors />
             </StoreProvider>
           </LocalizationProvider>

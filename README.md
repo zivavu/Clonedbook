@@ -241,3 +241,49 @@ Project Link: [https://github.com/zivavu/Clonedbook](https://github.com/zivavu/C
 [Algolia-url]: https://www.algolia.com/
 [Vercel]: https://a11ybadges.com/badge?logo=vercel
 [Vercel-url]: https://vercel.com
+
+## Local Development
+
+For local development, we provide:
+
+1. **Data Generation**: Generate realistic test data with 100 users, 300+ chats, 400+ posts, and thousands of interactions
+2. **Local Firebase Emulator**: Run Firebase services locally without connecting to the real Firebase
+3. **Algolia Mock**: Use a local implementation of Algolia search
+
+### Getting Started
+
+```bash
+# Install dependencies
+bun install
+
+# Generate test data
+bun run generate:data
+
+# Set up Algolia mock
+bun run algolia:mock
+
+# Start the development server with Algolia mock
+bun run dev:local
+
+# Optionally, if you have Java 11+ installed,
+# you can run Firebase emulators
+bun run firebase:emulator
+```
+
+For more detailed instructions, see [LOCAL_DEVELOPMENT.md](./LOCAL_DEVELOPMENT.md).
+
+# Configuration
+
+The project uses the following configuration structure:
+
+- `src/config/firebase.ts` - Firebase configuration with support for both production and local emulators
+- `src/config/algolia.ts` - Algolia configuration with support for both production and local mocks
+
+In development mode, you can use local services by running:
+
+```bash
+# Start the development server with local Firebase emulator and Algolia mock
+bun run dev:local
+```
+
+This will show a development mode indicator in the bottom-right corner of the screen that displays which services are being used (local or production).

@@ -2,8 +2,9 @@
  * Firebase configuration
  * Supports both production and local emulator environments
  */
-import { initializeApp } from 'firebase/app';
+import { FirebaseApp, getApps, initializeApp } from 'firebase/app';
 import {
+  Auth,
   connectAuthEmulator,
   createUserWithEmailAndPassword,
   getAuth,
@@ -12,27 +13,10 @@ import {
 import {
   connectFirestoreEmulator,
   enableIndexedDbPersistence,
+  Firestore,
   getFirestore,
 } from 'firebase/firestore';
-import { connectStorageEmulator, getStorage } from 'firebase/storage';
-
-// Log environment variables for debugging
-if (typeof window !== 'undefined') {
-  console.log('Firebase environment check:');
-  console.log('- NODE_ENV:', process.env.NODE_ENV);
-  console.log('- USE_FIREBASE_EMULATOR:', process.env.USE_FIREBASE_EMULATOR);
-  console.log(
-    '- NEXT_PUBLIC_USE_FIREBASE_EMULATOR:',
-    process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR,
-  );
-}
-
-// Check if we should use emulators
-const useEmulator =
-  typeof window !== 'undefined' &&
-  process.env.NODE_ENV === 'development' &&
-  (process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR === 'true' ||
-    process.env.USE_FIREBASE_EMULATOR === 'true');
+import { connectStorageEmulator, FirebaseStorage, getStorage } from 'firebase/storage';
 
 // Firebase configuration from environment variables
 const firebaseConfig = {
@@ -48,50 +32,72 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-
-// Connect to Firebase emulators first, before any other operations
-if (useEmulator) {
-  console.log('🔥 Using Firebase emulators in local mode');
-  try {
-    connectAuthEmulator(auth, 'http://localhost:9099');
-    connectFirestoreEmulator(db, 'localhost', 8080);
-    connectStorageEmulator(storage, 'localhost', 9199);
-  } catch (error) {
-    console.error('Error connecting to Firebase emulators:', error);
-  }
+// Determine if we should use emulators (client-side only)
+let useEmulator = false;
+if (typeof window !== 'undefined') {
+  useEmulator =
+    process.env.NODE_ENV === 'development' &&
+    (process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR === 'true' ||
+      process.env.USE_FIREBASE_EMULATOR === 'true');
 }
 
-// Enable offline persistence for Firestore (after emulator setup)
-if (typeof window !== 'undefined') {
-  enableIndexedDbPersistence(db).catch((err) => {
-    if (err.code === 'failed-precondition') {
-      console.warn('Firestore persistence initialization failed: Multiple tabs open');
-    } else if (err.code === 'unimplemented') {
-      console.warn('Firestore persistence not available in this browser');
-    } else {
-      console.error('Firestore persistence initialization error:', err);
+// Singleton pattern for Firebase services to prevent multiple initializations
+let app: FirebaseApp;
+let auth: Auth;
+let db: Firestore;
+let storage: FirebaseStorage;
+
+// Initialize Firebase only if no apps exist
+// This is important for Next.js which might execute this file multiple times
+if (getApps().length === 0) {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
+
+  // Connect to emulators only in the browser
+  if (typeof window !== 'undefined' && useEmulator) {
+    try {
+      console.log('🔥 Connecting to Firebase emulators...');
+      connectAuthEmulator(auth, 'http://localhost:9099');
+      connectFirestoreEmulator(db, 'localhost', 8081);
+      connectStorageEmulator(storage, 'localhost', 9199);
+      console.log('✅ Connected to all Firebase emulators');
+    } catch (error) {
+      console.error('❌ Error connecting to Firebase emulators:', error);
     }
-  });
+  }
+
+  // Enable persistence only on the client
+  if (typeof window !== 'undefined') {
+    enableIndexedDbPersistence(db).catch((err) => {
+      if (err.code === 'failed-precondition') {
+        console.warn('Firestore persistence failed: Multiple tabs open');
+      } else if (err.code === 'unimplemented') {
+        console.warn('Firestore persistence not available in this browser');
+      } else {
+        console.error('Firestore persistence error:', err);
+      }
+    });
+  }
+} else {
+  // If apps already exist, use the first one
+  app = getApps()[0]!;
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
 }
 
+// Log environment status
 if (typeof window !== 'undefined') {
+  console.log('Firebase environment check:');
+  console.log('- NODE_ENV:', process.env.NODE_ENV);
+  console.log('- USE_FIREBASE_EMULATOR:', process.env.USE_FIREBASE_EMULATOR);
+  console.log(
+    '- NEXT_PUBLIC_USE_FIREBASE_EMULATOR:',
+    process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR,
+  );
   console.log('- Using emulators:', useEmulator);
-
-  // Force clear any cached values if in development mode
-  if (process.env.NODE_ENV === 'development') {
-    if (
-      (process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR === 'true' ||
-        process.env.USE_FIREBASE_EMULATOR === 'true') &&
-      !useEmulator
-    ) {
-      console.warn('WARNING: Firebase emulator setting mismatch. Try refreshing the page.');
-    }
-  }
 }
 
 /**

@@ -3,6 +3,7 @@
 import { useMockAlgolia } from '@/config/algolia.config';
 import { logEnvironmentVariables } from '@/config/debug-env';
 import { isUsingEmulator } from '@/config/firebase.config';
+import { NoSsr } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 
 /**
@@ -39,77 +40,79 @@ const DevModeIndicator: FC = () => {
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: '10px',
-        right: '10px',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        color: 'white',
-        padding: '5px 10px',
-        borderRadius: '4px',
-        fontSize: '12px',
-        zIndex: 9999,
-        minWidth: '200px',
-        cursor: 'pointer',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
-      }}
-      onClick={toggleExpanded}>
+    <NoSsr>
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontWeight: 'bold',
-          borderBottom: '1px solid rgba(255,255,255,0.3)',
-          paddingBottom: '3px',
-          marginBottom: '3px',
-        }}>
-        <span>Development Mode</span>
-        <span>{expanded ? '▲' : '▼'}</span>
-      </div>
-
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <span>Firebase:</span>
-        <span style={{ color: isUsingEmulator ? '#4ade80' : '#f87171' }}>
-          {isUsingEmulator ? '🟢 Local Emulator' : '🔴 Production'}
-        </span>
-      </div>
-
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <span>Algolia:</span>
-        <span style={{ color: useMockAlgolia ? '#4ade80' : '#f87171' }}>
-          {useMockAlgolia ? '🟢 Local Mock' : '🔴 Production'}
-        </span>
-      </div>
-
-      {expanded && (
+          position: 'fixed',
+          bottom: '10px',
+          right: '10px',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '5px 10px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          zIndex: 9999,
+          minWidth: '200px',
+          cursor: 'pointer',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+        }}
+        onClick={toggleExpanded}>
         <div
           style={{
-            marginTop: '5px',
-            borderTop: '1px solid rgba(255,255,255,0.3)',
-            paddingTop: '5px',
-            fontSize: '11px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontWeight: 'bold',
+            borderBottom: '1px solid rgba(255,255,255,0.3)',
+            paddingBottom: '3px',
+            marginBottom: '3px',
           }}>
-          <div>
-            NODE_ENV:{' '}
-            <span style={{ color: '#93c5fd' }}>{process.env.NODE_ENV || 'undefined'}</span>
-          </div>
-          <div>
-            NEXT_PUBLIC_USE_FIREBASE_EMULATOR:{' '}
-            <span style={{ color: '#93c5fd' }}>
-              {process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR || 'undefined'}
-            </span>
-          </div>
-          <div>
-            NEXT_PUBLIC_USE_ALGOLIA_MOCK:{' '}
-            <span style={{ color: '#93c5fd' }}>
-              {process.env.NEXT_PUBLIC_USE_ALGOLIA_MOCK || 'undefined'}
-            </span>
-          </div>
+          <span>Development Mode</span>
+          <span>{expanded ? '▲' : '▼'}</span>
         </div>
-      )}
-    </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span>Firebase:</span>
+          <span style={{ color: isUsingEmulator ? '#4ade80' : '#f87171' }}>
+            {isUsingEmulator ? '🟢 Local Emulator' : '🔴 Production'}
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span>Algolia:</span>
+          <span style={{ color: useMockAlgolia ? '#4ade80' : '#f87171' }}>
+            {useMockAlgolia ? '🟢 Local Mock' : '🔴 Production'}
+          </span>
+        </div>
+
+        {expanded && (
+          <div
+            style={{
+              marginTop: '5px',
+              borderTop: '1px solid rgba(255,255,255,0.3)',
+              paddingTop: '5px',
+              fontSize: '11px',
+            }}>
+            <div>
+              NODE_ENV:{' '}
+              <span style={{ color: '#93c5fd' }}>{process.env.NODE_ENV || 'undefined'}</span>
+            </div>
+            <div>
+              NEXT_PUBLIC_USE_FIREBASE_EMULATOR:{' '}
+              <span style={{ color: '#93c5fd' }}>
+                {process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR || 'undefined'}
+              </span>
+            </div>
+            <div>
+              NEXT_PUBLIC_USE_ALGOLIA_MOCK:{' '}
+              <span style={{ color: '#93c5fd' }}>
+                {process.env.NEXT_PUBLIC_USE_ALGOLIA_MOCK || 'undefined'}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    </NoSsr>
   );
 };
 

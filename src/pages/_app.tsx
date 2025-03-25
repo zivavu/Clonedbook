@@ -55,7 +55,6 @@ import type { AppProps } from 'next/app';
 
 import { faFacebookMessenger, faGithub } from '@fortawesome/free-brands-svg-icons';
 
-import DevModeIndicator from '@/components/DevModeIndicator';
 import NavBar from '@/components/organisms/NavBar';
 import OpenedChatsPortal from '@/components/organisms/OpenedChatsPortal';
 import ThemeModeProvider from '@/design/ThemeModeProvider';
@@ -170,7 +169,6 @@ export default function MyApp(props: EmotionAppProps) {
               <NavBar />
               <Component {...pageProps} />
               <OpenedChatsPortal />
-              <DevModeIndicator />
               <Toaster position='bottom-right' richColors />
             </StoreProvider>
           </LocalizationProvider>

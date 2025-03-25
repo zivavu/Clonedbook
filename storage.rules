@@ -1,8 +1,8 @@
 rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
+service firebase.storage {
+  match /b/{bucket}/o {
     // For local development allow open access
-    match /{document=**} {
+    match /{allPaths=**} {
       allow read, write: if true;
     }
   }

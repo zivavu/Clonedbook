@@ -37,3 +37,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Firebase
+firebase-debug.log
+firebase-emulator-data/
+ui-debug.log
+
+# Temporary files
+/temp

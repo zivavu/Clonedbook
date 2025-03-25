@@ -24,14 +24,15 @@ export default function FeedPost({ post, refetchPost, sx, ...rootProps }: FeedPo
   const hasPictures = postPictures && postPictures.length > 0;
 
   const getMaxComments = () => {
-    const commentsSlice = Object.values(comments).slice(0, 2);
+    if (!comments) return 0;
+    const commentsSlice = Object.values(comments)?.slice(0, 2);
     const exampleCommentsLength =
       (commentsSlice[0]?.commentText?.length || 0) + (commentsSlice[1]?.commentText?.length || 0);
     return exampleCommentsLength > 200 ? 1 : 2;
   };
 
   const maxComments = getMaxComments();
-  const isMoreComments = Object.values(comments).length > maxComments;
+  const isMoreComments = comments && Object.values(comments).length > maxComments;
 
   const handleShowMoreComments = () => {
     setIsFullViewOpen(true);

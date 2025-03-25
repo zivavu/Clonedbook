@@ -36,7 +36,7 @@ export default function FriendListItem({ friend, sx, ...rootProps }: FriendListI
             sx={{ mr: theme.spacing(1.5), width: 36, height: 36 }}
           />
           <Typography variant='body1'>
-            {friend.basicInfo.firstName} {friend.basicInfo.lastName}
+            {friend?.basicInfo?.firstName} {friend?.basicInfo?.lastName}
           </Typography>
         </ListItemButton>
       </Box>

@@ -126,16 +126,121 @@ async function downloadProfilePictures(
   return fileMap;
 }
 
+// Function to clear all Firestore collections
+async function clearFirestoreCollections(db: admin.firestore.Firestore): Promise<void> {
+  console.log('Clearing existing Firestore collections...');
+
+  // Collections to clear
+  const collections = ['users', 'chats', 'posts', 'usersPublicData'];
+
+  for (const collectionName of collections) {
+    try {
+      const collectionRef = db.collection(collectionName);
+      const snapshot = await collectionRef.get();
+
+      if (snapshot.empty) {
+        console.log(`Collection ${collectionName} is already empty.`);
+        continue;
+      }
+
+      const batchSize = 500;
+      const batches = [];
+      let batch = db.batch();
+      let operationCount = 0;
+
+      snapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+        operationCount++;
+
+        if (operationCount === batchSize) {
+          batches.push(batch);
+          batch = db.batch();
+          operationCount = 0;
+        }
+      });
+
+      if (operationCount > 0) {
+        batches.push(batch);
+      }
+
+      console.log(
+        `Deleting ${snapshot.size} documents from ${collectionName} in ${batches.length} batches...`,
+      );
+
+      for (let i = 0; i < batches.length; i++) {
+        await batches[i].commit();
+        console.log(`Batch ${i + 1}/${batches.length} committed for ${collectionName}`);
+      }
+
+      console.log(`Collection ${collectionName} cleared.`);
+    } catch (error) {
+      console.error(`Error clearing collection ${collectionName}:`, error);
+    }
+  }
+
+  console.log('All collections cleared.');
+}
+
+// Function to clear all Storage files
+async function clearStorageFiles(bucket: any): Promise<void> {
+  console.log('Clearing existing Storage files...');
+
+  try {
+    const [files] = await bucket.getFiles();
+
+    if (files.length === 0) {
+      console.log('Storage is already empty.');
+      return;
+    }
+
+    console.log(`Found ${files.length} files to delete.`);
+
+    const deletePromises = files.map(async (file: any) => {
+      try {
+        await file.delete();
+        console.log(`Deleted file: ${file.name}`);
+      } catch (error) {
+        console.error(`Failed to delete file ${file.name}:`, error);
+      }
+    });
+
+    await Promise.all(deletePromises);
+    console.log('All Storage files cleared.');
+  } catch (error) {
+    console.error('Error clearing Storage files:', error);
+  }
+}
+
 // Function to populate Firestore collections
-async function populateFirestore(db: admin.firestore.Firestore, data: any): Promise<void> {
-  const collections = ['users', 'chats', 'posts', 'userBasicInfo'];
+async function populateFirestore(db: admin.firestore.Firestore): Promise<void> {
+  console.log('Populating Firestore collections...');
 
-  for (const collection of collections) {
+  const dataDir = path.join(process.cwd(), 'src/data');
+
+  // Map the generated data files to their collections
+  const collectionFiles = [
+    { collection: 'users', file: 'firebase-users.json' },
+    { collection: 'chats', file: 'firebase-chats.json' },
+    { collection: 'posts', file: 'firebase-posts.json' },
+  ];
+
+  // Special handling for usersPublicData which contains documents instead of being a direct collection
+  const usersPublicDataPath = path.join(dataDir, 'firebase-usersPublicData.json');
+
+  for (const { collection, file } of collectionFiles) {
+    const filePath = path.join(dataDir, file);
+
+    if (!fs.existsSync(filePath)) {
+      console.error(`File not found: ${filePath}`);
+      continue;
+    }
+
+    console.log(`Loading data from ${filePath}...`);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
     console.log(`Populating ${collection} collection...`);
-
     const collectionRef = db.collection(collection);
-    const collectionData = data[collection] || {};
-    const documents = Object.entries(collectionData);
+    const documents = Object.entries(data);
 
     await processBatch(documents, 500, async (batch) => {
       const batchCommit = db.batch();
@@ -147,8 +252,32 @@ async function populateFirestore(db: admin.firestore.Firestore, data: any): Prom
       await batchCommit.commit();
     });
 
-    console.log(`Completed populating ${collection} collection`);
+    console.log(`Completed populating ${collection} collection with ${documents.length} documents`);
   }
+
+  // Handle usersPublicData specially
+  if (fs.existsSync(usersPublicDataPath)) {
+    console.log(`Loading usersPublicData from ${usersPublicDataPath}...`);
+    const usersPublicData = JSON.parse(fs.readFileSync(usersPublicDataPath, 'utf-8'));
+
+    // Set usersBasicInfo documents
+    if (usersPublicData.usersBasicInfo) {
+      console.log('Populating usersPublicData.usersBasicInfo...');
+      const usersBasicInfoRef = db.collection('usersPublicData').doc('usersBasicInfo');
+      await usersBasicInfoRef.set(usersPublicData.usersBasicInfo);
+      console.log('Completed populating usersPublicData.usersBasicInfo');
+    }
+
+    // Set usersPublicFriends documents
+    if (usersPublicData.usersPublicFriends) {
+      console.log('Populating usersPublicData.usersPublicFriends...');
+      const usersPublicFriendsRef = db.collection('usersPublicData').doc('usersPublicFriends');
+      await usersPublicFriendsRef.set(usersPublicData.usersPublicFriends);
+      console.log('Completed populating usersPublicData.usersPublicFriends');
+    }
+  }
+
+  console.log('All Firestore collections populated.');
 }
 
 // Function to upload profile images to Storage
@@ -236,7 +365,7 @@ async function uploadPostImages(bucket: any, posts: any[], imageDir: string): Pr
 }
 
 // Main function to run the emulator population
-async function populateEmulators(): Promise<void> {
+export async function populateEmulators(): Promise<void> {
   try {
     console.log('Starting emulator population...');
 
@@ -249,48 +378,42 @@ async function populateEmulators(): Promise<void> {
     try {
       bucket = app.storage().bucket();
     } catch (error) {
-      console.error('Failed to get storage bucket, continuing with firestore only:', error);
+      console.error('Failed to get storage bucket:', error);
       bucket = null;
     }
 
-    // Load generated data
-    const dataPath = path.join(process.cwd(), 'src/local/data/firebase-data.json');
-    const rawData = fs.readFileSync(dataPath, 'utf8');
-    const data = JSON.parse(rawData);
-
-    // Populate Firestore collections first
-    await populateFirestore(db, data);
-    console.log('Firestore collections populated successfully!');
-
-    // Handle storage operations only if bucket is available
+    // Clear existing data
+    await clearFirestoreCollections(db);
     if (bucket) {
-      // Create temp directories for images
-      const tempDir = path.join(process.cwd(), 'temp');
-      const profilePicsDir = path.join(tempDir, 'profile-pics');
-      const postImagesDir = path.join(tempDir, 'post-images');
+      await clearStorageFiles(bucket);
+    }
 
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir, { recursive: true });
+    // Load data from generated files
+    await populateFirestore(db);
+
+    const dataDir = path.join(process.cwd(), 'src/data');
+    const usersFilePath = path.join(dataDir, 'firebase-users.json');
+    const postsFilePath = path.join(dataDir, 'firebase-posts.json');
+
+    if (bucket && fs.existsSync(usersFilePath)) {
+      // Process user profile images
+      const users = Object.values(JSON.parse(fs.readFileSync(usersFilePath, 'utf-8')));
+      const tempDir = path.join(process.cwd(), 'tmp/profilePictures');
+      const imageMap = await downloadProfilePictures(users, tempDir);
+      await uploadProfileImages(bucket, users, imageMap);
+
+      // Process post images if they exist
+      if (fs.existsSync(postsFilePath)) {
+        const posts = Object.values(JSON.parse(fs.readFileSync(postsFilePath, 'utf-8')));
+        const postImagesDir = path.join(process.cwd(), 'tmp/postImages');
+        await uploadPostImages(bucket, posts, postImagesDir);
       }
-
-      // Process the data
-      const users = Object.values(data.users || {});
-      const posts = Object.values(data.posts || {});
-
-      // Download user profile pictures and upload to Storage
-      const profileImageMap = await downloadProfilePictures(users, profilePicsDir);
-      await uploadProfileImages(bucket, users, profileImageMap);
-
-      // Upload post images to Storage
-      await uploadPostImages(bucket, posts, postImagesDir);
-    } else {
-      console.log('Skipping storage operations due to bucket initialization failure');
     }
 
     console.log('Emulator population completed successfully!');
   } catch (error) {
-    console.error('Error populating emulators:', error);
-    process.exit(1);
+    console.error('Error during emulator population:', error);
+    throw error;
   }
 }
 

@@ -1,4 +1,12 @@
-import { generateDummyData, IFriendship } from '../scripts/dataGeneration/dataGenerator';
+import { describe, expect, test } from 'bun:test';
+import {
+  generateDummyData,
+  IComment,
+  IFriendship,
+  IPost,
+  IReaction,
+  IUser,
+} from '../scripts/dataGeneration/dataGenerator';
 
 const mockOptions = {
   userCount: 20,
@@ -11,236 +19,355 @@ const mockOptions = {
   maxMessagesPerChat: 10,
 };
 
+// Type definitions for enhanced objects with nested data
+interface IEnhancedUser extends IUser {
+  about?: {
+    bio?: string;
+    birthDate?: {
+      seconds: number;
+      nanoseconds: number;
+    };
+  };
+}
+
+interface IEnhancedComment extends IComment {
+  reactions: Record<string, IReaction>;
+}
+
+interface IEnhancedPost extends IPost {
+  comments: Record<string, IEnhancedComment>;
+  reactions: Record<string, IReaction>;
+}
+
+interface IEnhancedChat {
+  id: string;
+  participantsIds: string[];
+  lastMessageAt: number;
+  lastMessage: string;
+  emoji?: string;
+  color?: string;
+  createdAt: number;
+  messages: Record<string, IReaction>;
+}
+
 // Generate data once to be used in all tests
 const data = generateDummyData(mockOptions);
 
-fixture('Data Generation Tests').page('about:blank');
+describe('Data Generation Tests', () => {
+  test('Users - Basic Validation', () => {
+    const users = Object.values(data.firebase.users) as IEnhancedUser[];
 
-test('Data Generation - Users - Basic Validation', async (t) => {
-  // Check correct number of users
-  await t.expect(data.users.length).eql(mockOptions.userCount);
+    // Check correct number of users
+    expect(users.length).toBe(mockOptions.userCount);
 
-  // Check user UUIDs
-  for (const user of data.users) {
-    await t.expect(user.id).ok();
-    await t.expect(user.id.split('-').length).eql(5);
-  }
-
-  // Check required fields
-  for (const user of data.users) {
-    await t.expect(user.firstName).ok();
-    await t.expect(user.lastName).ok();
-    await t.expect(user.email).ok();
-    await t.expect(user.profilePicture).ok();
-    await t.expect(user.createdAt).ok();
-    await t.expect(user.updatedAt).ok();
-  }
-});
-
-test('Data Generation - Users - Optional Fields', async (t) => {
-  const usersWithBio = data.users.filter((user) => user.bio);
-  const usersWithMiddleName = data.users.filter((user) => user.middleName);
-  const usersWithBirthday = data.users.filter((user) => user.birthday);
-
-  await t.expect(usersWithBio.length).gt(0);
-  await t.expect(usersWithMiddleName.length).gt(0);
-  await t.expect(usersWithBirthday.length).gt(0);
-});
-
-test('Data Generation - Users - Contact Information', async (t) => {
-  for (const user of data.users) {
-    if (user.email) {
-      await t.expect(user.email.includes('@')).ok();
-      await t.expect(user.email.includes('.')).ok();
+    // Check user UUIDs
+    for (const user of users) {
+      expect(user.id).toBeDefined();
+      expect(user.id.split('-').length).toBe(5);
     }
 
-    if (user.phone) {
-      await t.expect(typeof user.phone).eql('string');
-      await t.expect(user.phone.length).gt(0);
+    // Check required fields
+    for (const user of users) {
+      expect(user.firstName).toBeDefined();
+      expect(user.lastName).toBeDefined();
+      expect(user.email).toBeDefined();
+      expect(user.profilePicture).toBeDefined();
+      expect(user.createdAt).toBeDefined();
+      expect(user.updatedAt).toBeDefined();
     }
-  }
-});
+  });
 
-test('Data Generation - Friendship Relations - Bidirectional', async (t) => {
-  for (const user of data.users) {
-    if (!user.friends) continue;
+  test('Users - Optional Fields', () => {
+    const users = Object.values(data.firebase.users) as IEnhancedUser[];
 
-    const acceptedFriends = user.friends.filter((f: IFriendship) => f.status === 'accepted');
-    for (const friendship of acceptedFriends) {
-      const friend = data.users.find((u) => u.id === friendship.userId);
-      await t.expect(friend).ok();
+    const usersWithBio = users.filter((user) => user.bio || (user.about && user.about.bio));
+    const usersWithMiddleName = users.filter((user) => user.middleName);
+    const usersWithBirthday = users.filter(
+      (user) => user.birthday || (user.about && user.about.birthDate),
+    );
 
-      if (friend && friend.friends) {
-        const reciprocalFriendship = friend.friends.find(
-          (f: IFriendship) => f.userId === user.id && f.status === 'accepted',
-        );
-        await t.expect(reciprocalFriendship).ok();
+    expect(usersWithBio.length).toBeGreaterThan(0);
+    expect(usersWithMiddleName.length).toBeGreaterThan(0);
+    expect(usersWithBirthday.length).toBeGreaterThan(0);
+  });
+
+  test('Users - Contact Information', () => {
+    const users = Object.values(data.firebase.users);
+
+    for (const user of users) {
+      if (user.email) {
+        expect(user.email).toContain('@');
+        expect(user.email).toContain('.');
+      }
+
+      if (user.phone) {
+        expect(typeof user.phone).toBe('string');
+        expect(user.phone.length).toBeGreaterThan(0);
       }
     }
-  }
-});
+  });
 
-test('Data Generation - Friendship Relations - Valid Status', async (t) => {
-  for (const user of data.users) {
-    if (!user.friends) continue;
+  test('Friendship Relations - Bidirectional', () => {
+    const users = Object.values(data.firebase.users);
 
-    for (const friendship of user.friends) {
-      await t.expect(['req_sent', 'req_received', 'accepted'].includes(friendship.status)).ok();
+    for (const user of users) {
+      if (!user.friends) continue;
 
-      if (friendship.status === 'req_sent') {
-        const friend = data.users.find((u) => u.id === friendship.userId);
+      const acceptedFriends = user.friends.filter((f: IFriendship) => f.status === 'accepted');
+      for (const friendship of acceptedFriends) {
+        const friend = users.find((u) => u.id === friendship.userId);
+        expect(friend).toBeDefined();
+
         if (friend && friend.friends) {
           const reciprocalFriendship = friend.friends.find(
-            (f: IFriendship) => f.userId === user.id,
+            (f: IFriendship) => f.userId === user.id && f.status === 'accepted',
           );
-          if (reciprocalFriendship) {
-            await t.expect(reciprocalFriendship.status).eql('req_received');
+          expect(reciprocalFriendship).toBeDefined();
+        }
+      }
+    }
+  });
+
+  test('Friendship Relations - Valid Status', () => {
+    const users = Object.values(data.firebase.users);
+
+    for (const user of users) {
+      if (!user.friends) continue;
+
+      for (const friendship of user.friends) {
+        expect(['req_sent', 'req_received', 'accepted'].includes(friendship.status)).toBe(true);
+
+        if (friendship.status === 'req_sent') {
+          const friend = users.find((u) => u.id === friendship.userId);
+          if (friend && friend.friends) {
+            const reciprocalFriendship = friend.friends.find(
+              (f: IFriendship) => f.userId === user.id,
+            );
+            if (reciprocalFriendship) {
+              expect(reciprocalFriendship.status).toBe('req_received');
+            }
           }
         }
       }
     }
-  }
-});
+  });
 
-test('Data Generation - Friendship Relations - Chat IDs', async (t) => {
-  for (const user of data.users) {
-    if (!user.friends) continue;
+  test('Friendship Relations - Chat IDs', () => {
+    const users = Object.values(data.firebase.users);
+    const chats = Object.values(data.firebase.chats);
 
-    const acceptedFriends = user.friends.filter((f: IFriendship) => f.status === 'accepted');
-    for (const friendship of acceptedFriends) {
-      await t.expect(friendship.chatId).ok();
-      await t.expect(friendship.chatId.length).gt(0);
+    for (const user of users) {
+      if (!user.friends) continue;
 
-      const expectedChatId = [user.id, friendship.userId].sort().join('_');
-      await t.expect(friendship.chatId).eql(expectedChatId);
+      const acceptedFriends = user.friends.filter((f: IFriendship) => f.status === 'accepted');
+      for (const friendship of acceptedFriends) {
+        expect(friendship.chatId).toBeDefined();
+        expect(friendship.chatId.length).toBeGreaterThan(0);
 
-      const chat = data.chats.find((c) => c.id === friendship.chatId);
-      await t.expect(chat).ok();
+        const expectedChatId = [user.id, friendship.userId].sort().join('_');
+        expect(friendship.chatId).toBe(expectedChatId);
+
+        const chat = chats.find((c) => c.id === friendship.chatId);
+        expect(chat).toBeDefined();
+      }
     }
-  }
-});
+  });
 
-test('Data Generation - Chats - Basic Validation', async (t) => {
-  for (const chat of data.chats) {
-    const [userId1, userId2] = chat.id.split('_');
-    await t.expect(chat.participantsIds.includes(userId1)).ok();
-    await t.expect(chat.participantsIds.includes(userId2)).ok();
-    await t.expect(chat.participantsIds.length).eql(2);
-  }
+  test('Chats - Basic Validation', () => {
+    const users = Object.values(data.firebase.users);
+    const chats = Object.values(data.firebase.chats);
 
-  const customizedChats = data.chats.filter((chat) => chat.emoji || chat.color);
-  await t.expect(customizedChats.length).gt(0);
-
-  for (const chat of data.chats) {
-    for (const participantId of chat.participantsIds) {
-      const user = data.users.find((u) => u.id === participantId);
-      await t.expect(user).ok();
-    }
-  }
-});
-
-test('Data Generation - Posts and Comments', async (t) => {
-  // Posts
-  for (const post of data.posts) {
-    const author = data.users.find((u) => u.id === post.authorId);
-    await t.expect(author).ok();
-
-    if (author) {
-      await t.expect(post.createdAt).gte(author.createdAt);
+    for (const chat of chats) {
+      const [userId1, userId2] = chat.id.split('_');
+      expect(chat.participantsIds.includes(userId1)).toBe(true);
+      expect(chat.participantsIds.includes(userId2)).toBe(true);
+      expect(chat.participantsIds.length).toBe(2);
     }
 
-    await t.expect(post.content || post.pictureURLs).ok();
-  }
+    const customizedChats = chats.filter((chat) => chat.emoji || chat.color);
+    expect(customizedChats.length).toBeGreaterThan(0);
 
-  // Comments
-  for (const comment of data.comments) {
-    const author = data.users.find((u) => u.id === comment.authorId);
-    await t.expect(author).ok();
-  }
-
-  // Replies
-  const replies = data.comments.filter((comment) => comment.parentId);
-  for (const reply of replies) {
-    const parentComment = data.comments.find((c) => c.id === reply.parentId);
-    await t.expect(parentComment).ok();
-    if (parentComment) {
-      await t.expect(parentComment.parentId).notOk();
+    for (const chat of chats) {
+      for (const participantId of chat.participantsIds) {
+        const user = users.find((u) => u.id === participantId);
+        expect(user).toBeDefined();
+      }
     }
-  }
-});
+  });
 
-test('Data Generation - Reactions', async (t) => {
-  for (const reaction of data.reactions) {
-    const user = data.users.find((u) => u.id === reaction.userId);
-    await t.expect(user).ok();
+  test('Posts and Comments', () => {
+    const users = Object.values(data.firebase.users);
+    const posts = Object.values(data.firebase.posts) as IEnhancedPost[];
 
-    const validTypes = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
-    await t.expect(validTypes.includes(reaction.type)).ok();
-  }
-});
+    // Posts
+    for (const post of posts) {
+      const author = users.find((u) => u.id === post.authorId);
+      expect(author).toBeDefined();
 
-test('Data Generation - Special Collections', async (t) => {
-  // User basic info
-  await t.expect(data.userBasicInfo.length).eql(data.users.length);
-  for (const info of data.userBasicInfo) {
-    const user = data.users.find((u) => u.id === info.id);
-    await t.expect(user).ok();
-    if (user) {
-      await t.expect(info.firstName).eql(user.firstName);
-      await t.expect(info.lastName).eql(user.lastName);
-      await t.expect(info.profilePicture).eql(user.profilePicture);
+      if (author) {
+        expect(post.createdAt).toBeGreaterThanOrEqual(author.createdAt);
+      }
+
+      expect(post.content || post.pictureURLs).toBeDefined();
     }
-  }
 
-  // User public friends
-  for (const relation of data.userPublicFriends) {
-    const user = data.users.find((u) => u.id === relation.userId);
-    await t.expect(user).ok();
+    // Comments
+    for (const post of posts) {
+      if (!post.comments) continue;
 
-    if (user && user.friends) {
-      const friendshipInUser = user.friends.find(
-        (f: IFriendship) => f.userId === relation.friendId && f.status === 'accepted',
+      const comments = Object.values(post.comments) as IEnhancedComment[];
+      for (const comment of comments) {
+        const author = users.find((u) => u.id === comment.authorId);
+        expect(author).toBeDefined();
+      }
+
+      // Replies
+      const replies = comments.filter((comment) => comment.parentId);
+      for (const reply of replies) {
+        const parentComment = comments.find((c) => c.id === reply.parentId);
+        expect(parentComment).toBeDefined();
+        if (parentComment) {
+          expect(parentComment.parentId).toBeUndefined();
+        }
+      }
+    }
+  });
+
+  test('Reactions', () => {
+    const users = Object.values(data.firebase.users);
+    const posts = Object.values(data.firebase.posts) as IEnhancedPost[];
+
+    // Check post reactions
+    for (const post of posts) {
+      if (!post.reactions) continue;
+
+      const reactions = Object.values(post.reactions);
+      for (const reaction of reactions) {
+        const user = users.find((u) => u.id === reaction.userId);
+        expect(user).toBeDefined();
+
+        const validTypes = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
+        expect(validTypes.includes(reaction.type)).toBe(true);
+      }
+    }
+
+    // Check comment reactions
+    for (const post of posts) {
+      if (!post.comments) continue;
+
+      const comments = Object.values(post.comments) as IEnhancedComment[];
+      for (const comment of comments) {
+        if (!comment.reactions) continue;
+
+        const reactions = Object.values(comment.reactions);
+        for (const reaction of reactions) {
+          const user = users.find((u) => u.id === reaction.userId);
+          expect(user).toBeDefined();
+
+          const validTypes = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
+          expect(validTypes.includes(reaction.type)).toBe(true);
+        }
+      }
+    }
+  });
+
+  test('Special Collections', () => {
+    const users = Object.values(data.firebase.users);
+    const userBasicInfos = Object.values(data.firebase.usersPublicData.usersBasicInfo);
+
+    // User basic info
+    expect(userBasicInfos.length).toBe(users.length);
+    for (const info of userBasicInfos) {
+      const user = users.find((u) => u.id === info.id);
+      expect(user).toBeDefined();
+      if (user) {
+        expect(info.firstName).toBe(user.firstName);
+        expect(info.lastName).toBe(user.lastName);
+        if (info.profilePicture && user.profilePicture) {
+          expect(info.profilePicture).toBe(user.profilePicture);
+        }
+      }
+    }
+
+    // User public friends
+    const userPublicFriends = data.firebase.usersPublicData.usersPublicFriends;
+    for (const userId in userPublicFriends) {
+      const user = users.find((u) => u.id === userId);
+      expect(user).toBeDefined();
+
+      if (user && user.friends) {
+        for (const friendId in userPublicFriends[userId]) {
+          const friendship = user.friends.find(
+            (f: IFriendship) => f.userId === friendId && f.status === 'accepted',
+          );
+          expect(friendship).toBeDefined();
+        }
+      }
+    }
+
+    // Algolia search objects
+    expect(data.algoliaSearchObjects.length).toBe(users.length);
+    for (const searchObj of data.algoliaSearchObjects) {
+      const user = users.find((u) => u.id === searchObj.objectID);
+      expect(user).toBeDefined();
+      if (user) {
+        expect(searchObj.firstName).toBe(user.firstName);
+        expect(searchObj.lastName).toBe(user.lastName);
+      }
+    }
+  });
+
+  test('Firebase Data Structure', () => {
+    // Check that all users, chats, and posts are included in the Firebase structure
+    expect(Object.keys(data.firebase.users).length).toBe(data.users.length);
+    expect(Object.keys(data.firebase.chats).length).toBe(data.chats.length);
+    expect(Object.keys(data.firebase.posts).length).toBe(data.posts.length);
+
+    // Check nested messages in chats
+    for (const chat of data.chats) {
+      const firebaseChat = data.firebase.chats[chat.id] as any;
+      expect(firebaseChat).toBeDefined();
+      expect(firebaseChat.messages).toBeDefined();
+
+      const chatMessages = data.messages.filter((m) => m.chatId === chat.id);
+      expect(Object.keys(firebaseChat.messages).length).toBe(chatMessages.length);
+    }
+
+    // Check nested comments and reactions in posts
+    for (const post of data.posts) {
+      const firebasePost = data.firebase.posts[post.id] as any;
+      expect(firebasePost).toBeDefined();
+      expect(firebasePost.comments).toBeDefined();
+      expect(firebasePost.reactions).toBeDefined();
+
+      // Verify comments
+      const postComments = data.comments.filter((c) => c.postId === post.id);
+      expect(Object.keys(firebasePost.comments).length).toBe(postComments.length);
+
+      // Verify post reactions
+      const postReactions = data.reactions.filter(
+        (r) => r.referenceId === post.id && r.referenceType === 'post',
       );
-      await t.expect(friendshipInUser).ok();
+      expect(Object.keys(firebasePost.reactions).length).toBe(postReactions.length);
+
+      // Verify comment reactions
+      for (const comment of postComments) {
+        const firebaseComment = firebasePost.comments[comment.id];
+        expect(firebaseComment).toBeDefined();
+        expect(firebaseComment.reactions).toBeDefined();
+
+        const commentReactions = data.reactions.filter(
+          (r) => r.referenceId === comment.id && r.referenceType === 'comment',
+        );
+        expect(Object.keys(firebaseComment.reactions).length).toBe(commentReactions.length);
+      }
     }
-  }
 
-  // Algolia search objects
-  await t.expect(data.algoliaSearchObjects.length).eql(data.users.length);
-  for (const searchObj of data.algoliaSearchObjects) {
-    const user = data.users.find((u) => u.id === searchObj.objectID);
-    await t.expect(user).ok();
-    if (user) {
-      await t.expect(searchObj.firstName).eql(user.firstName);
-      await t.expect(searchObj.lastName).eql(user.lastName);
-    }
-  }
-});
-
-test('Data Generation - Firebase Data Structure', async (t) => {
-  // Users
-  await t.expect(Object.keys(data.firebase.users).length).eql(data.users.length);
-  for (const user of data.users) {
-    await t.expect(data.firebase.users[user.id]).eql(user);
-  }
-
-  // Chats
-  await t.expect(Object.keys(data.firebase.chats).length).eql(data.chats.length);
-  for (const chat of data.chats) {
-    await t.expect(data.firebase.chats[chat.id]).eql(chat);
-  }
-
-  // Messages
-  for (const chat of data.chats) {
-    await t.expect(data.firebase.messages[chat.id]).ok();
-    const chatMessages = data.messages.filter((m) => m.chatId === chat.id);
-    await t.expect(Object.keys(data.firebase.messages[chat.id]).length).eql(chatMessages.length);
-  }
-
-  // Comments
-  for (const post of data.posts) {
-    await t.expect(data.firebase.comments[post.id]).ok();
-    const postComments = data.comments.filter((c) => c.postId === post.id);
-    await t.expect(Object.keys(data.firebase.comments[post.id]).length).eql(postComments.length);
-  }
+    // Check usersPublicData structure
+    expect(data.firebase.usersPublicData.usersBasicInfo).toBeDefined();
+    expect(data.firebase.usersPublicData.usersPublicFriends).toBeDefined();
+    expect(Object.keys(data.firebase.usersPublicData.usersBasicInfo).length).toBe(
+      data.users.length,
+    );
+  });
 });

@@ -13,6 +13,8 @@
     "test:e2e": "testcafe edge src/tests/",
     "test:e2e-gh": "testcafe edge:headless src/tests/",
     "generate:data": "bun src/scripts/dataGeneration/generateData.ts",
+    "generate:data:firebase": "bun run release:ports && bun src/scripts/dataGeneration/generateData.ts && node src/scripts/dataGeneration/importToEmulators.js",
+    "refresh:all": "node src/scripts/dataGeneration/generateAndUpdateFirebase.js",
     "emulators:start": "firebase emulators:start --project=demo-project",
     "emulators:start:import": "firebase emulators:start --project=demo-project --import=./firebase-emulator-data --export-on-exit=./firebase-emulator-data",
     "emulators:export": "firebase emulators:export ./firebase-emulator-data",

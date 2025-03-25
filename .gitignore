@@ -19,7 +19,8 @@
 .DS_Store
 *.pem
 data
-
+tmp
+temp-firebase-import
 
 # debug
 npm-debug.log*

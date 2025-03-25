@@ -7,13 +7,14 @@ import { IntroTileProps } from './types';
 
 export default function IntroTile({ user, sx, ...rootProps }: IntroTileProps) {
   const iconSize = 20;
+  if (!user) return null;
   return (
     <StyledPageTile sx={sx} {...rootProps}>
       <Stack spacing={2}>
         <StyledPageTileHeader>Intro</StyledPageTileHeader>
         <Box position='relative'>
           <Typography textAlign='center' mb={2}>
-            {user.about.bio}
+            {user?.about?.bio}
           </Typography>
           <HorizontalContentDevider bottom={0} />
         </Box>

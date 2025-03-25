@@ -85,6 +85,7 @@ const initializeFirebase = (): FirebaseApp => {
 
 export const firebaseApp = initializeFirebase();
 export const firestore = getFirestore(firebaseApp);
+export const db = firestore;
 export const storage = getStorage(firebaseApp);
 export const auth = getAuth(firebaseApp);
 
@@ -122,6 +123,7 @@ if (typeof window !== 'undefined' && isLocalDev) {
 export default {
   firebaseApp,
   firestore,
+  db,
   storage,
   auth,
   isLocalDev,

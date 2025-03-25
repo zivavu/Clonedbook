@@ -78,6 +78,8 @@ export default function AccountDetailCategory({
 function getDetailConfig(detailType: DetailType, userData: IUser): DetailConfig<any> | null {
   const userId = userData.id;
 
+  if (!userData || !userData.about) return null;
+
   switch (detailType) {
     case 'worksAt': {
       const { workplace } = userData.about;
@@ -110,7 +112,7 @@ function getDetailConfig(detailType: DetailType, userData: IUser): DetailConfig<
     }
 
     case 'college': {
-      const { college } = userData.about;
+      const { college } = userData?.about;
       return {
         accountDetail: {
           label: 'College',

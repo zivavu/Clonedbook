@@ -9,7 +9,7 @@ import { BornAtPostTileProps } from './types';
 export default function BornAtPostTile({ userId, sx, ...rootProps }: BornAtPostTileProps) {
   const theme = useTheme();
   const { data: user } = useUserDataByIdQuery(userId);
-  const date = user?.about.birthDate && getDateFromTimestamp(user?.about.birthDate?.seconds);
+  const date = user?.about?.birthDate && getDateFromTimestamp(user?.about?.birthDate?.seconds);
 
   if (!date) return null;
   return (

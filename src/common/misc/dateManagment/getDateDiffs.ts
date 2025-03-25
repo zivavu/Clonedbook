@@ -11,6 +11,7 @@ export interface ITimeDiff {
 }
 
 export default function getDateDiffs(seconds: number) {
+  if (typeof seconds !== 'number') seconds = Date.now();
   const timeDifference = new Date().getTime() - seconds * 1000;
   const currDate = new Date();
   const pastDate = new Date(seconds * 1000);

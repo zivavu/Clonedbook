@@ -97,6 +97,7 @@ export interface IUserBasicInfo {
 export interface IUserPublicFriend {
   userId: string;
   friendId: string;
+  startDate: number;
 }
 
 export interface IAlgoliaSearchObject {
@@ -135,13 +136,18 @@ export interface IGeneratedData {
   algoliaSearchObjects: IAlgoliaSearchObject[];
   firebase: {
     users: Record<string, IUser>;
-    chats: Record<string, IChat>;
-    messages: Record<string, Record<string, IMessage>>;
-    posts: Record<string, IPost>;
-    comments: Record<string, Record<string, IComment>>;
-    reactions: Record<string, Record<string, IReaction>>;
-    userBasicInfo: Record<string, IUserBasicInfo>;
-    userPublicFriends: Record<string, Record<string, boolean>>;
+    chats: Record<string, IChat & { messages: Record<string, IMessage> }>;
+    posts: Record<
+      string,
+      IPost & {
+        comments: Record<string, IComment & { reactions: Record<string, IReaction> }>;
+        reactions: Record<string, IReaction>;
+      }
+    >;
+    usersPublicData: {
+      usersBasicInfo: Record<string, IUserBasicInfo>;
+      usersPublicFriends: Record<string, Record<string, number>>;
+    };
   };
 }
 
@@ -492,6 +498,9 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
       if (status === 'accepted') {
         chatId = getChatId(user.id, friend.id);
 
+        // Store the friendship start date
+        let friendshipStartDate: number;
+
         // Create chat if it doesn't exist
         if (!chats.find((c) => c.id === chatId)) {
           const chatCreationDate = faker.date.past({ years: 1 }).getTime();
@@ -536,17 +545,24 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
 
             messages.push(message);
           }
+
+          friendshipStartDate = chatCreationDate;
+        } else {
+          // If chat already exists, use a date from the past year
+          friendshipStartDate = faker.date.past({ years: 1 }).getTime();
         }
 
         // Add to public friends for accepted friendships
         userPublicFriends.push({
           userId: user.id,
           friendId: friend.id,
+          startDate: friendshipStartDate,
         });
 
         userPublicFriends.push({
           userId: friend.id,
           friendId: user.id,
+          startDate: friendshipStartDate,
         });
       }
 
@@ -868,71 +884,110 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
   console.log('Creating Firebase data structure...');
   const firebase: {
     users: Record<string, IUser>;
-    chats: Record<string, IChat>;
-    messages: Record<string, Record<string, IMessage>>;
-    posts: Record<string, IPost>;
-    comments: Record<string, Record<string, IComment>>;
-    reactions: Record<string, Record<string, IReaction>>;
-    userBasicInfo: Record<string, IUserBasicInfo>;
-    userPublicFriends: Record<string, Record<string, boolean>>;
+    chats: Record<string, IChat & { messages: Record<string, IMessage> }>;
+    posts: Record<
+      string,
+      IPost & {
+        comments: Record<string, IComment & { reactions: Record<string, IReaction> }>;
+        reactions: Record<string, IReaction>;
+      }
+    >;
+    usersPublicData: {
+      usersBasicInfo: Record<string, IUserBasicInfo>;
+      usersPublicFriends: Record<string, Record<string, number>>;
+    };
   } = {
     users: {},
     chats: {},
-    messages: {},
     posts: {},
-    comments: {},
-    reactions: {},
-    userBasicInfo: {},
-    userPublicFriends: {},
+    usersPublicData: {
+      usersBasicInfo: {},
+      usersPublicFriends: {},
+    },
   };
 
   // Populate Firebase collections
   for (const user of users) {
     firebase.users[user.id] = user;
-    firebase.userBasicInfo[user.id] = userBasicInfo.find((info) => info.id === user.id) || {
+
+    // Add user basic info to usersPublicData collection
+    firebase.usersPublicData.usersBasicInfo[user.id] = userBasicInfo.find(
+      (info) => info.id === user.id,
+    ) || {
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
+      middleName: user.middleName,
       profilePicture: user.profilePicture,
     };
 
-    firebase.userPublicFriends[user.id] = {};
+    // Add public friends to usersPublicData collection
+    firebase.usersPublicData.usersPublicFriends[user.id] = {};
 
     const userFriends = userPublicFriends.filter((f) => f.userId === user.id);
     for (const friend of userFriends) {
-      firebase.userPublicFriends[user.id][friend.friendId] = true;
+      firebase.usersPublicData.usersPublicFriends[user.id][friend.friendId] = friend.startDate;
     }
   }
 
+  // Add chats with nested messages
   for (const chat of chats) {
-    firebase.chats[chat.id] = chat;
-    firebase.messages[chat.id] = {};
+    // Create enhanced chat object with nested messages
+    const chatWithMessages: IChat & { messages: Record<string, IMessage> } = {
+      ...chat,
+      messages: {},
+    };
 
+    // Add messages to chat
     const chatMessages = messages.filter((m) => m.chatId === chat.id);
     for (const message of chatMessages) {
-      firebase.messages[chat.id][message.id] = message;
+      chatWithMessages.messages[message.id] = message;
     }
+
+    firebase.chats[chat.id] = chatWithMessages;
   }
 
+  // Add posts with nested comments and reactions
   for (const post of posts) {
-    firebase.posts[post.id] = post;
-    firebase.comments[post.id] = {};
+    // Create enhanced post object with nested comments and reactions
+    const postWithCommentsAndReactions: IPost & {
+      comments: Record<string, IComment & { reactions: Record<string, IReaction> }>;
+      reactions: Record<string, IReaction>;
+    } = {
+      ...post,
+      comments: {},
+      reactions: {},
+    };
 
+    // Add reactions to post
+    const postReactions = reactions.filter(
+      (r) => r.referenceId === post.id && r.referenceType === 'post',
+    );
+    for (const reaction of postReactions) {
+      postWithCommentsAndReactions.reactions[reaction.id] = reaction;
+    }
+
+    // Add comments with reactions to post
     const postComments = comments.filter((c) => c.postId === post.id);
     for (const comment of postComments) {
-      firebase.comments[post.id][comment.id] = comment;
+      // Create enhanced comment with nested reactions
+      const commentWithReactions: IComment & { reactions: Record<string, IReaction> } = {
+        ...comment,
+        reactions: {},
+      };
+
+      // Add reactions to comment
+      const commentReactions = reactions.filter(
+        (r) => r.referenceId === comment.id && r.referenceType === 'comment',
+      );
+      for (const reaction of commentReactions) {
+        commentWithReactions.reactions[reaction.id] = reaction;
+      }
+
+      postWithCommentsAndReactions.comments[comment.id] = commentWithReactions;
     }
-  }
 
-  for (const reaction of reactions) {
-    const referenceId = reaction.referenceId;
-    const referenceType = reaction.referenceType;
-
-    if (!firebase.reactions[referenceId]) {
-      firebase.reactions[referenceId] = {};
-    }
-
-    firebase.reactions[referenceId][reaction.id] = reaction;
+    firebase.posts[post.id] = postWithCommentsAndReactions;
   }
 
   return {
@@ -968,6 +1023,20 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
 //   postCount: dummyData.posts.length,
 //   commentCount: dummyData.comments.length,
 //   reactionCount: dummyData.reactions.length
+// });
+
+// Write data to file if needed
+// import * as fs from 'fs';
+// fs.writeFileSync('dummy-data.json', JSON.stringify(dummyData.firebase, null, 2));
+
+// });
+
+// Write data to file if needed
+// import * as fs from 'fs';
+// fs.writeFileSync('dummy-data.json', JSON.stringify(dummyData.firebase, null, 2));
+
+// fs.writeFileSync('dummy-data.json', JSON.stringify(dummyData.firebase, null, 2));
+
 // });
 
 // Write data to file if needed

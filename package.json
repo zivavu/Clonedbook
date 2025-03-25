@@ -17,10 +17,7 @@
     "firebase:check-data": "node src/scripts/checkFirestoreData.js",
     "firebase:populate": "node populate-firebase.js",
     "firebase:clear": "node clear-firestore.js",
-    "firebase:list": "node list-collections.js",
-    "firebase:debug": "node firestore-debug.js",
-    "firebase:test": "node test-firestore.js",
-    "firebase:ui": "node open-firestore-ui.js",
+    "firebase:test": "node direct-test.js",
     "kill-ports": "node kill-ports.js",
     "algolia:mock": "bun src/scripts/setupLocalEnvironment.ts algolia-only",
     "generate:data": "bun src/scripts/dataGeneration/generateData.ts"

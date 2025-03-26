@@ -1,111 +1,32 @@
 import { faker } from '@faker-js/faker';
 import { v4 as uuidv4 } from 'uuid';
 
-export interface IUser {
-  id: string;
-  firstName: string;
-  lastName: string;
-  middleName?: string;
-  email: string;
-  profilePicture: string;
-  backgroundPicture?: string;
-  bio?: string;
-  birthday?: string;
-  gender?: 'male' | 'female' | 'other';
-  hometown?: string;
-  currentCity?: string;
-  workplace?: string;
-  school?: string;
-  interests?: string[];
-  phone?: string;
-  relationship?: {
-    status: 'single' | 'in_relationship' | 'engaged' | 'married' | 'divorced' | 'widowed';
-    partnerId?: string;
-  };
-  relatives?: Array<{
-    userId: string;
-    relation: 'parent' | 'child' | 'sibling' | 'cousin' | 'uncle_aunt' | 'niece_nephew';
-  }>;
-  friends?: IFriendship[];
-  website?: string;
-  createdAt: number;
-  updatedAt: number;
-}
-
-export interface IFriendship {
-  status: 'req_sent' | 'req_received' | 'accepted';
-  userId: string;
-  chatId: string;
-}
-
-export interface IChat {
-  id: string;
-  participantsIds: string[];
-  lastMessageAt: number;
-  lastMessage: string;
-  emoji?: string;
-  color?: string;
-  createdAt: number;
-}
-
-export interface IMessage {
-  id: string;
-  chatId: string;
-  senderId: string;
-  content: string;
-  createdAt: number;
-}
-
-export interface IPost {
-  id: string;
-  authorId: string;
-  content?: string;
-  pictureURLs?: string[];
-  privacy: 'public' | 'friends' | 'private';
-  createdAt: number;
-  updatedAt: number;
-  shareCount: number;
-}
-
-export interface IComment {
-  id: string;
-  postId: string;
-  authorId: string;
-  content: string;
-  parentId?: string;
-  createdAt: number;
-  updatedAt: number;
-}
-
-export interface IReaction {
-  id: string;
-  type: 'like' | 'love' | 'care' | 'haha' | 'wow' | 'sad' | 'angry';
-  userId: string;
-  referenceId: string;
-  referenceType: 'post' | 'comment';
-  createdAt: number;
-}
-
-export interface IUserBasicInfo {
-  id: string;
-  firstName: string;
-  lastName: string;
-  middleName?: string;
-  profilePicture: string;
-}
-
-export interface IUserPublicFriend {
-  userId: string;
-  friendId: string;
-  startDate: number;
-}
+// Import existing interfaces from the codebase
+import { IChat } from '@/types/chat';
+import { IComment, ICommentMap } from '@/types/comment';
+import { IFriendsMap, IPublicFriendsMap, TFriendStatus } from '@/types/firend';
+import { IMessage } from '@/types/message';
+import { IPictureWithPlaceholders } from '@/types/picture';
+import { IPost } from '@/types/post';
+import { IReactionsMap, TReactionType } from '@/types/reaction';
+import { ITimestamp } from '@/types/timestamp';
+import {
+  IContactInfo,
+  IUser,
+  IUserBasicInfo,
+  IUserCustomAbout,
+  IUserStringAbout,
+  TKinship,
+  TRealationshipStatus,
+  TUserSex,
+} from '@/types/user';
 
 export interface IAlgoliaSearchObject {
   objectID: string;
   firstName: string;
   lastName: string;
   middleName?: string;
-  profilePicture: string;
+  pictureUrl?: string;
 }
 
 export interface IUserMetadata {
@@ -116,39 +37,58 @@ export interface IUserMetadata {
 export interface IGenerationOptions {
   userCount: number;
   maxFriendsPerUser: number;
-  postsPerUser: number;
+  maxPostsPerUser: number;
   maxCommentsPerPost: number;
-  maxRepliesPerComment: number;
   maxReactionsPerPost: number;
-  maxReactionsPerComment: number;
+  maxChatsPerUser: number;
   maxMessagesPerChat: number;
 }
 
+export interface IGeneratedUser extends IUser {
+  popularityTier: 'low' | 'medium' | 'high';
+  activityLevel: 'inactive' | 'low' | 'medium' | 'high';
+}
+
+export interface IGeneratedChat extends IChat {}
+
+export interface IGeneratedMessage extends IMessage {
+  chatId: string;
+  reactions: IReactionsMap;
+}
+
+export interface IGeneratedPost extends IPost {
+  privacy?: 'public' | 'friends' | 'private';
+}
+
+export interface IGeneratedComment extends IComment {}
+
 export interface IGeneratedData {
-  users: IUser[];
-  chats: IChat[];
-  messages: IMessage[];
-  posts: IPost[];
-  comments: IComment[];
-  reactions: IReaction[];
-  userBasicInfo: IUserBasicInfo[];
-  userPublicFriends: IUserPublicFriend[];
+  users: IGeneratedUser[];
+  chats: IGeneratedChat[];
+  posts: IGeneratedPost[];
   algoliaSearchObjects: IAlgoliaSearchObject[];
   firebase: {
-    users: Record<string, IUser>;
-    chats: Record<string, IChat & { messages: Record<string, IMessage> }>;
-    posts: Record<
-      string,
-      IPost & {
-        comments: Record<string, IComment & { reactions: Record<string, IReaction> }>;
-        reactions: Record<string, IReaction>;
-      }
-    >;
+    users: Record<string, IGeneratedUser>;
+    chats: Record<string, IGeneratedChat>;
+    posts: Record<string, IGeneratedPost>;
     usersPublicData: {
       usersBasicInfo: Record<string, IUserBasicInfo>;
-      usersPublicFriends: Record<string, Record<string, number>>;
+      usersPublicFriends: Record<string, IPublicFriendsMap>;
     };
   };
+}
+
+// Helper function to convert milliseconds to ITimestamp
+function msToTimestamp(ms: number): ITimestamp {
+  return {
+    seconds: Math.floor(ms / 1000),
+    nanoseconds: (ms % 1000) * 1000000,
+  };
+}
+
+// Helper function to convert from Date to ITimestamp
+function dateToTimestamp(date: Date): ITimestamp {
+  return msToTimestamp(date.getTime());
 }
 
 // Helper functions
@@ -160,7 +100,7 @@ function getRandomSubset<T>(array: T[], maxCount: number): T[] {
   if (maxCount <= 0) return [];
   const count = Math.floor(Math.random() * maxCount) + 1;
   const shuffled = [...array].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
+  return shuffled.slice(0, Math.min(count, array.length));
 }
 
 function shouldFill(probability: number): boolean {
@@ -206,248 +146,142 @@ function assignUserActivityLevel(): 'inactive' | 'low' | 'medium' | 'high' {
   return 'high';
 }
 
-export function generateDummyData(options: IGenerationOptions): IGeneratedData {
-  const {
-    userCount,
-    maxFriendsPerUser,
-    postsPerUser,
-    maxCommentsPerPost,
-    maxRepliesPerComment,
-    maxReactionsPerPost,
-    maxReactionsPerComment,
-    maxMessagesPerChat,
-  } = options;
+// Update user generation code
+function generateUser(userId: string, gender: 'male' | 'female'): IGeneratedUser {
+  const firstName = faker.person.firstName(gender as any);
+  const lastName = faker.person.lastName();
+  const middleName = shouldFill(0.3) ? faker.person.middleName() : undefined;
+  const pictureUrl = faker.image.avatar() as string;
+  const backgroundPicture = shouldFill(0.5) ? faker.image.url() : undefined;
+  const backgroundPictureId = backgroundPicture ? uuidv4() : undefined;
+  const profilePictureId = uuidv4();
+  const isDummy = false;
+  const groups = {};
+  const friends: IFriendsMap = {};
+  const contact: IContactInfo = {
+    email: faker.internet.email({ firstName, lastName }),
+    phoneNumber: faker.phone.number(),
+  };
 
-  // Data containers
-  const users: IUser[] = [];
-  const userMetadata: Record<string, IUserMetadata> = {};
-  const chats: IChat[] = [];
-  const messages: IMessage[] = [];
-  const posts: IPost[] = [];
-  const comments: IComment[] = [];
-  const reactions: IReaction[] = [];
-  const userBasicInfo: IUserBasicInfo[] = [];
-  const userPublicFriends: IUserPublicFriend[] = [];
-  const algoliaSearchObjects: IAlgoliaSearchObject[] = [];
+  const birthDate = shouldFill(0.7)
+    ? dateToTimestamp(faker.date.birthdate({ min: 18, max: 65, mode: 'age' }))
+    : undefined;
 
-  // 1. Generate users with metadata
-  console.log('Generating users...');
-  for (let i = 0; i < userCount; i++) {
-    const userId = uuidv4();
-    const gender = Math.random() > 0.5 ? 'male' : 'female';
-    const firstName = faker.person.firstName(gender as any);
-    const lastName = faker.person.lastName();
+  const about: IUserStringAbout & IUserCustomAbout = {
+    bio: shouldFill(0.7) ? faker.lorem.paragraph() : undefined,
+    hometown: shouldFill(0.5) ? faker.location.city() : undefined,
+    city: shouldFill(0.5) ? faker.location.city() : undefined,
+    workplace: shouldFill(0.5) ? faker.company.name() : undefined,
+    jobTitle: shouldFill(0.3) ? faker.person.jobTitle() : undefined,
+    sex: gender as TUserSex,
+    intrests: Array.from({ length: Math.floor(Math.random() * 5) + 1 }, () => faker.word.sample()),
+    relationship: shouldFill(0.5)
+      ? {
+          status: getRandomElement([
+            'single',
+            "it's complicated",
+            'engaged',
+            'married',
+            'in relation',
+          ] as TRealationshipStatus[]),
+          partnerId: undefined, // Will be set later if needed
+        }
+      : undefined,
+    birthDate,
+    relatives: {},
+  };
 
-    // Assign popularity and activity level
-    const popularityTier = assignUserPopularityTier();
-    const activityLevel = assignUserActivityLevel();
-    userMetadata[userId] = { popularityTier, activityLevel };
+  return {
+    id: userId,
+    firstName,
+    lastName,
+    middleName,
+    pictureUrl,
+    backgroundPicture,
+    backgroundPictureId,
+    profilePictureId,
+    isDummy,
+    groups,
+    friends,
+    contact,
+    about,
+    popularityTier: assignUserPopularityTier(),
+    activityLevel: assignUserActivityLevel(),
+  };
+}
 
-    // Generate user with varying profile completeness based on popularity
-    const user: IUser = {
-      id: userId,
-      firstName,
-      lastName,
-      email: faker.internet.email({ firstName, lastName }),
-      profilePicture: faker.image.avatar(),
-      createdAt: faker.date.past({ years: 3 }).getTime(),
-      updatedAt: faker.date.recent().getTime(),
-    };
-
-    // Add optional fields based on user popularity
-    if (popularityTier === 'high' || (popularityTier === 'medium' && shouldFill(0.7))) {
-      user.middleName = shouldFill(0.6) ? faker.person.middleName() : undefined;
-      user.backgroundPicture = shouldFill(0.8) ? faker.image.url() : undefined;
-      user.bio = faker.lorem.paragraph();
-      user.birthday = faker.date.birthdate({ min: 18, max: 65, mode: 'age' }).toISOString();
-      user.gender = gender as 'male' | 'female' | 'other';
-      user.hometown = faker.location.city();
-      user.currentCity = faker.location.city();
-      user.workplace = faker.company.name();
-      user.school = faker.company.name() + ' University';
-      user.interests = Array.from({ length: Math.floor(Math.random() * 5) + 1 }, () =>
-        faker.word.sample(),
-      );
-      user.phone = faker.phone.number();
-      user.website = shouldFill(0.3) ? faker.internet.url() : undefined;
-    } else if (popularityTier === 'medium' || (popularityTier === 'low' && shouldFill(0.5))) {
-      user.middleName = shouldFill(0.3) ? faker.person.middleName() : undefined;
-      user.bio = shouldFill(0.6) ? faker.lorem.sentences(2) : undefined;
-      user.birthday = shouldFill(0.7)
-        ? faker.date.birthdate({ min: 18, max: 65, mode: 'age' }).toISOString()
-        : undefined;
-      user.gender = shouldFill(0.8) ? (gender as 'male' | 'female' | 'other') : undefined;
-      user.currentCity = shouldFill(0.6) ? faker.location.city() : undefined;
-      user.workplace = shouldFill(0.5) ? faker.company.name() : undefined;
-      user.school = shouldFill(0.6) ? faker.company.name() + ' University' : undefined;
-    }
-
-    users.push(user);
-
-    // Create user basic info and Algolia search object
-    const basicInfo: IUserBasicInfo = {
-      id: userId,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      middleName: user.middleName,
-      profilePicture: user.profilePicture,
-    };
-
-    userBasicInfo.push(basicInfo);
-
-    algoliaSearchObjects.push({
-      objectID: userId,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      middleName: user.middleName,
-      profilePicture: user.profilePicture,
-    });
-  }
-
-  // 2. Generate relationships (partners, relatives)
-  console.log('Generating relationships...');
+// Handle user relationships
+function handleUserRelationships(users: IGeneratedUser[]): void {
   for (const user of users) {
-    const { popularityTier } = userMetadata[user.id];
-
     // Partnership (based on popularity)
-    if (
-      (popularityTier === 'high' && shouldFill(0.7)) ||
-      (popularityTier === 'medium' && shouldFill(0.5)) ||
-      (popularityTier === 'low' && shouldFill(0.3))
-    ) {
-      const partnerStatusOptions = [
+    if (shouldFill(0.5)) {
+      const partnerStatusOptions: TRealationshipStatus[] = [
         'single',
-        'in_relationship',
+        "it's complicated",
         'engaged',
         'married',
-        'divorced',
-        'widowed',
+        'in relation',
       ];
-      const partnerStatusWeights =
-        popularityTier === 'high'
-          ? [0.1, 0.2, 0.2, 0.3, 0.1, 0.1]
-          : [0.3, 0.3, 0.1, 0.2, 0.05, 0.05];
+      const status = getRandomElement(partnerStatusOptions);
 
-      let statusIndex = 0;
-      const rand = Math.random();
-      let sum = 0;
+      user.about.relationship = { status };
 
-      for (let i = 0; i < partnerStatusWeights.length; i++) {
-        sum += partnerStatusWeights[i];
-        if (rand < sum) {
-          statusIndex = i;
-          break;
-        }
-      }
-
-      const status = partnerStatusOptions[statusIndex] as
-        | 'single'
-        | 'in_relationship'
-        | 'engaged'
-        | 'married'
-        | 'divorced'
-        | 'widowed';
-
-      user.relationship = { status };
-
-      // Assign partner if not single/divorced/widowed
-      if (['in_relationship', 'engaged', 'married'].includes(status)) {
+      // Assign partner if not single
+      if (status !== 'single') {
         const potentialPartners = users.filter(
           (p) =>
-            p.id !== user.id &&
-            (!p.relationship ||
-              !['in_relationship', 'engaged', 'married'].includes(p.relationship.status)),
+            p.id !== user.id && (!p.about.relationship || p.about.relationship.status === 'single'),
         );
 
         if (potentialPartners.length > 0) {
           const partner = getRandomElement(potentialPartners);
-          user.relationship.partnerId = partner.id;
+          if (user.about.relationship) {
+            user.about.relationship.partnerId = partner.id;
+          }
 
           // Update partner's status too
-          partner.relationship = {
-            status: user.relationship.status,
+          partner.about.relationship = {
+            status: user.about.relationship?.status || 'single',
             partnerId: user.id,
           };
         }
       }
     }
 
-    // Add relatives (based on popularity)
-    if (
-      (popularityTier === 'high' && shouldFill(0.6)) ||
-      (popularityTier === 'medium' && shouldFill(0.3)) ||
-      (popularityTier === 'low' && shouldFill(0.1))
-    ) {
+    // Add relatives
+    if (shouldFill(0.3)) {
       const potentialRelatives = users.filter((p) => p.id !== user.id);
       const relativeCount = Math.floor(Math.random() * 3) + 1;
       const relatives = getRandomSubset(potentialRelatives, relativeCount);
 
-      const relationTypes = ['parent', 'child', 'sibling', 'cousin', 'uncle_aunt', 'niece_nephew'];
+      const relationTypes: TKinship[] = ['parent', 'child', 'sibling', 'cousin'];
 
-      user.relatives = relatives.map((relative) => ({
-        userId: relative.id,
-        relation: getRandomElement(relationTypes) as
-          | 'parent'
-          | 'child'
-          | 'sibling'
-          | 'cousin'
-          | 'uncle_aunt'
-          | 'niece_nephew',
-      }));
+      for (const relative of relatives) {
+        const relation = getRandomElement(relationTypes);
+        user.about.relatives[relative.id] = relation;
 
-      // Add reciprocal relationships
-      for (const relative of user.relatives || []) {
-        const relativeUser = users.find((u) => u.id === relative.userId);
-        if (!relativeUser) continue;
+        // Add reciprocal relationship
+        let reciprocalRelation: TKinship;
 
-        let reciprocalRelation:
-          | 'parent'
-          | 'child'
-          | 'sibling'
-          | 'cousin'
-          | 'uncle_aunt'
-          | 'niece_nephew';
-        switch (relative.relation) {
-          case 'parent':
-            reciprocalRelation = 'child';
-            break;
-          case 'child':
-            reciprocalRelation = 'parent';
-            break;
-          case 'sibling':
-            reciprocalRelation = 'sibling';
-            break;
-          case 'cousin':
-            reciprocalRelation = 'cousin';
-            break;
-          case 'uncle_aunt':
-            reciprocalRelation = 'niece_nephew';
-            break;
-          case 'niece_nephew':
-            reciprocalRelation = 'uncle_aunt';
-            break;
+        if (relation === 'parent') {
+          reciprocalRelation = 'child';
+        } else if (relation === 'child') {
+          reciprocalRelation = 'parent';
+        } else {
+          // sibling and cousin remain the same
+          reciprocalRelation = relation;
         }
 
-        if (!relativeUser.relatives) {
-          relativeUser.relatives = [];
-        }
-
-        // Only add if not already there
-        const existingRelation = relativeUser.relatives.find((r) => r.userId === user.id);
-        if (!existingRelation) {
-          relativeUser.relatives.push({
-            userId: user.id,
-            relation: reciprocalRelation,
-          });
-        }
+        relative.about.relatives[user.id] = reciprocalRelation;
       }
     }
   }
+}
 
-  // 3. Generate friendships and chats
-  console.log('Generating friendships and chats...');
+// Handle friendships
+function handleFriendships(users: IGeneratedUser[], maxFriendsPerUser: number): void {
   for (const user of users) {
-    const { popularityTier, activityLevel } = userMetadata[user.id];
+    const { popularityTier, activityLevel } = user;
 
     // Determine friend count based on popularity and activity
     let maxFriends = maxFriendsPerUser;
@@ -467,9 +301,7 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
     else if (activityLevel === 'medium') maxFriends = Math.floor(maxFriends * 0.8);
 
     // Find potential friends
-    const potentialFriends = users.filter(
-      (p) => p.id !== user.id && !user.friends?.find((f) => f.userId === p.id),
-    );
+    const potentialFriends = users.filter((p) => p.id !== user.id && !(p.id in user.friends));
 
     if (!potentialFriends.length) continue;
 
@@ -477,13 +309,12 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
     const friendCount = Math.floor(Math.random() * maxFriends) + 1;
     const selectedFriends = getRandomSubset(potentialFriends, friendCount);
 
-    if (!user.friends) {
-      user.friends = [];
-    }
-
     for (const friend of selectedFriends) {
+      // Skip if already friends
+      if (friend.id in user.friends) continue;
+
       // Determine friendship status
-      let status: 'req_sent' | 'req_received' | 'accepted';
+      let status: TFriendStatus;
       const acceptanceRate =
         popularityTier === 'high' ? 0.9 : popularityTier === 'medium' ? 0.7 : 0.5;
 
@@ -493,117 +324,145 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
         status = Math.random() > 0.5 ? 'req_sent' : 'req_received';
       }
 
-      // Create chat for accepted friends
+      // Create chat ID for accepted friends
       let chatId = '';
+      let acceptedAt: ITimestamp | undefined;
+
       if (status === 'accepted') {
         chatId = getChatId(user.id, friend.id);
-
-        // Store the friendship start date
-        let friendshipStartDate: number;
-
-        // Create chat if it doesn't exist
-        if (!chats.find((c) => c.id === chatId)) {
-          const chatCreationDate = faker.date.past({ years: 1 }).getTime();
-          const lastMessageDate = faker.date
-            .between({
-              from: chatCreationDate,
-              to: Date.now(),
-            })
-            .getTime();
-
-          const chat: IChat = {
-            id: chatId,
-            participantsIds: [user.id, friend.id],
-            lastMessageAt: lastMessageDate,
-            lastMessage: faker.lorem.sentence(),
-            emoji: shouldFill(0.3) ? getRandomEmoji() : undefined,
-            color: shouldFill(0.3) ? getRandomColor() : undefined,
-            createdAt: chatCreationDate,
-          };
-
-          chats.push(chat);
-
-          // Generate chat messages
-          const messageCount = Math.floor(Math.random() * maxMessagesPerChat) + 1;
-
-          // Create timeline of messages
-          for (let i = 0; i < messageCount; i++) {
-            const messageDate = faker.date
-              .between({
-                from: chatCreationDate,
-                to: lastMessageDate,
-              })
-              .getTime();
-
-            const message: IMessage = {
-              id: uuidv4(),
-              chatId,
-              senderId: Math.random() > 0.5 ? user.id : friend.id,
-              content: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1),
-              createdAt: messageDate,
-            };
-
-            messages.push(message);
-          }
-
-          friendshipStartDate = chatCreationDate;
-        } else {
-          // If chat already exists, use a date from the past year
-          friendshipStartDate = faker.date.past({ years: 1 }).getTime();
-        }
-
-        // Add to public friends for accepted friendships
-        userPublicFriends.push({
-          userId: user.id,
-          friendId: friend.id,
-          startDate: friendshipStartDate,
-        });
-
-        userPublicFriends.push({
-          userId: friend.id,
-          friendId: user.id,
-          startDate: friendshipStartDate,
-        });
+        // Create timestamp from 1-12 months ago
+        const monthsAgo = Math.floor(Math.random() * 12) + 1;
+        const acceptedAtDate = new Date();
+        acceptedAtDate.setMonth(acceptedAtDate.getMonth() - monthsAgo);
+        acceptedAt = dateToTimestamp(acceptedAtDate);
       }
 
       // Add friendship to user
-      user.friends.push({
+      user.friends[friend.id] = {
+        id: friend.id,
+        chatId,
         status,
-        userId: friend.id,
-        chatId,
-      });
+        acceptedAt: acceptedAt || msToTimestamp(0), // Default to epoch if not accepted
+      };
 
-      // Add reciprocal friendship to friend
-      if (!friend.friends) {
-        friend.friends = [];
+      // Add reciprocal friendship to friend if not already friends
+      if (!(user.id in friend.friends)) {
+        let reciprocalStatus: TFriendStatus;
+
+        if (status === 'accepted') {
+          reciprocalStatus = 'accepted';
+        } else if (status === 'req_sent') {
+          reciprocalStatus = 'req_received';
+        } else {
+          reciprocalStatus = 'req_sent';
+        }
+
+        friend.friends[user.id] = {
+          id: user.id,
+          chatId,
+          status: reciprocalStatus,
+          acceptedAt: acceptedAt || msToTimestamp(0),
+        };
       }
-
-      // Skip if already friends
-      if (friend.friends.find((f) => f.userId === user.id)) {
-        continue;
-      }
-
-      let reciprocalStatus: 'req_sent' | 'req_received' | 'accepted';
-      if (status === 'accepted') {
-        reciprocalStatus = 'accepted';
-      } else if (status === 'req_sent') {
-        reciprocalStatus = 'req_received';
-      } else {
-        reciprocalStatus = 'req_sent';
-      }
-
-      friend.friends.push({
-        status: reciprocalStatus,
-        userId: user.id,
-        chatId,
-      });
     }
+  }
+}
+
+export function generateDummyData(options: IGenerationOptions): IGeneratedData {
+  const {
+    userCount,
+    maxFriendsPerUser,
+    maxPostsPerUser,
+    maxCommentsPerPost,
+    maxReactionsPerPost,
+    maxChatsPerUser,
+    maxMessagesPerChat,
+  } = options;
+
+  // Data containers
+  const users: IGeneratedUser[] = [];
+  const chats: IGeneratedChat[] = [];
+  const posts: IGeneratedPost[] = [];
+  const algoliaSearchObjects: IAlgoliaSearchObject[] = [];
+
+  // 1. Generate users with metadata
+  console.log('Generating users...');
+  for (let i = 0; i < userCount; i++) {
+    const userId = uuidv4();
+    const gender = Math.random() > 0.5 ? 'male' : 'female';
+    const generatedUser = generateUser(userId, gender);
+    users.push(generatedUser);
+
+    // Create Algolia search object
+    algoliaSearchObjects.push({
+      objectID: userId,
+      firstName: generatedUser.firstName,
+      lastName: generatedUser.lastName,
+      middleName: generatedUser.middleName,
+      ...(generatedUser.pictureUrl ? { pictureUrl: generatedUser.pictureUrl } : {}),
+    });
+  }
+
+  // Handle user relationships
+  handleUserRelationships(users);
+
+  // Handle friendships
+  handleFriendships(users, maxFriendsPerUser);
+
+  // 2. Generate chats
+  console.log('Generating chats...');
+  const chatIds = new Set<string>();
+
+  // Find all unique chat IDs from friendships
+  for (const user of users) {
+    for (const friendId in user.friends) {
+      const friend = user.friends[friendId];
+      if (friend.status === 'accepted' && friend.chatId) {
+        chatIds.add(friend.chatId);
+      }
+    }
+  }
+
+  // Create chat objects - convert Set to Array for iteration
+  for (const chatId of Array.from(chatIds)) {
+    const [userId1, userId2] = chatId.split('_');
+
+    // Create chat
+    const chat: IGeneratedChat = {
+      id: chatId,
+      users: [userId1, userId2],
+      messages: [],
+      chatEmoji: Math.random() > 0.7 ? getRandomEmoji() : undefined,
+      chatColor: Math.random() > 0.7 ? getRandomColor() : undefined,
+    };
+
+    // Generate messages
+    const messageCount = Math.floor(Math.random() * maxMessagesPerChat) + 1;
+    const chatCreatedAt = new Date();
+    chatCreatedAt.setMonth(chatCreatedAt.getMonth() - Math.floor(Math.random() * 12));
+
+    for (let i = 0; i < messageCount; i++) {
+      const messageDate = new Date(chatCreatedAt);
+      messageDate.setMinutes(messageDate.getMinutes() + i * Math.floor(Math.random() * 60));
+
+      const message: IMessage = {
+        id: uuidv4(),
+        senderId: Math.random() > 0.5 ? userId1 : userId2,
+        text: faker.lorem.sentences(Math.floor(Math.random() * 3) + 1),
+        createdAt: dateToTimestamp(messageDate),
+        pictures: Math.random() > 0.8 ? [] : undefined, // Usually no pictures
+      };
+
+      chat.messages.push(message);
+    }
+
+    chats.push(chat);
   }
 
   // 4. Generate posts
   console.log('Generating posts...');
   for (const user of users) {
-    const { popularityTier, activityLevel } = userMetadata[user.id];
+    const { popularityTier, activityLevel } = user;
 
     // Adjust post count based on activity level
     let userPostCount = 0;
@@ -621,20 +480,20 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
 
     // Create posts
     for (let i = 0; i < userPostCount; i++) {
-      const creationDate = faker.date
-        .between({
-          from: user.createdAt,
-          to: Date.now(),
-        })
-        .getTime();
+      // Create a post date sometime in the last year
+      const creationDate = new Date();
+      creationDate.setDate(creationDate.getDate() - Math.floor(Math.random() * 365));
+      const creationTimestamp = dateToTimestamp(creationDate);
 
-      const updateDate =
-        Math.random() > 0.8
-          ? faker.date.between({ from: creationDate, to: Date.now() }).getTime()
-          : creationDate;
+      // Sometimes posts are updated
+      const updateDate = new Date(creationDate);
+      if (Math.random() > 0.8) {
+        updateDate.setDate(updateDate.getDate() + Math.floor(Math.random() * 7)); // Update within a week
+      }
+      const updateTimestamp = dateToTimestamp(updateDate);
 
       const hasPictures = Math.random() > 0.5;
-      const hasContent = Math.random() > 0.2 || !hasPictures;
+      const hasText = Math.random() > 0.2 || !hasPictures;
 
       // Determine post privacy based on user popularity
       let privacy: 'public' | 'friends' | 'private';
@@ -658,17 +517,28 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
         }
       }
 
-      const post: IPost = {
+      // Generate pictures with placeholders if needed
+      const pictures: IPictureWithPlaceholders[] = hasPictures
+        ? Array.from({ length: Math.floor(Math.random() * 3) + 1 }, () => ({
+            url: faker.image.url(),
+            blurDataUrl:
+              'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+            dominantHex: getRandomColor(),
+          }))
+        : [];
+
+      const post: IGeneratedPost = {
         id: uuidv4(),
-        authorId: user.id,
-        content: hasContent ? faker.lorem.paragraphs(Math.floor(Math.random() * 3) + 1) : undefined,
-        pictureURLs: hasPictures
-          ? Array.from({ length: Math.floor(Math.random() * 3) + 1 }, () => faker.image.url())
-          : undefined,
-        privacy,
-        createdAt: creationDate,
-        updatedAt: updateDate,
+        ownerId: user.id,
+        wallOwnerId: user.id,
+        text: hasText ? faker.lorem.paragraphs(Math.floor(Math.random() * 3) + 1) : undefined,
+        pictures: hasPictures ? pictures : undefined,
+        createdAt: creationTimestamp,
         shareCount,
+        elementType: 'post',
+        comments: {},
+        reactions: {},
+        privacy, // This is not in the IPost type but used internally for generation
       };
 
       posts.push(post);
@@ -680,221 +550,143 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
         commentCount,
       );
 
+      // Comments map for this post
+      const comments: ICommentMap = {};
+
       for (let j = 0; j < commenters.length; j++) {
         const commenter = commenters[j];
-        const commentDate = faker.date
-          .between({
-            from: creationDate,
-            to: Date.now(),
-          })
-          .getTime();
 
-        const updateCommentDate =
-          Math.random() > 0.9
-            ? faker.date.between({ from: commentDate, to: Date.now() }).getTime()
-            : commentDate;
+        // Comment creation date between post creation and now
+        const commentDate = new Date(creationDate);
+        commentDate.setHours(commentDate.getHours() + Math.floor(Math.random() * 72)); // Within 3 days
+        const commentTimestamp = dateToTimestamp(commentDate);
 
+        const commentId = uuidv4();
         const comment: IComment = {
-          id: uuidv4(),
-          postId: post.id,
-          authorId: commenter.id,
-          content: faker.lorem.sentences(Math.floor(Math.random() * 2) + 1),
-          createdAt: commentDate,
-          updatedAt: updateCommentDate,
+          id: commentId,
+          ownerId: commenter.id,
+          commentText: faker.lorem.sentences(Math.floor(Math.random() * 2) + 1),
+          createdAt: commentTimestamp,
+          responses: {},
+          reactions: {},
         };
 
-        comments.push(comment);
+        comments[commentId] = comment;
 
-        // Generate replies to comments
-        if (Math.random() > 0.7) {
-          const replyCount = Math.floor(Math.random() * maxRepliesPerComment) + 1;
-          const repliers = getRandomSubset(
+        // Generate reactions for comments
+        if (Math.random() > 0.6) {
+          const reactionsCount = Math.floor(Math.random() * 5) + 1;
+          const reactors = getRandomSubset(
             users.filter((u) => u.id !== commenter.id),
-            replyCount,
+            reactionsCount,
           );
 
-          for (const replier of repliers) {
-            const replyDate = faker.date
-              .between({
-                from: commentDate,
-                to: Date.now(),
-              })
-              .getTime();
+          const reactions: IReactionsMap = {};
+          for (const reactor of reactors) {
+            const reactionType = getRandomElement([
+              'like',
+              'love',
+              'care',
+              'haha',
+              'wow',
+              'sad',
+              'angry',
+            ] as TReactionType[]);
 
-            const updateReplyDate =
-              Math.random() > 0.9
-                ? faker.date.between({ from: replyDate, to: Date.now() }).getTime()
-                : replyDate;
-
-            const reply: IComment = {
-              id: uuidv4(),
-              postId: post.id,
-              authorId: replier.id,
-              content: faker.lorem.sentences(Math.floor(Math.random() * 2) + 1),
-              parentId: comment.id,
-              createdAt: replyDate,
-              updatedAt: updateReplyDate,
-            };
-
-            comments.push(reply);
+            reactions[reactor.id] = reactionType;
           }
+
+          comment.reactions = reactions;
         }
       }
 
-      // Generate reactions to posts
-      const reactionsCount = Math.min(
-        Math.floor(Math.random() * maxReactionsPerPost) +
-          (post.shareCount > 0 ? post.shareCount / 2 : 0) +
-          (popularityTier === 'high' ? 10 : popularityTier === 'medium' ? 5 : 2),
-        users.length - 1,
-      );
+      post.comments = comments;
 
-      const reactors = getRandomSubset(
-        users.filter((u) => u.id !== user.id),
-        reactionsCount,
-      );
+      // Generate reactions to post
+      if (Math.random() > 0.4) {
+        // 60% chance for a post to have reactions
+        const reactionsCount = Math.min(
+          Math.floor(Math.random() * maxReactionsPerPost) +
+            (post.shareCount > 0 ? post.shareCount / 2 : 0) +
+            (popularityTier === 'high' ? 10 : popularityTier === 'medium' ? 5 : 2),
+          users.length - 1,
+        );
 
-      for (const reactor of reactors) {
-        const reactionDate = faker.date
-          .between({
-            from: creationDate,
-            to: Date.now(),
-          })
-          .getTime();
+        const reactors = getRandomSubset(
+          users.filter((u) => u.id !== user.id),
+          reactionsCount,
+        );
 
-        // Determine reaction type based on post content and popularity
-        let reactionType: 'like' | 'love' | 'care' | 'haha' | 'wow' | 'sad' | 'angry';
+        const reactions: IReactionsMap = {};
 
-        // Base probabilities
-        const typeProbabilities = {
-          like: 0.6,
-          love: 0.2,
-          care: 0.05,
-          haha: 0.05,
-          wow: 0.05,
-          sad: 0.03,
-          angry: 0.02,
-        };
+        for (const reactor of reactors) {
+          // Determine reaction type based on post content and popularity
+          let reactionType: TReactionType;
 
-        // Adjust based on post content
-        if (post.content && post.content.toLowerCase().includes('love')) {
-          typeProbabilities.love += 0.2;
-          typeProbabilities.like -= 0.1;
-          typeProbabilities.care += 0.1;
-        } else if (
-          post.content &&
-          (post.content.toLowerCase().includes('haha') ||
-            post.content.toLowerCase().includes('funny') ||
-            post.content.toLowerCase().includes('lol'))
-        ) {
-          typeProbabilities.haha += 0.3;
-          typeProbabilities.like -= 0.1;
-          typeProbabilities.wow += 0.1;
-        } else if (
-          post.content &&
-          (post.content.toLowerCase().includes('sad') ||
-            post.content.toLowerCase().includes('sorry'))
-        ) {
-          typeProbabilities.sad += 0.3;
-          typeProbabilities.care += 0.2;
-          typeProbabilities.like -= 0.2;
-        }
+          // Base probabilities
+          const typeProbabilities = {
+            like: 0.6,
+            love: 0.2,
+            care: 0.05,
+            haha: 0.05,
+            wow: 0.05,
+            sad: 0.03,
+            angry: 0.02,
+          };
 
-        // Choose reaction type based on adjusted probabilities
-        const rand = Math.random();
-        let sum = 0;
-        reactionType = 'like'; // default
-
-        for (const [type, probability] of Object.entries(typeProbabilities)) {
-          sum += probability;
-          if (rand < sum) {
-            reactionType = type as 'like' | 'love' | 'care' | 'haha' | 'wow' | 'sad' | 'angry';
-            break;
+          // Adjust based on post content
+          if (post.text && post.text.toLowerCase().includes('love')) {
+            typeProbabilities.love += 0.2;
+            typeProbabilities.like -= 0.1;
+            typeProbabilities.care += 0.1;
+          } else if (
+            post.text &&
+            (post.text.toLowerCase().includes('haha') ||
+              post.text.toLowerCase().includes('funny') ||
+              post.text.toLowerCase().includes('lol'))
+          ) {
+            typeProbabilities.haha += 0.3;
+            typeProbabilities.like -= 0.1;
+            typeProbabilities.wow += 0.1;
+          } else if (
+            post.text &&
+            (post.text.toLowerCase().includes('sad') || post.text.toLowerCase().includes('sorry'))
+          ) {
+            typeProbabilities.sad += 0.3;
+            typeProbabilities.care += 0.2;
+            typeProbabilities.like -= 0.2;
           }
+
+          // Choose reaction type based on adjusted probabilities
+          const rand = Math.random();
+          let sum = 0;
+          reactionType = 'like'; // default
+
+          for (const [type, probability] of Object.entries(typeProbabilities)) {
+            sum += probability;
+            if (rand < sum) {
+              reactionType = type as TReactionType;
+              break;
+            }
+          }
+
+          reactions[reactor.id] = reactionType;
         }
 
-        const reaction: IReaction = {
-          id: uuidv4(),
-          type: reactionType,
-          userId: reactor.id,
-          referenceId: post.id,
-          referenceType: 'post',
-          createdAt: reactionDate,
-        };
-
-        reactions.push(reaction);
+        post.reactions = reactions;
       }
-    }
-  }
-
-  // 5. Generate reactions to comments
-  console.log('Generating comment reactions...');
-  for (const comment of comments) {
-    const commentAuthor = users.find((u) => u.id === comment.authorId);
-    if (!commentAuthor) continue;
-
-    const authorMetadata = userMetadata[commentAuthor.id];
-
-    // Determine number of reactions based on author popularity
-    const reactionsCount = Math.min(
-      Math.floor(Math.random() * maxReactionsPerComment) +
-        (authorMetadata.popularityTier === 'high'
-          ? 5
-          : authorMetadata.popularityTier === 'medium'
-            ? 2
-            : 0),
-      users.length - 1,
-    );
-
-    if (reactionsCount <= 0) continue;
-
-    const reactors = getRandomSubset(
-      users.filter((u) => u.id !== commentAuthor.id),
-      reactionsCount,
-    );
-
-    for (const reactor of reactors) {
-      const reactionDate = faker.date
-        .between({
-          from: comment.createdAt,
-          to: Date.now(),
-        })
-        .getTime();
-
-      // Mostly likes for comments, with occasional other reactions
-      const reactionType =
-        Math.random() > 0.2
-          ? 'like'
-          : getRandomElement(['love', 'care', 'haha', 'wow', 'sad', 'angry']);
-
-      const reaction: IReaction = {
-        id: uuidv4(),
-        type: reactionType as 'like' | 'love' | 'care' | 'haha' | 'wow' | 'sad' | 'angry',
-        userId: reactor.id,
-        referenceId: comment.id,
-        referenceType: 'comment',
-        createdAt: reactionDate,
-      };
-
-      reactions.push(reaction);
     }
   }
 
   // 6. Create Firebase data structure
   console.log('Creating Firebase data structure...');
   const firebase: {
-    users: Record<string, IUser>;
-    chats: Record<string, IChat & { messages: Record<string, IMessage> }>;
-    posts: Record<
-      string,
-      IPost & {
-        comments: Record<string, IComment & { reactions: Record<string, IReaction> }>;
-        reactions: Record<string, IReaction>;
-      }
-    >;
+    users: Record<string, IGeneratedUser>;
+    chats: Record<string, IGeneratedChat>;
+    posts: Record<string, IGeneratedPost>;
     usersPublicData: {
       usersBasicInfo: Record<string, IUserBasicInfo>;
-      usersPublicFriends: Record<string, Record<string, number>>;
+      usersPublicFriends: Record<string, IPublicFriendsMap>;
     };
   } = {
     users: {},
@@ -911,134 +703,41 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
     firebase.users[user.id] = user;
 
     // Add user basic info to usersPublicData collection
-    firebase.usersPublicData.usersBasicInfo[user.id] = userBasicInfo.find(
-      (info) => info.id === user.id,
-    ) || {
+    firebase.usersPublicData.usersBasicInfo[user.id] = {
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       middleName: user.middleName,
-      profilePicture: user.profilePicture,
+      pictureUrl: user.pictureUrl,
     };
 
     // Add public friends to usersPublicData collection
     firebase.usersPublicData.usersPublicFriends[user.id] = {};
 
-    const userFriends = userPublicFriends.filter((f) => f.userId === user.id);
-    for (const friend of userFriends) {
-      firebase.usersPublicData.usersPublicFriends[user.id][friend.friendId] = friend.startDate;
-    }
-  }
-
-  // Add chats with nested messages
-  for (const chat of chats) {
-    // Create enhanced chat object with nested messages
-    const chatWithMessages: IChat & { messages: Record<string, IMessage> } = {
-      ...chat,
-      messages: {},
-    };
-
-    // Add messages to chat
-    const chatMessages = messages.filter((m) => m.chatId === chat.id);
-    for (const message of chatMessages) {
-      chatWithMessages.messages[message.id] = message;
-    }
-
-    firebase.chats[chat.id] = chatWithMessages;
-  }
-
-  // Add posts with nested comments and reactions
-  for (const post of posts) {
-    // Create enhanced post object with nested comments and reactions
-    const postWithCommentsAndReactions: IPost & {
-      comments: Record<string, IComment & { reactions: Record<string, IReaction> }>;
-      reactions: Record<string, IReaction>;
-    } = {
-      ...post,
-      comments: {},
-      reactions: {},
-    };
-
-    // Add reactions to post
-    const postReactions = reactions.filter(
-      (r) => r.referenceId === post.id && r.referenceType === 'post',
-    );
-    for (const reaction of postReactions) {
-      postWithCommentsAndReactions.reactions[reaction.id] = reaction;
-    }
-
-    // Add comments with reactions to post
-    const postComments = comments.filter((c) => c.postId === post.id);
-    for (const comment of postComments) {
-      // Create enhanced comment with nested reactions
-      const commentWithReactions: IComment & { reactions: Record<string, IReaction> } = {
-        ...comment,
-        reactions: {},
-      };
-
-      // Add reactions to comment
-      const commentReactions = reactions.filter(
-        (r) => r.referenceId === comment.id && r.referenceType === 'comment',
-      );
-      for (const reaction of commentReactions) {
-        commentWithReactions.reactions[reaction.id] = reaction;
+    // Add accepted friends to public friends map
+    for (const friendId in user.friends) {
+      const friend = user.friends[friendId];
+      if (friend.status === 'accepted' && friend.acceptedAt) {
+        firebase.usersPublicData.usersPublicFriends[user.id][friendId] = friend.acceptedAt;
       }
-
-      postWithCommentsAndReactions.comments[comment.id] = commentWithReactions;
     }
+  }
 
-    firebase.posts[post.id] = postWithCommentsAndReactions;
+  // Add chats
+  for (const chat of chats) {
+    firebase.chats[chat.id] = chat;
+  }
+
+  // Add posts
+  for (const post of posts) {
+    firebase.posts[post.id] = post;
   }
 
   return {
     users,
     chats,
-    messages,
     posts,
-    comments,
-    reactions,
-    userBasicInfo,
-    userPublicFriends,
     algoliaSearchObjects,
     firebase,
   };
 }
-
-// Usage example
-// const dummyData = generateDummyData({
-//   userCount: 50,
-//   maxFriendsPerUser: 20,
-//   postsPerUser: 10,
-//   maxCommentsPerPost: 5,
-//   maxRepliesPerComment: 3,
-//   maxReactionsPerPost: 15,
-//   maxReactionsPerComment: 5,
-//   maxMessagesPerChat: 20
-// });
-
-// console.log('Data generation complete', {
-//   userCount: dummyData.users.length,
-//   chatCount: dummyData.chats.length,
-//   messageCount: dummyData.messages.length,
-//   postCount: dummyData.posts.length,
-//   commentCount: dummyData.comments.length,
-//   reactionCount: dummyData.reactions.length
-// });
-
-// Write data to file if needed
-// import * as fs from 'fs';
-// fs.writeFileSync('dummy-data.json', JSON.stringify(dummyData.firebase, null, 2));
-
-// });
-
-// Write data to file if needed
-// import * as fs from 'fs';
-// fs.writeFileSync('dummy-data.json', JSON.stringify(dummyData.firebase, null, 2));
-
-// fs.writeFileSync('dummy-data.json', JSON.stringify(dummyData.firebase, null, 2));
-
-// });
-
-// Write data to file if needed
-// import * as fs from 'fs';
-// fs.writeFileSync('dummy-data.json', JSON.stringify(dummyData.firebase, null, 2));

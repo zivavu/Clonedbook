@@ -16,8 +16,7 @@
     "populate": "bun src/scripts/dataGeneration/populateEmulators.ts",
     "export-data": "firebase emulators:export ./emulator-data",
     "import-data": "firebase emulators:start --import=./emulator-data",
-    "release:ports": "node src/scripts/releaseEmulatorPorts.js",
-    "cleanup": "bun src/scripts/cleanup.ts"
+    "release:ports": "node src/scripts/releaseEmulatorPorts.js"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",

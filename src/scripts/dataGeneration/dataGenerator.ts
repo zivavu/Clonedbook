@@ -45,6 +45,7 @@ export interface IGenerationOptions {
   maxReactionsPerPost: number;
   maxChatsPerUser: number;
   maxMessagesPerChat: number;
+  maxImagesPerPost: number;
 }
 
 export interface IGeneratedUser extends IUser {
@@ -436,13 +437,21 @@ function generateReactionsForViralPost(
   post: IGeneratedPost,
   users: IGeneratedUser[],
   viralityScore: number,
+  maxReactions: number,
 ): IReactionsMap {
   const reactions: IReactionsMap = {};
 
-  // Calculate number of reactions based on virality score
-  const baseReactions = Math.floor(users.length * viralityScore * 0.7);
+  // Calculate number of reactions based on virality score and max reactions parameter
+  const minReactions = 5; // Ensure at least some reactions
+  const adjustedMaxReactions = Math.max(minReactions, maxReactions * viralityScore);
+
+  // For highly viral posts, ensure they get more reactions
+  const baseReactions = Math.floor(
+    viralityScore > 0.7 ? adjustedMaxReactions * 0.6 : adjustedMaxReactions * 0.3,
+  );
+
   const actualReactions = Math.min(
-    baseReactions + Math.floor(Math.random() * baseReactions * 0.3),
+    baseReactions + Math.floor(Math.random() * baseReactions * 0.4),
     users.length - 1,
   );
 
@@ -548,6 +557,7 @@ export async function generateDummyData(
     maxReactionsPerPost,
     maxChatsPerUser,
     maxMessagesPerChat,
+    maxImagesPerPost,
   } = options;
 
   // Default data directory is now src/data
@@ -667,8 +677,8 @@ export async function generateDummyData(
       }
       const updateTimestamp = dateToTimestamp(updateDate);
 
-      const hasPictures = Math.random() > 0.5;
-      const hasText = Math.random() > 0.2 || !hasPictures;
+      const hasPictures = Math.random() > 0.3; // Most posts have pictures (70%)
+      const hasText = Math.random() > 0.1 || !hasPictures; // Almost all posts have text
 
       // Determine post privacy based on user popularity
       let privacy: 'public' | 'friends' | 'private';
@@ -689,8 +699,27 @@ export async function generateDummyData(
         if (!fs.existsSync(postImagesOutputDir))
           fs.mkdirSync(postImagesOutputDir, { recursive: true });
 
-        // Generate 1-3 images
-        const imageCount = Math.floor(Math.random() * 3) + 1;
+        // Determine the number of images for this post
+        // Most posts have 1-4 images, but some have more
+        let imageCount: number;
+
+        // Small probability of having many images (5-8)
+        const hasLotsOfImages = Math.random() > 0.9; // 10% chance
+
+        if (hasLotsOfImages) {
+          // Generate 5-8 images (or up to maxImagesPerPost)
+          imageCount = Math.min(
+            Math.floor(Math.random() * 4) + 5, // 5-8
+            maxImagesPerPost,
+          );
+        } else {
+          // Generate 1-4 images
+          imageCount = Math.min(
+            Math.floor(Math.random() * 4) + 1, // 1-4
+            maxImagesPerPost,
+          );
+        }
+
         const generatedImages = await generateImages({
           type: 'post',
           count: imageCount,
@@ -746,7 +775,12 @@ export async function generateDummyData(
       }
 
       // Generate reactions and comments based on virality
-      post.reactions = generateReactionsForViralPost(post, users, viralityScore);
+      post.reactions = generateReactionsForViralPost(
+        post,
+        users,
+        viralityScore,
+        maxReactionsPerPost,
+      );
       post.comments = generateCommentsForViralPost(post, users, viralityScore, maxCommentsPerPost);
 
       posts.push(post);

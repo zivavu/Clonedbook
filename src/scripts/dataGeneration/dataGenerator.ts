@@ -1,4 +1,6 @@
 import { faker } from '@faker-js/faker';
+import fs from 'fs';
+import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 // Import existing interfaces from the codebase
@@ -148,25 +150,50 @@ function assignUserActivityLevel(): 'inactive' | 'low' | 'medium' | 'high' {
 }
 
 // Update user generation code
-async function generateUser(userId: string, gender: 'male' | 'female'): Promise<IGeneratedUser> {
+async function generateUser(
+  userId: string,
+  gender: 'male' | 'female',
+  baseDir?: string,
+): Promise<IGeneratedUser> {
   const firstName = faker.person.firstName(gender as any);
   const lastName = faker.person.lastName();
   const middleName = shouldFill(0.3) ? faker.person.middleName() : undefined;
 
+  // Set default baseDir - NO temp folder
+  const outputBaseDir = baseDir || path.join(process.cwd(), 'src', 'data');
+
+  // Ensure output directories exist
+  const profileOutputDir = path.join(outputBaseDir, 'images', 'profiles');
+  const backgroundOutputDir = path.join(outputBaseDir, 'images', 'backgrounds');
+  if (!fs.existsSync(profileOutputDir)) fs.mkdirSync(profileOutputDir, { recursive: true });
+  if (!fs.existsSync(backgroundOutputDir)) fs.mkdirSync(backgroundOutputDir, { recursive: true });
+
   // Generate profile picture
-  const [profilePicture] = await generateImages({
+  const profilePictureId = uuidv4();
+  const [profilePictureData] = await generateImages({
     type: 'profile',
     gender,
     count: 1,
   });
 
-  // Generate background picture (optional)
-  const backgroundPicture = shouldFill(0.5)
-    ? (await generateImages({ type: 'background', count: 1 }))[0]
-    : undefined;
+  // Save profile picture locally with profilePictureId as filename
+  const profilePictureFilename = `${profilePictureId}.webp`;
+  const profilePicturePath = path.join(profileOutputDir, profilePictureFilename);
+  await fs.promises.writeFile(profilePicturePath, profilePictureData.webpBuffer);
 
-  const backgroundPictureId = backgroundPicture ? uuidv4() : undefined;
-  const profilePictureId = uuidv4();
+  // Generate background picture (optional)
+  let backgroundPictureId: string | undefined = undefined;
+  let backgroundPictureData: any = undefined;
+  let backgroundPicturePath: string | undefined = undefined;
+
+  if (shouldFill(0.5)) {
+    backgroundPictureId = uuidv4();
+    [backgroundPictureData] = await generateImages({ type: 'background', count: 1 });
+    const backgroundPictureFilename = `${backgroundPictureId}.webp`;
+    backgroundPicturePath = path.join(backgroundOutputDir, backgroundPictureFilename);
+    await fs.promises.writeFile(backgroundPicturePath, backgroundPictureData.webpBuffer);
+  }
+
   const isDummy = false;
   const groups = {};
   const friends: IFriendsMap = {};
@@ -203,13 +230,20 @@ async function generateUser(userId: string, gender: 'male' | 'female'): Promise<
     relatives: {},
   };
 
+  // Convert relative paths to storage URLs for the database
+  // Use the correct path format for emulator access
+  const profilePictureUrl = `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fprofiles%2F${profilePictureFilename}?alt=media`;
+  const backgroundPictureUrl = backgroundPicturePath
+    ? `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fbackgrounds%2F${backgroundPictureId}.webp?alt=media`
+    : undefined;
+
   return {
     id: userId,
     firstName,
     lastName,
     middleName,
-    pictureUrl: profilePicture.url,
-    backgroundPicture: backgroundPicture?.url,
+    pictureUrl: profilePictureUrl,
+    backgroundPicture: backgroundPictureUrl,
     backgroundPictureId,
     profilePictureId,
     isDummy,
@@ -380,7 +414,140 @@ function handleFriendships(users: IGeneratedUser[], maxFriendsPerUser: number): 
   }
 }
 
-export async function generateDummyData(options: IGenerationOptions): Promise<IGeneratedData> {
+// Add new helper functions for viral content
+function calculateViralityScore(post: IGeneratedPost, user: IGeneratedUser): number {
+  let score = 0;
+
+  // User popularity contributes to virality
+  if (user.popularityTier === 'high') score += 0.4;
+  else if (user.popularityTier === 'medium') score += 0.2;
+
+  // Content type affects virality
+  if (post.pictures && post.pictures.length > 0) score += 0.3; // Visual content is more viral
+  if (post.text) {
+    // Check for viral keywords
+    const viralKeywords = ['amazing', 'incredible', 'awesome', 'wow', 'omg', 'viral', 'breaking'];
+    const textLower = post.text.toLowerCase();
+    score += viralKeywords.filter((keyword) => textLower.includes(keyword)).length * 0.1;
+
+    // Optimal text length (not too short, not too long)
+    const wordCount = post.text.split(' ').length;
+    if (wordCount >= 20 && wordCount <= 100) score += 0.2;
+  }
+
+  // Time of day affects virality (posts during active hours get more engagement)
+  const hour = new Date(post.createdAt.seconds * 1000).getHours();
+  if (hour >= 8 && hour <= 22) score += 0.2; // Active hours
+
+  return Math.min(score, 1); // Normalize to 0-1
+}
+
+function generateReactionsForViralPost(
+  post: IGeneratedPost,
+  users: IGeneratedUser[],
+  viralityScore: number,
+): IReactionsMap {
+  const reactions: IReactionsMap = {};
+
+  // Calculate number of reactions based on virality score
+  const baseReactions = Math.floor(users.length * viralityScore * 0.7);
+  const actualReactions = Math.min(
+    baseReactions + Math.floor(Math.random() * baseReactions * 0.3),
+    users.length - 1,
+  );
+
+  const reactors = getRandomSubset(
+    users.filter((u) => u.id !== post.ownerId),
+    actualReactions,
+  );
+
+  for (const reactor of reactors) {
+    // Viral posts tend to get more positive reactions
+    const reactionTypes: TReactionType[] = ['like', 'love', 'wow'];
+    if (viralityScore > 0.8) {
+      // Highly viral posts get more varied reactions
+      reactionTypes.push('haha', 'care');
+    }
+    reactions[reactor.id] = getRandomElement(reactionTypes);
+  }
+
+  return reactions;
+}
+
+function generateCommentsForViralPost(
+  post: IGeneratedPost,
+  users: IGeneratedUser[],
+  viralityScore: number,
+  maxComments: number,
+): ICommentMap {
+  const comments: ICommentMap = {};
+
+  // Calculate number of comments based on virality score
+  const baseComments = Math.floor(maxComments * viralityScore);
+  const actualComments = Math.min(
+    baseComments + Math.floor(Math.random() * baseComments * 0.3),
+    users.length - 1,
+  );
+
+  const commenters = getRandomSubset(
+    users.filter((u) => u.id !== post.ownerId),
+    actualComments,
+  );
+
+  for (const commenter of commenters) {
+    const commentId = uuidv4();
+
+    // Generate more engaging comments for viral posts
+    const viralComments = [
+      'This is amazing! 🔥',
+      'Absolutely incredible! 👏',
+      'Cannot believe this! 😮',
+      'Mind = blown',
+      'This made my day! ❤️',
+      'Sharing this with everyone! 🙌',
+      'This needs to go viral! 🚀',
+      'Best thing I have seen today! ⭐',
+    ];
+
+    const comment: IComment = {
+      id: commentId,
+      ownerId: commenter.id,
+      commentText:
+        viralityScore > 0.7 && Math.random() > 0.5
+          ? getRandomElement(viralComments)
+          : faker.lorem.sentences(Math.floor(Math.random() * 2) + 1),
+      createdAt: dateToTimestamp(
+        new Date(post.createdAt.seconds * 1000 + Math.random() * 86400000 * 3),
+      ), // Within 3 days
+      responses: {},
+      reactions: {},
+    };
+
+    // Add reactions to comments on viral posts
+    if (viralityScore > 0.6) {
+      const reactionCount = Math.floor(Math.random() * 10 * viralityScore) + 1;
+      const reactors = getRandomSubset(
+        users.filter((u) => u.id !== commenter.id),
+        reactionCount,
+      );
+
+      const reactions: IReactionsMap = {};
+      for (const reactor of reactors) {
+        reactions[reactor.id] = getRandomElement(['like', 'love', 'haha']);
+      }
+      comment.reactions = reactions;
+    }
+
+    comments[commentId] = comment;
+  }
+
+  return comments;
+}
+
+export async function generateDummyData(
+  options: IGenerationOptions,
+  dataDir?: string,
+): Promise<IGeneratedData> {
   const {
     userCount,
     maxFriendsPerUser,
@@ -390,6 +557,9 @@ export async function generateDummyData(options: IGenerationOptions): Promise<IG
     maxChatsPerUser,
     maxMessagesPerChat,
   } = options;
+
+  // Default data directory is now src/data
+  const baseDir = dataDir || path.join(process.cwd(), 'src', 'data');
 
   // Data containers
   const users: IGeneratedUser[] = [];
@@ -402,7 +572,9 @@ export async function generateDummyData(options: IGenerationOptions): Promise<IG
   for (let i = 0; i < userCount; i++) {
     const userId = uuidv4();
     const gender = Math.random() > 0.5 ? 'male' : 'female';
-    const generatedUser = await generateUser(userId, gender);
+
+    // Pass the correct image directories to generateUser
+    const generatedUser = await generateUser(userId, gender, baseDir);
     users.push(generatedUser);
 
     // Create Algolia search object
@@ -517,31 +689,40 @@ export async function generateDummyData(options: IGenerationOptions): Promise<IG
         privacy = Math.random() > 0.3 ? 'friends' : Math.random() > 0.5 ? 'private' : 'public';
       }
 
-      // Generate share count based on popularity
-      let shareCount = 0;
-      if (privacy === 'public') {
-        if (popularityTier === 'high') {
-          shareCount = Math.floor(Math.random() * 50);
-        } else if (popularityTier === 'medium') {
-          shareCount = Math.floor(Math.random() * 10);
-        } else {
-          shareCount = Math.floor(Math.random() * 3);
+      // Generate pictures with placeholders if needed
+      const pictures: IPictureWithPlaceholders[] = [];
+
+      if (hasPictures) {
+        // Ensure post images directory exists - update to use baseDir
+        const postImagesOutputDir = path.join(baseDir, 'images', 'posts');
+        if (!fs.existsSync(postImagesOutputDir))
+          fs.mkdirSync(postImagesOutputDir, { recursive: true });
+
+        // Generate 1-3 images
+        const imageCount = Math.floor(Math.random() * 3) + 1;
+        const generatedImages = await generateImages({
+          type: 'post',
+          count: imageCount,
+        });
+
+        // Save each image with postId and index in filename
+        for (let imgIndex = 0; imgIndex < generatedImages.length; imgIndex++) {
+          const imgData = generatedImages[imgIndex];
+          const imgId = uuidv4();
+          const imgFilename = `${imgId}.webp`;
+          const imgPath = path.join(postImagesOutputDir, imgFilename);
+          await fs.promises.writeFile(imgPath, imgData.webpBuffer);
+
+          // Convert to storage URL format for database
+          const storageUrl = `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fposts%2F${imgFilename}?alt=media`;
+
+          pictures.push({
+            url: storageUrl,
+            blurDataUrl: imgData.blurDataUrl,
+            dominantHex: imgData.dominantHex,
+          });
         }
       }
-
-      // Generate pictures with placeholders if needed
-      const pictures: IPictureWithPlaceholders[] = hasPictures
-        ? await generateImages({
-            type: 'post',
-            count: Math.floor(Math.random() * 3) + 1,
-          }).then((images) =>
-            images.map((img) => ({
-              url: img.url,
-              blurDataUrl: img.blurDataUrl,
-              dominantHex: img.dominantHex,
-            })),
-          )
-        : [];
 
       const post: IGeneratedPost = {
         id: uuidv4(),
@@ -550,147 +731,34 @@ export async function generateDummyData(options: IGenerationOptions): Promise<IG
         text: hasText ? faker.lorem.paragraphs(Math.floor(Math.random() * 3) + 1) : undefined,
         pictures: hasPictures ? pictures : undefined,
         createdAt: creationTimestamp,
-        shareCount,
+        shareCount: 0, // Will be set after calculating virality
         elementType: 'post',
         comments: {},
         reactions: {},
         privacy,
       };
 
+      // Calculate post virality
+      const viralityScore = calculateViralityScore(post, user);
+
+      // Generate share count based on virality
+      if (privacy === 'public') {
+        if (viralityScore > 0.8) {
+          post.shareCount = Math.floor(Math.random() * 200) + 100; // Viral post
+        } else if (viralityScore > 0.6) {
+          post.shareCount = Math.floor(Math.random() * 50) + 20; // Popular post
+        } else if (viralityScore > 0.4) {
+          post.shareCount = Math.floor(Math.random() * 20) + 5; // Moderately shared
+        } else {
+          post.shareCount = Math.floor(Math.random() * 5); // Normal post
+        }
+      }
+
+      // Generate reactions and comments based on virality
+      post.reactions = generateReactionsForViralPost(post, users, viralityScore);
+      post.comments = generateCommentsForViralPost(post, users, viralityScore, maxCommentsPerPost);
+
       posts.push(post);
-
-      // Generate comments
-      const commentCount = Math.floor(Math.random() * maxCommentsPerPost) + 1;
-      const commenters = getRandomSubset(
-        users.filter((u) => u.id !== user.id),
-        commentCount,
-      );
-
-      // Comments map for this post
-      const comments: ICommentMap = {};
-
-      for (let j = 0; j < commenters.length; j++) {
-        const commenter = commenters[j];
-
-        // Comment creation date between post creation and now
-        const commentDate = new Date(creationDate);
-        commentDate.setHours(commentDate.getHours() + Math.floor(Math.random() * 72)); // Within 3 days
-        const commentTimestamp = dateToTimestamp(commentDate);
-
-        const commentId = uuidv4();
-        const comment: IComment = {
-          id: commentId,
-          ownerId: commenter.id,
-          commentText: faker.lorem.sentences(Math.floor(Math.random() * 2) + 1),
-          createdAt: commentTimestamp,
-          responses: {},
-          reactions: {},
-        };
-
-        comments[commentId] = comment;
-
-        // Generate reactions for comments
-        if (Math.random() > 0.6) {
-          const reactionsCount = Math.floor(Math.random() * 5) + 1;
-          const reactors = getRandomSubset(
-            users.filter((u) => u.id !== commenter.id),
-            reactionsCount,
-          );
-
-          const reactions: IReactionsMap = {};
-          for (const reactor of reactors) {
-            const reactionType = getRandomElement([
-              'like',
-              'love',
-              'care',
-              'haha',
-              'wow',
-              'sad',
-              'angry',
-            ] as TReactionType[]);
-
-            reactions[reactor.id] = reactionType;
-          }
-
-          comment.reactions = reactions;
-        }
-      }
-
-      post.comments = comments;
-
-      // Generate reactions to post
-      if (Math.random() > 0.4) {
-        // 60% chance for a post to have reactions
-        const reactionsCount = Math.min(
-          Math.floor(Math.random() * maxReactionsPerPost) +
-            (post.shareCount > 0 ? post.shareCount / 2 : 0) +
-            (popularityTier === 'high' ? 10 : popularityTier === 'medium' ? 5 : 2),
-          users.length - 1,
-        );
-
-        const reactors = getRandomSubset(
-          users.filter((u) => u.id !== user.id),
-          reactionsCount,
-        );
-
-        const reactions: IReactionsMap = {};
-
-        for (const reactor of reactors) {
-          // Determine reaction type based on post content and popularity
-          let reactionType: TReactionType;
-
-          // Base probabilities
-          const typeProbabilities = {
-            like: 0.6,
-            love: 0.2,
-            care: 0.05,
-            haha: 0.05,
-            wow: 0.05,
-            sad: 0.03,
-            angry: 0.02,
-          };
-
-          // Adjust based on post content
-          if (post.text && post.text.toLowerCase().includes('love')) {
-            typeProbabilities.love += 0.2;
-            typeProbabilities.like -= 0.1;
-            typeProbabilities.care += 0.1;
-          } else if (
-            post.text &&
-            (post.text.toLowerCase().includes('haha') ||
-              post.text.toLowerCase().includes('funny') ||
-              post.text.toLowerCase().includes('lol'))
-          ) {
-            typeProbabilities.haha += 0.3;
-            typeProbabilities.like -= 0.1;
-            typeProbabilities.wow += 0.1;
-          } else if (
-            post.text &&
-            (post.text.toLowerCase().includes('sad') || post.text.toLowerCase().includes('sorry'))
-          ) {
-            typeProbabilities.sad += 0.3;
-            typeProbabilities.care += 0.2;
-            typeProbabilities.like -= 0.2;
-          }
-
-          // Choose reaction type based on adjusted probabilities
-          const rand = Math.random();
-          let sum = 0;
-          reactionType = 'like'; // default
-
-          for (const [type, probability] of Object.entries(typeProbabilities)) {
-            sum += probability;
-            if (rand < sum) {
-              reactionType = type as TReactionType;
-              break;
-            }
-          }
-
-          reactions[reactor.id] = reactionType;
-        }
-
-        post.reactions = reactions;
-      }
     }
   }
 

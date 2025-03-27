@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import sharp from 'sharp';
-import { v4 as uuidv4 } from 'uuid';
+import { batchProcessImagesFromUrls } from './serverImageProcessing';
 
 interface IImageGeneratorOptions {
   type: 'profile' | 'background' | 'post';
@@ -15,7 +14,7 @@ interface IProcessedImage {
   url: string;
   blurDataUrl: string;
   dominantHex: string;
-  blob: Buffer;
+  webpBuffer: Buffer;
 }
 
 interface RandomUserResponse {
@@ -26,9 +25,40 @@ interface RandomUserResponse {
   }>;
 }
 
+// Cache for already generated images
+const imageUrlCache = new Map<string, IProcessedImage>();
+
+// Helper function to generate profile image URLs
+function generateProfileImageUrl(gender?: 'male' | 'female'): string {
+  if (gender === 'male') {
+    const startIndex = Math.floor(Math.random() * 70);
+    return `https://randomuser.me/api/portraits/men/${startIndex}.jpg`;
+  } else if (gender === 'female') {
+    const startIndex = Math.floor(Math.random() * 70);
+    return `https://randomuser.me/api/portraits/women/${startIndex}.jpg`;
+  } else {
+    const seed = Math.floor(Math.random() * 1000);
+    return `https://picsum.photos/seed/${seed}/400/400`;
+  }
+}
+
+// Helper function to generate background image URLs
+function generateBackgroundImageUrl(): string {
+  const seed = Math.floor(Math.random() * 1000);
+  return `https://picsum.photos/seed/${seed}/1200/400`;
+}
+
+// Helper function to generate post image URLs
+function generatePostImageUrl(width: number = 800, height: number = 600): string {
+  const seed = Math.floor(Math.random() * 1000);
+  const postWidth = width + Math.floor(Math.random() * 400) - 200;
+  const postHeight = height + Math.floor(Math.random() * 400) - 200;
+  return `https://picsum.photos/seed/${seed}/${postWidth}/${postHeight}`;
+}
+
 export async function generateImages(options: IImageGeneratorOptions): Promise<IProcessedImage[]> {
+  console.time(`generateImages:${options.type}:${options.count}`);
   const { type, count = 1, gender, width = 800, height = 600 } = options;
-  const results: IProcessedImage[] = [];
 
   // Create output directory if it doesn't exist
   const outputDir = path.join(process.cwd(), 'temp', 'images');
@@ -36,237 +66,213 @@ export async function generateImages(options: IImageGeneratorOptions): Promise<I
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
+  // Get cached images and collect new URLs to process
+  const cachedImages: IProcessedImage[] = [];
+  const remainingUrls: string[] = [];
+
   for (let i = 0; i < count; i++) {
-    const imageId = uuidv4();
-    const outputPath = path.join(outputDir, `${type}_${imageId}.jpg`);
+    let imageUrl: string;
 
-    // Generate a gradient image
-    const buffer = await generateGradientImage(width, height);
-
-    // Save the image
-    fs.writeFileSync(outputPath, buffer);
-
-    // Generate blur data
-    const blurBuffer = await sharp(buffer).resize(10, 10).jpeg({ quality: 20 }).toBuffer();
-
-    // Get dominant color
-    const { dominant } = await sharp(buffer).stats();
-    const dominantHex = `#${Math.round(dominant.r).toString(16).padStart(2, '0')}${Math.round(dominant.g).toString(16).padStart(2, '0')}${Math.round(dominant.b).toString(16).padStart(2, '0')}`;
-
-    const blurDataUrl = `data:image/jpeg;base64,${blurBuffer.toString('base64')}`;
-
-    // Generate a random seed for Picsum Photos
-    const seed = Math.floor(Math.random() * 1000);
-
-    // Use a public URL instead of a local file path
-    let placeholderUrl = '';
-
-    if (type === 'profile') {
-      // Use different placeholder for male/female if specified
-      if (gender === 'male') {
-        // Generate a random starting index for more variety
-        const startIndex = Math.floor(Math.random() * 70); // randomuser.me has about 70 unique images
-        placeholderUrl = `https://randomuser.me/api/portraits/men/${(startIndex + i) % 70}.jpg`;
-      } else if (gender === 'female') {
-        const startIndex = Math.floor(Math.random() * 70);
-        placeholderUrl = `https://randomuser.me/api/portraits/women/${(startIndex + i) % 70}.jpg`;
-      } else {
-        placeholderUrl = `https://picsum.photos/seed/${seed}/200/200`;
-      }
-    } else if (type === 'background') {
-      placeholderUrl = `https://picsum.photos/seed/${seed}/1200/400`;
-    } else {
-      // For post images
-      placeholderUrl = `https://picsum.photos/seed/${seed}/${width}/${height}`;
+    switch (type) {
+      case 'profile':
+        imageUrl = generateProfileImageUrl(gender);
+        break;
+      case 'background':
+        imageUrl = generateBackgroundImageUrl();
+        break;
+      case 'post':
+        imageUrl = generatePostImageUrl(width, height);
+        break;
+      default:
+        imageUrl = generatePostImageUrl(width, height);
     }
 
-    results.push({
-      url: placeholderUrl, // Use web URL instead of local file path
-      blurDataUrl,
-      dominantHex,
-      blob: buffer,
+    if (imageUrlCache.has(imageUrl)) {
+      cachedImages.push(imageUrlCache.get(imageUrl)!);
+    } else {
+      remainingUrls.push(imageUrl);
+    }
+  }
+
+  // Process all non-cached images in batch
+  let newImages: IProcessedImage[] = [];
+  if (remainingUrls.length > 0) {
+    console.time('batchProcessImages');
+    const processedResults = await batchProcessImagesFromUrls(remainingUrls);
+    console.timeEnd('batchProcessImages');
+
+    // Create the final image objects with URLs
+    newImages = remainingUrls.map((url, index) => {
+      const processedImage = processedResults[index];
+      const result = {
+        url,
+        ...processedImage,
+      };
+
+      // Cache for future use
+      imageUrlCache.set(url, result);
+      return result;
     });
   }
 
-  return results;
+  // Combine cached and new images
+  const results = [...cachedImages, ...newImages];
+
+  // Return exactly the number of images requested
+  const finalResults = results.slice(0, count);
+
+  console.timeEnd(`generateImages:${options.type}:${options.count}`);
+  return finalResults;
 }
 
-async function generateGradientImage(width: number, height: number): Promise<Buffer> {
-  // Generate random colors for gradient
-  const r1 = Math.floor(Math.random() * 255);
-  const g1 = Math.floor(Math.random() * 255);
-  const b1 = Math.floor(Math.random() * 255);
-  const r2 = Math.floor(Math.random() * 255);
-  const g2 = Math.floor(Math.random() * 255);
-  const b2 = Math.floor(Math.random() * 255);
+// Profile picture generation using batch processing
+export async function generateMultipleProfilePictures(
+  userIds: string[],
+  outputDir: string,
+): Promise<Map<string, IProcessedImage>> {
+  console.time(`generateMultipleProfilePictures:${userIds.length}`);
 
-  // Create SVG gradient
-  const svg = `
-    <svg width="${width}" height="${height}">
-      <defs>
-        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:rgb(${r1},${g1},${b1});stop-opacity:1" />
-          <stop offset="100%" style="stop-color:rgb(${r2},${g2},${b2});stop-opacity:1" />
-        </linearGradient>
-      </defs>
-      <rect width="${width}" height="${height}" fill="url(#grad)" />
-    </svg>
-  `;
-
-  // Convert SVG to JPEG using sharp
-  return await sharp(Buffer.from(svg)).jpeg({ quality: 90 }).toBuffer();
-}
-
-async function generateImageUrls(
-  type: 'profile' | 'background' | 'post',
-  gender?: 'male' | 'female',
-  count: number = 1,
-  width: number = 800,
-  height: number = 600,
-): Promise<string[]> {
-  const urls: string[] = [];
-
-  switch (type) {
-    case 'profile':
-      // Use Picsum Photos for profile pictures (more reliable than RandomUser)
-      for (let i = 0; i < count; i++) {
-        const seed = Math.floor(Math.random() * 1000);
-        urls.push(`https://picsum.photos/seed/${seed}/200/200`);
-      }
-      break;
-
-    case 'background':
-      // Use Picsum Photos for background images
-      for (let i = 0; i < count; i++) {
-        const seed = Math.floor(Math.random() * 1000);
-        urls.push(`https://picsum.photos/seed/${seed}/${width}/${height}`);
-      }
-      break;
-
-    case 'post':
-      // Use Picsum Photos for post images
-      for (let i = 0; i < count; i++) {
-        const seed = Math.floor(Math.random() * 1000);
-        urls.push(`https://picsum.photos/seed/${seed}/${width}/${height}`);
-      }
-      break;
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  return urls;
+  const fileMap = new Map<string, IProcessedImage>();
+
+  // Generate URLs for all profile pictures
+  const urlsByUserId = new Map<string, string>();
+  for (const userId of userIds) {
+    const gender = Math.random() > 0.5 ? 'male' : 'female';
+    const imageUrl = generateProfileImageUrl(gender);
+    urlsByUserId.set(userId, imageUrl);
+  }
+
+  // Extract all URLs for batch processing
+  const allUrls = Array.from(urlsByUserId.values());
+
+  // Batch process all images
+  const processedImages = await batchProcessImagesFromUrls(allUrls);
+
+  // Map processed images back to user IDs and save to disk
+  await Promise.all(
+    Array.from(urlsByUserId.entries()).map(async ([userId, url], index) => {
+      try {
+        const processedImage = processedImages[index];
+        const filePath = path.join(outputDir, `${userId}.webp`);
+        await fs.promises.writeFile(filePath, processedImage.webpBuffer);
+
+        const result = {
+          url: filePath,
+          ...processedImage,
+        };
+
+        fileMap.set(userId, result);
+      } catch (error) {
+        console.error(`Failed to generate profile picture for user ${userId}:`, error);
+      }
+    }),
+  );
+
+  console.timeEnd(`generateMultipleProfilePictures:${userIds.length}`);
+  return fileMap;
 }
 
-export async function generateProfilePicture(userId: string, outputDir: string): Promise<string> {
-  try {
-    const response = await fetch('https://randomuser.me/api/');
-    const data = (await response.json()) as RandomUserResponse;
-    const imageUrl = data.results[0].picture.large;
+// Post image generation using batch processing
+export async function generateMultiplePostImages(
+  posts: any[],
+  outputDir: string,
+): Promise<Map<string, IProcessedImage[]>> {
+  console.time(`generateMultiplePostImages:${posts.length}`);
 
-    const imageResponse = await fetch(imageUrl);
-    const arrayBuffer = await imageResponse.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const filePath = path.join(outputDir, `${userId}.jpg`);
-    await sharp(buffer).resize(400, 400, { fit: 'cover' }).jpeg({ quality: 90 }).toFile(filePath);
-
-    return filePath;
-  } catch (error) {
-    console.error(`Failed to generate profile picture for user ${userId}:`, error);
-    throw error;
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
   }
+
+  const fileMap = new Map<string, IProcessedImage[]>();
+  const postsWithImages = posts.filter((post) => post.pictures && post.pictures.length > 0);
+  console.log(`Total posts with images: ${postsWithImages.length}/${posts.length}`);
+
+  // Create a flat list of all image URLs needed with their metadata
+  type ImageRequest = { postId: string; index: number; url: string };
+  const allImageRequests: ImageRequest[] = [];
+
+  for (const post of postsWithImages) {
+    for (let i = 0; i < post.pictures.length; i++) {
+      const imageUrl = generatePostImageUrl();
+      allImageRequests.push({ postId: post.id, index: i, url: imageUrl });
+    }
+  }
+
+  // Extract just the URLs for batch processing
+  const allUrls = allImageRequests.map((req) => req.url);
+
+  // Batch process all images
+  console.time('batchProcessPostImages');
+  const processedImages = await batchProcessImagesFromUrls(allUrls);
+  console.timeEnd('batchProcessPostImages');
+
+  // Map processed images back to posts and save to disk
+  console.time('savePostImages');
+
+  // Group requests by postId for easier handling
+  const requestsByPostId = new Map<string, ImageRequest[]>();
+  allImageRequests.forEach((req) => {
+    if (!requestsByPostId.has(req.postId)) {
+      requestsByPostId.set(req.postId, []);
+    }
+    requestsByPostId.get(req.postId)!.push(req);
+  });
+
+  await Promise.all(
+    Array.from(requestsByPostId.entries()).map(async ([postId, requests]) => {
+      try {
+        const postImages: IProcessedImage[] = [];
+
+        await Promise.all(
+          requests.map(async (req) => {
+            const imageIndex = allImageRequests.findIndex(
+              (r) => r.postId === req.postId && r.index === req.index,
+            );
+            const processedImage = processedImages[imageIndex];
+
+            const filePath = path.join(outputDir, `${postId}_${req.index}.webp`);
+            await fs.promises.writeFile(filePath, processedImage.webpBuffer);
+
+            const result = {
+              url: filePath,
+              ...processedImage,
+            };
+
+            postImages[req.index] = result;
+          }),
+        );
+
+        fileMap.set(postId, postImages);
+      } catch (error) {
+        console.error(`Failed to generate images for post ${postId}:`, error);
+      }
+    }),
+  );
+
+  console.timeEnd('savePostImages');
+  console.timeEnd(`generateMultiplePostImages:${posts.length}`);
+  return fileMap;
+}
+
+// Keep these legacy functions for backward compatibility but implement using new batch APIs
+export async function generateProfilePicture(
+  userId: string,
+  outputDir: string,
+): Promise<IProcessedImage> {
+  const map = await generateMultipleProfilePictures([userId], outputDir);
+  return map.get(userId)!;
 }
 
 export async function generatePostImage(
   postId: string,
   index: number,
   outputDir: string,
-): Promise<string> {
-  try {
-    // Generate random width and height between 800-1200px
-    const width = Math.floor(Math.random() * 400) + 800;
-    const height = Math.floor(Math.random() * 400) + 800;
-
-    // Get random image from Picsum
-    const imageUrl = `https://picsum.photos/${width}/${height}`;
-    const response = await fetch(imageUrl);
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const filePath = path.join(outputDir, `${postId}_${index}.jpg`);
-    await sharp(buffer).jpeg({ quality: 90 }).toFile(filePath);
-
-    return filePath;
-  } catch (error) {
-    console.error(`Failed to generate post image for post ${postId}:`, error);
-    throw error;
-  }
-}
-
-export async function generateMultipleProfilePictures(
-  userIds: string[],
-  outputDir: string,
-): Promise<Map<string, string>> {
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
-
-  const fileMap = new Map<string, string>();
-  const batchSize = 10;
-
-  for (let i = 0; i < userIds.length; i += batchSize) {
-    const batch = userIds.slice(i, i + batchSize);
-    console.log(
-      `Processing profile pictures batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(userIds.length / batchSize)}`,
-    );
-
-    await Promise.all(
-      batch.map(async (userId) => {
-        try {
-          const filePath = await generateProfilePicture(userId, outputDir);
-          fileMap.set(userId, filePath);
-        } catch (error) {
-          console.error(`Failed to generate profile picture for user ${userId}:`, error);
-        }
-      }),
-    );
-  }
-
-  return fileMap;
-}
-
-export async function generateMultiplePostImages(
-  posts: any[],
-  outputDir: string,
-): Promise<Map<string, string[]>> {
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
-
-  const fileMap = new Map<string, string[]>();
-  const batchSize = 5;
-
-  const postsWithImages = posts.filter((post) => post.pictures && post.pictures.length > 0);
-
-  for (let i = 0; i < postsWithImages.length; i += batchSize) {
-    const batch = postsWithImages.slice(i, i + batchSize);
-    console.log(
-      `Processing post images batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(postsWithImages.length / batchSize)}`,
-    );
-
-    await Promise.all(
-      batch.map(async (post) => {
-        try {
-          const postImages: string[] = [];
-          for (let j = 0; j < post.pictures.length; j++) {
-            const filePath = await generatePostImage(post.id, j, outputDir);
-            postImages.push(filePath);
-          }
-          fileMap.set(post.id, postImages);
-        } catch (error) {
-          console.error(`Failed to generate images for post ${post.id}:`, error);
-        }
-      }),
-    );
-  }
-
-  return fileMap;
+): Promise<IProcessedImage> {
+  const dummyPost = { id: postId, pictures: [1] }; // Minimal structure needed
+  const map = await generateMultiplePostImages([dummyPost], outputDir);
+  return map.get(postId)![0];
 }

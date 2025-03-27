@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "dev:local": "node src/scripts/localDev.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -13,12 +12,12 @@
     "test:e2e": "testcafe edge src/tests/",
     "test:e2e-gh": "testcafe edge:headless src/tests/",
     "generate:data": "bun src/scripts/dataGeneration/generateData.ts",
-    "refresh:all": "node src/scripts/dataGeneration/generateAndUpdateFirebase.js",
-    "emulators:start": "firebase emulators:start --project=demo-project",
-    "emulators:start:import": "firebase emulators:start --project=demo-project --import=./firebase-emulator-data --export-on-exit=./firebase-emulator-data",
-    "emulators:export": "firebase emulators:export ./firebase-emulator-data",
-    "populate:all": "node src/scripts/populateAllData.js",
-    "release:ports": "node src/scripts/releaseEmulatorPorts.js"
+    "emulators": "firebase emulators:start",
+    "populate": "bun src/scripts/dataGeneration/populateEmulators.ts",
+    "export-data": "firebase emulators:export ./emulator-data",
+    "import-data": "firebase emulators:start --import=./emulator-data",
+    "release:ports": "node src/scripts/releaseEmulatorPorts.js",
+    "cleanup": "bun src/scripts/cleanup.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -38,6 +37,7 @@
     "@types/uuid": "^10.0.0",
     "@vercel/analytics": "^1.5.0",
     "algoliasearch": "^4.24.0",
+    "axios": "^1.8.4",
     "dayjs": "^1.11.13",
     "emoji-picker-react": "^4.12.2",
     "emoji-regex": "^10.4.0",
@@ -77,7 +77,6 @@
     "node-fetch": "^3.3.2",
     "prettier": "^3.5.3",
     "testcafe": "^3.7.2",
-    "typescript": "^5.8.2",
-    "yarn-upgrade-all": "^0.7.5"
+    "typescript": "^5.8.2"
   }
 }

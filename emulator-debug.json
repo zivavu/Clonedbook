@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-03-27T09:08:59.897Z",
+  "usersBasicInfoExists": true,
+  "usersPublicFriendsExists": true,
+  "hasUsers": true,
+  "hasPosts": true,
+  "projectId": "demo-project",
+  "emulatorHost": "localhost:8080"
+}

@@ -20,6 +20,7 @@ import {
   TRealationshipStatus,
   TUserSex,
 } from '@/types/user';
+import { generateImages } from './imageGenerator';
 
 export interface IAlgoliaSearchObject {
   objectID: string;
@@ -147,12 +148,23 @@ function assignUserActivityLevel(): 'inactive' | 'low' | 'medium' | 'high' {
 }
 
 // Update user generation code
-function generateUser(userId: string, gender: 'male' | 'female'): IGeneratedUser {
+async function generateUser(userId: string, gender: 'male' | 'female'): Promise<IGeneratedUser> {
   const firstName = faker.person.firstName(gender as any);
   const lastName = faker.person.lastName();
   const middleName = shouldFill(0.3) ? faker.person.middleName() : undefined;
-  const pictureUrl = faker.image.avatar() as string;
-  const backgroundPicture = shouldFill(0.5) ? faker.image.url() : undefined;
+
+  // Generate profile picture
+  const [profilePicture] = await generateImages({
+    type: 'profile',
+    gender,
+    count: 1,
+  });
+
+  // Generate background picture (optional)
+  const backgroundPicture = shouldFill(0.5)
+    ? (await generateImages({ type: 'background', count: 1 }))[0]
+    : undefined;
+
   const backgroundPictureId = backgroundPicture ? uuidv4() : undefined;
   const profilePictureId = uuidv4();
   const isDummy = false;
@@ -196,8 +208,8 @@ function generateUser(userId: string, gender: 'male' | 'female'): IGeneratedUser
     firstName,
     lastName,
     middleName,
-    pictureUrl,
-    backgroundPicture,
+    pictureUrl: profilePicture.url,
+    backgroundPicture: backgroundPicture?.url,
     backgroundPictureId,
     profilePictureId,
     isDummy,
@@ -368,7 +380,7 @@ function handleFriendships(users: IGeneratedUser[], maxFriendsPerUser: number): 
   }
 }
 
-export function generateDummyData(options: IGenerationOptions): IGeneratedData {
+export async function generateDummyData(options: IGenerationOptions): Promise<IGeneratedData> {
   const {
     userCount,
     maxFriendsPerUser,
@@ -390,7 +402,7 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
   for (let i = 0; i < userCount; i++) {
     const userId = uuidv4();
     const gender = Math.random() > 0.5 ? 'male' : 'female';
-    const generatedUser = generateUser(userId, gender);
+    const generatedUser = await generateUser(userId, gender);
     users.push(generatedUser);
 
     // Create Algolia search object
@@ -519,12 +531,16 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
 
       // Generate pictures with placeholders if needed
       const pictures: IPictureWithPlaceholders[] = hasPictures
-        ? Array.from({ length: Math.floor(Math.random() * 3) + 1 }, () => ({
-            url: faker.image.url(),
-            blurDataUrl:
-              'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
-            dominantHex: getRandomColor(),
-          }))
+        ? await generateImages({
+            type: 'post',
+            count: Math.floor(Math.random() * 3) + 1,
+          }).then((images) =>
+            images.map((img) => ({
+              url: img.url,
+              blurDataUrl: img.blurDataUrl,
+              dominantHex: img.dominantHex,
+            })),
+          )
         : [];
 
       const post: IGeneratedPost = {
@@ -538,7 +554,7 @@ export function generateDummyData(options: IGenerationOptions): IGeneratedData {
         elementType: 'post',
         comments: {},
         reactions: {},
-        privacy, // This is not in the IPost type but used internally for generation
+        privacy,
       };
 
       posts.push(post);

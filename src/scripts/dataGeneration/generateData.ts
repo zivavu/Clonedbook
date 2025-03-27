@@ -169,7 +169,7 @@ async function saveDataToFiles(data: any, baseDir: string) {
 }
 
 /**
- * Simple menu for selecting data size
+ * Simple menu for selecting data size using numbered options
  */
 async function createSimpleMenu(): Promise<IGenerationOptions> {
   const rl = readline.createInterface({
@@ -250,7 +250,7 @@ async function createSimpleMenu(): Promise<IGenerationOptions> {
  */
 async function main() {
   try {
-    // Get generation options from interactive menu
+    // Get generation options from simple menu
     const options = await createSimpleMenu();
 
     console.log('\nPreparing data generation...');

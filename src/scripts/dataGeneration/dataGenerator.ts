@@ -81,7 +81,7 @@ export interface IGeneratedData {
   };
 }
 
-// Helper function to convert milliseconds to ITimestamp
+// Helper functions
 function msToTimestamp(ms: number): ITimestamp {
   return {
     seconds: Math.floor(ms / 1000),
@@ -89,12 +89,10 @@ function msToTimestamp(ms: number): ITimestamp {
   };
 }
 
-// Helper function to convert from Date to ITimestamp
 function dateToTimestamp(date: Date): ITimestamp {
   return msToTimestamp(date.getTime());
 }
 
-// Helper functions
 function getRandomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
@@ -133,7 +131,7 @@ function getRandomColor(): string {
   return getRandomElement(colors);
 }
 
-// User metadata generation functions
+// User metadata generation
 function assignUserPopularityTier(): 'low' | 'medium' | 'high' {
   const random = Math.random();
   if (random < 0.6) return 'low';
@@ -149,7 +147,7 @@ function assignUserActivityLevel(): 'inactive' | 'low' | 'medium' | 'high' {
   return 'high';
 }
 
-// Update user generation code
+// Generate user
 async function generateUser(
   userId: string,
   gender: 'male' | 'female',
@@ -159,7 +157,7 @@ async function generateUser(
   const lastName = faker.person.lastName();
   const middleName = shouldFill(0.3) ? faker.person.middleName() : undefined;
 
-  // Set default baseDir - NO temp folder
+  // Set default baseDir
   const outputBaseDir = baseDir || path.join(process.cwd(), 'src', 'data');
 
   // Ensure output directories exist
@@ -176,7 +174,7 @@ async function generateUser(
     count: 1,
   });
 
-  // Save profile picture locally with profilePictureId as filename
+  // Save profile picture
   const profilePictureFilename = `${profilePictureId}.webp`;
   const profilePicturePath = path.join(profileOutputDir, profilePictureFilename);
   await fs.promises.writeFile(profilePicturePath, profilePictureData.webpBuffer);
@@ -230,8 +228,7 @@ async function generateUser(
     relatives: {},
   };
 
-  // Convert relative paths to storage URLs for the database
-  // Use the correct path format for emulator access
+  // Create URLs for Firebase Storage emulator
   const profilePictureUrl = `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fprofiles%2F${profilePictureFilename}?alt=media`;
   const backgroundPictureUrl = backgroundPicturePath
     ? `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fbackgrounds%2F${backgroundPictureId}.webp?alt=media`
@@ -348,10 +345,9 @@ function handleFriendships(users: IGeneratedUser[], maxFriendsPerUser: number): 
 
     // Find potential friends
     const potentialFriends = users.filter((p) => p.id !== user.id && !(p.id in user.friends));
-
     if (!potentialFriends.length) continue;
 
-    // Create random number of friends up to maxFriends
+    // Create friends
     const friendCount = Math.floor(Math.random() * maxFriends) + 1;
     const selectedFriends = getRandomSubset(potentialFriends, friendCount);
 
@@ -388,20 +384,13 @@ function handleFriendships(users: IGeneratedUser[], maxFriendsPerUser: number): 
         id: friend.id,
         chatId,
         status,
-        acceptedAt: acceptedAt || msToTimestamp(0), // Default to epoch if not accepted
+        acceptedAt: acceptedAt || msToTimestamp(0),
       };
 
       // Add reciprocal friendship to friend if not already friends
       if (!(user.id in friend.friends)) {
-        let reciprocalStatus: TFriendStatus;
-
-        if (status === 'accepted') {
-          reciprocalStatus = 'accepted';
-        } else if (status === 'req_sent') {
-          reciprocalStatus = 'req_received';
-        } else {
-          reciprocalStatus = 'req_sent';
-        }
+        const reciprocalStatus: TFriendStatus =
+          status === 'accepted' ? 'accepted' : status === 'req_sent' ? 'req_received' : 'req_sent';
 
         friend.friends[user.id] = {
           id: user.id,
@@ -414,34 +403,35 @@ function handleFriendships(users: IGeneratedUser[], maxFriendsPerUser: number): 
   }
 }
 
-// Add new helper functions for viral content
+// Calculate post virality
 function calculateViralityScore(post: IGeneratedPost, user: IGeneratedUser): number {
   let score = 0;
 
-  // User popularity contributes to virality
+  // User popularity
   if (user.popularityTier === 'high') score += 0.4;
   else if (user.popularityTier === 'medium') score += 0.2;
 
-  // Content type affects virality
-  if (post.pictures && post.pictures.length > 0) score += 0.3; // Visual content is more viral
+  // Content type
+  if (post.pictures && post.pictures.length > 0) score += 0.3;
   if (post.text) {
     // Check for viral keywords
     const viralKeywords = ['amazing', 'incredible', 'awesome', 'wow', 'omg', 'viral', 'breaking'];
     const textLower = post.text.toLowerCase();
     score += viralKeywords.filter((keyword) => textLower.includes(keyword)).length * 0.1;
 
-    // Optimal text length (not too short, not too long)
+    // Optimal text length
     const wordCount = post.text.split(' ').length;
     if (wordCount >= 20 && wordCount <= 100) score += 0.2;
   }
 
-  // Time of day affects virality (posts during active hours get more engagement)
+  // Time of day
   const hour = new Date(post.createdAt.seconds * 1000).getHours();
   if (hour >= 8 && hour <= 22) score += 0.2; // Active hours
 
   return Math.min(score, 1); // Normalize to 0-1
 }
 
+// Generate reactions for a post
 function generateReactionsForViralPost(
   post: IGeneratedPost,
   users: IGeneratedUser[],
@@ -474,6 +464,7 @@ function generateReactionsForViralPost(
   return reactions;
 }
 
+// Generate comments for a post
 function generateCommentsForViralPost(
   post: IGeneratedPost,
   users: IGeneratedUser[],
@@ -499,14 +490,14 @@ function generateCommentsForViralPost(
 
     // Generate more engaging comments for viral posts
     const viralComments = [
-      'This is amazing! 🔥',
-      'Absolutely incredible! 👏',
-      'Cannot believe this! 😮',
-      'Mind = blown',
-      'This made my day! ❤️',
-      'Sharing this with everyone! 🙌',
-      'This needs to go viral! 🚀',
-      'Best thing I have seen today! ⭐',
+      'This is absolutely phenomenal! The world needs to see this! 🔥✨',
+      'I am utterly speechless! This deserves all the recognition! 👏💯',
+      'My jaw literally dropped to the floor! Extraordinary content! 😮🤩',
+      'Mind = completely and utterly blown into another dimension! 🧠💥',
+      'This single-handedly transformed my entire day from ordinary to exceptional! ❤️💖',
+      'I have already shared this with my entire contact list! Pure brilliance! 🙌🌟',
+      "If this doesn't go viral, I've lost all faith in humanity! Magnificent! 🚀🌍",
+      'Without a doubt the most spectacular thing I have encountered all week! ⭐💎',
     ];
 
     const comment: IComment = {
@@ -544,6 +535,7 @@ function generateCommentsForViralPost(
   return comments;
 }
 
+// Main data generation function
 export async function generateDummyData(
   options: IGenerationOptions,
   dataDir?: string,
@@ -573,7 +565,7 @@ export async function generateDummyData(
     const userId = uuidv4();
     const gender = Math.random() > 0.5 ? 'male' : 'female';
 
-    // Pass the correct image directories to generateUser
+    // Generate user
     const generatedUser = await generateUser(userId, gender, baseDir);
     users.push(generatedUser);
 
@@ -607,7 +599,7 @@ export async function generateDummyData(
     }
   }
 
-  // Create chat objects - convert Set to Array for iteration
+  // Create chat objects
   for (const chatId of Array.from(chatIds)) {
     const [userId1, userId2] = chatId.split('_');
 
@@ -643,14 +635,13 @@ export async function generateDummyData(
     chats.push(chat);
   }
 
-  // 4. Generate posts
+  // 3. Generate posts
   console.log('Generating posts...');
   for (const user of users) {
     const { popularityTier, activityLevel } = user;
 
     // Adjust post count based on activity level
     let userPostCount = 0;
-
     if (activityLevel === 'inactive') {
       userPostCount = Math.floor(Math.random() * 2); // 0-1 posts
     } else if (activityLevel === 'low') {
@@ -693,7 +684,7 @@ export async function generateDummyData(
       const pictures: IPictureWithPlaceholders[] = [];
 
       if (hasPictures) {
-        // Ensure post images directory exists - update to use baseDir
+        // Ensure post images directory exists
         const postImagesOutputDir = path.join(baseDir, 'images', 'posts');
         if (!fs.existsSync(postImagesOutputDir))
           fs.mkdirSync(postImagesOutputDir, { recursive: true });
@@ -705,7 +696,7 @@ export async function generateDummyData(
           count: imageCount,
         });
 
-        // Save each image with postId and index in filename
+        // Save each image
         for (let imgIndex = 0; imgIndex < generatedImages.length; imgIndex++) {
           const imgData = generatedImages[imgIndex];
           const imgId = uuidv4();
@@ -713,7 +704,7 @@ export async function generateDummyData(
           const imgPath = path.join(postImagesOutputDir, imgFilename);
           await fs.promises.writeFile(imgPath, imgData.webpBuffer);
 
-          // Convert to storage URL format for database
+          // Create storage URL for database
           const storageUrl = `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fposts%2F${imgFilename}?alt=media`;
 
           pictures.push({
@@ -762,7 +753,7 @@ export async function generateDummyData(
     }
   }
 
-  // 6. Create Firebase data structure
+  // 4. Create Firebase data structure
   console.log('Creating Firebase data structure...');
   const firebase: {
     users: Record<string, IGeneratedUser>;
@@ -807,12 +798,10 @@ export async function generateDummyData(
     }
   }
 
-  // Add chats
+  // Add chats and posts
   for (const chat of chats) {
     firebase.chats[chat.id] = chat;
   }
-
-  // Add posts
   for (const post of posts) {
     firebase.posts[post.id] = post;
   }

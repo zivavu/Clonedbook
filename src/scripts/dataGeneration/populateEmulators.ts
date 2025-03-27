@@ -5,15 +5,7 @@ import * as path from 'path';
 // Parse CLI arguments
 const deleteOnly = process.argv.includes('--delete-only');
 const populateOnly = process.argv.includes('--populate-only');
-const verbose = process.argv.includes('--verbose');
 const skipImages = process.argv.includes('--skip-images');
-
-// Clear any existing Firebase admin apps
-try {
-  admin.app().delete();
-} catch (error) {
-  // No existing app to delete
-}
 
 // Local emulator host settings
 const EMULATOR_HOST = 'localhost';
@@ -35,14 +27,10 @@ const firestore = admin.firestore();
 firestore.settings({
   host: `${EMULATOR_HOST}:${FIRESTORE_PORT}`,
   ssl: false,
-  experimentalForceLongPolling: true,
 });
 
 // Get storage bucket with direct configuration
 const bucket = admin.storage().bucket();
-
-console.log(`Connected to Firestore emulator at: ${EMULATOR_HOST}:${FIRESTORE_PORT}`);
-console.log(`Connected to Storage emulator at: ${EMULATOR_HOST}:${STORAGE_PORT}`);
 
 // Path settings
 const DATA_DIR = path.join(process.cwd(), 'src/data');
@@ -59,15 +47,9 @@ const FILES = {
  */
 async function checkEmulators(): Promise<boolean> {
   try {
-    console.log('Checking if Firestore emulator is running...');
-    // Try to get a non-existent document to check connection
+    console.log('Checking Firestore emulator connection...');
     await firestore.collection('_check_').doc('_connection_').get();
-    console.log('✅ Successfully connected to Firestore emulator');
-
-    // Since the Storage emulator connection is more complicated and often fails
-    // in the check but works in the actual upload, we'll assume it's available
-    // if Firestore is running
-    console.log('Assuming Storage emulator is also running (will verify during upload)');
+    console.log('✅ Connected to Firestore emulator');
     return true;
   } catch (error) {
     console.error(
@@ -202,9 +184,6 @@ async function uploadCollection(collectionPath: string, data: Record<string, any
         batches.push(currentBatch.commit());
         currentBatch = firestore.batch();
         operationCount = 0;
-        if (verbose) {
-          console.log(`Batched ${totalCount} documents so far...`);
-        }
       }
     }
 
@@ -287,11 +266,7 @@ async function uploadImages(): Promise<void> {
       return;
     }
 
-    // Skip most uploads unless verbose mode
-    const maxUploads = verbose ? totalFiles : Math.min(3, totalFiles);
-    console.log(`Will upload ${maxUploads} of ${totalFiles} images (use --verbose to upload all)`);
-
-    // Upload files
+    // Upload all files
     for (const type of imageTypes) {
       const typeDir = path.join(IMAGES_DIR, type);
 
@@ -301,21 +276,9 @@ async function uploadImages(): Promise<void> {
       }
 
       const imageFiles = fs.readdirSync(typeDir);
-      console.log(`Found ${imageFiles.length} images in ${type} directory`);
+      console.log(`Uploading ${imageFiles.length} images from ${type}...`);
 
-      // Take only the files we need based on maxUploads
-      const filesToUpload = imageFiles.slice(
-        0,
-        Math.min(imageFiles.length, maxUploads - uploadedFiles),
-      );
-
-      if (filesToUpload.length === 0) {
-        continue; // Skip if we've already reached our quota
-      }
-
-      console.log(`Uploading ${filesToUpload.length} images from ${type}...`);
-
-      for (const filename of filesToUpload) {
+      for (const filename of imageFiles) {
         const filePath = path.join(typeDir, filename);
         const destination = `images/${type}/${filename}`;
 
@@ -329,15 +292,8 @@ async function uploadImages(): Promise<void> {
 
           // Log progress
           uploadedFiles++;
-          if (verbose || uploadedFiles % 5 === 0) {
-            console.log(`Uploaded ${uploadedFiles}/${maxUploads}: ${destination}`);
-          }
-
-          if (uploadedFiles >= maxUploads) {
-            console.log(
-              `Reached upload limit of ${maxUploads}. Use --verbose to upload all images.`,
-            );
-            return;
+          if (uploadedFiles % 10 === 0) {
+            console.log(`Uploaded ${uploadedFiles}/${totalFiles}: ${destination}`);
           }
         } catch (error) {
           console.error(`Error uploading ${destination}:`, error);
@@ -347,10 +303,6 @@ async function uploadImages(): Promise<void> {
     }
 
     console.log(`Successfully uploaded ${uploadedFiles} images to Storage emulator`);
-
-    if (uploadedFiles < totalFiles) {
-      console.log(`Skipped ${totalFiles - uploadedFiles} images. Use --verbose to upload all.`);
-    }
   } catch (error) {
     console.error('Error with image upload process:', error);
     console.log('Continuing despite image upload errors...');
@@ -421,7 +373,7 @@ async function uploadGeneratedData(): Promise<void> {
     // Wait for collections to be uploaded
     await Promise.all(collectionPromises);
 
-    // Upload usersPublicData documents - these are special single documents
+    // Upload usersPublicData documents
     console.log('Creating usersPublicData documents...');
 
     // Set usersBasicInfo document
@@ -461,108 +413,22 @@ async function uploadGeneratedData(): Promise<void> {
 }
 
 /**
- * Log the structure of uploaded data to help debug client access issues
- */
-async function debugEmulatorData(): Promise<void> {
-  console.log('\n🔍 DEBUGGING EMULATOR DATA 🔍');
-  console.log('==============================');
-
-  try {
-    // Debug usersPublicData documents
-    console.log('Checking usersPublicData...');
-    const usersBasicInfoDoc = await firestore.doc('usersPublicData/usersBasicInfo').get();
-    console.log('usersBasicInfo exists:', usersBasicInfoDoc.exists);
-    if (usersBasicInfoDoc.exists) {
-      // Check the first user to verify structure
-      const basicInfoData = usersBasicInfoDoc.data();
-      const userIds = Object.keys(basicInfoData || {});
-      console.log(`Found ${userIds.length} users in usersBasicInfo`);
-      if (userIds.length > 0) {
-        console.log('First user sample:', userIds[0], basicInfoData?.[userIds[0]]);
-      }
-    }
-
-    const usersPublicFriendsDoc = await firestore.doc('usersPublicData/usersPublicFriends').get();
-    console.log('usersPublicFriends exists:', usersPublicFriendsDoc.exists);
-    if (usersPublicFriendsDoc.exists) {
-      const friendsData = usersPublicFriendsDoc.data();
-      const userIds = Object.keys(friendsData || {});
-      console.log(`Found ${userIds.length} users in usersPublicFriends`);
-    }
-
-    // Debug regular collections
-    const usersSnapshot = await firestore.collection('users').limit(1).get();
-    console.log('users collection has documents:', !usersSnapshot.empty);
-    if (!usersSnapshot.empty) {
-      console.log(`Found ${usersSnapshot.size} users`);
-    }
-
-    const postsSnapshot = await firestore.collection('posts').limit(1).get();
-    console.log('posts collection has documents:', !postsSnapshot.empty);
-    if (!postsSnapshot.empty) {
-      console.log(`Found ${postsSnapshot.size} posts`);
-    }
-
-    // Check storage files
-    try {
-      const [storageFiles] = await bucket.getFiles({ maxResults: 5 });
-      console.log(`Storage has ${storageFiles.length} files`);
-      if (storageFiles.length > 0) {
-        console.log('First few files:');
-        storageFiles.slice(0, 5).forEach((file, i) => {
-          console.log(`  ${i + 1}. ${file.name}`);
-        });
-      }
-    } catch (storageError) {
-      console.error('Error checking storage files:', storageError);
-    }
-
-    // Write a debug file with emulator state
-    fs.writeFileSync(
-      path.join(process.cwd(), 'emulator-debug.json'),
-      JSON.stringify(
-        {
-          timestamp: new Date().toISOString(),
-          usersBasicInfoExists: usersBasicInfoDoc.exists,
-          usersPublicFriendsExists: usersPublicFriendsDoc.exists,
-          hasUsers: !usersSnapshot.empty,
-          hasPosts: !postsSnapshot.empty,
-          projectId: admin.app().options.projectId,
-          emulatorHost: process.env.FIRESTORE_EMULATOR_HOST,
-          storageEmulatorHost: process.env.STORAGE_EMULATOR_HOST,
-        },
-        null,
-        2,
-      ),
-    );
-
-    console.log('Debug info written to emulator-debug.json');
-    console.log('==============================\n');
-  } catch (error) {
-    console.error('Error while debugging emulator data:', error);
-  }
-}
-
-/**
  * Main function
  */
 async function main(): Promise<void> {
   console.log('\n🔥 FIREBASE EMULATOR POPULATION 🔥');
   console.log('==================================');
 
-  console.log(`Firestore emulator expected at: ${EMULATOR_HOST}:${FIRESTORE_PORT}`);
-  console.log(`Storage emulator expected at: ${EMULATOR_HOST}:${STORAGE_PORT}`);
-
   if (deleteOnly) {
-    console.log('⚠️ Running in DELETE-ONLY mode. Data will be deleted but not populated.');
+    console.log('⚠️ Running in DELETE-ONLY mode');
   }
 
   if (populateOnly) {
-    console.log('⚠️ Running in POPULATE-ONLY mode. Existing data will not be deleted.');
+    console.log('⚠️ Running in POPULATE-ONLY mode');
   }
 
   if (skipImages) {
-    console.log('⚠️ Running with --skip-images flag. No images will be uploaded.');
+    console.log('⚠️ Running with --skip-images flag');
   }
 
   console.log('==================================\n');
@@ -570,11 +436,9 @@ async function main(): Promise<void> {
   // Check if emulators are running
   const emulatorsRunning = await checkEmulators();
   if (!emulatorsRunning) {
-    console.error('\n❌ EMULATORS CHECK FAILED');
-    console.error('This could be because:');
-    console.error('1. Emulators are not running (start with: firebase emulators:start)');
-    console.error('2. Emulators are running on different ports');
-    console.error('3. There is a connection issue to the emulators');
+    console.error('\n❌ EMULATORS NOT CONNECTED');
+    console.error('1. Start emulators: firebase emulators:start --only firestore,storage');
+    console.error('2. Check port configuration: Firestore=8080, Storage=9199');
     process.exit(1);
   }
 
@@ -589,28 +453,19 @@ async function main(): Promise<void> {
       await uploadGeneratedData();
     }
 
-    // Debug the uploaded data
-    await debugEmulatorData();
-
     console.log('\n✅ FIREBASE EMULATOR POPULATION COMPLETED');
     console.log('==================================');
-    console.log('\nℹ️  To view your data in the app:');
-    console.log('1. Make sure NEXT_PUBLIC_USE_EMULATOR=true in .env.local');
-    console.log('2. Restart your Next.js server if it was already running');
+    console.log('Make sure NEXT_PUBLIC_USE_EMULATOR=true in .env.local');
     console.log('==================================');
   } catch (error) {
     console.error('\n❌ ERROR DURING EMULATOR POPULATION');
-    console.error('----------------------------------');
     console.error(error instanceof Error ? error.message : String(error));
-    console.error('\nPossible solutions:');
-    console.error('1. Run with --skip-images if image upload is causing issues');
-    console.error('2. Check the emulator logs for more details');
     process.exit(1);
   }
 }
 
 // Execute the main function
 main().catch((error) => {
-  console.error('Uncaught error in main function:', error);
+  console.error('Uncaught error:', error);
   process.exit(1);
 });

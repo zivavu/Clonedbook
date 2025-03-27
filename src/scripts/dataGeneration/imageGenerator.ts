@@ -17,14 +17,6 @@ interface IProcessedImage {
   webpBuffer: Buffer;
 }
 
-interface RandomUserResponse {
-  results: Array<{
-    picture: {
-      large: string;
-    };
-  }>;
-}
-
 // Cache for already generated images
 const imageUrlCache = new Map<string, IProcessedImage>();
 

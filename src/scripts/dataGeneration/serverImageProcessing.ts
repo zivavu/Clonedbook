@@ -20,7 +20,7 @@ const FALLBACK_IMAGE = {
 const CONFIG = {
   // Main image options
   mainImageMaxSize: 800, // Reduced from 1300 for better performance
-  mainImageQuality: 70, // Reduced from 85 for better performance
+  mainImageQuality: 85, // Reduced from 85 for better performance
 
   // Blur image options
   blurImageSize: 8, // Reduced from 10 for better performance

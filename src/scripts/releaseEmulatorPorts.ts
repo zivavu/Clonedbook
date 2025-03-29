@@ -7,11 +7,16 @@
  * to ensure a clean restart without port conflicts.
  */
 
-const { exec } = require('child_process');
-const net = require('net');
+import { exec } from 'child_process';
+import net from 'net';
+
+interface EmulatorPort {
+  port: number;
+  name: string;
+}
 
 // List of ports used by Firebase emulators
-const ports = [
+const ports: EmulatorPort[] = [
   { port: 4001, name: 'Emulator UI' },
   { port: 4401, name: 'Emulator Hub' },
   { port: 8080, name: 'Firestore Emulator' },
@@ -20,7 +25,7 @@ const ports = [
 ];
 
 // Helper function to promisify exec
-function execPromise(command) {
+function execPromise(command: string): Promise<{ stdout: string; stderr: string }> {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error && error.code !== 1) {
@@ -33,7 +38,7 @@ function execPromise(command) {
 }
 
 // Check if a port is in use
-async function isPortInUse(port) {
+async function isPortInUse(port: number): Promise<boolean> {
   return new Promise((resolve) => {
     const socket = new net.Socket();
     socket.setTimeout(500);
@@ -58,11 +63,11 @@ async function isPortInUse(port) {
 }
 
 // Main function
-async function releaseEmulatorPorts() {
+async function releaseEmulatorPorts(): Promise<void> {
   console.log('\nChecking for ports in use...');
 
   // First check which ports are actually in use
-  let portsInUse = [];
+  const portsInUse: EmulatorPort[] = [];
   for (const { port, name } of ports) {
     const inUse = await isPortInUse(port);
     if (inUse) {
@@ -84,7 +89,7 @@ async function releaseEmulatorPorts() {
     await execPromise(`npx kill-port ${portList}`);
     console.log('✓ kill-port command executed');
   } catch (error) {
-    console.log('✗ kill-port failed:', error.message);
+    console.log('✗ kill-port failed:', (error as Error).message);
   }
 
   // Method 2: Use Firebase CLI stop command
@@ -93,7 +98,7 @@ async function releaseEmulatorPorts() {
     await execPromise('firebase emulators:stop');
     console.log('✓ firebase emulators:stop command executed');
   } catch (error) {
-    console.log('✗ firebase emulators:stop failed:', error.message);
+    console.log('✗ firebase emulators:stop failed:', (error as Error).message);
   }
 
   // Method 3: Platform-specific commands

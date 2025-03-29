@@ -6,6 +6,19 @@ interface ProcessedImage {
   blurDataUrl: string;
 }
 
+// Define result types for clarity
+interface CachedResult {
+  url: string;
+  image: ProcessedImage;
+}
+
+interface BufferResult {
+  url: string;
+  buffer: Buffer;
+}
+
+type FetchResult = CachedResult | BufferResult;
+
 // Cache for URLs that have already been processed
 const imageCache = new Map<string, ProcessedImage>();
 
@@ -146,7 +159,7 @@ export async function processImageFromUrl(url: string): Promise<ProcessedImage> 
   }
 }
 
-// New function for batch processing images from URLs
+// Batch processing images from URLs
 export async function batchProcessImagesFromUrls(urls: string[]): Promise<ProcessedImage[]> {
   console.time(`batchProcess:${urls.length}`);
 
@@ -156,8 +169,7 @@ export async function batchProcessImagesFromUrls(urls: string[]): Promise<Proces
 
   for (let i = 0; i < urls.length; i += batchSize) {
     const batchUrls = urls.slice(i, i + batchSize);
-    const batchPromises = batchUrls.map(async (url) => {
-      // Check cache first
+    const batchPromises = batchUrls.map(async (url): Promise<FetchResult> => {
       if (imageCache.has(url)) {
         return { url, image: imageCache.get(url)! };
       }
@@ -171,9 +183,7 @@ export async function batchProcessImagesFromUrls(urls: string[]): Promise<Proces
         }
 
         const arrayBuffer = await response.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-
-        return { url, buffer };
+        return { url, buffer: Buffer.from(arrayBuffer) };
       } catch (error) {
         console.error(`Error fetching image from URL ${url}:`, error);
         return { url, image: FALLBACK_IMAGE };
@@ -181,29 +191,20 @@ export async function batchProcessImagesFromUrls(urls: string[]): Promise<Proces
     });
 
     const batchFetchResults = await Promise.all(batchPromises);
+    const processedResults: CachedResult[] = [];
 
-    // Process all buffers in parallel
-    const processingPromises = batchFetchResults
-      .filter((result): result is { url: string; buffer: Buffer } => 'buffer' in result)
-      .map(async ({ url, buffer }) => {
-        const processedImage = await processImage(buffer);
-        imageCache.set(url, processedImage);
-        return { url, image: processedImage };
-      });
+    for (const result of batchFetchResults) {
+      if ('buffer' in result && result.buffer) {
+        const processedImage = await processImage(result.buffer);
+        imageCache.set(result.url, processedImage);
+        processedResults.push({ url: result.url, image: processedImage });
+      } else if ('image' in result) {
+        processedResults.push(result);
+      }
+    }
 
-    const processedResults = await Promise.all(processingPromises);
-
-    // Combine cached and newly processed results
-    const combinedResults = [
-      ...batchFetchResults.filter(
-        (result): result is { url: string; image: ProcessedImage } => 'image' in result,
-      ),
-      ...processedResults,
-    ];
-
-    // Sort results to match input order and extract just the images
     const orderedResults = batchUrls.map((url) => {
-      const result = combinedResults.find((r) => r.url === url);
+      const result = processedResults.find((r) => r.url === url);
       return result ? result.image : FALLBACK_IMAGE;
     });
 

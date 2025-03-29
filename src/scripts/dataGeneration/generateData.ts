@@ -7,11 +7,6 @@ import { IGenerationOptions, generateDummyData } from './dataGenerator';
 // Default data directory
 const DATA_DIR = path.join(process.cwd(), 'src', 'data');
 
-// Ensure the output directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
 // Data size presets
 const DATA_SIZES = {
   small: {
@@ -25,7 +20,7 @@ const DATA_SIZES = {
       maxReactionsPerPost: 50,
       maxChatsPerUser: 15,
       maxMessagesPerChat: 50,
-      maxImagesPerPost: 4, // Most posts have 1-4 images
+      maxImagesPerPost: 4,
     },
   },
   medium: {
@@ -39,7 +34,7 @@ const DATA_SIZES = {
       maxReactionsPerPost: 90,
       maxChatsPerUser: 25,
       maxMessagesPerChat: 75,
-      maxImagesPerPost: 6, // Some posts have up to 6 images
+      maxImagesPerPost: 6,
     },
   },
   large: {
@@ -53,7 +48,7 @@ const DATA_SIZES = {
       maxReactionsPerPost: 150,
       maxChatsPerUser: 40,
       maxMessagesPerChat: 100,
-      maxImagesPerPost: 8, // Some posts have up to 8 images
+      maxImagesPerPost: 8,
     },
   },
   custom: {
@@ -72,18 +67,14 @@ const DATA_SIZES = {
   },
 };
 
-/**
- * Clears the data directory, removing all files and subdirectories
- */
 function clearDataDirectory(dirPath: string): void {
-  console.log(`Clearing data directory: ${dirPath}`);
+  console.log(`🧹 Clearing data directory: ${dirPath}`);
 
   if (!fs.existsSync(dirPath)) {
     console.log('Directory does not exist, will be created');
     return;
   }
 
-  // Read all items in the directory
   const items = fs.readdirSync(dirPath);
 
   for (const item of items) {
@@ -91,31 +82,21 @@ function clearDataDirectory(dirPath: string): void {
     const stats = fs.statSync(itemPath);
 
     if (stats.isDirectory()) {
-      // Recursively clear subdirectory
       clearDataDirectory(itemPath);
-      // Remove the now-empty directory
       fs.rmdirSync(itemPath);
     } else {
-      // Remove files
       fs.unlinkSync(itemPath);
     }
   }
-
-  console.log(`Data directory cleared: ${dirPath}`);
 }
 
-/**
- * Create necessary directory structure for data generation
- */
 function createDirectoryStructure(baseDir: string): void {
-  console.log('Creating directory structure for data generation');
+  console.log('📁 Creating directory structure');
 
-  // Ensure the base directory exists
   if (!fs.existsSync(baseDir)) {
     fs.mkdirSync(baseDir, { recursive: true });
   }
 
-  // Create directories for images
   const imageTypes = ['profiles', 'backgrounds', 'posts'];
   const imagesDir = path.join(baseDir, 'images');
 
@@ -129,16 +110,10 @@ function createDirectoryStructure(baseDir: string): void {
       fs.mkdirSync(typeDir, { recursive: true });
     }
   }
-
-  console.log('Directory structure created successfully');
 }
 
-/**
- * Saves data to JSON files
- */
 async function saveDataToFiles(data: any, baseDir: string) {
-  // Save data to JSON files
-  console.log('Saving data to files...');
+  console.log('💾 Saving data to JSON files');
 
   const savePromises = [
     fs.promises.writeFile(
@@ -163,21 +138,15 @@ async function saveDataToFiles(data: any, baseDir: string) {
     ),
   ];
 
-  // Wait for all files to be saved
   await Promise.all(savePromises);
-  console.log('All data files saved successfully');
 }
 
-/**
- * Simple menu for selecting data size using numbered options
- */
 async function createSimpleMenu(): Promise<IGenerationOptions> {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
 
-  // Create question promise
   const question = (query: string): Promise<string> => {
     return new Promise((resolve) => {
       rl.question(query, (answer) => {
@@ -200,7 +169,6 @@ async function createSimpleMenu(): Promise<IGenerationOptions> {
   }
 
   if (choice === '4') {
-    // Custom options
     const userCount = parseInt(await question('Enter number of users: ')) || 50;
     const maxFriends = parseInt(await question('Enter max friends per user: ')) || 80;
     const maxPosts = parseInt(await question('Enter max posts per user: ')) || 12;
@@ -226,63 +194,48 @@ async function createSimpleMenu(): Promise<IGenerationOptions> {
       maxImagesPerPost: maxImages,
     };
 
-    console.log('\nUsing custom options:');
-    console.log(customOptions);
+    console.log('\n📊 Using custom options');
 
     return customOptions;
   } else {
     rl.close();
 
-    // Select preset
     const presetKey = choice === '1' ? 'small' : choice === '2' ? 'medium' : 'large';
     const selectedOption = DATA_SIZES[presetKey].options;
 
-    console.log(`\nSelected: ${DATA_SIZES[presetKey].name}`);
-    console.log('Using options:');
-    console.log(selectedOption);
+    console.log(`\n📊 Selected: ${DATA_SIZES[presetKey].name}`);
 
     return selectedOption;
   }
 }
 
-/**
- * Main function to generate data
- */
 async function main() {
   try {
-    // Get generation options from simple menu
     const options = await createSimpleMenu();
 
-    console.log('\nPreparing data generation...');
+    console.log('\n🔄 Preparing data generation');
 
-    // Clear existing data and recreate directory structure
     clearDataDirectory(DATA_DIR);
     createDirectoryStructure(DATA_DIR);
 
-    console.log('\nStarting data generation...');
-    console.log(`Using output directory: ${DATA_DIR}`);
-
-    // Generate dummy data
+    console.log('\n🚀 Generating data');
     const data = await generateDummyData(options, DATA_DIR);
 
-    // Save data to files
     await saveDataToFiles(data, DATA_DIR);
 
     console.log('\n✅ Data generation completed successfully!');
-    console.log(`Output directory: ${DATA_DIR}`);
     console.log('Generated:');
     console.log(`- ${Object.keys(data.firebase.users).length} users`);
     console.log(`- ${Object.keys(data.firebase.chats).length} chats`);
     console.log(`- ${Object.keys(data.firebase.posts).length} posts`);
-    console.log('You can now run "bun run populate" to upload the data to Firebase emulators');
+    console.log('\nYou can now run "bun run populate" to upload the data to Firebase emulators');
   } catch (error) {
-    console.error('Error generating data:', error);
+    console.error('❌ Error generating data:', error);
     process.exit(1);
   }
 }
 
-// Run the main function
 main().catch((error) => {
-  console.error('Unexpected error:', error);
+  console.error('❌ Unexpected error:', error);
   process.exit(1);
 });

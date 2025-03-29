@@ -3,7 +3,7 @@
 <h1 align="center">Clonedbook</h1>
 <p align="center">
   <a href="https://clonedbook.vercel.app/">View app</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-license">Technologies used</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#technologist-technologies-used">Technologies used</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/zivavu/facebook-clone/issues">Report Bug</a>
 </p>
 
@@ -13,58 +13,100 @@ This project is a basic clone of Facebook, replicating many of the features foun
 
 The interface closely matches the original design, is fully responsive, and supports dark mode. Components are organized using the Atomic Design methodology.
 
-Currently, there's no authentication system, so users are represented by dummy/random data, allowing anyone to log in with just a click. The data for users, chats, photos, posts, comments, reactions, and friendships is generated using a script (not included in this repository) that utilizes Faker and LoremFlickr.
+Currently, there's no authentication system, so users are represented by dummy/random data, allowing anyone to log in with just a click. The data is generated using scripts included in this repository that utilize Faker.js to create realistic user profiles, posts, comments, and more.
 
-Data is stored in Firebase and optimized to reduce document reads by consolidating essential information into single documents. Since the focus is not on scaling to a large number of users, this approach prioritizes simplicity and efficiency. Additionally, user data is indexed using Algolia to provide fast and efficient search autocomplete.
+Data is stored in Firebase and optimized to reduce document reads by consolidating essential information into single documents. User data is indexed using Algolia to provide fast and efficient search autocomplete.
 
 ![Screenshot_1](https://github.com/zivavu/facebook-clone/assets/107223633/2d419cbd-4869-4a79-8007-445d65b4c9b8)
 
 ## :wrench: Getting Started
 
-### Forking and Setting Up
+### Quick Start for Local Development
 
-If you want to fork and run this project locally, you'll need to set up a few things:
-
-1. **Firebase and Algolia Access**: The project requires Firebase and Algolia credentials. Create your own accounts and services or contact me for access to existing ones.
-
-2. **Environment Variables**: Create a `.env.local` file in the root directory with the following variables:
-
-   ```
-   NEXT_PUBLIC_ALGOLIA_APP_ID=your_algolia_app_id
-   NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY=your_algolia_search_api_key
-   NEXT_PUBLIC_DATABASE_URL=your_firebase_database_url
-   NEXT_PUBLIC_API_KEY=your_firebase_api_key
-   NEXT_PUBLIC_AUTH_DOMAIN=your_firebase_auth_domain
-   NEXT_PUBLIC_APP_ID=your_firebase_app_id
-   NEXT_PUBLIC_MESSENGING_SENDER_ID=your_firebase_messaging_sender_id
-   NEXT_PUBLIC_PROJECT_ID=your_firebase_project_id
-   NEXT_PUBLIC_STORAGE_BUCKET=your_firebase_storage_bucket
-   ```
-
-3. **Database Data**: The application requires a specific data structure to function properly:
-
-   - The original data was generated using a 500-line script (unfortunately lost) with Faker and LoremFlickr
-   - If you need a copy of the database structure and sample data, please email me at zivavu@gmail.com
-   - Alternatively, you can create your own data following the Firebase structure visible in the code
-
-4. **Installation and Running**:
+1. **Clone the repo and install dependencies**:
 
    ```bash
-   # Install dependencies using your preferred package manager (npm, yarn, pnpm, bun)
-   npm install
-   # or
-   bun install
-
-   # Run development server
-   npm run dev
-   # or
-   bun dev
-
-   # Run tests
-   npm run test:e2e
-   # or
-   bun test:e2e
+   git clone https://github.com/zivavu/Clonedbook.git
+   cd Clonedbook
+   bun install  # or npm/yarn/pnpm install
    ```
+
+2. **Set up environment variables**:
+
+   Copy the example `.env.local` file, which includes configuration for Firebase emulators and demo keys:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+3. **Start Firebase emulators**:
+
+   ```bash
+   bun run emulators
+   ```
+
+4. **Generate and populate test data**:
+
+   ```bash
+   # Generate test data (creates data files without uploading)
+   bun run generate:data
+
+   # Upload generated data to emulators
+   bun run populate
+   ```
+
+   Note: The generated data differs from what's on the live website, as it's created using a local script rather than the original dataset.
+
+5. **Start the development server**:
+   ```bash
+   bun run dev
+   ```
+6. **Open your browser**:
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+### Useful Commands
+
+```bash
+# Start Firebase emulators
+bun run emulators
+
+# Generate test data (small, medium, large, or custom sizes)
+bun run generate:data
+
+# Populate emulators with the generated data
+bun run populate
+
+# Export emulator data to reuse later
+bun run export-data
+
+# Import previously exported data
+bun run import-data
+
+# Run end-to-end tests
+bun run test:e2e
+
+# Run end-to-end tests in headless mode
+bun run test:e2e-gh
+
+# Release emulator ports if they get stuck
+bun run release:ports
+```
+
+### Running Tests
+
+The project includes end-to-end tests using TestCafe that cover key functionality:
+
+- **Home page tests**: Validates post loading and infinite scroll
+- **Friend interaction flow**: Tests sending, accepting, and removing friend requests
+- **Likes interaction flow**: Tests post liking, unliking, and comment interactions
+- **Profile page tests**: Tests profile page navigation and content display
+- **Account details flow**: Tests viewing and interacting with user account information
+
+To run a specific test:
+
+```bash
+bun run test:e2e src/tests/homePage.ts
+```
 
 ## :sparkles: Implemented Features
 
@@ -180,15 +222,6 @@ If you want to fork and run this project locally, you'll need to set up a few th
 - Optimized bundle size with dynamic imports
 - Vercel Analytics integration
 
-### Testing
-
-- End-to-end tests with TestCafe
-- Key user flows coverage:
-  - User search functionality
-  - Infinite scroll behavior
-  - Post CRUD operations
-  - Profile interactions
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## :technologist: Technologies used
@@ -241,49 +274,3 @@ Project Link: [https://github.com/zivavu/Clonedbook](https://github.com/zivavu/C
 [Algolia-url]: https://www.algolia.com/
 [Vercel]: https://a11ybadges.com/badge?logo=vercel
 [Vercel-url]: https://vercel.com
-
-## Local Development
-
-For local development, we provide:
-
-1. **Data Generation**: Generate realistic test data with 100 users, 300+ chats, 400+ posts, and thousands of interactions
-2. **Local Firebase Emulator**: Run Firebase services locally without connecting to the real Firebase
-3. **Algolia Mock**: Use a local implementation of Algolia search
-
-### Getting Started
-
-```bash
-# Install dependencies
-bun install
-
-# Generate test data
-bun run generate:data
-
-# Set up Algolia mock
-bun run algolia:mock
-
-# Start the development server with Algolia mock
-bun run dev:local
-
-# Optionally, if you have Java 11+ installed,
-# you can run Firebase emulators
-bun run firebase:emulator
-```
-
-For more detailed instructions, see [LOCAL_DEVELOPMENT.md](./LOCAL_DEVELOPMENT.md).
-
-# Configuration
-
-The project uses the following configuration structure:
-
-- `src/config/firebase.ts` - Firebase configuration with support for both production and local emulators
-- `src/config/algolia.ts` - Algolia configuration with support for both production and local mocks
-
-In development mode, you can use local services by running:
-
-```bash
-# Start the development server with local Firebase emulator and Algolia mock
-bun run dev:local
-```
-
-This will show a development mode indicator in the bottom-right corner of the screen that displays which services are being used (local or production).

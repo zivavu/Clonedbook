@@ -31,21 +31,13 @@ Data is stored in Firebase and optimized to reduce document reads by consolidati
    bun install  # or npm/yarn/pnpm install
    ```
 
-2. **Set up environment variables**:
-
-   Copy the example `.env.local` file, which includes configuration for Firebase emulators and demo keys:
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-3. **Start Firebase emulators**:
+2. **Start Firebase emulators**:
 
    ```bash
    bun run emulators
    ```
 
-4. **Generate and populate test data**:
+3. **Generate and populate test data**:
 
    ```bash
    # Generate test data (creates data files without uploading)
@@ -57,12 +49,14 @@ Data is stored in Firebase and optimized to reduce document reads by consolidati
 
    Note: The generated data differs from what's on the live website, as it's created using a local script rather than the original dataset.
 
-5. **Start the development server**:
+4. **Start the development server**:
    ```bash
    bun run dev
    ```
-6. **Open your browser**:
+5. **Open your browser**:
    Navigate to [http://localhost:3000](http://localhost:3000)
+
+> **Note**: The project uses Bun as the default JavaScript runtime, but you can use other runtimes like Node.js if you prefer. Just make sure your runtime supports TypeScript files (.ts) for the data generation scripts.
 
 ### Useful Commands
 

@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import fs from 'fs';
+import ora from 'ora';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,6 +24,7 @@ import {
   TUserSex,
 } from '@/types/user';
 import { generateImages } from './imageGenerator';
+import { firebaseConfig } from '@/config/env';
 
 export interface IAlgoliaSearchObject {
   objectID: string;
@@ -148,6 +150,31 @@ function assignUserActivityLevel(): 'inactive' | 'low' | 'medium' | 'high' {
   return 'high';
 }
 
+// Add this helper function at the top with other helpers
+async function generateImageWithRetry(
+  options: { type: 'profile' | 'background' | 'post'; gender?: 'male' | 'female'; count: number },
+  maxRetries = 3,
+): Promise<any[]> {
+  let lastError: Error | null = null;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await generateImages(options);
+    } catch (error) {
+      lastError = error as Error;
+      if (attempt === maxRetries) {
+        throw new Error(
+          `Failed to generate image after ${maxRetries} attempts: ${lastError.message}`,
+        );
+      }
+      // Wait a bit before retrying
+      await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+    }
+  }
+
+  throw lastError;
+}
+
 // Generate user
 async function generateUser(
   userId: string,
@@ -167,9 +194,9 @@ async function generateUser(
   if (!fs.existsSync(profileOutputDir)) fs.mkdirSync(profileOutputDir, { recursive: true });
   if (!fs.existsSync(backgroundOutputDir)) fs.mkdirSync(backgroundOutputDir, { recursive: true });
 
-  // Generate profile picture
+  // Generate profile picture with retry
   const profilePictureId = uuidv4();
-  const [profilePictureData] = await generateImages({
+  const [profilePictureData] = await generateImageWithRetry({
     type: 'profile',
     gender,
     count: 1,
@@ -180,17 +207,23 @@ async function generateUser(
   const profilePicturePath = path.join(profileOutputDir, profilePictureFilename);
   await fs.promises.writeFile(profilePicturePath, profilePictureData.webpBuffer);
 
-  // Generate background picture (optional)
+  // Generate background picture (optional) with retry
   let backgroundPictureId: string | undefined = undefined;
   let backgroundPictureData: any = undefined;
   let backgroundPicturePath: string | undefined = undefined;
 
   if (shouldFill(0.5)) {
-    backgroundPictureId = uuidv4();
-    [backgroundPictureData] = await generateImages({ type: 'background', count: 1 });
-    const backgroundPictureFilename = `${backgroundPictureId}.webp`;
-    backgroundPicturePath = path.join(backgroundOutputDir, backgroundPictureFilename);
-    await fs.promises.writeFile(backgroundPicturePath, backgroundPictureData.webpBuffer);
+    try {
+      backgroundPictureId = uuidv4();
+      [backgroundPictureData] = await generateImageWithRetry({ type: 'background', count: 1 });
+      const backgroundPictureFilename = `${backgroundPictureId}.webp`;
+      backgroundPicturePath = path.join(backgroundOutputDir, backgroundPictureFilename);
+      await fs.promises.writeFile(backgroundPicturePath, backgroundPictureData.webpBuffer);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.warn(`Failed to generate background picture for user ${userId}: ${errorMessage}`);
+      // Continue without background picture
+    }
   }
 
   const isDummy = false;
@@ -230,9 +263,9 @@ async function generateUser(
   };
 
   // Create URLs for Firebase Storage emulator
-  const profilePictureUrl = `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fprofiles%2F${profilePictureFilename}?alt=media`;
+  const profilePictureUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/images%2Fprofiles%2F${profilePictureFilename}?alt=media`;
   const backgroundPictureUrl = backgroundPicturePath
-    ? `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fbackgrounds%2F${backgroundPictureId}.webp?alt=media`
+    ? `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/images%2Fbackgrounds%2F${backgroundPictureId}.webp?alt=media`
     : undefined;
 
   return {
@@ -570,7 +603,7 @@ export async function generateDummyData(
   const algoliaSearchObjects: IAlgoliaSearchObject[] = [];
 
   // 1. Generate users with metadata
-  console.log('Generating users...');
+  const userSpinner = ora('Generating users, fetching images...').start();
   for (let i = 0; i < userCount; i++) {
     const userId = uuidv4();
     const gender = Math.random() > 0.5 ? 'male' : 'female';
@@ -587,30 +620,42 @@ export async function generateDummyData(
       middleName: generatedUser.middleName,
       ...(generatedUser.pictureUrl ? { pictureUrl: generatedUser.pictureUrl } : {}),
     });
+
+    // Update progress
+    userSpinner.text = `Generating users... ${i + 1}/${userCount}`;
   }
+  userSpinner.succeed(`Generated ${userCount} users`);
 
   // Handle user relationships
+  const relationshipSpinner = ora('Processing user relationships...').start();
   handleUserRelationships(users);
+  relationshipSpinner.succeed('Processed user relationships');
 
   // Handle friendships
+  const friendshipSpinner = ora('Processing friendships...').start();
   handleFriendships(users, maxFriendsPerUser);
+  friendshipSpinner.succeed('Processed friendships');
 
   // 2. Generate chats
-  console.log('Generating chats...');
+  const chatSpinner = ora('Generating chats...').start();
   const chatIds = new Set<string>();
 
   // Find all unique chat IDs from friendships
   for (const user of users) {
+    let userChatCount = 0;
     for (const friendId in user.friends) {
       const friend = user.friends[friendId];
-      if (friend.status === 'accepted' && friend.chatId) {
+      if (friend.status === 'accepted' && friend.chatId && userChatCount < maxChatsPerUser) {
         chatIds.add(friend.chatId);
+        userChatCount++;
       }
     }
   }
 
   // Create chat objects
-  for (const chatId of Array.from(chatIds)) {
+  const chatIdsArray = Array.from(chatIds);
+  for (let i = 0; i < chatIdsArray.length; i++) {
+    const chatId = chatIdsArray[i];
     const [userId1, userId2] = chatId.split('_');
 
     // Create chat
@@ -643,25 +688,54 @@ export async function generateDummyData(
     }
 
     chats.push(chat);
+    chatSpinner.text = `Generating chats... ${i + 1}/${chatIdsArray.length}`;
   }
+  chatSpinner.succeed(`Generated ${chats.length} chats`);
 
   // 3. Generate posts
-  console.log('Generating posts...');
+  const postSpinner = ora('Calculating estimated post count...').start();
+
+  // Calculate estimated total posts
+  let estimatedTotalPosts = 0;
+  for (const user of users) {
+    const { activityLevel } = user;
+    let estimatedUserPosts = 0;
+
+    if (activityLevel === 'inactive') {
+      estimatedUserPosts = Math.min(1, maxPostsPerUser); // ~1 post
+    } else if (activityLevel === 'low') {
+      estimatedUserPosts = Math.min(2, maxPostsPerUser); // ~2 posts
+    } else if (activityLevel === 'medium') {
+      estimatedUserPosts = Math.min(5, maxPostsPerUser); // ~5 posts
+    } else {
+      estimatedUserPosts = Math.min(8, maxPostsPerUser); // ~8 posts
+    }
+
+    estimatedTotalPosts += estimatedUserPosts;
+  }
+
+  postSpinner.succeed(`Estimated total posts: ${estimatedTotalPosts}`);
+  const postGenerationSpinner = ora('Generating posts...').start();
+
+  let totalPosts = 0;
   for (const user of users) {
     const { popularityTier, activityLevel } = user;
 
-    // Adjust post count based on activity level
+    // Adjust post count based on activity level and maxPostsPerUser
     let userPostCount = 0;
     if (activityLevel === 'inactive') {
-      userPostCount = Math.floor(Math.random() * 2); // 0-1 posts
+      userPostCount = Math.floor(Math.random() * Math.min(2, maxPostsPerUser)); // 0-1 posts
     } else if (activityLevel === 'low') {
-      userPostCount = Math.floor(Math.random() * 3) + 1; // 1-3 posts
+      userPostCount = Math.floor(Math.random() * Math.min(3, maxPostsPerUser)) + 1; // 1-3 posts
     } else if (activityLevel === 'medium') {
-      userPostCount = Math.floor(Math.random() * 5) + 3; // 3-7 posts
+      userPostCount = Math.floor(Math.random() * Math.min(5, maxPostsPerUser)) + 3; // 3-7 posts
     } else {
       // high
-      userPostCount = Math.floor(Math.random() * 8) + 5; // 5-12 posts
+      userPostCount = Math.floor(Math.random() * Math.min(8, maxPostsPerUser)) + 5; // 5-12 posts
     }
+
+    // Ensure we don't exceed maxPostsPerUser
+    userPostCount = Math.min(userPostCount, maxPostsPerUser);
 
     // Create posts
     for (let i = 0; i < userPostCount; i++) {
@@ -675,7 +749,6 @@ export async function generateDummyData(
       if (Math.random() > 0.8) {
         updateDate.setDate(updateDate.getDate() + Math.floor(Math.random() * 7)); // Update within a week
       }
-      const updateTimestamp = dateToTimestamp(updateDate);
 
       const hasPictures = Math.random() > 0.3; // Most posts have pictures (70%)
       const hasText = Math.random() > 0.1 || !hasPictures; // Almost all posts have text
@@ -700,47 +773,42 @@ export async function generateDummyData(
           fs.mkdirSync(postImagesOutputDir, { recursive: true });
 
         // Determine the number of images for this post
-        // Most posts have 1-4 images, but some have more
         let imageCount: number;
-
-        // Small probability of having many images (5-8)
-        const hasLotsOfImages = Math.random() > 0.9; // 10% chance
+        const hasLotsOfImages = Math.random() > 0.9;
 
         if (hasLotsOfImages) {
-          // Generate 5-8 images (or up to maxImagesPerPost)
-          imageCount = Math.min(
-            Math.floor(Math.random() * 4) + 5, // 5-8
-            maxImagesPerPost,
-          );
+          imageCount = Math.min(Math.floor(Math.random() * 4) + 5, maxImagesPerPost);
         } else {
-          // Generate 1-4 images
-          imageCount = Math.min(
-            Math.floor(Math.random() * 4) + 1, // 1-4
-            maxImagesPerPost,
-          );
+          imageCount = Math.min(Math.floor(Math.random() * 4) + 1, maxImagesPerPost);
         }
 
-        const generatedImages = await generateImages({
-          type: 'post',
-          count: imageCount,
-        });
-
-        // Save each image
-        for (let imgIndex = 0; imgIndex < generatedImages.length; imgIndex++) {
-          const imgData = generatedImages[imgIndex];
-          const imgId = uuidv4();
-          const imgFilename = `${imgId}.webp`;
-          const imgPath = path.join(postImagesOutputDir, imgFilename);
-          await fs.promises.writeFile(imgPath, imgData.webpBuffer);
-
-          // Create storage URL for database
-          const storageUrl = `http://localhost:9199/v0/b/demo-project.appspot.com/o/images%2Fposts%2F${imgFilename}?alt=media`;
-
-          pictures.push({
-            url: storageUrl,
-            blurDataUrl: imgData.blurDataUrl,
-            dominantHex: imgData.dominantHex,
+        try {
+          const generatedImages = await generateImageWithRetry({
+            type: 'post',
+            count: imageCount,
           });
+
+          // Save each image
+          for (let imgIndex = 0; imgIndex < generatedImages.length; imgIndex++) {
+            const imgData = generatedImages[imgIndex];
+            const imgId = uuidv4();
+            const imgFilename = `${imgId}.webp`;
+            const imgPath = path.join(postImagesOutputDir, imgFilename);
+            await fs.promises.writeFile(imgPath, imgData.webpBuffer);
+
+            const storageUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/images%2Fposts%2F${imgFilename}?alt=media`;
+
+            pictures.push({
+              url: storageUrl,
+              blurDataUrl: imgData.blurDataUrl,
+              dominantHex: imgData.dominantHex,
+            });
+          }
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          console.warn(`Failed to generate images for post: ${errorMessage}`);
+          // Skip this post and continue with the next one
+          continue;
         }
       }
 
@@ -784,11 +852,15 @@ export async function generateDummyData(
       post.comments = generateCommentsForViralPost(post, users, viralityScore, maxCommentsPerPost);
 
       posts.push(post);
+      totalPosts++;
+      const percentage = Math.round((totalPosts / estimatedTotalPosts) * 100);
+      postGenerationSpinner.text = `Generating posts, fetching images... ${totalPosts}/${estimatedTotalPosts} (${percentage}%)`;
     }
   }
+  postGenerationSpinner.succeed(`Generated ${totalPosts} posts`);
 
   // 4. Create Firebase data structure
-  console.log('Creating Firebase data structure...');
+  const firebaseSpinner = ora('Creating Firebase data structure...').start();
   const firebase: {
     users: Record<string, IGeneratedUser>;
     chats: Record<string, IGeneratedChat>;
@@ -839,6 +911,7 @@ export async function generateDummyData(
   for (const post of posts) {
     firebase.posts[post.id] = post;
   }
+  firebaseSpinner.succeed('Created Firebase data structure');
 
   return {
     users,

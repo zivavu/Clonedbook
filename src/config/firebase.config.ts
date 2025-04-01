@@ -1,31 +1,8 @@
-import { FirebaseApp, FirebaseOptions, getApps, initializeApp } from 'firebase/app';
-import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import { FirebaseApp, getApps, initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { connectStorageEmulator, getStorage } from 'firebase/storage';
-
-// Production environment variables from .env
-const prodConfig: FirebaseOptions = {
-  apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
-  databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_MESSENGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_APP_ID,
-};
-
-// Local environment config for emulator
-const localConfig: FirebaseOptions = {
-  apiKey: 'demo-api-key',
-  authDomain: 'demo-project.firebaseapp.com',
-  projectId: 'demo-project',
-  storageBucket: 'demo-project.appspot.com',
-  messagingSenderId: 'demo-messaging-sender-id',
-  appId: 'demo-app-id',
-};
-
-// Check if we're in local development mode
-const isLocalDev = process.env.NEXT_PUBLIC_USE_EMULATOR === 'true';
+import { firebaseConfig, useEmulators } from './env';
 
 /**
  * Helper function to create a styled log message
@@ -45,17 +22,11 @@ const initializeFirebase = (): FirebaseApp => {
     return apps[0];
   }
 
-  console.log(`Initializing Firebase in ${isLocalDev ? 'LOCAL EMULATOR' : 'PRODUCTION'} mode`);
-  const config = isLocalDev ? localConfig : prodConfig;
-  const app = initializeApp(config);
+  console.log(`Initializing Firebase in ${useEmulators ? 'LOCAL EMULATOR' : 'PRODUCTION'} mode`);
+  const app = initializeApp(firebaseConfig);
 
-  if (isLocalDev) {
+  if (useEmulators) {
     try {
-      // Connect to Auth emulator
-      const auth = getAuth(app);
-      connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-      logEmulatorConnection('Auth', 'localhost', 9099);
-
       // Connect to Firestore emulator
       const db = getFirestore(app);
       connectFirestoreEmulator(db, 'localhost', 8080);
@@ -90,7 +61,7 @@ export const storage = getStorage(firebaseApp);
 export const auth = getAuth(firebaseApp);
 
 // Create a development indicator that's more visible
-if (typeof window !== 'undefined' && isLocalDev) {
+if (typeof window !== 'undefined' && useEmulators) {
   const indicator = document.createElement('div');
   indicator.style.position = 'fixed';
   indicator.style.bottom = '10px';
@@ -125,6 +96,5 @@ export default {
   firestore,
   db,
   storage,
-  auth,
-  isLocalDev,
+  useEmulators,
 };

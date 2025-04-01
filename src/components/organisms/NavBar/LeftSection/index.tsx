@@ -1,37 +1,73 @@
 import { InputAdornment, useTheme } from '@mui/material';
-
-import { StyledRoot, StyledSearchInput } from './styles';
-
-import Icon from '@/components/atoms/Icon/Icon';
-import { usersIndex } from '@/config/algolia.config';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import Icon from '@/components/atoms/Icon/Icon';
+import { AlgoliaMock, searchClient } from '@/config/algolia.config';
 import SearchPortal from './SearchPortal';
+import { StyledRoot, StyledSearchInput } from './styles';
 import { LeftSectionProps } from './types';
+
+const MAX_SEARCH_RESULTS = 15;
+
+interface IAlgoliaHit {
+  objectID: string;
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  pictureUrl?: string;
+}
+
+interface IAlgoliaSearchResponse {
+  hits: IAlgoliaHit[];
+  nbHits: number;
+  page: number;
+  nbPages: number;
+  hitsPerPage: number;
+  query: string;
+}
 
 export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionProps) {
   const theme = useTheme();
   const router = useRouter();
+  const searchElement = useRef<HTMLDivElement | null>(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [searchPopperOpen, setSearchPopperOpen] = useState(false);
-  const searchElement = useRef<HTMLDivElement | null>(null);
-
   const [userHits, setUserHits] = useState<string[]>([]);
 
+  const handleSearch = useCallback(
+    async (query: string) => {
+      if (!query || !searchPopperOpen) {
+        setUserHits([]);
+        return;
+      }
+
+      try {
+        const response = (await (searchClient as AlgoliaMock).search(query, {
+          attributesToRetrieve: ['objectID'],
+        })) as IAlgoliaSearchResponse;
+
+        setUserHits(
+          response.hits.slice(0, MAX_SEARCH_RESULTS).map((hit: IAlgoliaHit) => hit.objectID),
+        );
+      } catch (error) {
+        console.error('Search failed:', error);
+        setUserHits([]);
+      }
+    },
+    [searchPopperOpen],
+  );
+
   useEffect(() => {
-    if (!searchTerm || !searchPopperOpen) return;
+    const debounceTimeout = setTimeout(() => {
+      handleSearch(searchTerm);
+    }, 300);
 
-    const search = usersIndex.search as (query: string, options?: any) => Promise<any>;
-
-    search(searchTerm, {
-      attributesToRetrieve: ['objectID'],
-    }).then(({ hits }) => {
-      setUserHits(hits.slice(0, 15).map((hit: any) => hit.objectID));
-    });
-  }, [searchTerm, searchPopperOpen]);
+    return () => clearTimeout(debounceTimeout);
+  }, [searchTerm, handleSearch]);
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -43,7 +79,17 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
     return () => {
       router.events.off('routeChangeStart', handleRouteChange);
     };
-  }, []);
+  }, [router.events]);
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setSearchPopperOpen(true);
+  };
+
+  const handleSearchInputClick = () => {
+    searchElement.current?.focus();
+    setSearchPopperOpen(true);
+  };
 
   return (
     <>
@@ -77,15 +123,8 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
           size='small'
           placeholder='Search Clonedbook'
           value={searchTerm}
-          onClick={() => {
-            searchElement.current?.focus();
-            setSearchPopperOpen(true);
-          }}
-          onChange={(e) => {
-            if (!e.target.value) setUserHits([]);
-            setSearchPopperOpen(true);
-            setSearchTerm(e.target.value);
-          }}
+          onClick={handleSearchInputClick}
+          onChange={handleSearchInputChange}
           startAdornment={
             <InputAdornment
               position='start'

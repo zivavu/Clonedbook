@@ -1,49 +1,72 @@
 import algoliasearch from 'algoliasearch';
+import { useEmulators } from './env';
 
-// Check if we're in local development mode with emulators
-const isLocalDev = process.env.NEXT_PUBLIC_USE_EMULATOR === 'true';
+interface IAlgoliaHit {
+  objectID: string;
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  pictureUrl?: string;
+}
 
-// Create Algolia mock for local development
+interface IAlgoliaSearchResponse {
+  hits: IAlgoliaHit[];
+  nbHits: number;
+  page: number;
+  nbPages: number;
+  hitsPerPage: number;
+  query: string;
+}
+
+interface IAlgoliaSearchOptions {
+  hitsPerPage?: number;
+  attributesToRetrieve?: string[];
+}
+
 class AlgoliaMock {
-  private data: any[];
+  private data: IAlgoliaHit[];
   private indices: Record<string, AlgoliaMock> = {};
 
   constructor(
     private indexName: string = 'users',
-    data: any[] = [],
+    data: IAlgoliaHit[] = [],
   ) {
-    this.data = data || [];
+    this.data = data;
+    this.loadLocalData();
+  }
 
-    // Load local data if available
-    if (typeof window !== 'undefined' && isLocalDev) {
-      try {
-        fetch('/api/algolia-data')
-          .then((response) => response.json())
-          .then((data) => {
-            this.data = data;
-            console.log(`Loaded ${data.length} records for Algolia mock index ${indexName}`);
-          })
-          .catch((error) => {
-            console.error('Failed to load Algolia mock data:', error);
-            // Try loading from local storage as fallback
-            const localData = localStorage.getItem(`algolia_mock_${indexName}`);
-            if (localData) {
-              this.data = JSON.parse(localData);
-              console.log(`Loaded ${this.data.length} records from local storage for Algolia mock`);
-            }
-          });
-      } catch (error) {
-        console.error('Error initializing Algolia mock:', error);
-      }
+  private async loadLocalData(): Promise<void> {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const response = await fetch('/api/algolia-data');
+      if (!response.ok) throw new Error('Failed to fetch Algolia data');
+
+      const data = await response.json();
+      this.data = data;
+      console.log(`Loaded ${data.length} records for Algolia mock index ${this.indexName}`);
+    } catch (error) {
+      console.warn('Failed to load Algolia mock data from API:', error);
+      this.loadFromLocalStorage();
     }
   }
 
-  // Mock search method
-  search(query: string, options?: any) {
+  private loadFromLocalStorage(): void {
+    try {
+      const localData = localStorage.getItem(`algolia_mock_${this.indexName}`);
+      if (localData) {
+        this.data = JSON.parse(localData);
+        console.log(`Loaded ${this.data.length} records from local storage for Algolia mock`);
+      }
+    } catch (error) {
+      console.error('Error loading Algolia mock from localStorage:', error);
+    }
+  }
+
+  search(query: string, options?: IAlgoliaSearchOptions): Promise<IAlgoliaSearchResponse> {
     const searchOptions = options || {};
     const limit = searchOptions.hitsPerPage || 20;
 
-    // Simple search implementation
     const results = this.data
       .filter((item) => {
         if (!query) return true;
@@ -63,8 +86,7 @@ class AlgoliaMock {
     });
   }
 
-  // Support for Algolia's initIndex method
-  initIndex(indexName: string) {
+  initIndex(indexName: string): AlgoliaMock {
     if (!this.indices[indexName]) {
       this.indices[indexName] = new AlgoliaMock(indexName);
     }
@@ -72,23 +94,13 @@ class AlgoliaMock {
   }
 }
 
-// Initialize Algolia or mock
-let algoliaClient;
-let searchClient;
+const algoliaClient = useEmulators
+  ? new AlgoliaMock()
+  : algoliasearch(
+      process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
+      process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY || '',
+    );
 
-if (isLocalDev) {
-  // Use mock for local development
-  algoliaClient = new AlgoliaMock();
-  searchClient = algoliaClient;
-  console.log('Using Algolia mock for local development');
-} else {
-  // Use real Algolia client for production
-  algoliaClient = algoliasearch(
-    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
-    process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY || '',
-  );
-  searchClient = algoliaClient;
-}
-
-export { algoliaClient, searchClient };
+export { AlgoliaMock };
+export const searchClient = algoliaClient;
 export default { algoliaClient, searchClient };

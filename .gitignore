@@ -30,7 +30,7 @@ yarn-error.log*
 
 # local env files
 .env
-.env
+.env.production*
 
 # vercel
 .vercel
@@ -43,6 +43,7 @@ next-env.d.ts
 firebase-debug.log
 firebase-emulator-data/
 ui-debug.log
+emulator-data/
 
 # Temporary files
 /temp

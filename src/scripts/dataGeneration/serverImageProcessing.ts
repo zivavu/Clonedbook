@@ -75,10 +75,6 @@ async function limitedFetch(url: string): Promise<Response> {
 
 export async function processImage(imageBuffer: Buffer): Promise<ProcessedImage> {
   try {
-    console.time('processImage');
-
-    // Create multiple processing tasks to run in parallel
-    console.time('sharp_processing');
     const [webpBufferPromise, blurBufferPromise, statsPromise] = await Promise.all([
       // Generate optimized webp version
       sharp(imageBuffer)
@@ -98,20 +94,15 @@ export async function processImage(imageBuffer: Buffer): Promise<ProcessedImage>
       // Get dominant color
       sharp(imageBuffer).stats(),
     ]);
-    console.timeEnd('sharp_processing');
 
-    console.time('dataUrl_conversion');
     const blurDataUrl = `data:image/webp;base64,${blurBufferPromise.toString('base64')}`;
-    console.timeEnd('dataUrl_conversion');
 
-    console.time('color_conversion');
     const { dominant } = statsPromise;
     const dominantHex = `#${Math.round(dominant.r).toString(16).padStart(2, '0')}${Math.round(
       dominant.g,
     )
       .toString(16)
       .padStart(2, '0')}${Math.round(dominant.b).toString(16).padStart(2, '0')}`;
-    console.timeEnd('color_conversion');
 
     const result = {
       webpBuffer: webpBufferPromise,
@@ -119,7 +110,6 @@ export async function processImage(imageBuffer: Buffer): Promise<ProcessedImage>
       blurDataUrl,
     };
 
-    console.timeEnd('processImage');
     return result;
   } catch (error) {
     console.error('Error processing image:', error);
@@ -134,18 +124,15 @@ export async function processImageFromUrl(url: string): Promise<ProcessedImage> 
   }
 
   try {
-    console.time(`fetchImage:${url.substring(0, 30)}...`);
     const response = await limitedFetch(url);
 
     if (!response.ok) {
       console.warn(`Failed to fetch image: ${url} - Status: ${response.status}`);
-      console.timeEnd(`fetchImage:${url.substring(0, 30)}...`);
       return FALLBACK_IMAGE;
     }
 
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    console.timeEnd(`fetchImage:${url.substring(0, 30)}...`);
 
     const processedImage = await processImage(buffer);
 
@@ -161,8 +148,6 @@ export async function processImageFromUrl(url: string): Promise<ProcessedImage> 
 
 // Batch processing images from URLs
 export async function batchProcessImagesFromUrls(urls: string[]): Promise<ProcessedImage[]> {
-  console.time(`batchProcess:${urls.length}`);
-
   // Process URLs in chunks for better memory management
   const batchSize = CONFIG.maxBatchSize;
   const results: ProcessedImage[] = [];
@@ -211,6 +196,5 @@ export async function batchProcessImagesFromUrls(urls: string[]): Promise<Proces
     results.push(...orderedResults);
   }
 
-  console.timeEnd(`batchProcess:${urls.length}`);
   return results;
 }

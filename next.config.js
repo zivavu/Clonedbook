@@ -8,6 +8,10 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  // Explicitly set environment variables
+  env: {
+    NEXT_PUBLIC_USE_EMULATOR: process.env.NEXT_PUBLIC_USE_EMULATOR || 'false',
+  },
   images: {
     unoptimized: DISABLE_IMAGE_OPTIMIZATION,
     remotePatterns: [

@@ -1,6 +1,7 @@
 import admin from 'firebase-admin';
 import * as fs from 'fs';
 import * as path from 'path';
+import { firebaseConfig } from '../../config/env';
 
 // Parse CLI arguments
 const deleteOnly = process.argv.includes('--delete-only');
@@ -18,8 +19,8 @@ process.env.FIREBASE_STORAGE_EMULATOR_HOST = `${EMULATOR_HOST}:${STORAGE_PORT}`;
 
 // Initialize Firebase with explicit emulator settings
 const app = admin.initializeApp({
-  projectId: 'demo-project',
-  storageBucket: 'demo-project.appspot.com',
+  projectId: firebaseConfig.projectId,
+  storageBucket: firebaseConfig.storageBucket,
 });
 
 // Force the emulator connection
@@ -166,8 +167,8 @@ async function uploadCollection(collectionPath: string, data: Record<string, any
 
     console.log(`Uploading ${entries.length} documents to ${collectionPath}...`);
 
-    // Upload in batches
-    const batchSize = 500;
+    // Upload in smaller batches with rate limiting
+    const batchSize = 50; // Reduced from 500 to 50
     const batches = [];
 
     let currentBatch = firestore.batch();
@@ -192,8 +193,18 @@ async function uploadCollection(collectionPath: string, data: Record<string, any
       batches.push(currentBatch.commit());
     }
 
-    // Wait for all batches to complete
-    await Promise.all(batches);
+    // Process batches with rate limiting
+    for (const batch of batches) {
+      try {
+        await batch;
+        // Add a small delay between batches to prevent overwhelming the emulator
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error(`Error processing batch for ${collectionPath}:`, error);
+        throw error;
+      }
+    }
+
     console.log(`Successfully uploaded ${totalCount} documents to ${collectionPath}`);
   } catch (error) {
     console.error(`Error uploading to collection ${collectionPath}:`, error);
@@ -208,6 +219,9 @@ async function deleteStorageFiles(): Promise<void> {
   console.log('Deleting files from Storage emulator...');
 
   try {
+    console.log(`Attempting to connect to Storage emulator at ${EMULATOR_HOST}:${STORAGE_PORT}`);
+    console.log(`Using bucket: ${firebaseConfig.storageBucket}`);
+
     const [files] = await bucket.getFiles();
 
     if (files.length === 0) {
@@ -224,7 +238,8 @@ async function deleteStorageFiles(): Promise<void> {
     console.log('Successfully deleted all files from Storage emulator');
   } catch (error) {
     console.error('Error deleting files from Storage:', error);
-    throw error;
+    console.log('⚠️ Continuing despite Storage error...');
+    // Don't rethrow, allow the process to continue
   }
 }
 
@@ -455,7 +470,8 @@ async function main(): Promise<void> {
 
     console.log('\n✅ FIREBASE EMULATOR POPULATION COMPLETED');
     console.log('==================================');
-    console.log('Make sure NEXT_PUBLIC_USE_EMULATOR=true in .env.local');
+    console.log('To use the client using emulators, run:');
+    console.log('bun run dev:local');
     console.log('==================================');
   } catch (error) {
     console.error('\n❌ ERROR DURING EMULATOR POPULATION');

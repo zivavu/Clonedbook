@@ -49,7 +49,6 @@ function generatePostImageUrl(width: number = 800, height: number = 600): string
 }
 
 export async function generateImages(options: IImageGeneratorOptions): Promise<IProcessedImage[]> {
-  console.time(`generateImages:${options.type}:${options.count}`);
   const { type, count = 1, gender, width = 800, height = 600 } = options;
 
   // Create output directory if it doesn't exist
@@ -89,9 +88,7 @@ export async function generateImages(options: IImageGeneratorOptions): Promise<I
   // Process all non-cached images in batch
   let newImages: IProcessedImage[] = [];
   if (remainingUrls.length > 0) {
-    console.time('batchProcessImages');
     const processedResults = await batchProcessImagesFromUrls(remainingUrls);
-    console.timeEnd('batchProcessImages');
 
     // Create the final image objects with URLs
     newImages = remainingUrls.map((url, index) => {
@@ -113,7 +110,6 @@ export async function generateImages(options: IImageGeneratorOptions): Promise<I
   // Return exactly the number of images requested
   const finalResults = results.slice(0, count);
 
-  console.timeEnd(`generateImages:${options.type}:${options.count}`);
   return finalResults;
 }
 
@@ -122,8 +118,6 @@ export async function generateMultipleProfilePictures(
   userIds: string[],
   outputDir: string,
 ): Promise<Map<string, IProcessedImage>> {
-  console.time(`generateMultipleProfilePictures:${userIds.length}`);
-
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
@@ -164,7 +158,6 @@ export async function generateMultipleProfilePictures(
     }),
   );
 
-  console.timeEnd(`generateMultipleProfilePictures:${userIds.length}`);
   return fileMap;
 }
 
@@ -173,8 +166,6 @@ export async function generateMultiplePostImages(
   posts: any[],
   outputDir: string,
 ): Promise<Map<string, IProcessedImage[]>> {
-  console.time(`generateMultiplePostImages:${posts.length}`);
-
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
@@ -198,12 +189,7 @@ export async function generateMultiplePostImages(
   const allUrls = allImageRequests.map((req) => req.url);
 
   // Batch process all images
-  console.time('batchProcessPostImages');
   const processedImages = await batchProcessImagesFromUrls(allUrls);
-  console.timeEnd('batchProcessPostImages');
-
-  // Map processed images back to posts and save to disk
-  console.time('savePostImages');
 
   // Group requests by postId for easier handling
   const requestsByPostId = new Map<string, ImageRequest[]>();
@@ -245,8 +231,6 @@ export async function generateMultiplePostImages(
     }),
   );
 
-  console.timeEnd('savePostImages');
-  console.timeEnd(`generateMultiplePostImages:${posts.length}`);
   return fileMap;
 }
 

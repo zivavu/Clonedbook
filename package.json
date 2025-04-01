@@ -16,11 +16,8 @@
     "test:e2e-gh": "testcafe edge:headless src/tests/",
     "generate-data": "bun src/scripts/dataGeneration/generateData.ts",
     "emulators": "cross-env NEXT_PUBLIC_USE_EMULATOR=true firebase emulators:start",
-    "populate": "bun src/scripts/dataGeneration/populateEmulators.ts",
-    "export-data": "firebase emulators:export ./emulator-data",
-    "import-data": "cross-env NEXT_PUBLIC_USE_EMULATOR=true firebase emulators:start --import=./emulator-data",
-    "release-ports": "bun src/scripts/releaseEmulatorPorts.ts",
-    "emulators:start:import": "cross-env NEXT_PUBLIC_USE_EMULATOR=true firebase emulators:start --import=./emulator-data --export-on-exit"
+    "emulators:populate": "bun src/scripts/dataGeneration/populateEmulators.ts",
+    "ports:kill": "bun src/scripts/releaseEmulatorPorts.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -36,6 +33,7 @@
     "@mui/x-date-pickers": "^7.28.0",
     "@reduxjs/toolkit": "^2.6.1",
     "@svgr/webpack": "^8.1.0",
+    "@types/kill-port": "^2.0.3",
     "@types/react-color": "^3.0.13",
     "@types/uuid": "^10.0.0",
     "@vercel/analytics": "^1.5.0",

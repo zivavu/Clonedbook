@@ -147,61 +147,35 @@ Data is stored in Firebase and optimized to reduce document reads by consolidati
    bun install  # or npm/yarn/pnpm install
    ```
 
-2. **Start Firebase emulators**:
+2. **Generate test data**:
+
+   ```bash
+   # Generate test data (creates data files)
+   bun run generate-data
+   ```
+
+   Note: The generation process can take some time because it downloads images for the test data.
+
+3. **Start Firebase emulators**:
 
    ```bash
    bun run emulators
    ```
 
-3. **Generate and populate test data**:
+4. **Populate emulators with data**:
 
    ```bash
-   # Generate test data (creates data files without uploading)
-   bun run generate-data
-
-   # Upload generated data to emulators
-   bun run populate
+   bun run emulators:populate
    ```
 
-   Note: The generated data differs from what's on the live website, as it's created using a local script rather than the original dataset.
-   Note2: Generation script takes some time to complete, mostly because every image is downloaded to be then stored in the emulators storage.
-
-4. **Start the development server**:
+5. **Start the development server**:
    ```bash
-   bun run dev
+   bun run dev:local
    ```
-5. **Open your browser**:
+6. **Open your browser**:
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 > **Note**: The project uses Bun as the default JavaScript runtime, but you can use other runtimes like Node.js if you prefer. Just make sure your runtime supports TypeScript files (.ts) for the data generation scripts.
-
-### Useful Commands
-
-```bash
-# Start Firebase emulators
-bun run emulators
-
-# Generate test data (small, medium, large, or custom sizes)
-bun run generate-data
-
-# Populate emulators with the generated data
-bun run populate
-
-# Export emulator data to reuse later
-bun run export-data
-
-# Import previously exported data
-bun run import-data
-
-# Run end-to-end tests
-bun run test:e2e
-
-# Run end-to-end tests in headless mode
-bun run test:e2e-gh
-
-# Release emulator ports if they get stuck
-bun run release-ports
-```
 
 ### Running Tests
 

@@ -1,11 +1,13 @@
 // Configuration for environment switching
 // This allows us to use the same code base with different environments
 
+import { FirebaseOptions } from 'firebase/app';
+
 // Check if we're using emulators - this is set by our npm scripts
 export const useEmulators = process.env.NEXT_PUBLIC_USE_EMULATOR === 'true';
 
 // Firebase configuration
-export const firebaseConfig = useEmulators
+export const firebaseConfig: FirebaseOptions = useEmulators
   ? {
       apiKey: 'demo-api-key',
       authDomain: 'facebook-clone-54d49.firebaseapp.com',

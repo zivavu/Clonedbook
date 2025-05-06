@@ -1,13 +1,20 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-const getInitialState = () => {
+interface OpenedChatsState {
+  chatIds: string[];
+  maxChats: number;
+  activeLink: string | null;
+}
+
+const getInitialState = (): OpenedChatsState => {
   if (typeof window === 'undefined')
     return {
       chatIds: [],
       maxChats: 3,
+      activeLink: null,
     };
   const allChats: string[] = JSON.parse(localStorage.getItem('openedChats') || '[]');
-  const initState = { chatIds: allChats.slice(0, 3), maxChats: 3 };
+  const initState: OpenedChatsState = { chatIds: allChats.slice(0, 3), maxChats: 3, activeLink: null };
   return initState;
 };
 
@@ -36,9 +43,13 @@ export const openedChatsSlice = createSlice({
         state.chatIds = state.chatIds.slice(0, action.payload);
       }
     },
+
+    setActiveLink: (state, action: PayloadAction<string | null>) => {
+      state.activeLink = action.payload;
+    },
   },
 });
 
-export const { openChat, closeChat, closeAllChats, setMaxChats } = openedChatsSlice.actions;
+export const { openChat, closeChat, closeAllChats, setMaxChats, setActiveLink } = openedChatsSlice.actions;
 
 export default openedChatsSlice.reducer;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const YOUTUBE_REGEX = /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/g;
-const SPOTIFY_REGEX = /https?:\/\/(open\.spotify\.com\/(track|album|playlist|episode|show)\/[\w-]+)/g;
+const SPOTIFY_REGEX = /https?:\/\/(open\.spotify\.com\/(track|album|playlist|episode|show|artist)\/[\w-]+)/g;
 const SOUNDCLOUD_REGEX = /https?:\/\/(soundcloud\.com\/[\w\/-]+)/g;
 const DRAWING_REGEX = /\[drawing:([^\]]+)\]/g;
 const ICON_REGEX = /:(\w+):/g;

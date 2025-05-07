@@ -1,4 +1,5 @@
 import { Typography, useTheme } from '@mui/material';
+import React, { useState } from 'react';
 
 import { StyledActionButton, StyledActionIcon, StyledRoot } from './styles';
 
@@ -32,6 +33,10 @@ export default function ActionButtons({
     handleTouchEnd,
   } = useReactionsPopperHandlers();
 
+  const [sliderAnchor, setSliderAnchor] = useState<null | HTMLElement>(null);
+
+  const isOwner = loggedUser && element.ownerId === loggedUser.id;
+
   async function handleUpdateElementReaction(reaction: TLocalUserReaction) {
     if (!loggedUser) return;
     const loggedUserId = loggedUser.id;
@@ -56,6 +61,16 @@ export default function ActionButtons({
     }
   }
 
+  function handleLikeButtonDoubleClick(e: React.MouseEvent) {
+    if (isOwner) {
+      setSliderAnchor(e.currentTarget as HTMLElement);
+    }
+  }
+
+  function handleSliderClose() {
+    setSliderAnchor(null);
+  }
+
   return (
     <StyledRoot {...rootProps} sx={sx}>
       <ReactionsPopper
@@ -67,6 +82,9 @@ export default function ActionButtons({
         handleMouseOver={handlePopperOpen}
         handleMouseOut={handlePopperClose}
         open={isPopperOpen}
+        element={element}
+        sliderAnchor={sliderAnchor}
+        onSliderClose={handleSliderClose}
       />
 
       <StyledActionButton
@@ -78,7 +96,8 @@ export default function ActionButtons({
         onMouseLeave={handlePopperClose}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        onClick={handleLikeButtonClick}>
+        onClick={handleLikeButtonClick}
+        onDoubleClick={handleLikeButtonDoubleClick}>
         {userReaction ? (
           <ReactionIcon
             type={userReaction}

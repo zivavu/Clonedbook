@@ -1,6 +1,13 @@
 import ActionableLink from '@/components/atoms/Link/ActionableLink';
 import ExternalLinkModal from '@/components/common/ExternalLinkModal';
+import ArticleIcon from '@mui/icons-material/Article';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import LinkIcon from '@mui/icons-material/Link';
+import MovieIcon from '@mui/icons-material/Movie';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import PublicIcon from '@mui/icons-material/Public';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -59,105 +66,111 @@ const renderIcon = (name: string, idx: number) => (
   <span key={name + idx} style={{ fontSize: '1.2em', margin: '0 2px' }}>{iconMap[name] || `:${name}:`}</span>
 );
 
+const funnyIcons = [
+  <EmojiEmotionsIcon sx={{ fontSize: 48, color: '#ffb300' }} />,
+  <PublicIcon sx={{ fontSize: 48, color: '#1976d2' }} />,
+  <MusicNoteIcon sx={{ fontSize: 48, color: '#ab47bc' }} />,
+  <MovieIcon sx={{ fontSize: 48, color: '#e53935' }} />,
+  <ShoppingCartIcon sx={{ fontSize: 48, color: '#43a047' }} />,
+  <SportsSoccerIcon sx={{ fontSize: 48, color: '#1976d2' }} />,
+  <ArticleIcon sx={{ fontSize: 48, color: '#6d4c41' }} />,
+];
+
+function getDomainIcon(url: string) {
+  try {
+    const domain = new URL(url).hostname;
+    if (domain.includes('spotify')) return <MusicNoteIcon sx={{ fontSize: 48, color: '#1db954' }} />;
+    if (domain.includes('youtube')) return <MovieIcon sx={{ fontSize: 48, color: '#e53935' }} />;
+    if (domain.includes('olx') || domain.includes('amazon') || domain.includes('allegro')) return <ShoppingCartIcon sx={{ fontSize: 48, color: '#ff9800' }} />;
+    if (domain.includes('news')) return <ArticleIcon sx={{ fontSize: 48, color: '#1976d2' }} />;
+    if (domain.includes('sport')) return <SportsSoccerIcon sx={{ fontSize: 48, color: '#43a047' }} />;
+    if (domain.includes('wikipedia')) return <PublicIcon sx={{ fontSize: 48, color: '#757575' }} />;
+    // Add more fun mappings as you wish
+    // Otherwise, pick a random funny icon
+    return funnyIcons[Math.floor(Math.random() * funnyIcons.length)];
+  } catch {
+    return funnyIcons[Math.floor(Math.random() * funnyIcons.length)];
+  }
+}
+
 const LinkPreviewCard = ({ url, onOpenModal }: { url: string, onOpenModal: () => void }) => {
   const [iframeError, setIframeError] = useState(false);
+  const [iframeChecked, setIframeChecked] = useState(false);
+
+  // Try to check if iframe will load (hidden)
+  useEffect(() => {
+    setIframeError(false);
+    setIframeChecked(false);
+    const test = document.createElement('iframe');
+    test.style.display = 'none';
+    test.src = url;
+    test.onload = () => { setIframeChecked(true); test.remove(); };
+    test.onerror = () => { setIframeError(true); setIframeChecked(true); test.remove(); };
+    document.body.appendChild(test);
+    // Timeout fallback
+    const timeout = setTimeout(() => { if (!iframeChecked) { setIframeError(true); setIframeChecked(true); test.remove(); } }, 2500);
+    return () => { clearTimeout(timeout); test.remove(); };
+  }, [url]);
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (iframeError) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      onOpenModal();
+    }
+  };
 
   return (
     <Box
       sx={{
-        border: '1px solid #e0e0e0',
+        width: 120,
+        height: 120,
         borderRadius: 3,
-        overflow: 'hidden',
-        width: 400,
-        my: 2,
-        boxShadow: 3,
+        boxShadow: 2,
+        background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         cursor: 'pointer',
+        position: 'relative',
         transition: 'box-shadow 0.2s, transform 0.2s',
         '&:hover': {
-          boxShadow: 8,
-          transform: 'translateY(-2px) scale(1.02)',
+          boxShadow: 6,
+          transform: 'scale(1.07) rotate(-2deg)',
+          background: 'linear-gradient(135deg, #bbdefb 0%, #e3f2fd 100%)',
         },
-        position: 'relative',
-        background: '#fff',
+        border: iframeError ? '2px dashed #e53935' : '2px solid #1976d2',
+        outline: iframeError ? '2px solid #e53935' : undefined,
       }}
-      onClick={onOpenModal}
+      onClick={handleClick}
       tabIndex={0}
       role="button"
       aria-label={`Open preview for ${url}`}
+      title={iframeError ? 'Open in new tab' : 'Open preview'}
     >
-      {!iframeError ? (
-        <Box sx={{ position: 'relative', width: '100%', height: 225, background: '#f5f5f5' }}>
-          <iframe
-            src={url}
-            width="100%"
-            height="225"
-            style={{ border: 'none', borderRadius: 0 }}
-            title="Link preview"
-            sandbox="allow-scripts allow-same-origin allow-popups"
-            loading="lazy"
-            onError={() => setIframeError(true)}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              bgcolor: 'rgba(0,0,0,0.10)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: 0,
-              transition: 'opacity 0.2s',
-              pointerEvents: 'none',
-              '&:hover': { opacity: 1 },
-            }}
-            className="preview-card-overlay"
-          >
-            <Box
-              sx={{
-                bgcolor: 'rgba(0,0,0,0.55)',
-                color: '#fff',
-                px: 3,
-                py: 1,
-                borderRadius: 2,
-                fontWeight: 600,
-                fontSize: 18,
-                boxShadow: 2,
-              }}
-            >
-              Open Preview
-            </Box>
-          </Box>
-        </Box>
-      ) : (
-        <Box sx={{ width: '100%', height: 225, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#f5f5f5' }}>
-          <span style={{ color: '#888', fontStyle: 'italic' }}>Preview unavailable</span>
-        </Box>
-      )}
-      <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fafbfc' }}>
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 320, color: '#333', fontWeight: 500 }}>
-          {url}
-        </span>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        {getDomainIcon(url)}
         <Box
           sx={{
-            bgcolor: '#1976d2',
-            color: '#fff',
-            px: 2,
-            py: 0.5,
-            borderRadius: 2,
-            fontWeight: 600,
-            fontSize: 14,
-            boxShadow: 1,
-            ml: 2,
-            transition: 'background 0.2s',
-            '&:hover': { bgcolor: '#1565c0' },
-            pointerEvents: 'none',
+            position: 'absolute',
+            bottom: 8,
+            left: 0,
+            width: '100%',
+            textAlign: 'center',
+            color: iframeError ? '#e53935' : '#1976d2',
+            fontWeight: 500,
+            fontSize: 12,
+            px: 1,
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
           }}
         >
-          ↗
+          {url.replace(/^https?:\/\//, '').slice(0, 22)}{url.length > 30 ? '…' : ''}
         </Box>
+        {iframeError && (
+          <Box sx={{ color: '#e53935', fontSize: 10, mt: 0.5 }}>Open in new tab</Box>
+        )}
       </Box>
     </Box>
   );
@@ -253,51 +266,7 @@ export const TextViewArea: React.FC<TextViewAreaProps> = ({ text }) => {
       </Box>
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         {uniqueLinks.map(url => (
-          <Box
-            key={url}
-            sx={{
-              width: 120,
-              height: 120,
-              borderRadius: 3,
-              boxShadow: 2,
-              background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              position: 'relative',
-              transition: 'box-shadow 0.2s, transform 0.2s',
-              '&:hover': {
-                boxShadow: 6,
-                transform: 'scale(1.04)',
-              },
-            }}
-            onClick={() => { setModalUrl(url); setModalOpen(true); }}
-            tabIndex={0}
-            role="button"
-            aria-label={`Open preview for ${url}`}
-          >
-            <LinkIcon sx={{ fontSize: 48, color: '#1976d2' }} />
-            <Box
-              sx={{
-                position: 'absolute',
-                bottom: 8,
-                left: 0,
-                width: '100%',
-                textAlign: 'center',
-                color: '#1976d2',
-                fontWeight: 500,
-                fontSize: 12,
-                px: 1,
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-              }}
-              title={url}
-            >
-              {url.replace(/^https?:\/\//, '').slice(0, 22)}{url.length > 30 ? '…' : ''}
-            </Box>
-          </Box>
+          <LinkPreviewCard key={url} url={url} onOpenModal={() => { setModalUrl(url); setModalOpen(true); }} />
         ))}
       </Box>
     </Box>

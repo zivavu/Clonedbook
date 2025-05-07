@@ -1,10 +1,12 @@
-import { Fade, IconButton, keyframes, useTheme } from '@mui/material';
+import { Box, Button, Fade, IconButton, keyframes, Popover, Slider, Typography, useTheme } from '@mui/material';
 
 import { StyledAnimationWrapper, StyledPopperBody, StyledReactionsPopper } from './styles';
 
 import ReactionIcon from '@/components/atoms/ReactionIcon';
+import { useAllUsersBasicInfoQuery } from '@/redux/services/allUsersPublicDataAPI';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { TReactionType } from '@/types/reaction';
+import React, { useState } from 'react';
 import { ReactionsPopperProps } from './types';
 
 export default function ReactionsPopper({
@@ -14,16 +16,35 @@ export default function ReactionsPopper({
   handleMouseOut,
   updateDocHandler,
   sx,
+  element, // expects { ownerId: string }
+  sliderAnchor,
+  onSliderClose,
   ...rootProps
-}: ReactionsPopperProps) {
+}: ReactionsPopperProps & { element?: { ownerId: string }, sliderAnchor?: HTMLElement | null, onSliderClose?: () => void }) {
   const theme = useTheme();
   const { data: user } = useGetLoggedUserQuery({});
+  const { data: allUsers } = useAllUsersBasicInfoQuery({});
+  const totalUsers = allUsers ? Object.keys(allUsers).length : 1;
 
   const reactionTypes: TReactionType[] = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
 
-  function handleReaction(type: TReactionType) {
+  const [customLikeAmount, setCustomLikeAmount] = useState(1);
+
+  const isOwner = user && element && user.id === element.ownerId;
+
+  function handleReaction(type: TReactionType, event?: React.MouseEvent) {
     if (!user) return;
-    updateDocHandler(type);
+    if (type === 'like' && isOwner && event?.type === 'click') {
+      // Do nothing, double-click will handle slider
+    } else {
+      updateDocHandler(type);
+    }
+  }
+
+  function handleCustomLikeSubmit() {
+    // TODO: Pass customLikeAmount to parent handler if needed
+    updateDocHandler('like');
+    if (onSliderClose) onSliderClose();
   }
 
   return (
@@ -50,7 +71,7 @@ export default function ReactionsPopper({
                 return (
                   <IconButton
                     key={reactionType}
-                    onClick={() => handleReaction(reactionType)}
+                    onClick={(e) => handleReaction(reactionType, e)}
                     sx={{
                       width: '40px',
                       height: '40px',
@@ -71,6 +92,37 @@ export default function ReactionsPopper({
                 );
               })}
             </StyledAnimationWrapper>
+            <Popover
+              open={!!sliderAnchor}
+              anchorEl={sliderAnchor}
+              onClose={onSliderClose}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+              <Box sx={{ p: 2, width: 240 }}>
+                <Typography gutterBottom variant="subtitle1" fontWeight={600}>
+                  Set custom like amount
+                </Typography>
+                <Slider
+                  value={customLikeAmount}
+                  min={1}
+                  max={totalUsers}
+                  step={1}
+                  marks={[{ value: 1, label: '1' }, { value: totalUsers, label: `${totalUsers}` }]}
+                  onChange={(_, val) => setCustomLikeAmount(val as number)}
+                  valueLabelDisplay="on"
+                  sx={{ mb: 2 }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleCustomLikeSubmit}
+                >
+                  Like x{customLikeAmount}
+                </Button>
+              </Box>
+            </Popover>
           </StyledPopperBody>
         </Fade>
       )}

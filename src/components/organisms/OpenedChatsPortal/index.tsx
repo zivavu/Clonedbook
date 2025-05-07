@@ -13,7 +13,7 @@ export default function OpenedChatsPortal({ ...rootProps }: PortalProps) {
     <Portal {...rootProps}>
       <StyledChatsContainer>
         <Stack direction='row' spacing={1} justifyContent='flex-end'>
-          {openedChats.chatIds.map((chatId) => {
+          {openedChats.chatIds.map((chatId: string) => {
             return <ChatWindow key={chatId} chatId={chatId} />;
           })}
         </Stack>

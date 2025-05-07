@@ -1,4 +1,7 @@
 import ActionableLink from '@/components/atoms/Link/ActionableLink';
+import ExternalLinkModal from '@/components/common/ExternalLinkModal';
+import LinkIcon from '@mui/icons-material/Link';
+import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 const YOUTUBE_REGEX = /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/g;
@@ -6,6 +9,7 @@ const SPOTIFY_REGEX = /https?:\/\/(open\.spotify\.com\/(track|album|playlist|epi
 const SOUNDCLOUD_REGEX = /https?:\/\/(soundcloud\.com\/[\w\/-]+)/g;
 const DRAWING_REGEX = /\[drawing:([^\]]+)\]/g;
 const ICON_REGEX = /:(\w+):/g;
+const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 
 const iconMap: Record<string, string> = {
   music: '🎵',
@@ -55,6 +59,110 @@ const renderIcon = (name: string, idx: number) => (
   <span key={name + idx} style={{ fontSize: '1.2em', margin: '0 2px' }}>{iconMap[name] || `:${name}:`}</span>
 );
 
+const LinkPreviewCard = ({ url, onOpenModal }: { url: string, onOpenModal: () => void }) => {
+  const [iframeError, setIframeError] = useState(false);
+
+  return (
+    <Box
+      sx={{
+        border: '1px solid #e0e0e0',
+        borderRadius: 3,
+        overflow: 'hidden',
+        width: 400,
+        my: 2,
+        boxShadow: 3,
+        cursor: 'pointer',
+        transition: 'box-shadow 0.2s, transform 0.2s',
+        '&:hover': {
+          boxShadow: 8,
+          transform: 'translateY(-2px) scale(1.02)',
+        },
+        position: 'relative',
+        background: '#fff',
+      }}
+      onClick={onOpenModal}
+      tabIndex={0}
+      role="button"
+      aria-label={`Open preview for ${url}`}
+    >
+      {!iframeError ? (
+        <Box sx={{ position: 'relative', width: '100%', height: 225, background: '#f5f5f5' }}>
+          <iframe
+            src={url}
+            width="100%"
+            height="225"
+            style={{ border: 'none', borderRadius: 0 }}
+            title="Link preview"
+            sandbox="allow-scripts allow-same-origin allow-popups"
+            loading="lazy"
+            onError={() => setIframeError(true)}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              bgcolor: 'rgba(0,0,0,0.10)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 0,
+              transition: 'opacity 0.2s',
+              pointerEvents: 'none',
+              '&:hover': { opacity: 1 },
+            }}
+            className="preview-card-overlay"
+          >
+            <Box
+              sx={{
+                bgcolor: 'rgba(0,0,0,0.55)',
+                color: '#fff',
+                px: 3,
+                py: 1,
+                borderRadius: 2,
+                fontWeight: 600,
+                fontSize: 18,
+                boxShadow: 2,
+              }}
+            >
+              Open Preview
+            </Box>
+          </Box>
+        </Box>
+      ) : (
+        <Box sx={{ width: '100%', height: 225, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#f5f5f5' }}>
+          <span style={{ color: '#888', fontStyle: 'italic' }}>Preview unavailable</span>
+        </Box>
+      )}
+      <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fafbfc' }}>
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 320, color: '#333', fontWeight: 500 }}>
+          {url}
+        </span>
+        <Box
+          sx={{
+            bgcolor: '#1976d2',
+            color: '#fff',
+            px: 2,
+            py: 0.5,
+            borderRadius: 2,
+            fontWeight: 600,
+            fontSize: 14,
+            boxShadow: 1,
+            ml: 2,
+            transition: 'background 0.2s',
+            '&:hover': { bgcolor: '#1565c0' },
+            pointerEvents: 'none',
+          }}
+        >
+          ↗
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
 interface SpotifyEmbed {
   url: string;
   html: string;
@@ -66,6 +174,8 @@ interface TextViewAreaProps {
 
 export const TextViewArea: React.FC<TextViewAreaProps> = ({ text }) => {
   const [spotifyEmbeds, setSpotifyEmbeds] = useState<Record<string, SpotifyEmbed>>({});
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalUrl, setModalUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // Find all Spotify links
@@ -87,7 +197,11 @@ export const TextViewArea: React.FC<TextViewAreaProps> = ({ text }) => {
     // eslint-disable-next-line
   }, [text]);
 
-  // Parsing and rendering
+  // Extract all unique links from the text
+  const linkMatches = Array.from(text.matchAll(URL_REGEX));
+  const uniqueLinks = Array.from(new Set(linkMatches.map(m => m[0])));
+
+  // Parsing and rendering (text only, no inline link previews)
   const elements: React.ReactNode[] = [];
   let lastIndex = 0;
   const globalRegex = new RegExp(
@@ -131,7 +245,71 @@ export const TextViewArea: React.FC<TextViewAreaProps> = ({ text }) => {
     elements.push(text.slice(lastIndex));
   }
 
-  return <span>{elements}</span>;
+  // Links section rendering
+  const linksSection = uniqueLinks.length > 0 && (
+    <Box sx={{ mt: 2 }}>
+      <Box sx={{ fontWeight: 600, color: '#1976d2', mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <LinkIcon sx={{ fontSize: 22 }} /> Links
+      </Box>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        {uniqueLinks.map(url => (
+          <Box
+            key={url}
+            sx={{
+              width: 120,
+              height: 120,
+              borderRadius: 3,
+              boxShadow: 2,
+              background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              position: 'relative',
+              transition: 'box-shadow 0.2s, transform 0.2s',
+              '&:hover': {
+                boxShadow: 6,
+                transform: 'scale(1.04)',
+              },
+            }}
+            onClick={() => { setModalUrl(url); setModalOpen(true); }}
+            tabIndex={0}
+            role="button"
+            aria-label={`Open preview for ${url}`}
+          >
+            <LinkIcon sx={{ fontSize: 48, color: '#1976d2' }} />
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: 8,
+                left: 0,
+                width: '100%',
+                textAlign: 'center',
+                color: '#1976d2',
+                fontWeight: 500,
+                fontSize: 12,
+                px: 1,
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+              }}
+              title={url}
+            >
+              {url.replace(/^https?:\/\//, '').slice(0, 22)}{url.length > 30 ? '…' : ''}
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+
+  return (
+    <>
+      <span>{elements}</span>
+      {linksSection}
+      <ExternalLinkModal open={modalOpen} url={modalUrl} onClose={() => setModalOpen(false)} />
+    </>
+  );
 };
 
-export default TextViewArea; 
+export default TextViewArea;

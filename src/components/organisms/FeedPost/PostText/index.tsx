@@ -30,7 +30,7 @@ export default function PostTextArea({
       ) : (
         hasText && (
           <Box data-testid='post-text-content'>
-            <TextViewArea text={text} />
+            <TextViewArea text={text || ''} />
           </Box>
         )
       )}

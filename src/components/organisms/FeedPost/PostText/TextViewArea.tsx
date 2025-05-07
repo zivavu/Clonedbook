@@ -1,3 +1,4 @@
+import ActionableLink from '@/components/atoms/Link/ActionableLink';
 import React, { useEffect, useState } from 'react';
 
 const YOUTUBE_REGEX = /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/g;
@@ -111,7 +112,7 @@ export const TextViewArea: React.FC<TextViewAreaProps> = ({ text }) => {
         );
       } else {
         elements.push(
-          <a key={url} href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+          <ActionableLink key={url} href={url}>{url}</ActionableLink>
         );
       }
     } else if (match[3]) {

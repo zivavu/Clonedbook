@@ -3,5 +3,4 @@
     "source.fixAll": "explicit"
   },
   "editor.formatOnSave": true,
-  "eslint.format.enable": true
 }

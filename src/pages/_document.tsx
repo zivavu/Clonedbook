@@ -11,7 +11,6 @@ import createEmotionCache from '@/design/createEmotionCache';
 import createEmotionServer from '@emotion/server/create-instance';
 import { AppType } from 'next/app';
 import { EmotionAppProps } from './_app';
-import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 
 interface EmotionDocumentProps extends DocumentProps {
   emotionStyleTags: JSX.Element[];
@@ -51,7 +50,6 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
     <style
       data-emotion={`${style.key} ${style.ids.join(' ')}`}
       key={style.key}
-      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: style.css }}
     />
   ));

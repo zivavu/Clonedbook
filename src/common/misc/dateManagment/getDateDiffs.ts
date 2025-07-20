@@ -1,7 +1,6 @@
 export type TTimeDiffUnit = 'm' | 'h' | 'd' | 'w' | 'y';
 
 type TTimeDiffMap = {
-  //eslint-disable-next-line no-unused-vars
   [key in TTimeDiffUnit]: number;
 };
 

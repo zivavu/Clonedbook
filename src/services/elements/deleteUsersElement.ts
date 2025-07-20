@@ -44,7 +44,6 @@ async function accountPictureDelete({
   loggedUser,
 }: Omit<IDeleteElementParams, 'elementType'>) {
   if (elementId === loggedUser.profilePictureId) {
-    console.log('1');
     const picturesMap = await getUsersPictures(loggedUser.id);
     const accountPictures = getPicturesSortedByDate({ picturesMap, type: 'account' });
     const firstPicture = accountPictures.find((picture) => picture.id !== elementId);
@@ -52,13 +51,11 @@ async function accountPictureDelete({
       throw new Error('You can not delete your last profile picture');
     }
     await updateUserSetPictures({ loggedUser, newPictureId: firstPicture.id, type: 'account' });
-    console.log('2');
   }
 
   const docRef = doc(db, `users/${loggedUser.id}/pictures/pictures`);
   const elementPath = `account.${elementId}`;
   await updateDoc(docRef, elementPath, deleteField());
-  console.log('3');
 }
 
 async function backgroundPictureDelete({

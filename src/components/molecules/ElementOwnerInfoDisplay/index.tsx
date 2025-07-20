@@ -26,14 +26,12 @@ export default function ElementOwnerInfoDisplay({
 
   async function handleElementDelete() {
     if (!loggedUser || loggedUser.id !== element.ownerId) return;
-    console.log('0');
     await deleteUsersElement({
       elementId: element.id,
       elementType: elementType,
       loggedUser,
     });
     await refetchElement();
-    console.log('5');
   }
 
   const createdAt = element.createdAt;

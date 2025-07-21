@@ -54,14 +54,14 @@ export default function SearchPortal({
                 overflowY: 'auto',
                 maxHeight: 'min(80vh, 700px)',
               }}>
-              {userHits.map((userId) => (
+              {userHits?.map((userId) => (
                 <FriendListItem
                   key={userId}
                   userId={userId}
                   data-testid={`search-result-list-item-${userId}`}
                 />
               ))}
-              {userHits.length === 0 ? (
+              {userHits?.length === 0 ? (
                 !searchTerm ? (
                   <ListItem sx={{ justifyContent: 'center' }}>
                     <Typography>Start typing to find users</Typography>

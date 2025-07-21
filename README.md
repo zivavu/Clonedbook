@@ -10,9 +10,9 @@ Hey you! Yes, you. Welcome to Clonedbook, the only place where code, chaos, and 
 
 ---
 
-## 🤡 What Even *Is* This?
+## 🤡 What Even _Is_ This?
 
-Clonedbook is a Facebook clone, but not like, *just* a clone. It's a fever dream of social media, built by and for people who want to push pixels, break things, and vibe out with code. It's got all the features you expect, and a few you probably don't. It's responsive, it's got dark mode, it's got fake users, and it's got more portals and poppers than a 2000s rave.
+Clonedbook is a Facebook clone, but not like, _just_ a clone. It's a fever dream of social media, built by and for people who want to push pixels, break things, and vibe out with code. It's got all the features you expect, and a few you probably don't. It's responsive, it's got dark mode, it's got fake users, and it's got more portals and poppers than a 2000s rave.
 
 - No auth? No problem. Log in as anyone. Be everyone. Be no one. Be the code.
 - Data? Faker.js hallucinated it all. The users are fake, but the vibes are real.
@@ -33,8 +33,6 @@ The interface closely matches the original design, is fully responsive, and supp
 Currently, there's no authentication system, so users are represented by dummy/random data, allowing anyone to log in with just a click. The data is generated using scripts included in this repository that utilize Faker.js to create realistic user profiles, posts, comments, and more.
 
 Data is stored in Firebase and optimized to reduce document reads by consolidating essential information into single documents. User data is indexed using Algolia to provide fast and efficient search autocomplete.
-
-![Screenshot_1](https://github.com/zivavu/facebook-clone/assets/107223633/2d419cbd-4869-4a79-8007-445d65b4c9b8)
 
 ## :sparkles: Implemented Features
 
@@ -235,7 +233,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Tomasz Kierzenkowski - zivavu@gmail.com
 
-Project Link: [https://github.com/zivavu/Clonedbook](https://github.com/zivavu/Clonedbook)
+Project Link: [https://github.com/zivavuu/Clonedbook](https://github.com/zivavuu/Clonedbook)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

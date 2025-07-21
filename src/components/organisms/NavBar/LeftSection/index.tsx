@@ -49,9 +49,10 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
         const response = (await (searchClient as AlgoliaMock).search(query, {
           attributesToRetrieve: ['objectID'],
         })) as IAlgoliaSearchResponse;
+        console.log(response);
 
         setUserHits(
-          response.hits.slice(0, MAX_SEARCH_RESULTS).map((hit: IAlgoliaHit) => hit.objectID),
+          response.hits?.slice(0, MAX_SEARCH_RESULTS)?.map((hit: IAlgoliaHit) => hit.objectID),
         );
       } catch (error) {
         console.error('Search failed:', error);

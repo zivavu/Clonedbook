@@ -81,7 +81,7 @@ export default function LoggedUserPopper({ open, anchorEl, sx, ...rootProps }: P
             </StyledListButton>
 
             <StyledListButton
-              onClick={() => window.open('https://github.com/zivavu/facebook-clone', '_blank')}>
+              onClick={() => window.open('https://github.com/zivavuu/Clonedbook', '_blank')}>
               <StyledIconContainer>
                 <StyledListItemIcon icon={['fab', 'github']} />
               </StyledIconContainer>

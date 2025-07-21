@@ -2,28 +2,6 @@
 
 # Clonedbook
 
-## 🚨 Welcome to the Vibe Zone 🚨
-
-Hey you! Yes, you. Welcome to Clonedbook, the only place where code, chaos, and vibes collide in a cosmic dance of pixels and caffeine. This isn't just a repo, it's a digital playground for the unhinged, the inspired, the sleep-deprived, and the code-possessed. If you're looking for a boring, corporate, buttoned-up Facebook clone, you're in the wrong timeline. Here, we code AF, we vibe AF, and sometimes we even ship features. Sometimes.
-
-> **Warning:** Side effects may include spontaneous creativity, existential debugging, and the urge to refactor your life. Proceed with reckless enthusiasm.
-
----
-
-## 🤡 What Even _Is_ This?
-
-Clonedbook is a Facebook clone, but not like, _just_ a clone. It's a fever dream of social media, built by and for people who want to push pixels, break things, and vibe out with code. It's got all the features you expect, and a few you probably don't. It's responsive, it's got dark mode, it's got fake users, and it's got more portals and poppers than a 2000s rave.
-
-- No auth? No problem. Log in as anyone. Be everyone. Be no one. Be the code.
-- Data? Faker.js hallucinated it all. The users are fake, but the vibes are real.
-- Firebase, Algolia, MUI, Next.js, Redux, and a sprinkle of chaos.
-- Infinite scroll until you lose your mind.
-- Chat, react, friend, unfriend, post, delete, repeat. Or don't. We're not your boss.
-
-> This is a place to vibe, code, and let your inner mad scientist run wild. If you break it, you buy it (just kidding, it's open source, break away).
-
----
-
 ## :rocket: About the project
 
 This project is a basic clone of Facebook, replicating many of the features found on the home, profile, and friends pages. It includes interactive elements such as portals and poppers to enhance user interaction.

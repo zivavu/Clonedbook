@@ -1,7 +1,6 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import ElementTextEditInput from '@/components/molecules/ElementTextEditInput';
-import TextViewArea from './TextViewArea';
 import { PostTextAreaProps } from './types';
 
 export default function PostTextArea({
@@ -30,7 +29,15 @@ export default function PostTextArea({
       ) : (
         hasText && (
           <Box data-testid='post-text-content'>
-            <TextViewArea text={text || ''} />
+            {isTextLong ? (
+              <Typography variant='body1' whiteSpace='pre-wrap'>
+                {text}
+              </Typography>
+            ) : (
+              <Typography variant='h4' fontWeight='400' lineHeight='1.7rem' whiteSpace='pre-wrap'>
+                {text}
+              </Typography>
+            )}
           </Box>
         )
       )}

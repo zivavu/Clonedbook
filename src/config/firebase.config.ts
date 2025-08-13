@@ -4,9 +4,6 @@ import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { connectStorageEmulator, getStorage } from 'firebase/storage';
 import { firebaseConfig, useEmulators } from './env';
 
-/**
- * Helper function to create a styled log message
- */
 const logEmulatorConnection = (service: string, host: string, port: number): void => {
   console.log(
     `%c EMULATOR CONNECTED: ${service} %c ${host}:${port} `,
@@ -15,24 +12,20 @@ const logEmulatorConnection = (service: string, host: string, port: number): voi
   );
 };
 
-// Initialize Firebase
 const initializeFirebase = (): FirebaseApp => {
   const apps = getApps();
   if (apps.length > 0) {
     return apps[0];
   }
 
-  console.log(`Initializing Firebase in ${useEmulators ? 'LOCAL EMULATOR' : 'PRODUCTION'} mode`);
   const app = initializeApp(firebaseConfig);
 
   if (useEmulators) {
     try {
-      // Connect to Firestore emulator
       const db = getFirestore(app);
       connectFirestoreEmulator(db, 'localhost', 8080);
       logEmulatorConnection('Firestore', 'localhost', 8080);
 
-      // Connect to Storage emulator
       const storage = getStorage(app);
       connectStorageEmulator(storage, 'localhost', 9199);
       logEmulatorConnection('Storage', 'localhost', 9199);
@@ -60,7 +53,6 @@ export const db = firestore;
 export const storage = getStorage(firebaseApp);
 export const auth = getAuth(firebaseApp);
 
-// Create a development indicator that's more visible
 if (typeof window !== 'undefined' && useEmulators) {
   const indicator = document.createElement('div');
   indicator.style.position = 'fixed';
@@ -78,14 +70,12 @@ if (typeof window !== 'undefined' && useEmulators) {
   indicator.style.cursor = 'pointer';
   indicator.title = 'Using Firebase Emulators';
 
-  // Add click handler to display more info
   indicator.addEventListener('click', () => {
     alert(
       'Running with Firebase Emulators:\n- Firestore: localhost:8080\n- Auth: localhost:9099\n- Storage: localhost:9199\n\nEmulator UI: http://localhost:4000',
     );
   });
 
-  // Add to body when DOM is ready
   window.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(indicator);
   });

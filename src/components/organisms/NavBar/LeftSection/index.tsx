@@ -46,16 +46,19 @@ export default function LeftSection({ sx, classes, ...rootProps }: LeftSectionPr
       }
 
       try {
-        const response = (await (searchClient as AlgoliaMock).search(query, {
+        const index = (searchClient as AlgoliaMock).initIndex('users');
+        const response = await index.search(query, {
           attributesToRetrieve: ['objectID'],
-        })) as IAlgoliaSearchResponse;
-        console.log(response);
+          hitsPerPage: MAX_SEARCH_RESULTS,
+        });
 
-        setUserHits(
-          response.hits?.slice(0, MAX_SEARCH_RESULTS)?.map((hit: IAlgoliaHit) => hit.objectID),
-        );
+        if (response.hits) {
+          setUserHits(
+            response.hits?.slice(0, MAX_SEARCH_RESULTS)?.map((hit: IAlgoliaHit) => hit.objectID),
+          );
+        }
       } catch (error) {
-        console.error('Search failed:', error);
+        console.error(error);
         setUserHits([]);
       }
     },

@@ -75,7 +75,6 @@ class AlgoliaMock {
         return searchText.includes(query.toLowerCase());
       })
       .slice(0, limit);
-    console.log(results);
 
     return Promise.resolve({
       hits: results,

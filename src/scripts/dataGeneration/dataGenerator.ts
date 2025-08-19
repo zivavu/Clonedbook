@@ -744,7 +744,7 @@ export async function generateDummyData(
   const chatIdsArray = Array.from(chatIds);
   for (let i = 0; i < chatIdsArray.length; i++) {
     const chatId = chatIdsArray[i];
-    const [userId1, userId2] = chatId.split('_');
+    const [userId1, userId2] = chatId.split('_').sort();
 
     // Create chat
     const chat: IGeneratedChat = {

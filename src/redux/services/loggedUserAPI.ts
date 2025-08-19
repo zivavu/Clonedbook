@@ -60,7 +60,6 @@ export const loggedUser = createApi({
           const chatsSnapshot = await getDocs(chatsQuery);
           const chats = chatsSnapshot.docs.map((doc) => doc.data()) as IChat[];
           const nonEmptyChats = chats.filter((chat) => chat.messages.length > 0);
-
           return { data: nonEmptyChats };
         } catch (err) {
           return { error: 'Couldnt fetch users chats' };

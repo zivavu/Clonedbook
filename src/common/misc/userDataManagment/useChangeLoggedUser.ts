@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 export default function useChangeLoggedUser(userId?: string) {
   const dispatch = useDispatch();
 
-  const { refetch: refetchLoggedUser } = useGetLoggedUserQuery({});
+  const { refetch: refetchLoggedUser, data } = useGetLoggedUserQuery({});
   const { refetch: refetchChats } = useGetUserChatsQuery({});
 
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function useChangeLoggedUser(userId?: string) {
     }
 
     await refetchChats();
-    await refetchLoggedUser();
+    data && (await refetchLoggedUser());
 
     setIsLoading(false);
   }

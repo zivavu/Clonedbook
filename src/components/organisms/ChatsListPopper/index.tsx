@@ -1,4 +1,4 @@
-import { IconButton, List, Typography, useTheme } from '@mui/material';
+import { IconButton, List, Typography } from '@mui/material';
 
 import getChatNewestMessage from '@/common/chatsManage/getChatLastMessage';
 import Icon from '@/components/atoms/Icon/Icon';
@@ -9,14 +9,7 @@ import ListUserButton from './ListUserButton';
 import { StyledContentWrapper, StyledHeaderContainer } from './styles';
 import { ChatsListPopperProps } from './types';
 
-export default function ChatsListPopper({
-  sx,
-  handleClose,
-  open,
-  anchorEl,
-  ...rootProps
-}: ChatsListPopperProps) {
-  const theme = useTheme();
+export default function ChatsListPopper({ handleClose, open }: ChatsListPopperProps) {
   const { data: loggedUserChats, refetch } = useGetUserChatsQuery({});
 
   useEffect(() => {

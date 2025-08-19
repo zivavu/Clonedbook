@@ -7,12 +7,12 @@ export default function useContinousChatFetching(chatId: string) {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [chatData, setChatData] = useState<IChat>();
-
+  console.log('chatId', chatId);
   async function fetchChatData() {
     setIsLoading(true);
     try {
       const chatRef = doc(db, 'chats', chatId);
-      const unsubscribe = onSnapshot(chatRef, (doc) => {
+      onSnapshot(chatRef, (doc) => {
         setChatData(doc.data() as IChat);
       });
     } catch (error) {

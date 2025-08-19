@@ -33,6 +33,31 @@ firestore.settings({
 // Get storage bucket with direct configuration
 const bucket = admin.storage().bucket();
 
+// Recursively convert any {seconds, nanoseconds} shaped objects into Firestore Timestamps
+function convertTimestampsDeep<T = any>(value: T): T {
+  if (value === null || value === undefined) return value;
+  if (Array.isArray(value)) return value.map((v) => convertTimestampsDeep(v)) as unknown as T;
+  if (typeof value === 'object') {
+    const obj = value as Record<string, any>;
+    // Detect timestamp-like object
+    if (
+      typeof obj.seconds === 'number' &&
+      typeof obj.nanoseconds === 'number' &&
+      Object.keys(obj).length === 2
+    ) {
+      const millis = obj.seconds * 1000 + Math.floor(obj.nanoseconds / 1_000_000);
+      return admin.firestore.Timestamp.fromMillis(millis) as unknown as T;
+    }
+    // Recurse for maps
+    const converted: Record<string, any> = {};
+    for (const [k, v] of Object.entries(obj)) {
+      converted[k] = convertTimestampsDeep(v);
+    }
+    return converted as T;
+  }
+  return value;
+}
+
 // Path settings
 const DATA_DIR = path.join(process.cwd(), 'src/data');
 const IMAGES_DIR = path.join(DATA_DIR, 'images');
@@ -178,7 +203,7 @@ async function uploadCollection(collectionPath: string, data: Record<string, any
 
     for (const [docId, docData] of entries) {
       const docRef = firestore.collection(collectionPath).doc(docId);
-      currentBatch.set(docRef, docData);
+      currentBatch.set(docRef, convertTimestampsDeep(docData));
       operationCount++;
       totalCount++;
 
@@ -394,7 +419,9 @@ async function uploadGeneratedData(): Promise<void> {
     if (usersPublicData.usersBasicInfo) {
       console.log('Creating usersBasicInfo document...');
       try {
-        await firestore.doc('usersPublicData/usersBasicInfo').set(usersPublicData.usersBasicInfo);
+        await firestore
+          .doc('usersPublicData/usersBasicInfo')
+          .set(convertTimestampsDeep(usersPublicData.usersBasicInfo));
         console.log('Created usersBasicInfo document successfully');
       } catch (error) {
         console.error('Error creating usersBasicInfo document:', error);
@@ -408,7 +435,7 @@ async function uploadGeneratedData(): Promise<void> {
       try {
         await firestore
           .doc('usersPublicData/usersPublicFriends')
-          .set(usersPublicData.usersPublicFriends);
+          .set(convertTimestampsDeep(usersPublicData.usersPublicFriends));
         console.log('Created usersPublicFriends document successfully');
       } catch (error) {
         console.error('Error creating usersPublicFriends document:', error);
@@ -428,7 +455,7 @@ async function uploadGeneratedData(): Promise<void> {
           .doc(userId)
           .collection('pictures')
           .doc('pictures');
-        await docRef.set(picturesDoc as admin.firestore.DocumentData);
+        await docRef.set(convertTimestampsDeep(picturesDoc) as admin.firestore.DocumentData);
       }
       console.log('Uploaded users pictures subcollections');
     }

@@ -41,6 +41,7 @@ const FILES = {
   chats: path.join(DATA_DIR, 'firebase-chats.json'),
   posts: path.join(DATA_DIR, 'firebase-posts.json'),
   usersPublicData: path.join(DATA_DIR, 'firebase-usersPublicData.json'),
+  usersPictures: path.join(DATA_DIR, 'firebase-users-pictures.json'),
 };
 
 /**
@@ -261,59 +262,56 @@ async function uploadImages(): Promise<void> {
       return;
     }
 
-    const imageTypes = ['profiles', 'backgrounds', 'posts'];
+    // Recursively walk IMAGES_DIR and upload preserving relative paths
     let totalFiles = 0;
     let uploadedFiles = 0;
 
-    // First count total files
-    for (const type of imageTypes) {
-      const typeDir = path.join(IMAGES_DIR, type);
-      if (fs.existsSync(typeDir)) {
-        const files = fs.readdirSync(typeDir);
-        totalFiles += files.length;
+    const walk = (dir: string, base: string): { abs: string; rel: string }[] => {
+      const collected: { abs: string; rel: string }[] = [];
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const absPath = path.join(dir, entry.name);
+        const relPath = path.relative(base, absPath).replace(/\\/g, '/');
+        if (entry.isDirectory()) {
+          collected.push(...walk(absPath, base));
+        } else {
+          collected.push({ abs: absPath, rel: relPath });
+        }
       }
-    }
+      return collected;
+    };
 
-    console.log(`Found ${totalFiles} total images across all directories`);
+    const filesToUpload = walk(IMAGES_DIR, IMAGES_DIR);
+    totalFiles = filesToUpload.length;
+    console.log(`Found ${totalFiles} total images`);
+    if (totalFiles === 0) return;
 
-    if (totalFiles === 0) {
-      console.log('No images to upload.');
-      return;
-    }
-
-    // Upload all files
-    for (const type of imageTypes) {
-      const typeDir = path.join(IMAGES_DIR, type);
-
-      if (!fs.existsSync(typeDir)) {
-        console.warn(`Image type directory not found: ${typeDir}`);
+    for (const file of filesToUpload) {
+      // Convert local images structure to storage root paths:
+      // src/data/images/users/<userId>/pictures/<picId>.webp -> users/<userId>/pictures/<picId>.webp
+      // src/data/images/posts/<postId>/<picId>.webp        -> posts/<postId>/<picId>.webp
+      const parts = file.rel.split('/');
+      let destination = '';
+      if (parts[0] === 'users') {
+        destination = `users/${parts.slice(1).join('/')}`;
+      } else if (parts[0] === 'posts') {
+        destination = `posts/${parts.slice(1).join('/')}`;
+      } else {
+        // Skip any unexpected top-level dirs
         continue;
       }
 
-      const imageFiles = fs.readdirSync(typeDir);
-      console.log(`Uploading ${imageFiles.length} images from ${type}...`);
-
-      for (const filename of imageFiles) {
-        const filePath = path.join(typeDir, filename);
-        const destination = `images/${type}/${filename}`;
-
-        try {
-          await bucket.upload(filePath, {
-            destination,
-            metadata: {
-              contentType: 'image/webp',
-            },
-          });
-
-          // Log progress
-          uploadedFiles++;
-          if (uploadedFiles % 10 === 0) {
-            console.log(`Uploaded ${uploadedFiles}/${totalFiles}: ${destination}`);
-          }
-        } catch (error) {
-          console.error(`Error uploading ${destination}:`, error);
-          // Continue with other files
+      try {
+        await bucket.upload(file.abs, {
+          destination,
+          metadata: { contentType: 'image/webp' },
+        });
+        uploadedFiles++;
+        if (uploadedFiles % 10 === 0) {
+          console.log(`Uploaded ${uploadedFiles}/${totalFiles}: ${destination}`);
         }
+      } catch (error) {
+        console.error(`Error uploading ${destination}:`, error);
       }
     }
 
@@ -373,6 +371,7 @@ async function uploadGeneratedData(): Promise<void> {
     const chats = readJsonFile(FILES.chats);
     const posts = readJsonFile(FILES.posts);
     const usersPublicData = readJsonFile(FILES.usersPublicData);
+    const usersPictures = readJsonFile(FILES.usersPictures);
 
     if (!users || !chats || !posts || !usersPublicData) {
       throw new Error('Failed to load one or more data files');
@@ -419,6 +418,20 @@ async function uploadGeneratedData(): Promise<void> {
 
     // Upload images to storage emulator
     await uploadImages();
+
+    // Upload per-user pictures subcollection
+    if (usersPictures && typeof usersPictures === 'object') {
+      console.log('Uploading users pictures subcollections...');
+      for (const [userId, picturesDoc] of Object.entries(usersPictures as Record<string, any>)) {
+        const docRef = firestore
+          .collection('users')
+          .doc(userId)
+          .collection('pictures')
+          .doc('pictures');
+        await docRef.set(picturesDoc as admin.firestore.DocumentData);
+      }
+      console.log('Uploaded users pictures subcollections');
+    }
 
     console.log('Successfully uploaded all data to emulators');
   } catch (error) {

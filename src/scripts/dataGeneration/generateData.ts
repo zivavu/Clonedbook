@@ -20,7 +20,7 @@ const DATA_SIZES = {
       maxReactionsPerPost: 50,
       maxChatsPerUser: 15,
       maxMessagesPerChat: 50,
-      maxImagesPerPost: 2,
+      maxImagesPerPost: 5,
     },
   },
   medium: {
@@ -97,19 +97,19 @@ function createDirectoryStructure(baseDir: string): void {
     fs.mkdirSync(baseDir, { recursive: true });
   }
 
-  const imageTypes = ['profiles', 'backgrounds', 'posts'];
+  // We will mirror storage structure:
+  // users/<userId>/pictures and posts/<postId>/<pictureId>
   const imagesDir = path.join(baseDir, 'images');
 
   if (!fs.existsSync(imagesDir)) {
     fs.mkdirSync(imagesDir, { recursive: true });
   }
 
-  for (const type of imageTypes) {
-    const typeDir = path.join(imagesDir, type);
-    if (!fs.existsSync(typeDir)) {
-      fs.mkdirSync(typeDir, { recursive: true });
-    }
-  }
+  // Create top-level buckets so later code can create nested folders on demand
+  const usersDir = path.join(imagesDir, 'users');
+  const postsDir = path.join(imagesDir, 'posts');
+  if (!fs.existsSync(usersDir)) fs.mkdirSync(usersDir, { recursive: true });
+  if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir, { recursive: true });
 }
 
 async function saveDataToFiles(data: any, baseDir: string) {
@@ -135,6 +135,10 @@ async function saveDataToFiles(data: any, baseDir: string) {
     fs.promises.writeFile(
       path.join(baseDir, 'algolia.json'),
       JSON.stringify(data.algoliaSearchObjects),
+    ),
+    fs.promises.writeFile(
+      path.join(baseDir, 'firebase-users-pictures.json'),
+      JSON.stringify(data.usersPictures),
     ),
   ];
 
@@ -228,7 +232,9 @@ async function main() {
     console.log(`- ${Object.keys(data.firebase.users).length} users`);
     console.log(`- ${Object.keys(data.firebase.chats).length} chats`);
     console.log(`- ${Object.keys(data.firebase.posts).length} posts`);
-    console.log('\nYou can now run "bun run populate" to upload the data to Firebase emulators');
+    console.log(
+      '\nYou can now run "bun run emulators:populate" to upload the data to Firebase emulators',
+    );
   } catch (error) {
     console.error('❌ Error generating data:', error);
     process.exit(1);

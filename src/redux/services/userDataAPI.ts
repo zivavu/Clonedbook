@@ -28,6 +28,7 @@ export const userDataAPI = createApi({
           const picturesRef = doc(db, `users/${userId}/pictures/pictures`);
           const picturesSnapshot = await getDoc(picturesRef);
           const picturesData = picturesSnapshot.data() as IPicturesMap;
+          console.log('picturesData', picturesData);
           return { data: picturesData };
         } catch {
           return { error: 'Couldnt fetch users data' };

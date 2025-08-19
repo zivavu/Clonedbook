@@ -27,7 +27,7 @@ import {
 import { generateImages } from './imageGenerator';
 
 // Concurrency control
-const MAX_PARALLEL_DOWNLOADS = 12;
+const MAX_PARALLEL_DOWNLOADS = 50;
 
 async function parallelLimit<T, R>(
   items: T[],
@@ -100,6 +100,7 @@ export interface IGeneratedData {
   chats: IGeneratedChat[];
   posts: IGeneratedPost[];
   algoliaSearchObjects: IAlgoliaSearchObject[];
+  usersPictures: Record<string, IUserPicturesDoc>;
   firebase: {
     users: Record<string, IGeneratedUser>;
     chats: Record<string, IGeneratedChat>;
@@ -161,6 +162,22 @@ function getRandomColor(): string {
   return getRandomElement(colors);
 }
 
+// Users pictures doc types
+export interface IUserPictureItem {
+  id: string;
+  ownerId: string;
+  createdAt: ITimestamp;
+  image: IPictureWithPlaceholders;
+  reactions: IReactionsMap;
+  comments: ICommentMap;
+}
+
+export interface IUserPicturesDoc {
+  account: Record<string, IUserPictureItem>;
+  background: Record<string, IUserPictureItem>;
+  posts: Record<string, IUserPictureItem>;
+}
+
 // User metadata generation
 function assignUserPopularityTier(): 'low' | 'medium' | 'high' {
   const random = Math.random();
@@ -195,7 +212,7 @@ async function generateImageWithRetry(
         );
       }
       // Wait a bit before retrying
-      await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+      await new Promise((resolve) => setTimeout(resolve, 200 * attempt));
     }
   }
 
@@ -207,7 +224,7 @@ async function generateUser(
   userId: string,
   gender: 'male' | 'female',
   baseDir?: string,
-): Promise<IGeneratedUser> {
+): Promise<{ user: IGeneratedUser; picturesDoc: IUserPicturesDoc }> {
   const firstName = faker.person.firstName(gender as any);
   const lastName = faker.person.lastName();
   const middleName = shouldFill(0.3) ? faker.person.middleName() : undefined;
@@ -215,41 +232,52 @@ async function generateUser(
   // Set default baseDir
   const outputBaseDir = baseDir || path.join(process.cwd(), 'src', 'data');
 
-  // Ensure output directories exist
-  const profileOutputDir = path.join(outputBaseDir, 'images', 'profiles');
-  const backgroundOutputDir = path.join(outputBaseDir, 'images', 'backgrounds');
-  if (!fs.existsSync(profileOutputDir)) fs.mkdirSync(profileOutputDir, { recursive: true });
-  if (!fs.existsSync(backgroundOutputDir)) fs.mkdirSync(backgroundOutputDir, { recursive: true });
+  // Ensure output directories exist under users/<userId>/pictures
+  const userPicturesOutputDir = path.join(outputBaseDir, 'images', 'users', userId, 'pictures');
+  if (!fs.existsSync(userPicturesOutputDir))
+    fs.mkdirSync(userPicturesOutputDir, { recursive: true });
 
   // Generate profile picture with retry
   const profilePictureId = uuidv4();
   const [profilePictureData] = await generateImageWithRetry({
     type: 'profile',
     gender,
-    count: 1,
+    count: 10,
   });
 
   // Save profile picture
   const profilePictureFilename = `${profilePictureId}.webp`;
-  const profilePicturePath = path.join(profileOutputDir, profilePictureFilename);
+  const profilePicturePath = path.join(userPicturesOutputDir, profilePictureFilename);
   await fs.promises.writeFile(profilePicturePath, profilePictureData.webpBuffer);
 
-  // Generate background picture (optional) with retry
-  let backgroundPictureId: string | undefined = undefined;
+  // Generate background picture (mandatory and different from profile)
+  const backgroundPictureId: string = uuidv4();
+  const backgroundPictureFilename = `${backgroundPictureId}.webp`;
+  const backgroundPicturePath = path.join(userPicturesOutputDir, backgroundPictureFilename);
   let backgroundPictureData: any = undefined;
-  let backgroundPicturePath: string | undefined = undefined;
 
-  if (shouldFill(0.5)) {
+  const maxBgAttempts = 6;
+  for (let attempt = 0; attempt < maxBgAttempts; attempt++) {
     try {
-      backgroundPictureId = uuidv4();
-      [backgroundPictureData] = await generateImageWithRetry({ type: 'background', count: 1 });
-      const backgroundPictureFilename = `${backgroundPictureId}.webp`;
-      backgroundPicturePath = path.join(backgroundOutputDir, backgroundPictureFilename);
-      await fs.promises.writeFile(backgroundPicturePath, backgroundPictureData.webpBuffer);
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.warn(`Failed to generate background picture for user ${userId}: ${errorMessage}`);
-      // Continue without background picture
+      let candidate;
+      if (attempt < 3) {
+        [candidate] = await generateImageWithRetry({ type: 'background', count: 1 });
+      } else {
+        [candidate] = await generateImageWithRetry({ type: 'post', count: 1 });
+      }
+      const isDifferent =
+        candidate.blurDataUrl !== profilePictureData.blurDataUrl ||
+        candidate.dominantHex !== profilePictureData.dominantHex;
+      if (!isDifferent) throw new Error('Background equals profile, retrying');
+      await fs.promises.writeFile(backgroundPicturePath, candidate.webpBuffer);
+      backgroundPictureData = candidate;
+      break;
+    } catch (error) {
+      if (attempt === maxBgAttempts - 1) {
+        throw new Error(
+          `Failed to create distinct background for user ${userId} after ${maxBgAttempts} attempts`,
+        );
+      }
     }
   }
 
@@ -289,13 +317,11 @@ async function generateUser(
     relatives: {},
   };
 
-  // Create URLs for Firebase Storage emulator
-  const profilePictureUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/images%2Fprofiles%2F${profilePictureFilename}?alt=media`;
-  const backgroundPictureUrl = backgroundPicturePath
-    ? `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/images%2Fbackgrounds%2F${backgroundPictureId}.webp?alt=media`
-    : undefined;
+  // Create URLs for Firebase Storage emulator (users/<userId>/pictures/<pictureId>.webp)
+  const profilePictureUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/users%2F${userId}%2Fpictures%2F${profilePictureFilename}?alt=media`;
+  const backgroundPictureUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/users%2F${userId}%2Fpictures%2F${backgroundPictureId}.webp?alt=media`;
 
-  return {
+  const user: IGeneratedUser = {
     id: userId,
     firstName,
     lastName,
@@ -312,6 +338,40 @@ async function generateUser(
     popularityTier: assignUserPopularityTier(),
     activityLevel: assignUserActivityLevel(),
   };
+
+  const picturesDoc: IUserPicturesDoc = {
+    account: {
+      [profilePictureId]: {
+        id: profilePictureId,
+        ownerId: userId,
+        createdAt: dateToTimestamp(new Date()),
+        image: {
+          url: profilePictureUrl,
+          blurDataUrl: profilePictureData.blurDataUrl,
+          dominantHex: profilePictureData.dominantHex,
+        },
+        reactions: {},
+        comments: {},
+      },
+    },
+    background: {
+      [backgroundPictureId]: {
+        id: backgroundPictureId,
+        ownerId: userId,
+        createdAt: dateToTimestamp(new Date()),
+        image: {
+          url: backgroundPictureUrl,
+          blurDataUrl: backgroundPictureData.blurDataUrl,
+          dominantHex: backgroundPictureData.dominantHex,
+        },
+        reactions: {},
+        comments: {},
+      },
+    },
+    posts: {},
+  };
+
+  return { user, picturesDoc };
 }
 
 // Handle user relationships
@@ -399,17 +459,12 @@ function handleFriendships(users: IGeneratedUser[], maxFriendsPerUser: number): 
       maxFriends = Math.floor(Math.random() * (maxFriendsPerUser * 0.4));
     }
 
-    // Further adjust based on activity level
-    if (activityLevel === 'inactive') maxFriends = Math.floor(maxFriends * 0.3);
-    else if (activityLevel === 'low') maxFriends = Math.floor(maxFriends * 0.6);
-    else if (activityLevel === 'medium') maxFriends = Math.floor(maxFriends * 0.8);
-
     // Find potential friends
     const potentialFriends = users.filter((p) => p.id !== user.id && !(p.id in user.friends));
     if (!potentialFriends.length) continue;
 
     // Create friends
-    const friendCount = Math.floor(Math.random() * maxFriends) + 1;
+    const friendCount = Math.floor(Math.random() * maxFriends) + 20;
     const selectedFriends = getRandomSubset(potentialFriends, friendCount);
 
     for (const friend of selectedFriends) {
@@ -433,7 +488,6 @@ function handleFriendships(users: IGeneratedUser[], maxFriendsPerUser: number): 
 
       if (status === 'accepted') {
         chatId = getChatId(user.id, friend.id);
-        // Create timestamp from 1-12 months ago
         const monthsAgo = Math.floor(Math.random() * 12) + 1;
         const acceptedAtDate = new Date();
         acceptedAtDate.setMonth(acceptedAtDate.getMonth() - monthsAgo);
@@ -628,6 +682,7 @@ export async function generateDummyData(
   const chats: IGeneratedChat[] = [];
   const posts: IGeneratedPost[] = [];
   const algoliaSearchObjects: IAlgoliaSearchObject[] = [];
+  const usersPictures: Record<string, IUserPicturesDoc> = {};
 
   // 1. Generate users with metadata (parallel with limit)
   const userSpinner = ora('Generating users, fetching images...').start();
@@ -640,7 +695,8 @@ export async function generateDummyData(
     userParams,
     MAX_PARALLEL_DOWNLOADS,
     async ({ id, gender }) => {
-      const user = await generateUser(id, gender, baseDir);
+      const { user, picturesDoc } = await generateUser(id, gender, baseDir);
+      usersPictures[user.id] = picturesDoc;
       usersCompleted++;
       userSpinner.text = `Generating users... ${usersCompleted}/${userCount}`;
       return user;
@@ -783,6 +839,7 @@ export async function generateDummyData(
     }
 
     const hasPictures = Math.random() > 0.3;
+    const postId = uuidv4();
     const hasText = Math.random() > 0.1 || !hasPictures;
 
     // Determine post privacy based on user popularity
@@ -799,16 +856,21 @@ export async function generateDummyData(
     let pictures: IPictureWithPlaceholders[] | undefined = undefined;
 
     if (hasPictures) {
-      const postImagesOutputDir = path.join(baseDir, 'images', 'posts');
+      const postImagesOutputDir = path.join(baseDir, 'images', 'posts', postId);
       if (!fs.existsSync(postImagesOutputDir))
         fs.mkdirSync(postImagesOutputDir, { recursive: true });
 
+      // Also ensure user's pictures directory exists (for users/<userId>/pictures mirror)
+      const userPicturesOutputDir = path.join(baseDir, 'images', 'users', user.id, 'pictures');
+      if (!fs.existsSync(userPicturesOutputDir))
+        fs.mkdirSync(userPicturesOutputDir, { recursive: true });
+
       let imageCount: number;
-      const hasLotsOfImages = Math.random() > 0.9;
+      const hasLotsOfImages = Math.random() > 0.8;
       if (hasLotsOfImages) {
-        imageCount = Math.min(Math.floor(Math.random() * 4) + 5, maxImagesPerPost);
+        imageCount = Math.min(Math.floor(Math.random() * 4) + 4, maxImagesPerPost);
       } else {
-        imageCount = Math.min(Math.floor(Math.random() * 4) + 1, maxImagesPerPost);
+        imageCount = Math.min(Math.floor(Math.random() * 3), maxImagesPerPost);
       }
 
       try {
@@ -819,11 +881,36 @@ export async function generateDummyData(
             const imgFilename = `${imgId}.webp`;
             const imgPath = path.join(postImagesOutputDir, imgFilename);
             await fs.promises.writeFile(imgPath, imgData.webpBuffer);
-            const storageUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/images%2Fposts%2F${imgFilename}?alt=media`;
+            // Duplicate under user's pictures folder for the user pictures doc
+            const userImgPath = path.join(userPicturesOutputDir, imgFilename);
+            await fs.promises.copyFile(imgPath, userImgPath);
+
+            const storageUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/posts%2F${postId}%2F${imgFilename}?alt=media`;
+            const userStorageUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/users%2F${user.id}%2Fpictures%2F${imgFilename}?alt=media`;
             const pic: IPictureWithPlaceholders = {
               url: storageUrl,
               blurDataUrl: imgData.blurDataUrl,
               dominantHex: imgData.dominantHex,
+            };
+            // Add to user's pictures doc under posts using userStorageUrl
+            if (!usersPictures[user.id]) {
+              usersPictures[user.id] = {
+                account: {},
+                background: {},
+                posts: {},
+              } as IUserPicturesDoc;
+            }
+            usersPictures[user.id].posts[imgId] = {
+              id: imgId,
+              ownerId: user.id,
+              createdAt: creationTimestamp,
+              image: {
+                url: userStorageUrl,
+                blurDataUrl: imgData.blurDataUrl,
+                dominantHex: imgData.dominantHex,
+              },
+              reactions: {},
+              comments: {},
             };
             return pic;
           }),
@@ -838,7 +925,7 @@ export async function generateDummyData(
     }
 
     const post: IGeneratedPost = {
-      id: uuidv4(),
+      id: postId,
       ownerId: user.id,
       wallOwnerId: user.id,
       text: hasText ? faker.lorem.paragraphs(Math.floor(Math.random() * 3) + 1) : undefined,
@@ -937,6 +1024,7 @@ export async function generateDummyData(
     chats,
     posts,
     algoliaSearchObjects,
+    usersPictures,
     firebase,
   };
 }

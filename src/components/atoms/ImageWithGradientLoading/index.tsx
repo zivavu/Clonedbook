@@ -20,7 +20,7 @@ export default function ImageWithGradientLoading({
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
-    if (isLoading && type === 'profile') {
+    if (isLoading) {
       timeoutId = setTimeout(() => {
         setShowPlaceholder(true);
       }, 2000);
@@ -36,7 +36,7 @@ export default function ImageWithGradientLoading({
       {src && (
         <Image
           loading='lazy'
-          onLoadingComplete={() => setIsLoading(false)}
+          onLoad={() => setIsLoading(false)}
           sizes={sizes}
           alt={alt}
           src={src}

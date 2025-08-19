@@ -139,12 +139,6 @@ Data is stored in Firebase and optimized to reduce document reads by consolidati
 - **Java 11+**: Required by Firebase Emulators
   - Verify: `java -version`
 
-Notes:
-
-- On first run, `firebase emulators:start` will download emulator binaries.
-- Emulator ports (from `firebase.json`): Firestore `8080`, Storage `9199`, Emulator UI `4000`.
-- If ports are busy, run: `bun run ports:kill`.
-
 ### Quick Start for Local Development
 
 1. **Clone the repo and install dependencies**:

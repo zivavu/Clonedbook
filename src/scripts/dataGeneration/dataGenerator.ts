@@ -5,6 +5,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 // Import existing interfaces from the codebase
+import { firebaseConfig } from '@/config/env';
 import { IChat } from '@/types/chat';
 import { IComment, ICommentMap } from '@/types/comment';
 import { IFriendsMap, IPublicFriendsMap, TFriendStatus } from '@/types/firend';
@@ -24,7 +25,33 @@ import {
   TUserSex,
 } from '@/types/user';
 import { generateImages } from './imageGenerator';
-import { firebaseConfig } from '@/config/env';
+
+// Concurrency control
+const MAX_PARALLEL_DOWNLOADS = 12;
+
+async function parallelLimit<T, R>(
+  items: T[],
+  limit: number,
+  worker: (item: T, index: number) => Promise<R>,
+): Promise<R[]> {
+  if (items.length === 0) return [];
+  const results: R[] = new Array(items.length);
+  let nextIndex = 0;
+
+  async function runWorker(workerIndex: number): Promise<void> {
+    while (true) {
+      const currentIndex = nextIndex++;
+      if (currentIndex >= items.length) return;
+      results[currentIndex] = await worker(items[currentIndex], currentIndex);
+    }
+  }
+
+  const concurrent = Math.max(1, limit);
+  await Promise.all(
+    Array.from({ length: Math.min(concurrent, items.length) }, (_, i) => runWorker(i)),
+  );
+  return results;
+}
 
 export interface IAlgoliaSearchObject {
   objectID: string;
@@ -602,29 +629,34 @@ export async function generateDummyData(
   const posts: IGeneratedPost[] = [];
   const algoliaSearchObjects: IAlgoliaSearchObject[] = [];
 
-  // 1. Generate users with metadata
+  // 1. Generate users with metadata (parallel with limit)
   const userSpinner = ora('Generating users, fetching images...').start();
-  for (let i = 0; i < userCount; i++) {
-    const userId = uuidv4();
-    const gender = Math.random() > 0.5 ? 'male' : 'female';
-
-    // Generate user
-    const generatedUser = await generateUser(userId, gender, baseDir);
-    users.push(generatedUser);
-
-    // Create Algolia search object
+  const userParams = Array.from({ length: userCount }).map(() => ({
+    id: uuidv4(),
+    gender: Math.random() > 0.5 ? ('male' as const) : ('female' as const),
+  }));
+  let usersCompleted = 0;
+  const generatedUsers = await parallelLimit(
+    userParams,
+    MAX_PARALLEL_DOWNLOADS,
+    async ({ id, gender }) => {
+      const user = await generateUser(id, gender, baseDir);
+      usersCompleted++;
+      userSpinner.text = `Generating users... ${usersCompleted}/${userCount}`;
+      return user;
+    },
+  );
+  users.push(...generatedUsers);
+  for (const user of generatedUsers) {
     algoliaSearchObjects.push({
-      objectID: userId,
-      firstName: generatedUser.firstName,
-      lastName: generatedUser.lastName,
-      middleName: generatedUser.middleName,
-      ...(generatedUser.pictureUrl ? { pictureUrl: generatedUser.pictureUrl } : {}),
+      objectID: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      middleName: user.middleName,
+      ...(user.pictureUrl ? { pictureUrl: user.pictureUrl } : {}),
     });
-
-    // Update progress
-    userSpinner.text = `Generating users... ${i + 1}/${userCount}`;
   }
-  userSpinner.succeed(`Generated ${userCount} users`);
+  userSpinner.succeed(`Generated ${users.length} users`);
 
   // Handle user relationships
   const relationshipSpinner = ora('Processing user relationships...').start();
@@ -718,145 +750,132 @@ export async function generateDummyData(
   const postGenerationSpinner = ora('Generating posts...').start();
 
   let totalPosts = 0;
+  type PostTask = { user: IGeneratedUser };
+  const postTasks: PostTask[] = [];
   for (const user of users) {
-    const { popularityTier, activityLevel } = user;
-
-    // Adjust post count based on activity level and maxPostsPerUser
+    const { activityLevel } = user;
     let userPostCount = 0;
     if (activityLevel === 'inactive') {
-      userPostCount = Math.floor(Math.random() * Math.min(2, maxPostsPerUser)); // 0-1 posts
+      userPostCount = Math.floor(Math.random() * Math.min(2, maxPostsPerUser));
     } else if (activityLevel === 'low') {
-      userPostCount = Math.floor(Math.random() * Math.min(3, maxPostsPerUser)) + 1; // 1-3 posts
+      userPostCount = Math.floor(Math.random() * Math.min(3, maxPostsPerUser)) + 1;
     } else if (activityLevel === 'medium') {
-      userPostCount = Math.floor(Math.random() * Math.min(5, maxPostsPerUser)) + 3; // 3-7 posts
+      userPostCount = Math.floor(Math.random() * Math.min(5, maxPostsPerUser)) + 3;
     } else {
-      // high
-      userPostCount = Math.floor(Math.random() * Math.min(8, maxPostsPerUser)) + 5; // 5-12 posts
+      userPostCount = Math.floor(Math.random() * Math.min(8, maxPostsPerUser)) + 5;
+    }
+    userPostCount = Math.min(userPostCount, maxPostsPerUser);
+    for (let i = 0; i < userPostCount; i++) postTasks.push({ user });
+  }
+
+  await parallelLimit(postTasks, MAX_PARALLEL_DOWNLOADS, async ({ user }) => {
+    const { popularityTier } = user;
+
+    // Create a post date sometime in the last year
+    const creationDate = new Date();
+    creationDate.setDate(creationDate.getDate() - Math.floor(Math.random() * 365));
+    const creationTimestamp = dateToTimestamp(creationDate);
+
+    // Sometimes posts are updated (kept for potential future use)
+    const updateDate = new Date(creationDate);
+    if (Math.random() > 0.8) {
+      updateDate.setDate(updateDate.getDate() + Math.floor(Math.random() * 7));
     }
 
-    // Ensure we don't exceed maxPostsPerUser
-    userPostCount = Math.min(userPostCount, maxPostsPerUser);
+    const hasPictures = Math.random() > 0.3;
+    const hasText = Math.random() > 0.1 || !hasPictures;
 
-    // Create posts
-    for (let i = 0; i < userPostCount; i++) {
-      // Create a post date sometime in the last year
-      const creationDate = new Date();
-      creationDate.setDate(creationDate.getDate() - Math.floor(Math.random() * 365));
-      const creationTimestamp = dateToTimestamp(creationDate);
+    // Determine post privacy based on user popularity
+    let privacy: 'public' | 'friends' | 'private';
+    if (popularityTier === 'high') {
+      privacy = Math.random() > 0.7 ? 'public' : 'friends';
+    } else if (popularityTier === 'medium') {
+      privacy = Math.random() > 0.5 ? 'public' : Math.random() > 0.7 ? 'private' : 'friends';
+    } else {
+      privacy = Math.random() > 0.3 ? 'friends' : Math.random() > 0.5 ? 'private' : 'public';
+    }
 
-      // Sometimes posts are updated
-      const updateDate = new Date(creationDate);
-      if (Math.random() > 0.8) {
-        updateDate.setDate(updateDate.getDate() + Math.floor(Math.random() * 7)); // Update within a week
-      }
+    // Generate pictures with placeholders if needed
+    let pictures: IPictureWithPlaceholders[] | undefined = undefined;
 
-      const hasPictures = Math.random() > 0.3; // Most posts have pictures (70%)
-      const hasText = Math.random() > 0.1 || !hasPictures; // Almost all posts have text
+    if (hasPictures) {
+      const postImagesOutputDir = path.join(baseDir, 'images', 'posts');
+      if (!fs.existsSync(postImagesOutputDir))
+        fs.mkdirSync(postImagesOutputDir, { recursive: true });
 
-      // Determine post privacy based on user popularity
-      let privacy: 'public' | 'friends' | 'private';
-      if (popularityTier === 'high') {
-        privacy = Math.random() > 0.7 ? 'public' : 'friends';
-      } else if (popularityTier === 'medium') {
-        privacy = Math.random() > 0.5 ? 'public' : Math.random() > 0.7 ? 'private' : 'friends';
+      let imageCount: number;
+      const hasLotsOfImages = Math.random() > 0.9;
+      if (hasLotsOfImages) {
+        imageCount = Math.min(Math.floor(Math.random() * 4) + 5, maxImagesPerPost);
       } else {
-        privacy = Math.random() > 0.3 ? 'friends' : Math.random() > 0.5 ? 'private' : 'public';
+        imageCount = Math.min(Math.floor(Math.random() * 4) + 1, maxImagesPerPost);
       }
 
-      // Generate pictures with placeholders if needed
-      const pictures: IPictureWithPlaceholders[] = [];
-
-      if (hasPictures) {
-        // Ensure post images directory exists
-        const postImagesOutputDir = path.join(baseDir, 'images', 'posts');
-        if (!fs.existsSync(postImagesOutputDir))
-          fs.mkdirSync(postImagesOutputDir, { recursive: true });
-
-        // Determine the number of images for this post
-        let imageCount: number;
-        const hasLotsOfImages = Math.random() > 0.9;
-
-        if (hasLotsOfImages) {
-          imageCount = Math.min(Math.floor(Math.random() * 4) + 5, maxImagesPerPost);
-        } else {
-          imageCount = Math.min(Math.floor(Math.random() * 4) + 1, maxImagesPerPost);
-        }
-
-        try {
-          const generatedImages = await generateImageWithRetry({
-            type: 'post',
-            count: imageCount,
-          });
-
-          // Save each image
-          for (let imgIndex = 0; imgIndex < generatedImages.length; imgIndex++) {
-            const imgData = generatedImages[imgIndex];
+      try {
+        const generatedImages = await generateImageWithRetry({ type: 'post', count: imageCount });
+        const saved = await Promise.all(
+          generatedImages.map(async (imgData) => {
             const imgId = uuidv4();
             const imgFilename = `${imgId}.webp`;
             const imgPath = path.join(postImagesOutputDir, imgFilename);
             await fs.promises.writeFile(imgPath, imgData.webpBuffer);
-
             const storageUrl = `http://localhost:9199/v0/b/${firebaseConfig.storageBucket}/o/images%2Fposts%2F${imgFilename}?alt=media`;
-
-            pictures.push({
+            const pic: IPictureWithPlaceholders = {
               url: storageUrl,
               blurDataUrl: imgData.blurDataUrl,
               dominantHex: imgData.dominantHex,
-            });
-          }
-        } catch (error: unknown) {
-          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-          console.warn(`Failed to generate images for post: ${errorMessage}`);
-          // Skip this post and continue with the next one
-          continue;
-        }
+            };
+            return pic;
+          }),
+        );
+        pictures = saved;
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.warn(`Failed to generate images for post: ${errorMessage}`);
+        // Skip generating pictures for this post
+        pictures = undefined;
       }
-
-      const post: IGeneratedPost = {
-        id: uuidv4(),
-        ownerId: user.id,
-        wallOwnerId: user.id,
-        text: hasText ? faker.lorem.paragraphs(Math.floor(Math.random() * 3) + 1) : undefined,
-        pictures: hasPictures ? pictures : undefined,
-        createdAt: creationTimestamp,
-        shareCount: 0, // Will be set after calculating virality
-        elementType: 'post',
-        comments: {},
-        reactions: {},
-        privacy,
-      };
-
-      // Calculate post virality
-      const viralityScore = calculateViralityScore(post, user);
-
-      // Generate share count based on virality
-      if (privacy === 'public') {
-        if (viralityScore > 0.8) {
-          post.shareCount = Math.floor(Math.random() * 200) + 100; // Viral post
-        } else if (viralityScore > 0.6) {
-          post.shareCount = Math.floor(Math.random() * 50) + 20; // Popular post
-        } else if (viralityScore > 0.4) {
-          post.shareCount = Math.floor(Math.random() * 20) + 5; // Moderately shared
-        } else {
-          post.shareCount = Math.floor(Math.random() * 5); // Normal post
-        }
-      }
-
-      // Generate reactions and comments based on virality
-      post.reactions = generateReactionsForViralPost(
-        post,
-        users,
-        viralityScore,
-        maxReactionsPerPost,
-      );
-      post.comments = generateCommentsForViralPost(post, users, viralityScore, maxCommentsPerPost);
-
-      posts.push(post);
-      totalPosts++;
-      const percentage = Math.round((totalPosts / estimatedTotalPosts) * 100);
-      postGenerationSpinner.text = `Generating posts, fetching images... ${totalPosts}/${estimatedTotalPosts} (${percentage}%)`;
     }
-  }
+
+    const post: IGeneratedPost = {
+      id: uuidv4(),
+      ownerId: user.id,
+      wallOwnerId: user.id,
+      text: hasText ? faker.lorem.paragraphs(Math.floor(Math.random() * 3) + 1) : undefined,
+      pictures: hasPictures ? pictures : undefined,
+      createdAt: creationTimestamp,
+      shareCount: 0,
+      elementType: 'post',
+      comments: {},
+      reactions: {},
+      privacy,
+    };
+
+    // Calculate post virality
+    const viralityScore = calculateViralityScore(post, user);
+
+    // Generate share count based on virality
+    if (privacy === 'public') {
+      if (viralityScore > 0.8) {
+        post.shareCount = Math.floor(Math.random() * 200) + 100;
+      } else if (viralityScore > 0.6) {
+        post.shareCount = Math.floor(Math.random() * 50) + 20;
+      } else if (viralityScore > 0.4) {
+        post.shareCount = Math.floor(Math.random() * 20) + 5;
+      } else {
+        post.shareCount = Math.floor(Math.random() * 5);
+      }
+    }
+
+    // Generate reactions and comments based on virality
+    post.reactions = generateReactionsForViralPost(post, users, viralityScore, maxReactionsPerPost);
+    post.comments = generateCommentsForViralPost(post, users, viralityScore, maxCommentsPerPost);
+
+    posts.push(post);
+    totalPosts++;
+    const percentage = Math.round((totalPosts / estimatedTotalPosts) * 100);
+    postGenerationSpinner.text = `Generating posts, fetching images... ${totalPosts}/${estimatedTotalPosts} (${percentage}%)`;
+  });
   postGenerationSpinner.succeed(`Generated ${totalPosts} posts`);
 
   // 4. Create Firebase data structure

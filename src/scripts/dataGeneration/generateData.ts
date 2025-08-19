@@ -15,7 +15,7 @@ const DATA_SIZES = {
     options: {
       userCount: 50,
       maxFriendsPerUser: 80,
-      maxPostsPerUser: 5,
+      maxPostsPerUser: 3,
       maxCommentsPerPost: 20,
       maxReactionsPerPost: 50,
       maxChatsPerUser: 15,
@@ -29,7 +29,7 @@ const DATA_SIZES = {
     options: {
       userCount: 150,
       maxFriendsPerUser: 120,
-      maxPostsPerUser: 5,
+      maxPostsPerUser: 4,
       maxCommentsPerPost: 35,
       maxReactionsPerPost: 90,
       maxChatsPerUser: 25,
@@ -43,7 +43,7 @@ const DATA_SIZES = {
     options: {
       userCount: 200,
       maxFriendsPerUser: 140,
-      maxPostsPerUser: 8,
+      maxPostsPerUser: 5,
       maxCommentsPerPost: 50,
       maxReactionsPerPost: 150,
       maxChatsPerUser: 40,

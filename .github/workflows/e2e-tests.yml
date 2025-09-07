@@ -11,13 +11,13 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: '22'
+          bun-version: 'latest'
 
       - name: Install dependencies
-        run: npm install
+        run: bun install
 
       - name: Run TestCafe Tests
-        run: npm run test:e2e-gh
+        run: bun run test:e2e-gh

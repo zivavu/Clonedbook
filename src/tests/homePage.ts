@@ -1,4 +1,4 @@
-import { Selector, t } from 'testcafe';
+import { Selector, t, test } from 'testcafe';
 import { BASE_URL } from './consts';
 
 fixture('Home Page').page(BASE_URL);

@@ -7,7 +7,6 @@ export default function useContinousChatFetching(chatId: string) {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [chatData, setChatData] = useState<IChat>();
-  console.log('chatId', chatId);
   async function fetchChatData() {
     setIsLoading(true);
     try {

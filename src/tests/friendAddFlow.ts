@@ -1,17 +1,9 @@
-import { Selector, fixture, t, test } from 'testcafe';
+import { Selector, fixture, test } from 'testcafe';
 import { BASE_URL } from './consts';
 
-/*
- * Run this test with:
- * npm run test:e2e-gh src/tests/friendAddFlow.ts
- * npm run test:e2e -- src/tests/friendAddFlow.ts
- */
-
-// Fallback test user IDs (to use when we can't detect real users)
-// Note: These IDs might need to be updated if the test users change
 const TEST_USERS = {
-  SENDER: '1de330bb-ed45-4648-a644-3de3c38153eb', // A known user ID from previous test runs
-  RECIPIENT: '2bd72c1e-e2fc-43ca-9d9e-dac98e8c106e', // Another known ID
+  SENDER: '1de330bb-ed45-4648-a644-3de3c38153eb',
+  RECIPIENT: '2bd72c1e-e2fc-43ca-9d9e-dac98e8c106e',
 };
 
 fixture('Friend Add Flow').page(`${BASE_URL}`);
@@ -25,7 +17,7 @@ fixture('Friend Add Flow').page(`${BASE_URL}`);
  * It uses direct navigation to bypass UI elements when possible
  * and includes detailed logging for debugging.
  */
-test('Friend request flow - core operations', async () => {
+test('Friend request flow - core operations', async (t) => {
   // Define selectors for each action button
   const addFriendButton = Selector('[data-testid="add-friend-button"]').addCustomDOMProperties({
     innerHTML: (el) => el.innerHTML,

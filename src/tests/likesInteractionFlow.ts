@@ -1,4 +1,4 @@
-import { Selector, fixture, t } from 'testcafe';
+import { Selector, fixture, t, test } from 'testcafe';
 import { BASE_URL } from './consts';
 
 /*
@@ -190,7 +190,7 @@ async function loginAsUser(userId: string): Promise<boolean> {
  * Tests
  */
 
-test('Like and unlike post', async () => {
+test('Like and unlike post', async (t) => {
   // Setup
   const postSelector = await setupTest();
   await logSelector('Post', postSelector);
@@ -225,7 +225,7 @@ test('Like and unlike post', async () => {
   await resetState(postSelector);
 });
 
-test('Reactions menu', async () => {
+test('Reactions menu', async (t) => {
   // Setup
   const postSelector = await setupTest();
 
@@ -288,7 +288,7 @@ test('Reactions menu', async () => {
       if (currentText.toLowerCase() === 'like') {
         // If we started with "Like", it should now be something different
         await t.expect(textAfterReaction.toLowerCase()).notEql('like');
-    } else {
+      } else {
         // Just make sure something changed
         console.log(`Checking that "${textAfterReaction}" differs from "${currentText}"`);
         await t.expect(textAfterReaction).notEql(currentText);
@@ -320,7 +320,7 @@ test('Reactions menu', async () => {
 // Add a fixture for comment interaction that properly cleans up after itself
 fixture('Comment Interaction Flow').page(`${BASE_URL}`);
 
-test('Comment create, interact and cleanup', async () => {
+test('Comment create, interact and cleanup', async (t) => {
   // Step 1: Store initial user ID
   const initialUserId = await getCurrentUserId();
   console.log(`Initial user ID: ${initialUserId || 'unknown'}`);
@@ -341,7 +341,7 @@ test('Comment create, interact and cleanup', async () => {
     return;
   }
 
-    await t.click(commentButton);
+  await t.click(commentButton);
   await t.wait(1000);
 
   // Find a comment input field
@@ -362,7 +362,7 @@ test('Comment create, interact and cleanup', async () => {
   await t.selectText(inputElement).pressKey('delete');
   await t.typeText(inputElement, uniqueComment);
   await t.wait(500);
-        await t.pressKey('enter');
+  await t.pressKey('enter');
   await t.wait(2000);
 
   console.log(`Added comment with text: ${uniqueComment}`);
@@ -499,7 +499,7 @@ test('Comment create, interact and cleanup', async () => {
 
           if (await afterLoginMenu.exists) {
             await t.click(afterLoginMenu.nth(0));
-          await t.wait(1000);
+            await t.wait(1000);
 
             const deleteOptionAfterLogin = Selector('li, button, span').filter((node) => {
               const text = (node.textContent || '').toLowerCase();
@@ -508,7 +508,7 @@ test('Comment create, interact and cleanup', async () => {
 
             if (await deleteOptionAfterLogin.exists) {
               await t.click(deleteOptionAfterLogin.nth(0));
-          await t.wait(1000);
+              await t.wait(1000);
 
               // Check for confirmation
               const confirmAfterLogin = Selector('button').withText(/confirm|yes|delete|ok/i);

@@ -1,4 +1,4 @@
-import { Selector, fixture } from 'testcafe';
+import { Selector, fixture, test } from 'testcafe';
 import { BASE_URL } from './consts';
 const path = require('path');
 

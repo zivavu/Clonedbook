@@ -179,6 +179,32 @@ Data is stored in Firebase and optimized to reduce document reads by consolidati
 
 > **Note**: The project uses Bun as the default JavaScript runtime, but you can use other runtimes like Node.js if you prefer. Just make sure your runtime supports TypeScript files (.ts) for the data generation scripts.
 
+## :key: Environment Variables (.env)
+
+```bash
+# Local development (optional, scripts already set this for you)
+NEXT_PUBLIC_USE_EMULATOR=true
+
+# Production / Remote Firebase + Algolia
+NEXT_PUBLIC_USE_EMULATOR=false
+
+# Firebase
+NEXT_PUBLIC_API_KEY=
+NEXT_PUBLIC_AUTH_DOMAIN=
+NEXT_PUBLIC_DATABASE_URL=
+NEXT_PUBLIC_PROJECT_ID=
+NEXT_PUBLIC_STORAGE_BUCKET=
+NEXT_PUBLIC_MESSENGING_SENDER_ID=
+NEXT_PUBLIC_APP_ID=
+
+# Algolia
+NEXT_PUBLIC_ALGOLIA_APP_ID=
+NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY=
+
+# Optional (tests and links)
+NEXT_PUBLIC_BASE_URL=
+```
+
 ### Running Tests
 
 The project includes end-to-end tests using TestCafe that cover key functionality:

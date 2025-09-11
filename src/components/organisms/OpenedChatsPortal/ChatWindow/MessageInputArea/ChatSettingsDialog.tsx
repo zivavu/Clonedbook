@@ -4,9 +4,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   InputAdornment,
   Stack,
+  Tab,
+  Tabs,
   TextField,
   Typography,
   useTheme,
@@ -35,6 +36,7 @@ export default function ChatSettingsDialog({
   const theme = useTheme();
   const [selectedEmoji, setSelectedEmoji] = useState(chatEmoji);
   const [selectedColor, setSelectedColor] = useState(chatColor);
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     if (open) {
@@ -72,63 +74,70 @@ export default function ChatSettingsDialog({
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth='xs'>
-      <DialogTitle>Chat Settings</DialogTitle>
       <DialogContent>
         <Stack spacing={3} sx={{ mt: 1 }}>
-          <Box>
-            <Typography variant='subtitle1' sx={{ mb: 1 }}>
-              Chat Emoji
-            </Typography>
-            <TextField
-              fullWidth
-              variant='outlined'
-              value={selectedEmoji}
-              InputProps={{
-                readOnly: true,
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <Typography fontSize={22}>{selectedEmoji}</Typography>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <EmojiPicker
-              onEmojiClick={handleSettingsEmojiSelect}
-              theme={theme.palette.mode as Theme}
-              skinTonesDisabled
-              width='100%'
-              height='550px'
-            />
-          </Box>
+          <Tabs
+            value={activeTab}
+            onChange={(_: unknown, newValue: number) => setActiveTab(newValue)}
+            variant='fullWidth'>
+            <Tab label='Emoji' sx={{ fontSize: 16, fontWeight: 600 }} />
+            <Tab label='Color' sx={{ fontSize: 16, fontWeight: 600 }} />
+          </Tabs>
 
-          <Box>
-            <Typography variant='subtitle1' sx={{ mb: 1 }}>
-              Chat Color
-            </Typography>
-            <Stack alignItems='center'>
-              <CirclePicker
-                colors={colors}
-                color={selectedColor}
-                onChange={(color) => setSelectedColor(color.hex)}
-                width='100%'
+          {activeTab === 0 && (
+            <Box>
+              <TextField
+                fullWidth
+                variant='outlined'
+                value={selectedEmoji}
+                slotProps={{
+                  input: {
+                    readOnly: true,
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Typography fontSize={22}>{selectedEmoji}</Typography>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
               />
-            </Stack>
-            <Box
-              sx={{
-                width: '100%',
-                height: '40px',
-                marginTop: 2,
-                backgroundColor: selectedColor,
-                borderRadius: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Typography color='#fff' fontWeight='bold'>
-                Selected Color
-              </Typography>
+              <EmojiPicker
+                onEmojiClick={handleSettingsEmojiSelect}
+                theme={theme.palette.mode as Theme}
+                skinTonesDisabled
+                width='100%'
+                height='550px'
+              />
             </Box>
-          </Box>
+          )}
+
+          {activeTab === 1 && (
+            <Box>
+              <Stack alignItems='center'>
+                <CirclePicker
+                  colors={colors}
+                  color={selectedColor}
+                  onChange={(color) => setSelectedColor(color.hex)}
+                  width='100%'
+                />
+              </Stack>
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '40px',
+                  marginTop: 2,
+                  backgroundColor: selectedColor,
+                  borderRadius: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Typography color='#fff' fontWeight='bold'>
+                  Selected Color
+                </Typography>
+              </Box>
+            </Box>
+          )}
         </Stack>
       </DialogContent>
       <DialogActions>

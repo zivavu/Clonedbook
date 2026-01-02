@@ -18,7 +18,7 @@ export default function getDateDiffs(seconds: number) {
   const hoursDiff = Math.floor(timeDifference / (1000 * 3600));
   const daysDiff = Math.floor(timeDifference / (1000 * 3600 * 24));
   const weeksDiff = Math.floor(timeDifference / (1000 * 3600 * 24 * 7));
-  const yearsDiff = currDate.getFullYear() - pastDate.getFullYear();
+  const yearsDiff = Math.floor(timeDifference / (1000 * 3600 * 24 * 7 * 52));
   const diffsMap: TTimeDiffMap = {
     m: minutesDiff,
     h: hoursDiff,

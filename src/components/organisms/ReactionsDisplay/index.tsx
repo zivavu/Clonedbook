@@ -74,7 +74,7 @@ export default function ReactionsDisplayBox({
                 type={reaction.type}
                 zIndex={2 - i}
                 size={size}
-                showBorder
+                showBorder={false}
               />
             );
           })}

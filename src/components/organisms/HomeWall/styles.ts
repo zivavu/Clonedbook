@@ -8,5 +8,6 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     width: '100%',
     padding: theme.spacing(0, 1),
+    marginTop: theme.spacing(1),
   },
 }));

@@ -23,6 +23,8 @@ export default function PostsFeed({
         <>
           <LoadingPostPlaceholder />
           <LoadingPostPlaceholder />
+          <LoadingPostPlaceholder />
+          <LoadingPostPlaceholder />
         </>
       )}
     </StyledRoot>

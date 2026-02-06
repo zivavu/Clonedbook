@@ -1,8 +1,7 @@
-import { BoxProps, List, Typography, useTheme } from '@mui/material';
+import { BoxProps, Link, List, Typography, useTheme } from '@mui/material';
 
 import { StyledListItem as StyledListItemButton, StyledListItemImage, StyledRoot } from './styles';
 
-import Link from '@/components/atoms/Link';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { useGetLoggedUserQuery } from '@/redux/services/loggedUserAPI';
 import { useRouter } from 'next/router';
@@ -53,8 +52,18 @@ export default function ShortcutsSidebar({ sx, ...rootProps }: BoxProps) {
           );
         })}
       </List>
-      <Link href='https://www.freepik.com/' target='_blank'>
-        Designed by Freepik
+      <Link
+        href='https://www.flaticon.com/free-icons/facebook'
+        title='facebook icons'
+        target='_blank'
+        sx={{
+          fontSize: '12px',
+          color: theme.palette.text.disabled,
+          '&:hover': {
+            color: theme.palette.text.primary,
+          },
+        }}>
+        Icons from Flaticon
       </Link>
     </StyledRoot>
   );

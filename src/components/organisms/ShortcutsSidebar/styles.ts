@@ -19,11 +19,12 @@ export const StyledRoot = styled(Box)(({ theme }) => ({
 export const StyledListItem = styled(ListItemButton)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  paddingLeft: theme.spacing(1),
+  padding: theme.spacing(1),
+  paddingLeft: theme.spacing(1.5),
 }));
 
 export const StyledListItemImage = styled(Image)(({ theme }) => ({
-  marginRight: theme.spacing(1.5),
-  width: '32px',
-  height: '32px',
+  marginRight: theme.spacing(1),
+  width: '38px',
+  height: '38px',
 }));

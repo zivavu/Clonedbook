@@ -8,7 +8,6 @@ import {
   GroupImage,
   MegaphoneImage,
   MemoriesImage,
-  WorldImage,
 } from '@/assets/sidebarIcons';
 import { Shortcut } from './types';
 
@@ -53,12 +52,6 @@ export const sidebarItems: Shortcut[] = [
     key: 'games',
     href: '/games',
     IconImage: GameImage,
-    active: false,
-  },
-  {
-    key: 'climate-and-science',
-    href: '/climate-and-science',
-    IconImage: WorldImage,
     active: false,
   },
   {

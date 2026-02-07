@@ -25,6 +25,6 @@ export const StyledListItem = styled(ListItemButton)(({ theme }) => ({
 
 export const StyledListItemImage = styled(Image)(({ theme }) => ({
   marginRight: theme.spacing(1),
-  width: '38px',
-  height: '38px',
+  width: '36px',
+  height: '36px',
 }));

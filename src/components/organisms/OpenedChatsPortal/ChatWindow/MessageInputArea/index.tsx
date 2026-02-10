@@ -58,7 +58,7 @@ export default function MessageInputArea({
     setShowSettingsDialog(false);
   };
 
-  const handleSaveSettings = async (emoji: string, color: string) => {
+  const handleSaveSettings = async (color: string, emoji: string) => {
     await updateChatSettings({
       chatId,
       chatEmoji: emoji,
@@ -128,9 +128,8 @@ export default function MessageInputArea({
       </Popper>
 
       <ChatSettingsDialog
-        chatId={chatId}
-        chatEmoji={chatEmoji}
-        chatColor={chatColor}
+        currentEmoji={chatEmoji}
+        currentColor={chatColor || '#0084ff'}
         open={showSettingsDialog}
         onClose={handleCloseSettings}
         onSave={handleSaveSettings}

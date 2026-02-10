@@ -1,151 +1,185 @@
 import {
+  Avatar,
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  InputAdornment,
   Stack,
   Tab,
   Tabs,
-  TextField,
   Typography,
   useTheme,
 } from '@mui/material';
-import EmojiPicker, { EmojiClickData, Theme } from 'emoji-picker-react';
-import { useEffect, useState } from 'react';
+import EmojiPicker, { Theme } from 'emoji-picker-react';
+import { useState } from 'react';
 import { CirclePicker } from 'react-color';
+import { chatColors } from './chatColors';
 
 interface ChatSettingsDialogProps {
-  chatId: string;
-  chatEmoji: string;
-  chatColor: string;
   open: boolean;
   onClose: () => void;
-  onSave: (emoji: string, color: string) => Promise<void>;
+  currentEmoji: string;
+  currentColor: string;
+  onSave: (color: string, emoji: string) => void;
+}
+
+interface MockChatWindowProps {
+  color: string;
+  emoji: string;
 }
 
 export default function ChatSettingsDialog({
-  chatId,
-  chatEmoji,
-  chatColor,
   open,
   onClose,
+  currentEmoji,
+  currentColor,
   onSave,
 }: ChatSettingsDialogProps) {
   const theme = useTheme();
-  const [selectedEmoji, setSelectedEmoji] = useState(chatEmoji);
-  const [selectedColor, setSelectedColor] = useState(chatColor);
   const [activeTab, setActiveTab] = useState(0);
+  const [selectedColor, setSelectedColor] = useState(currentColor);
+  const [selectedEmoji, setSelectedEmoji] = useState(currentEmoji || '❤️');
 
-  useEffect(() => {
-    if (open) {
-      setSelectedEmoji(chatEmoji);
-      setSelectedColor(chatColor);
-    }
-  }, [open, chatEmoji, chatColor]);
-
-  const handleSettingsEmojiSelect = (emojiData: EmojiClickData) => {
-    setSelectedEmoji(emojiData.emoji);
+  const handleSave = () => {
+    onSave(selectedColor || '#0084ff', selectedEmoji);
+    onClose();
   };
-
-  const handleSave = async () => {
-    await onSave(selectedEmoji, selectedColor);
-  };
-
-  const colors = [
-    '#f44336',
-    '#e91e63',
-    '#9c27b0',
-    '#673ab7',
-    '#3f51b5',
-    '#2196f3',
-    '#03a9f4',
-    '#00bcd4',
-    '#009688',
-    '#4caf50',
-    '#8bc34a',
-    '#cddc39',
-    '#ffeb3b',
-    '#ffc107',
-    '#ff9800',
-    '#ff5722',
-  ];
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth='xs'>
-      <DialogContent>
-        <Stack spacing={3} sx={{ mt: 1 }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth='xs'
+      slotProps={{ paper: { sx: { m: 1, width: '100%', borderRadius: 3, overflow: 'hidden' } } }}>
+      <MockChatWindow color={selectedColor} emoji={selectedEmoji} />
+
+      <DialogContent sx={{ p: 0 }}>
+        <Stack spacing={0}>
           <Tabs
             value={activeTab}
-            onChange={(_: unknown, newValue: number) => setActiveTab(newValue)}
-            variant='fullWidth'>
-            <Tab label='Emoji' sx={{ fontSize: 16, fontWeight: 600 }} />
-            <Tab label='Color' sx={{ fontSize: 16, fontWeight: 600 }} />
+            onChange={(_, v) => setActiveTab(v)}
+            variant='fullWidth'
+            sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
+            <Tab label='Emoji' sx={{ fontWeight: 600 }} />
+            <Tab label='Color' sx={{ fontWeight: 600 }} />
           </Tabs>
 
-          {activeTab === 0 && (
-            <Box>
-              <TextField
-                fullWidth
-                variant='outlined'
-                value={selectedEmoji}
-                slotProps={{
-                  input: {
-                    readOnly: true,
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <Typography fontSize={22}>{selectedEmoji}</Typography>
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-              <EmojiPicker
-                onEmojiClick={handleSettingsEmojiSelect}
-                theme={theme.palette.mode as Theme}
-                skinTonesDisabled
-                width='100%'
-                height='550px'
-              />
-            </Box>
-          )}
+          <Box sx={{ height: 450, bgcolor: 'background.paper' }}>
+            {activeTab === 0 && (
+              <Box sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+                <EmojiPicker
+                  onEmojiClick={(e) => setSelectedEmoji(e.emoji || '❤️')}
+                  theme={theme.palette.mode as Theme}
+                  skinTonesDisabled
+                  width='100%'
+                  height='450px'
+                  previewConfig={{ showPreview: false }}
+                />
+              </Box>
+            )}
 
-          {activeTab === 1 && (
-            <Box>
-              <Stack alignItems='center'>
+            {activeTab === 1 && (
+              <Stack sx={{ height: '100%', width: '100%', p: 3, alignItems: 'center' }}>
                 <CirclePicker
-                  colors={colors}
+                  colors={chatColors}
                   color={selectedColor}
                   onChange={(color) => setSelectedColor(color.hex)}
                   width='100%'
+                  circleSize={46}
+                  circleSpacing={20}
                 />
               </Stack>
-              <Box
-                sx={{
-                  width: '100%',
-                  height: '40px',
-                  marginTop: 2,
-                  backgroundColor: selectedColor,
-                  borderRadius: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Typography color='#fff' fontWeight='bold'>
-                  Selected Color
-                </Typography>
-              </Box>
-            </Box>
-          )}
+            )}
+          </Box>
         </Stack>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSave} variant='contained' sx={{ backgroundColor: selectedColor }}>
+
+      <DialogActions sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
+        <Button onClick={onClose} color='inherit'>
+          Cancel
+        </Button>
+        <Button
+          onClick={handleSave}
+          variant='contained'
+          sx={{
+            bgcolor: selectedColor,
+            '&:hover': { bgcolor: selectedColor, filter: 'brightness(0.9)' },
+            minWidth: 100,
+          }}>
           Save
         </Button>
       </DialogActions>
     </Dialog>
+  );
+}
+
+function MockChatWindow({ color, emoji }: MockChatWindowProps) {
+  const theme = useTheme();
+
+  const bubbleStyle = {
+    borderRadius: 2,
+    maxWidth: '70%',
+    py: 1,
+    px: 1.5,
+    fontSize: '0.9rem',
+    fontFamily: theme.typography.fontFamily,
+  };
+
+  return (
+    <Box
+      sx={{
+        p: 2,
+        pb: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 1.5,
+        bgcolor: theme.palette.background.default,
+      }}>
+      <Stack direction='row' spacing={1} alignItems='flex-end'>
+        <Avatar sx={{ width: 28, height: 28 }} />
+        <Box
+          sx={{
+            ...bubbleStyle,
+            bgcolor: theme.palette.action.hover,
+            color: theme.palette.text.primary,
+            borderBottomLeftRadius: 4,
+          }}>
+          How does this look?
+        </Box>
+      </Stack>
+
+      <Box
+        sx={{
+          ...bubbleStyle,
+          alignSelf: 'flex-end',
+          bgcolor: color,
+          color: '#fff',
+          borderBottomRightRadius: 4,
+        }}>
+        I love this color!
+      </Box>
+
+      <Stack direction='row' alignItems='center' spacing={1} sx={{ mt: 1, pt: 1 }}>
+        <Box
+          sx={{
+            flex: 1,
+            height: 36,
+            bgcolor: theme.palette.action.hover,
+            borderRadius: 20,
+            px: 2,
+            display: 'flex',
+            alignItems: 'center',
+          }}>
+          <Typography variant='body2' color='text.disabled'>
+            Aa
+          </Typography>
+        </Box>
+        <Typography fontSize={26} sx={{ cursor: 'pointer', lineHeight: 1 }}>
+          {emoji}
+        </Typography>
+      </Stack>
+    </Box>
   );
 }

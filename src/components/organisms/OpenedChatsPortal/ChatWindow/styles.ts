@@ -12,7 +12,7 @@ export const StyledRoot = styled(Stack)(({ theme }) => ({
 
   [theme.breakpoints.down('xs')]: {
     width: '100%',
-    minHeight: '100vh',
+    minHeight: '100svh',
     zIndex: theme.zIndex.modal,
     overflowY: 'visible',
   },

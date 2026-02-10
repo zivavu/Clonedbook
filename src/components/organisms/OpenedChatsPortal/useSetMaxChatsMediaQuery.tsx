@@ -5,14 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export function getMaxChatsByScreenSize(screenSize: 'lg' | 'md' | 'sm') {
-  switch (screenSize) {
-    case 'lg':
-      return 3;
-    case 'md':
-      return 2;
-    case 'sm':
-      return 1;
-  }
+  return screenSize === 'lg' ? 3 : screenSize === 'md' ? 2 : 1;
 }
 
 export default function useSetMaxChatsMediaQuery() {

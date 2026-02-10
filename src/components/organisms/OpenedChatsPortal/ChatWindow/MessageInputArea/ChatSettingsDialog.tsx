@@ -83,7 +83,7 @@ export default function ChatSettingsDialog({
             {activeTab === 1 && (
               <Stack sx={{ height: '100%', width: '100%', p: 3, alignItems: 'center' }}>
                 <CirclePicker
-                  colors={chatColors}
+                  colors={[...chatColors]}
                   color={selectedColor}
                   onChange={(color) => setSelectedColor(color.hex)}
                   width='100%'

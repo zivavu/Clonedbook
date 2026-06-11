@@ -1,9 +1,10 @@
-import { Box, Link, Typography } from '@mui/material';
+import { Box,  Typography } from '@mui/material';
 import { useMemo } from 'react';
 
 import ElementTextEditInput from '@/components/molecules/ElementTextEditInput';
 import { parseTextWithSpotifyUrls, toSpotifyEmbedUrl } from './spotifyUtils';
 import { PostTextAreaProps } from './types';
+import Link from '../../../atoms/Link';
 
 export default function PostTextArea({
   post,
@@ -91,11 +92,10 @@ export default function PostTextArea({
                   target='_blank'
                   rel='noopener noreferrer'
                   {...typographyProps}
-                  sx={{
-                    display: 'block',
-                    wordBreak: 'break-all',
-                    whiteSpace: 'pre-wrap',
-                  }}>
+                  sx={[
+                    { display: 'block', wordBreak: 'break-all', whiteSpace: 'pre-wrap' },
+                    (theme) => ({ color: theme.palette.primary.main }),
+                  ]}>
                   {segment.displayText}
                 </Link>
               ) : (

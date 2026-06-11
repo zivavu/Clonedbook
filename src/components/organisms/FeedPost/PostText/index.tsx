@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
 import ElementTextEditInput from '@/components/molecules/ElementTextEditInput';
@@ -84,6 +84,20 @@ export default function PostTextArea({
                     {segment.content}
                   </Typography>
                 ) : null
+              ) : segment.type === 'link' ? (
+                <Link
+                  key={idx}
+                  href={segment.url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  {...typographyProps}
+                  sx={{
+                    display: 'block',
+                    wordBreak: 'break-all',
+                    whiteSpace: 'pre-wrap',
+                  }}>
+                  {segment.displayText}
+                </Link>
               ) : (
                 renderSpotifyEmbed(segment.embedUrl, idx)
               ),

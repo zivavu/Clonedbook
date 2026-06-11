@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 
 # Clonedbook
-<img width="1659" height="957" alt="Screenshot_1" src="https://github.com/user-attachments/assets/6e8add5a-e429-44a1-92d4-98f9ea107e8b" />
+<img width="1697" height="1043" alt="Clonedbook home page" src="https://github.com/user-attachments/assets/f7dd1685-76b6-4075-b758-e46882c4ec5f" />
 
 ## :rocket: About the project
 

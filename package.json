@@ -13,7 +13,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:e2e": "testcafe edge src/tests/",
-    "test:e2e-gh": "testcafe edge:headless src/tests/",
+    "test:e2e-gh": "testcafe chrome:headless src/tests/",
     "generate-data": "bun src/scripts/dataGeneration/generateData.ts",
     "emulators": "cross-env NEXT_PUBLIC_USE_EMULATOR=true firebase emulators:start",
     "emulators:populate": "bun src/scripts/dataGeneration/populateEmulators.ts",
